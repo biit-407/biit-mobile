@@ -22,11 +22,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Install project dependencies
-        run: yarn install
-        
-      - name: Lint and Compile
-        run: yarn run ci
-      
-      - name: Test
-        run: yarn run test
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: install # will run `yarn install` command
+    
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: ci # will run `yarn ci` command
+          
+      - uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: test # will run `yarn test` command
+
