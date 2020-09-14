@@ -24,8 +24,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - run: yarn install
-      - run: eslint --ext .ts,.tsx . --max-warnings 0
-      - run: tsc
-      - run: jest
+      - name: yarn install, build, and test
+        run: |
+          yarn install
+          yarn run build
+          yarn test
 
