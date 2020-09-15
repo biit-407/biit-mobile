@@ -7,7 +7,9 @@
  *
  * import { LoadAssets } from './src/components';
  *
- * const fonts = ['./assets/fonts/fontname.otf']
+ * const fonts = {
+ *    fontname: './assets/fonts/fontname.otf'
+ * }
  *
  * const App = () => {
  *      return (
