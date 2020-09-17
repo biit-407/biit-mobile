@@ -1,6 +1,16 @@
 import React from "react";
-import { Text } from "react-native";
+import { Button, Text, View } from "react-native";
 
-export default function LoginPage() {
-  return <Text>Hello World</Text>;
+import { LoginPageProps } from "../../types";
+
+export default function LoginPage({ navigation }: LoginPageProps) {
+  return (
+    <View>
+      <Text>Hello World</Text>
+      <Button
+        title="Create Account"
+        onPress={() => navigation.push("CreateAccount")}
+      />
+    </View>
+  );
 }
