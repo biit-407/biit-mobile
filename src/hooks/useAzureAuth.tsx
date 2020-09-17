@@ -44,11 +44,12 @@ const useAzureAuth = () => {
   return useAuthRequest(
     {
       clientId: AZURE_CLIENT_ID,
-      scopes: ["openid", "profile", "email", "offline_access"],
+      scopes: ["openid", "profile", "email", "offline_access", "https://graph.microsoft.com/User.Read"],
       // For usage in managed apps using the proxy
       redirectUri: makeRedirectUri({
         useProxy: true,
       }),
+      usePKCE: false
     },
     discovery
   );
