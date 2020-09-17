@@ -1,7 +1,12 @@
 import React from "react";
 import { Button, Text, View } from "react-native";
 
-import { LoginPageProps } from "../../types";
+import { LoginPageRouteProp, LoginPageNavigationProp } from "../../routes";
+
+type LoginPageProps = {
+  route: LoginPageRouteProp;
+  navigation: LoginPageNavigationProp;
+};
 
 export default function LoginPage({ navigation }: LoginPageProps) {
   return (
