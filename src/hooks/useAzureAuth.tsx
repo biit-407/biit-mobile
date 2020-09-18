@@ -3,9 +3,7 @@ import {
   useAuthRequest,
   makeRedirectUri,
 } from "expo-auth-session";
-
-const AZURE_TENANT_ID = "4130bd39-7c53-419c-b1e5-8758d6d63f21";
-const AZURE_CLIENT_ID = "c128fe76-dc54-4daa-993c-1a13c1e82080";
+import { AZURE_TENANT_ID, AZURE_CLIENT_ID } from "../constants";
 
 /**
  * @description hook that creates request, response and function to get a Grant Token
