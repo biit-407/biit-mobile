@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { AZURE_CLIENT_ID, AZURE_TENANT_ID } from '../constants'
+import { AZURE_CLIENT_ID, AZURE_TENANT_ID } from '../models'
 
 /**
  * @description Hook that handles getting an access token from a grant token (for oauth)
