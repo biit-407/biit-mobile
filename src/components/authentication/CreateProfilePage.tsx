@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
+import { Dimensions, ScrollView, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
-import { Input, Button, BottomSheet, ListItem } from "react-native-elements";
+import {
+  Input,
+  Button,
+  BottomSheet,
+  ListItem,
+  Image,
+} from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -20,7 +23,7 @@ type CreateProfilePageProps = {
   navigation: CreateProfilePageNavigationProp;
 };
 
-const HeaderLeft = () => {
+const SkipButton = () => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
@@ -48,54 +51,74 @@ const HeaderLeft = () => {
 export const CreateProfilePageOptions = {
   title: "",
   headerTransparent: true,
-  headerRight: () => <HeaderLeft />,
+  headerRight: () => <SkipButton />,
+};
+
+type PermissionMethod = () => Promise<ImagePicker.PermissionResponse>;
+type SelectionMethod = (
+  options?: ImagePicker.ImagePickerOptions | undefined
+) => Promise<ImagePicker.ImagePickerResult>;
+
+const imagePickerOptions: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsEditing: true,
+  aspect: [1, 1],
+  quality: 1,
 };
 
 export default function CreateAccountPage({}: CreateProfilePageProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  const list = [
+  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+  const [profileImageURL, setProfileImageURL] = useState("");
+  const selectImage = async (
+    permissionMethod: PermissionMethod,
+    selectionMethod: SelectionMethod
+  ) => {
+    const { status } = await permissionMethod();
+    if (status === ImagePicker.PermissionStatus.GRANTED) {
+      const result = await selectionMethod(imagePickerOptions);
+      if (!result.cancelled) {
+        setProfileImageURL(result.uri);
+      }
+    }
+    setBottomSheetVisible(false);
+  };
+
+  const bottomSheetOptions = [
     {
       title: "Camera",
       icon: <Icon name="camera" size={16} color="gray" />,
-      onPress: async () => {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status === ImagePicker.PermissionStatus.GRANTED) {
-          let result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
-        }
-        setIsVisible(false);
-      },
+      onPress: () =>
+        selectImage(
+          ImagePicker.requestCameraPermissionsAsync,
+          ImagePicker.launchCameraAsync
+        ),
     },
     {
       title: "Gallery",
       icon: <Icon name="image" size={16} color="gray" />,
-      onPress: async () => {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status === ImagePicker.PermissionStatus.GRANTED) {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
-        }
-        setIsVisible(false);
+      onPress: () =>
+        selectImage(
+          ImagePicker.requestCameraRollPermissionsAsync,
+          ImagePicker.launchCameraAsync
+        ),
+    },
+    {
+      title: "Clear",
+      icon: <Icon name="trash" size={16} color="gray" />,
+      onPress: () => {
+        setProfileImageURL("");
+        setBottomSheetVisible(false);
       },
     },
     {
       title: "Cancel",
       icon: <Icon name="remove" size={16} color="white" />,
+      onPress: () => setBottomSheetVisible(false),
       containerStyle: { backgroundColor: "red" },
       titleStyle: { color: "white" },
-      onPress: () => setIsVisible(false),
     },
   ];
+
   return (
     <View
       style={{
@@ -139,28 +162,43 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
           label="Last Name"
           labelStyle={{ color: "#B88953" }}
         />
+        {profileImageURL !== "" && (
+          <Image
+            source={{ uri: profileImageURL }}
+            style={{
+              width: Dimensions.get("window").width * 0.5,
+              aspectRatio: 1,
+              borderRadius: 100,
+              borderColor: "#B88953",
+              borderWidth: 3,
+              marginVertical: 8,
+            }}
+          />
+        )}
         <Button
           title="Select Profile Picture"
           buttonStyle={{ backgroundColor: "#B88953" }}
           titleStyle={{ color: "#F2DBB9" }}
           onPress={async () => {
-            setIsVisible(true);
+            setBottomSheetVisible(true);
           }}
         />
       </ScrollView>
       <BottomSheet
-        isVisible={isVisible}
-        modalProps={{ presentationStyle: "overFullScreen" }}
+        isVisible={isBottomSheetVisible}
+        modalProps={{ onRequestClose: () => setBottomSheetVisible(false) }}
       >
-        {list.map((l, i) => (
+        {bottomSheetOptions.map((option, index) => (
           <ListItem
-            containerStyle={l.containerStyle}
-            onPress={l.onPress}
-            key={i}
+            containerStyle={option.containerStyle}
+            onPress={option.onPress}
+            key={index}
           >
-            {l.icon}
+            {option.icon}
             <ListItem.Content>
-              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+              <ListItem.Title style={option.titleStyle}>
+                {option.title}
+              </ListItem.Title>
             </ListItem.Content>
           </ListItem>
         ))}
