@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { AzureUserInfo } from '../models'
 
 /**
  * @description hook that uses an access token to get user information from the 
@@ -26,7 +27,7 @@ import { useState, useEffect } from 'react'
  */
 const useAzureUserInfo = (): [React.Dispatch<React.SetStateAction<string | null>>, null | {}] => {
     const [accessToken, setAccessToken] = useState<null | string>(null)
-    const [userInfo, setUserInfo] = useState<null | {}>(null)
+    const [userInfo, setUserInfo] = useState<null | AzureUserInfo>(null)
     
     useEffect(() => {
         if (accessToken) {
