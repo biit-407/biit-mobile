@@ -7,7 +7,7 @@ import useAzureUserInfo from "../hooks/useAzureUserInfo";
 
 export default function AzureLoginButton() {
     const [/*request*/, response, promptAsync]: [any, any, any] = useAzureAuth();
-    const [setGrantToken, accessToken] = useAzureToken();
+    const [setGrantToken, accessToken, /*refresh_token*/] = useAzureToken();
     const [setAccessToken, userInfo]: [any, any] = useAzureUserInfo();
 
     // NOTE: These chained useEffect calls may need to be replaced with a 

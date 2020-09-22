@@ -28,14 +28,16 @@ import { AZURE_CLIENT_ID, AZURE_TENANT_ID } from '../models'
  *  )
  * ```
  * 
- * @returns a function to set the grant token and the access token. 
+ * @returns a function to set the grant token, the access token and
+ * the refresh_token
  * NOTE: the access token will be null until a valid grant token is
  * set and then exchanged for an access token
  * 
  */
-const useAzureToken = (): [React.Dispatch<React.SetStateAction<string | null>>, string | null] => {
+const useAzureToken = (): [React.Dispatch<React.SetStateAction<string | null>>, string | null, string | null] => {
     const [grantToken, setGrantToken] = useState<null | string>(null)
     const [accessToken, setAccessToken] = useState<null | string>(null)
+    const [refresh_token, setRefreshToken] = useState<null | string>(null)
 
     useEffect(() => {
         if (grantToken !== null) {
@@ -58,11 +60,12 @@ const useAzureToken = (): [React.Dispatch<React.SetStateAction<string | null>>, 
                 body: formBodyStr
             }).then(response => response.json()).then(responseJson => {
                 setAccessToken(responseJson?.access_token)
+                setRefreshToken(responseJson?.refresh_token)
             })
         }
     }, [grantToken])
 
-    return [setGrantToken, accessToken]
+    return [setGrantToken, accessToken, refresh_token]
 }
 
 export default useAzureToken;
