@@ -71,6 +71,7 @@ export default function CreateAccountPage({
 }: CreateProfilePageProps) {
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [profileImageURL, setProfileImageURL] = useState("");
+
   const selectImage = async (
     permissionMethod: PermissionMethod,
     selectionMethod: SelectionMethod
@@ -120,6 +121,7 @@ export default function CreateAccountPage({
       titleStyle: { color: "white" },
     },
   ];
+
   const lastNameTextInput = React.createRef<Input>();
 
   return (

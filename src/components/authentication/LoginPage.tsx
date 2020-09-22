@@ -41,19 +41,19 @@ export default function LoginPage({ navigation }: LoginPageProps) {
             />
           }
         />
-      </View>
-      <View style={{ marginVertical: 32 }}>
-        <TouchableOpacity onPress={() => navigation.push("CreateAccount")}>
-          <Text
-            style={{
-              textDecorationLine: "underline",
-              fontSize: 16,
-              color: "#3D2400",
-            }}
-          >
-            Need to Create an Account?
-          </Text>
-        </TouchableOpacity>
+        <View style={{ marginVertical: 24 }}>
+          <TouchableOpacity onPress={() => navigation.push("CreateAccount")}>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                fontSize: 16,
+                color: "#3D2400",
+              }}
+            >
+              Need to Create an Account?
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
