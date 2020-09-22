@@ -16,8 +16,16 @@ export default function App() {
   return (
     <LoadAssets {...{ fonts }}>
       <Stack.Navigator>
-        <Stack.Screen name="CreateAccount" component={CreateAccountPage} />
-        <Stack.Screen name="Login" component={LoginPage} />
+        <Stack.Screen
+          name="Login"
+          component={LoginPage}
+          options={{ title: "", headerTransparent: true }}
+        />
+        <Stack.Screen
+          name="CreateAccount"
+          component={CreateAccountPage}
+          options={{ title: "", headerTransparent: true }}
+        />
       </Stack.Navigator>
     </LoadAssets>
   );
