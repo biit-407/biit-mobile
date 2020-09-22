@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
+import { Input, Button, BottomSheet, ListItem } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
+import * as ImagePicker from "expo-image-picker";
 
 import {
   CreateProfilePageRouteProp,
   CreateProfilePageNavigationProp,
 } from "../../routes";
-import { Input, Button } from "react-native-elements";
-import { useNavigation } from "@react-navigation/native";
 
 type CreateProfilePageProps = {
   route: CreateProfilePageRouteProp;
@@ -47,6 +52,50 @@ export const CreateProfilePageOptions = {
 };
 
 export default function CreateAccountPage({}: CreateProfilePageProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const list = [
+    {
+      title: "Camera",
+      icon: <Icon name="camera" size={16} color="gray" />,
+      onPress: async () => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status === ImagePicker.PermissionStatus.GRANTED) {
+          let result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+        }
+        setIsVisible(false);
+      },
+    },
+    {
+      title: "Gallery",
+      icon: <Icon name="image" size={16} color="gray" />,
+      onPress: async () => {
+        const {
+          status,
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status === ImagePicker.PermissionStatus.GRANTED) {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+        }
+        setIsVisible(false);
+      },
+    },
+    {
+      title: "Cancel",
+      icon: <Icon name="remove" size={16} color="white" />,
+      containerStyle: { backgroundColor: "red" },
+      titleStyle: { color: "white" },
+      onPress: () => setIsVisible(false),
+    },
+  ];
   return (
     <View
       style={{
@@ -94,8 +143,28 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
           title="Select Profile Picture"
           buttonStyle={{ backgroundColor: "#B88953" }}
           titleStyle={{ color: "#F2DBB9" }}
+          onPress={async () => {
+            setIsVisible(true);
+          }}
         />
       </ScrollView>
+      <BottomSheet
+        isVisible={isVisible}
+        modalProps={{ presentationStyle: "overFullScreen" }}
+      >
+        {list.map((l, i) => (
+          <ListItem
+            containerStyle={l.containerStyle}
+            onPress={l.onPress}
+            key={i}
+          >
+            {l.icon}
+            <ListItem.Content>
+              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </BottomSheet>
     </View>
   );
 }
