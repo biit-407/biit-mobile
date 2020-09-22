@@ -99,7 +99,7 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
       onPress: () =>
         selectImage(
           ImagePicker.requestCameraRollPermissionsAsync,
-          ImagePicker.launchCameraAsync
+          ImagePicker.launchImageLibraryAsync
         ),
     },
     {
@@ -118,6 +118,7 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
       titleStyle: { color: "white" },
     },
   ];
+  const lastNameTextInput = React.createRef<Input>();
 
   return (
     <View
@@ -151,6 +152,10 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
           inputContainerStyle={{ borderBottomColor: "#B88953" }}
           label="First Name"
           labelStyle={{ color: "#B88953" }}
+          returnKeyType="next"
+          onSubmitEditing={() =>
+            lastNameTextInput.current && lastNameTextInput.current.focus()
+          }
         />
         <Input
           containerStyle={{ width: "80%" }}
@@ -161,6 +166,7 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
           inputContainerStyle={{ borderBottomColor: "#B88953" }}
           label="Last Name"
           labelStyle={{ color: "#B88953" }}
+          ref={lastNameTextInput}
         />
         {profileImageURL !== "" && (
           <Image
