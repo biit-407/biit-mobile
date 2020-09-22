@@ -66,7 +66,9 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   quality: 1,
 };
 
-export default function CreateAccountPage({}: CreateProfilePageProps) {
+export default function CreateAccountPage({
+  navigation,
+}: CreateProfilePageProps) {
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   const [profileImageURL, setProfileImageURL] = useState("");
   const selectImage = async (
@@ -134,6 +136,7 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
       <ScrollView
         style={{
           width: "100%",
+          flexGrow: 1,
         }}
         contentContainerStyle={{ display: "flex", alignItems: "center" }}
       >
@@ -190,6 +193,19 @@ export default function CreateAccountPage({}: CreateProfilePageProps) {
           }}
         />
       </ScrollView>
+      <View style={{ marginVertical: 16 }}>
+        <Button
+          title="Submit Profile"
+          buttonStyle={{ backgroundColor: "#B88953" }}
+          titleStyle={{ color: "#F2DBB9" }}
+          onPress={() => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: "Login" }],
+            });
+          }}
+        />
+      </View>
       <BottomSheet
         isVisible={isBottomSheetVisible}
         modalProps={{ onRequestClose: () => setBottomSheetVisible(false) }}
