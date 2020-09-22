@@ -12,7 +12,9 @@ type CreateAccountPageProps = {
   navigation: CreateAccountPageNavigationProp;
 };
 
-export default function CreateAccountPage({}: CreateAccountPageProps) {
+export default function CreateAccountPage({
+  navigation,
+}: CreateAccountPageProps) {
   return (
     <View
       style={{
@@ -36,6 +38,12 @@ export default function CreateAccountPage({}: CreateAccountPageProps) {
             style={{ marginEnd: 12 }}
           />
         }
+        onPress={() => {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "CreateProfile" }],
+          });
+        }}
       />
     </View>
   );

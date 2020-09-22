@@ -5,6 +5,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LoadAssets } from "./src/components";
 import LoginPage from "./src/components/authentication/LoginPage";
 import CreateAccountPage from "./src/components/authentication/CreateAccountPage";
+import CreateProfilePage, {
+  CreateProfilePageOptions,
+} from "./src/components/authentication/CreateProfilePage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -25,6 +28,11 @@ export default function App() {
           name="CreateAccount"
           component={CreateAccountPage}
           options={{ title: "", headerTransparent: true }}
+        />
+        <Stack.Screen
+          name="CreateProfile"
+          component={CreateProfilePage}
+          options={CreateProfilePageOptions}
         />
       </Stack.Navigator>
     </LoadAssets>
