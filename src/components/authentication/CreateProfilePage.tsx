@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, ScrollView, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
 import { Input, BottomSheet, ListItem, Image } from "react-native-elements";
@@ -24,17 +24,18 @@ type CreateProfilePageProps = {
 const SkipButton = () => {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Login" }],
-        });
-      }}
-      style={{ marginEnd: 24 }}
-    >
-      <Text variant="link">Skip</Text>
-    </TouchableOpacity>
+    <Box me="lg">
+      <TouchableOpacity
+        onPress={() => {
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "Login" }],
+          });
+        }}
+      >
+        <Text variant="link">Skip</Text>
+      </TouchableOpacity>
+    </Box>
   );
 };
 
@@ -55,6 +56,19 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   aspect: [1, 1],
   quality: 1,
 };
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  form: {
+    width: "100%",
+    flexGrow: 1,
+  },
+});
 
 export default function CreateAccountPage({
   navigation,
@@ -117,19 +131,10 @@ export default function CreateAccountPage({
   return (
     <Box
       backgroundColor="mainBackground"
-      style={{
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        paddingTop: useHeaderHeight(),
-      }}
+      style={{ ...styles.root, paddingTop: useHeaderHeight() }}
     >
       <ScrollView
-        style={{
-          width: "100%",
-          flexGrow: 1,
-        }}
+        style={styles.form}
         contentContainerStyle={{ display: "flex", alignItems: "center" }}
       >
         <Text variant="header">Setup your profile</Text>
@@ -169,7 +174,7 @@ export default function CreateAccountPage({
           }}
         />
       </ScrollView>
-      <View style={{ marginVertical: 16 }}>
+      <Box marginVertical="md">
         <ThemedButton
           title="Submit Profile"
           onPress={() => {
@@ -179,7 +184,7 @@ export default function CreateAccountPage({
             });
           }}
         />
-      </View>
+      </Box>
       <BottomSheet
         isVisible={isBottomSheetVisible}
         modalProps={{ onRequestClose: () => setBottomSheetVisible(false) }}

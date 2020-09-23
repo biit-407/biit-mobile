@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, StyleSheet } from "react-native";
 
 import {
   CreateAccountPageRouteProp,
@@ -14,19 +14,20 @@ type CreateAccountPageProps = {
   navigation: CreateAccountPageNavigationProp;
 };
 
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
 export default function CreateAccountPage({
   navigation,
 }: CreateAccountPageProps) {
   return (
-    <Box
-      backgroundColor="mainBackground"
-      style={{
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <Box backgroundColor="mainBackground" style={styles.root}>
       <Image source={require("../../../assets/logo_200px.png")} />
       <Text variant="header">Create your account</Text>
       <Text variant="body" mb="xl">
