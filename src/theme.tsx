@@ -17,16 +17,21 @@ const theme = createTheme({
   colors: {
     mainBackground: palette.tanLight,
     mainForeground: palette.tanDark,
+
+    primaryText: palette.brownDark,
+
     cardPrimaryBackground: palette.tanPrimary,
     buttonPrimaryBackground: palette.tanDark,
     buttonPrimaryText: palette.tanLight,
-    primaryText: palette.brownDark,
+    textInputDefault: palette.brownLight,
   },
   spacing: {
-    s: 8,
-    m: 16,
-    l: 24,
-    xl: 40,
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+    xxl: 40,
   },
   breakpoints: {
     phone: 0,

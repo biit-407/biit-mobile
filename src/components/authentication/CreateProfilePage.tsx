@@ -2,23 +2,19 @@ import React, { useState } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
-import {
-  Input,
-  Button,
-  BottomSheet,
-  ListItem,
-  Image,
-} from "react-native-elements";
+import { Input, BottomSheet, ListItem, Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import { createBox, createText } from "@shopify/restyle";
 
-import { Theme } from "../../theme";
 import {
   CreateProfilePageRouteProp,
   CreateProfilePageNavigationProp,
 } from "../../routes";
+import Text from "../themed/Text";
+import Box from "../themed/Box";
+import ThemedButton from "../themed/ThemedButton";
+import ThemedInput from "../themed/ThemedInput";
 
 type CreateProfilePageProps = {
   route: CreateProfilePageRouteProp;
@@ -59,9 +55,6 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   aspect: [1, 1],
   quality: 1,
 };
-
-const Box = createBox<Theme>();
-const Text = createText<Theme>();
 
 export default function CreateAccountPage({
   navigation,
@@ -143,29 +136,17 @@ export default function CreateAccountPage({
         <Text variant="body" style={{ marginBottom: 32 }}>
           Take a minute to customize your profile
         </Text>
-        <Input
-          containerStyle={{ width: "80%" }}
+        <ThemedInput
           placeholder="John"
-          placeholderTextColor="#B88953"
-          selectionColor="#B88953"
-          inputStyle={{ color: "#3D2400" }}
-          inputContainerStyle={{ borderBottomColor: "#B88953" }}
           label="First Name"
-          labelStyle={{ color: "#B88953" }}
           returnKeyType="next"
           onSubmitEditing={() =>
             lastNameTextInput.current && lastNameTextInput.current.focus()
           }
         />
-        <Input
-          containerStyle={{ width: "80%" }}
+        <ThemedInput
           placeholder="Smith"
-          placeholderTextColor="#B88953"
-          selectionColor="#B88953"
-          inputStyle={{ color: "#3D2400" }}
-          inputContainerStyle={{ borderBottomColor: "#B88953" }}
           label="Last Name"
-          labelStyle={{ color: "#B88953" }}
           ref={lastNameTextInput}
         />
         {profileImageURL !== "" && (
@@ -181,20 +162,16 @@ export default function CreateAccountPage({
             }}
           />
         )}
-        <Button
+        <ThemedButton
           title="Select Profile Picture"
-          buttonStyle={{ backgroundColor: "#B88953" }}
-          titleStyle={{ color: "#F2DBB9" }}
           onPress={async () => {
             setBottomSheetVisible(true);
           }}
         />
       </ScrollView>
       <View style={{ marginVertical: 16 }}>
-        <Button
+        <ThemedButton
           title="Submit Profile"
-          buttonStyle={{ backgroundColor: "#B88953" }}
-          titleStyle={{ color: "#F2DBB9" }}
           onPress={() => {
             navigation.reset({
               index: 0,
