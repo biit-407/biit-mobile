@@ -7,6 +7,7 @@ type MicrosoftButtonProps = {
   onPress?: () => void;
 };
 
+// A reusable button used for Microsoft Login
 export default function MicrosoftButton({
   title,
   onPress,

@@ -2,17 +2,26 @@ import React from "react";
 import { Image, StyleSheet } from "react-native";
 
 import {
-  CreateAccountPageRouteProp,
   CreateAccountPageNavigationProp,
+  CreateAccountPageRouteProp,
 } from "../../routes";
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";
 import Text from "../themed/Text";
 
+// React Navigation Types and Page Options
+
 type CreateAccountPageProps = {
-  route: CreateAccountPageRouteProp;
   navigation: CreateAccountPageNavigationProp;
+  route: CreateAccountPageRouteProp;
 };
+
+export const CreateAccountPageOptions = {
+  title: "",
+  headerTransparent: true,
+};
+
+// Page Styles
 
 const styles = StyleSheet.create({
   root: {
@@ -23,9 +32,17 @@ const styles = StyleSheet.create({
   },
 });
 
+// Page Definition
+
 export default function CreateAccountPage({
   navigation,
 }: CreateAccountPageProps) {
+  const createAccount = () =>
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "CreateProfile" }],
+    });
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Image source={require("../../../assets/logo_200px.png")} />
@@ -35,12 +52,7 @@ export default function CreateAccountPage({
       </Text>
       <MicrosoftButton
         title="Create Account with Microsoft"
-        onPress={() => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "CreateProfile" }],
-          });
-        }}
+        onPress={createAccount}
       />
     </Box>
   );

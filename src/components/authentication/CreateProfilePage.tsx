@@ -16,6 +16,8 @@ import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 
+// React Navigation Types and Page Options
+
 type CreateProfilePageProps = {
   route: CreateProfilePageRouteProp;
   navigation: CreateProfilePageNavigationProp;
@@ -45,17 +47,7 @@ export const CreateProfilePageOptions = {
   headerRight: () => <SkipButton />,
 };
 
-type PermissionMethod = () => Promise<ImagePicker.PermissionResponse>;
-type SelectionMethod = (
-  options?: ImagePicker.ImagePickerOptions | undefined
-) => Promise<ImagePicker.ImagePickerResult>;
-
-const imagePickerOptions: ImagePicker.ImagePickerOptions = {
-  mediaTypes: ImagePicker.MediaTypeOptions.Images,
-  allowsEditing: true,
-  aspect: [1, 1],
-  quality: 1,
-};
+// Page Styles
 
 const styles = StyleSheet.create({
   root: {
@@ -69,6 +61,20 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
 });
+
+// Generic Image Selection
+
+type PermissionMethod = () => Promise<ImagePicker.PermissionResponse>;
+type SelectionMethod = (
+  options?: ImagePicker.ImagePickerOptions | undefined
+) => Promise<ImagePicker.ImagePickerResult>;
+
+const imagePickerOptions: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsEditing: true,
+  aspect: [1, 1],
+  quality: 1,
+};
 
 export default function CreateAccountPage({
   navigation,

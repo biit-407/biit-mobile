@@ -11,6 +11,7 @@ type ThemedInputProps = {
   onSubmitEditing?: () => void;
 };
 
+// A reusable themed input
 const ThemedInput = React.forwardRef<Input, ThemedInputProps>(
   (
     { label, placeholder, returnKeyType, onSubmitEditing }: ThemedInputProps,
@@ -19,19 +20,19 @@ const ThemedInput = React.forwardRef<Input, ThemedInputProps>(
     const theme = useTheme<Theme>();
     return (
       <Input
-        containerStyle={{ width: "80%" }}
+        ref={ref}
+        label={label}
+        labelStyle={{ color: theme.colors.textInputDefault }}
         placeholder={placeholder}
         placeholderTextColor={theme.colors.textInputDefault}
-        selectionColor={theme.colors.textInputDefault}
         inputStyle={{ color: "#3D2400" }}
         inputContainerStyle={{
           borderBottomColor: theme.colors.textInputDefault,
         }}
-        label={label}
-        labelStyle={{ color: theme.colors.textInputDefault }}
+        containerStyle={{ width: "80%" }}
+        selectionColor={theme.colors.textInputDefault}
         returnKeyType={returnKeyType}
         onSubmitEditing={onSubmitEditing}
-        ref={ref}
       />
     );
   }

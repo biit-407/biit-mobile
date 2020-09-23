@@ -9,6 +9,7 @@ type ThemedButtonProps = {
   onPress: () => void;
 };
 
+// A reusable themed button
 export default function ThemedButton({ onPress, title }: ThemedButtonProps) {
   const theme = useTheme<Theme>();
   return (

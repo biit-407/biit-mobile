@@ -3,8 +3,12 @@ import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { LoadAssets } from "./src/components";
-import LoginPage from "./src/components/authentication/LoginPage";
-import CreateAccountPage from "./src/components/authentication/CreateAccountPage";
+import LoginPage, {
+  LoginPageOptions,
+} from "./src/components/authentication/LoginPage";
+import CreateAccountPage, {
+  CreateAccountPageOptions,
+} from "./src/components/authentication/CreateAccountPage";
 import CreateProfilePage, {
   CreateProfilePageOptions,
 } from "./src/components/authentication/CreateProfilePage";
@@ -22,12 +26,12 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={LoginPage}
-          options={{ title: "", headerTransparent: true }}
+          options={LoginPageOptions}
         />
         <Stack.Screen
           name="CreateAccount"
           component={CreateAccountPage}
-          options={{ title: "", headerTransparent: true }}
+          options={CreateAccountPageOptions}
         />
         <Stack.Screen
           name="CreateProfile"

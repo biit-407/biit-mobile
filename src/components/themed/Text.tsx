@@ -1,4 +1,4 @@
-// Necessary boilerplate to allow themeable text
+// Replacement for Text to allow for easy theming
 import { createText } from "@shopify/restyle";
 
 import { Theme } from "../../theme";

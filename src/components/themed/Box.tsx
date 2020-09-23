@@ -1,4 +1,4 @@
-// Replacement for View to allow for theming
+// Replacement for View to allow for easy theming
 import { createBox } from "@shopify/restyle";
 
 import { Theme } from "../../theme";
