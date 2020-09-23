@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
 import {
@@ -12,7 +12,9 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
+import { createBox, createText } from "@shopify/restyle";
 
+import { Theme } from "../../theme";
 import {
   CreateProfilePageRouteProp,
   CreateProfilePageNavigationProp,
@@ -35,15 +37,7 @@ const SkipButton = () => {
       }}
       style={{ marginEnd: 24 }}
     >
-      <Text
-        style={{
-          color: "#3D2400",
-          textDecorationLine: "underline",
-          fontSize: 16,
-        }}
-      >
-        Skip
-      </Text>
+      <Text variant="link">Skip</Text>
     </TouchableOpacity>
   );
 };
@@ -65,6 +59,9 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   aspect: [1, 1],
   quality: 1,
 };
+
+const Box = createBox<Theme>();
+const Text = createText<Theme>();
 
 export default function CreateAccountPage({
   navigation,
@@ -125,13 +122,13 @@ export default function CreateAccountPage({
   const lastNameTextInput = React.createRef<Input>();
 
   return (
-    <View
+    <Box
+      backgroundColor="mainBackground"
       style={{
         flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
         alignItems: "center",
-        backgroundColor: "#FFE8C6",
         paddingTop: useHeaderHeight(),
       }}
     >
@@ -142,10 +139,8 @@ export default function CreateAccountPage({
         }}
         contentContainerStyle={{ display: "flex", alignItems: "center" }}
       >
-        <Text style={{ fontSize: 24, fontWeight: "bold", color: "#3D2400" }}>
-          Setup your profile
-        </Text>
-        <Text style={{ fontSize: 16, marginBottom: 32, color: "#3D2400" }}>
+        <Text variant="header">Setup your profile</Text>
+        <Text variant="body" style={{ marginBottom: 32 }}>
           Take a minute to customize your profile
         </Text>
         <Input
@@ -227,6 +222,6 @@ export default function CreateAccountPage({
           </ListItem>
         ))}
       </BottomSheet>
-    </View>
+    </Box>
   );
 }

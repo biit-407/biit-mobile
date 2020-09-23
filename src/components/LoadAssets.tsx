@@ -27,6 +27,9 @@ import * as Font from "expo-font";
 import Constants from "expo-constants";
 import { Asset } from "expo-asset";
 import { InitialState, NavigationContainer } from "@react-navigation/native";
+import { ThemeProvider } from "@shopify/restyle";
+
+import theme from "../theme";
 
 const NAVIGATION_STATE_KEY = `NAVIGATION_STATE_KEY-${Constants.manifest.sdkVersion}`;
 
@@ -91,7 +94,7 @@ const LoadAssets = ({ assets, fonts, children }: LoadAssetsProps) => {
 
   return (
     <NavigationContainer {...{ onStateChange, initialState }}>
-      {children}
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </NavigationContainer>
   );
 };

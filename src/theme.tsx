@@ -16,7 +16,11 @@ const palette = {
 const theme = createTheme({
   colors: {
     mainBackground: palette.tanLight,
+    mainForeground: palette.tanDark,
     cardPrimaryBackground: palette.tanPrimary,
+    buttonPrimaryBackground: palette.tanDark,
+    buttonPrimaryText: palette.tanLight,
+    primaryText: palette.brownDark,
   },
   spacing: {
     s: 8,
@@ -27,6 +31,27 @@ const theme = createTheme({
   breakpoints: {
     phone: 0,
     tablet: 768,
+  },
+  textVariants: {
+    header: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "primaryText",
+    },
+    subheader: {
+      fontWeight: "600",
+      fontSize: 18,
+      color: "primaryText",
+    },
+    body: {
+      fontSize: 16,
+      color: "primaryText",
+    },
+    link: {
+      textDecorationLine: "underline",
+      fontSize: 16,
+      color: "primaryText",
+    },
   },
 });
 
