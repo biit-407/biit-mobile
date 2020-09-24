@@ -23,6 +23,7 @@ type CreateProfilePageProps = {
   navigation: CreateProfilePageNavigationProp;
 };
 
+// Note: Needed to create this as a its own component to access navigation in the header
 const SkipButton = () => {
   const navigation = useNavigation();
   return (
@@ -64,11 +65,14 @@ const styles = StyleSheet.create({
 
 // Generic Image Selection
 
+// Since there are two types of permissions and ways to select images (but the rest of the code is the same)
+// I created a way to generify the approach by allowing the permission method and image selection as function args
 type PermissionMethod = () => Promise<ImagePicker.PermissionResponse>;
 type SelectionMethod = (
   options?: ImagePicker.ImagePickerOptions | undefined
 ) => Promise<ImagePicker.ImagePickerResult>;
 
+// Options to be used for selecting the image, currently is 1:1 and allows cropping
 const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   mediaTypes: ImagePicker.MediaTypeOptions.Images,
   allowsEditing: true,
@@ -79,9 +83,12 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
 export default function CreateAccountPage({
   navigation,
 }: CreateProfilePageProps) {
+  // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+  // Hook used to store local image url for profile image
   const [profileImageURL, setProfileImageURL] = useState("");
-
+  // Generic method that allows user to select an image from the gallery/camera after requesting permissions
+  // TODO: Add dialog/alert if user denies permission
   const selectImage = async (
     permissionMethod: PermissionMethod,
     selectionMethod: SelectionMethod
@@ -96,6 +103,8 @@ export default function CreateAccountPage({
     setBottomSheetVisible(false);
   };
 
+  // Array that holds the 'data' to use for the bottomsheet options
+  // It is in this scope since it needs access to the bottomsheet hooks
   const bottomSheetOptions = [
     {
       title: "Camera",
@@ -132,6 +141,7 @@ export default function CreateAccountPage({
     },
   ];
 
+  // Ref to allow jumping from TextInput to TextInput when pressing DONE key
   const lastNameTextInput = React.createRef<Input>();
 
   return (
