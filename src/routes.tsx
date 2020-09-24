@@ -5,6 +5,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 type RootStackParamList = {
   Login: undefined;
   CreateAccount: undefined;
+  CreateProfile: undefined;
 };
 
 // Login Page Types
@@ -22,6 +23,17 @@ export type CreateAccountPageRouteProp = RouteProp<
 >;
 
 export type CreateAccountPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CreateAccount"
+>;
+
+// Create Profile Page Types
+export type CreateProfilePageRouteProp = RouteProp<
+  RootStackParamList,
+  "CreateAccount"
+>;
+
+export type CreateProfilePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CreateAccount"
 >;

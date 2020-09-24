@@ -3,8 +3,15 @@ import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import { LoadAssets } from "./src/components";
-import LoginPage from "./src/components/authentication/LoginPage";
-import CreateAccountPage from "./src/components/authentication/CreateAccountPage";
+import LoginPage, {
+  LoginPageOptions,
+} from "./src/components/authentication/LoginPage";
+import CreateAccountPage, {
+  CreateAccountPageOptions,
+} from "./src/components/authentication/CreateAccountPage";
+import CreateProfilePage, {
+  CreateProfilePageOptions,
+} from "./src/components/authentication/CreateProfilePage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -16,8 +23,21 @@ export default function App() {
   return (
     <LoadAssets {...{ fonts }}>
       <Stack.Navigator>
-        <Stack.Screen name="CreateAccount" component={CreateAccountPage} />
-        <Stack.Screen name="Login" component={LoginPage} />
+        <Stack.Screen
+          name="Login"
+          component={LoginPage}
+          options={LoginPageOptions}
+        />
+        <Stack.Screen
+          name="CreateAccount"
+          component={CreateAccountPage}
+          options={CreateAccountPageOptions}
+        />
+        <Stack.Screen
+          name="CreateProfile"
+          component={CreateProfilePage}
+          options={CreateProfilePageOptions}
+        />
       </Stack.Navigator>
     </LoadAssets>
   );

@@ -1,21 +1,51 @@
 import React from "react";
-import { Button, Text, View } from "react-native";
+import { Image, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { LoginPageRouteProp, LoginPageNavigationProp } from "../../routes";
+import { LoginPageNavigationProp, LoginPageRouteProp } from "../../routes";
+import Box from "../themed/Box";
+import MicrosoftButton from "../themed/MicrosoftButton";
+import Text from "../themed/Text";
+
+// React Navigation Types and Page Options
 
 type LoginPageProps = {
-  route: LoginPageRouteProp;
   navigation: LoginPageNavigationProp;
+  route: LoginPageRouteProp;
 };
+
+export const LoginPageOptions = {
+  title: "",
+  headerTransparent: true,
+};
+
+// Page Styles
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+// Page Definition
 
 export default function LoginPage({ navigation }: LoginPageProps) {
   return (
-    <View>
-      <Text>Hello World</Text>
-      <Button
-        title="Create Account"
-        onPress={() => navigation.push("CreateAccount")}
-      />
-    </View>
+    <Box backgroundColor="mainBackground" style={styles.root}>
+      <Image source={require("../../../assets/logo_200px.png")} />
+      <Text variant="header">Welcome to biit</Text>
+      <Text variant="body" mb="xl">
+        Login and get started!
+      </Text>
+      <MicrosoftButton title="Sign in with Microsoft" />
+      <Box marginVertical="lg">
+        <TouchableOpacity onPress={() => navigation.push("CreateAccount")}>
+          <Text variant="link">Need to Create an Account?</Text>
+        </TouchableOpacity>
+      </Box>
+    </Box>
   );
 }
