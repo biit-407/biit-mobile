@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { Dimensions, ScrollView, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
-import { Input, BottomSheet, ListItem, Image } from "react-native-elements";
+import {
+  Input,
+  BottomSheet,
+  ListItem,
+  Image,
+  Avatar,
+} from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -15,6 +21,7 @@ import Text from "../themed/Text";
 import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
+import ThemedAvatar from "../themed/ThemedAvatar";
 
 // React Navigation Types and Page Options
 
@@ -171,17 +178,9 @@ export default function CreateAccountPage({
           ref={lastNameTextInput}
         />
         {profileImageURL !== "" && (
-          <Image
-            source={{ uri: profileImageURL }}
-            style={{
-              width: Dimensions.get("window").width * 0.5,
-              aspectRatio: 1,
-              borderRadius: 100,
-              borderColor: "#B88953",
-              borderWidth: 3,
-              marginVertical: 8,
-            }}
-          />
+          <Box marginVertical="md">
+            <ThemedAvatar size="xlarge" uri={profileImageURL} />
+          </Box>
         )}
         <ThemedButton
           title="Select Profile Picture"

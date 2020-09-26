@@ -20,7 +20,7 @@ const theme = createTheme({
     drawerBackground: palette.brownDark,
 
     primaryText: palette.brownDark,
-
+    borderPrimary: palette.brownLight,
     cardPrimaryBackground: palette.tanPrimary,
     buttonPrimaryBackground: palette.tanDark,
     buttonPrimaryText: palette.tanLight,
