@@ -1,7 +1,6 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
-import { Icon } from "react-native-elements";
+import { StyleSheet } from "react-native";
 
 import {
   ViewProfilePageNavigationProp,
@@ -10,7 +9,6 @@ import {
 import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
-import ThemedButton from "../themed/ThemedButton";
 
 // React Navigation Types and Page Options
 
@@ -45,19 +43,13 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
           size="xlarge"
           edit={true}
           onEdit={() => {
-            Alert.alert("Hello World");
+            navigation.push("EditProfile");
           }}
         />
       </Box>
       <Text marginBottom="md" variant="header">
         Dummy Text
       </Text>
-      <ThemedButton
-        title="Press ME"
-        onPress={() =>
-          navigation.reset({ index: 0, routes: [{ name: "Login" }] })
-        }
-      />
     </Box>
   );
 }

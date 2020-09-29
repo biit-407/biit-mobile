@@ -18,6 +18,7 @@ export default function ThemedButton({ onPress, title }: ThemedButtonProps) {
       onPress={onPress}
       buttonStyle={{ backgroundColor: theme.colors.buttonPrimaryBackground }}
       titleStyle={{ color: theme.colors.buttonPrimaryText }}
+      raised
     />
   );
 }

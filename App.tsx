@@ -15,6 +15,9 @@ import CreateProfilePage, {
 import ViewProfilePage, {
   ViewProfilePageOptions,
 } from "./src/components/authentication/ViewProfilePage";
+import EditProfilePage, {
+  EditProfilePageOptions,
+} from "./src/components/authentication/EditProfilePage";
 import theme from "./src/theme";
 
 const fonts = {
@@ -53,6 +56,11 @@ export default function App() {
           name="ViewProfile"
           component={ViewProfilePage}
           options={ViewProfilePageOptions}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfilePage}
+          options={EditProfilePageOptions}
         />
       </Stack.Navigator>
     </LoadAssets>
