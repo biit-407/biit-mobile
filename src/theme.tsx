@@ -18,13 +18,14 @@ const theme = createTheme({
     mainBackground: palette.tanLight,
     mainForeground: palette.tanDark,
     drawerBackground: palette.brownDark,
-
+    headerBackground: palette.tanDark,
     primaryText: palette.brownDark,
     borderPrimary: palette.brownLight,
     cardPrimaryBackground: palette.tanPrimary,
     buttonPrimaryBackground: palette.tanDark,
     buttonPrimaryText: palette.tanLight,
     textInputDefault: palette.brownLight,
+    secondaryText: palette.white,
   },
   spacing: {
     xs: 4,

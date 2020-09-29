@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import { Dimensions, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
-import {
-  Input,
-  BottomSheet,
-  ListItem,
-  Image,
-  Avatar,
-} from "react-native-elements";
+import { Input, BottomSheet, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -37,10 +31,11 @@ const SkipButton = () => {
     <Box me="lg">
       <TouchableOpacity
         onPress={() => {
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Login" }],
-          });
+          // navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: "ViewProfile" }],
+          // });
+          navigation.navigate("ViewProfile");
         }}
       >
         <Text variant="link">Skip</Text>
