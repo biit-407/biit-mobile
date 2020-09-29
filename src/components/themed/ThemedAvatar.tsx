@@ -1,14 +1,11 @@
 import React from "react";
 import { useTheme } from "@shopify/restyle";
 import { Avatar, AvatarProps, Icon } from "react-native-elements";
+import { View } from "react-native";
 
 import { Theme } from "../../theme";
-import { View } from "react-native";
+
 import Box from "./Box";
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
 
 type ThemedAvatarProps = {
   uri: string;
@@ -51,6 +48,7 @@ export default function ThemedAvatar({
             reverseColor={theme.colors.buttonPrimaryBackground}
             color={theme.colors.iconPrimary}
             onPress={() => onEdit && onEdit()}
+            raised
           />
         </View>
       )}

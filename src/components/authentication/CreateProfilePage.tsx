@@ -183,6 +183,7 @@ export default function CreateAccountPage({
             setBottomSheetVisible(true);
           }}
         />
+        <Box marginVertical="xs" />
       </ScrollView>
       <Box marginVertical="md">
         <ThemedButton

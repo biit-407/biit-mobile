@@ -9,6 +9,7 @@ import {
 import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
+import ThemedCard from "../themed/ThemedCard";
 
 // React Navigation Types and Page Options
 
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <Box marginVertical="md">
+      <ThemedCard>
         <ThemedAvatar
           uri="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
           size="xlarge"
@@ -46,10 +47,10 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
             navigation.push("EditProfile");
           }}
         />
-      </Box>
-      <Text marginBottom="md" variant="header">
-        Dummy Text
-      </Text>
+        <Text marginBottom="md" variant="header">
+          John Smith
+        </Text>
+      </ThemedCard>
     </Box>
   );
 }
