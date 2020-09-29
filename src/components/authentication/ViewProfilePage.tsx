@@ -1,6 +1,7 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
+import { Icon } from "react-native-elements";
 
 import {
   ViewProfilePageNavigationProp,
@@ -42,6 +43,10 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
         <ThemedAvatar
           uri="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
           size="xlarge"
+          edit={true}
+          onEdit={() => {
+            Alert.alert("Hello World");
+          }}
         />
       </Box>
       <Text marginBottom="md" variant="header">

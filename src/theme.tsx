@@ -26,6 +26,7 @@ const theme = createTheme({
     buttonPrimaryText: palette.tanLight,
     textInputDefault: palette.brownLight,
     secondaryText: palette.white,
+    iconPrimary: palette.brownPrimary,
   },
   spacing: {
     xs: 4,
