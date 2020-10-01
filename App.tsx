@@ -12,6 +12,13 @@ import CreateAccountPage, {
 import CreateProfilePage, {
   CreateProfilePageOptions,
 } from "./src/components/authentication/CreateProfilePage";
+import ViewProfilePage, {
+  ViewProfilePageOptions,
+} from "./src/components/authentication/ViewProfilePage";
+import EditProfilePage, {
+  EditProfilePageOptions,
+} from "./src/components/authentication/EditProfilePage";
+import theme from "./src/theme";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -22,7 +29,14 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <LoadAssets {...{ fonts }}>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: theme.colors.headerBackground,
+          },
+          headerTintColor: theme.colors.primaryText,
+        }}
+      >
         <Stack.Screen
           name="Login"
           component={LoginPage}
@@ -37,6 +51,16 @@ export default function App() {
           name="CreateProfile"
           component={CreateProfilePage}
           options={CreateProfilePageOptions}
+        />
+        <Stack.Screen
+          name="ViewProfile"
+          component={ViewProfilePage}
+          options={ViewProfilePageOptions}
+        />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfilePage}
+          options={EditProfilePageOptions}
         />
       </Stack.Navigator>
     </LoadAssets>

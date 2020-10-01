@@ -1,69 +1,37 @@
-import React, { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useHeaderHeight } from "@react-navigation/stack";
-import { Input, BottomSheet, ListItem } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
+import {
+  HeaderBackButton,
+  StackHeaderLeftButtonProps,
+  StackNavigationOptions,
+} from "@react-navigation/stack";
+import React, { useState } from "react";
+import { Alert, StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { BottomSheet, Input, ListItem } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 import {
-  CreateProfilePageRouteProp,
-  CreateProfilePageNavigationProp,
+  EditProfilePageNavigationProp,
+  EditProfilePageRouteProp,
 } from "../../routes";
-import Text from "../themed/Text";
 import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
+import Text from "../themed/Text";
 import ThemedInput from "../themed/ThemedInput";
+import ThemedButton from "../themed/ThemedButton";
 import ThemedAvatar from "../themed/ThemedAvatar";
 
 // React Navigation Types and Page Options
 
-type CreateProfilePageProps = {
-  route: CreateProfilePageRouteProp;
-  navigation: CreateProfilePageNavigationProp;
+type EditProfilePageProps = {
+  navigation: EditProfilePageNavigationProp;
+  route: EditProfilePageRouteProp;
 };
 
-// Note: Needed to create this as a its own component to access navigation in the header
-const SkipButton = () => {
-  const navigation = useNavigation();
-  return (
-    <Box me="lg">
-      <TouchableOpacity
-        onPress={() => {
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: "ViewProfile" }],
-          // });
-          navigation.navigate("ViewProfile");
-        }}
-      >
-        <Text variant="link">Skip</Text>
-      </TouchableOpacity>
-    </Box>
-  );
+export const EditProfilePageOptions: StackNavigationOptions = {
+  title: "Edit Profile",
+  headerLeft: () => <EditBackButton />,
 };
-
-export const CreateProfilePageOptions = {
-  title: "",
-  headerTransparent: true,
-  headerRight: () => <SkipButton />,
-};
-
-// Page Styles
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  form: {
-    width: "100%",
-    flexGrow: 1,
-  },
-});
 
 // Generic Image Selection
 
@@ -82,9 +50,45 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   quality: 1,
 };
 
-export default function CreateAccountPage({
-  navigation,
-}: CreateProfilePageProps) {
+function EditBackButton({}: StackHeaderLeftButtonProps) {
+  const navigator = useNavigation();
+  return (
+    <HeaderBackButton
+      onPress={() =>
+        Alert.alert(
+          "Discard Changes?",
+          "Are you sure your go back and discard your changes?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            { text: "OK", onPress: navigator.goBack },
+          ]
+        )
+      }
+    />
+  );
+}
+
+// Page Styles
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
+  form: {
+    width: "100%",
+    flexGrow: 1,
+  },
+});
+
+// Page Definition
+
+export default function EditProfilePage({ navigation }: EditProfilePageProps) {
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   // Hook used to store local image url for profile image
@@ -147,17 +151,13 @@ export default function CreateAccountPage({
   const lastNameTextInput = React.createRef<Input>();
 
   return (
-    <Box
-      backgroundColor="mainBackground"
-      style={{ ...styles.root, paddingTop: useHeaderHeight() }}
-    >
+    <Box backgroundColor="mainBackground" pt="md" style={styles.root}>
       <ScrollView
         style={styles.form}
         contentContainerStyle={{ display: "flex", alignItems: "center" }}
       >
-        <Text variant="header">Setup your profile</Text>
-        <Text variant="body" style={{ marginBottom: 32 }}>
-          Take a minute to customize your profile
+        <Text variant="body" mb="lg">
+          Update and save your profile
         </Text>
         <ThemedInput
           placeholder="John"
@@ -187,7 +187,7 @@ export default function CreateAccountPage({
       </ScrollView>
       <Box marginVertical="md">
         <ThemedButton
-          title="Submit Profile"
+          title="Save Profile"
           onPress={() => {
             navigation.reset({
               index: 0,

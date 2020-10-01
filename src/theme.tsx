@@ -2,7 +2,7 @@ import { createTheme } from "@shopify/restyle";
 
 const palette = {
   tanLight: "#FFE8C6", // Page Background and Light Text Color
-  tanPrimary: "#FAD092 ", // Card Background Color
+  tanPrimary: "#FAD092", // Card Background Color
   tanDark: "#D8AD6D", // Header and Button Background Color
 
   brownLight: "#B88953", // Button Background and Light Icon Color
@@ -18,13 +18,16 @@ const theme = createTheme({
     mainBackground: palette.tanLight,
     mainForeground: palette.tanDark,
     drawerBackground: palette.brownDark,
-
+    headerBackground: palette.tanDark,
     primaryText: palette.brownDark,
-
-    cardPrimaryBackground: palette.tanPrimary,
+    borderPrimary: palette.brownLight,
+    cardBackground: palette.tanPrimary,
+    cardBorder: palette.brownDark,
     buttonPrimaryBackground: palette.tanDark,
-    buttonPrimaryText: palette.tanLight,
+    buttonPrimaryText: palette.white,
     textInputDefault: palette.brownLight,
+    secondaryText: palette.white,
+    iconPrimary: palette.brownPrimary,
   },
   spacing: {
     xs: 4,

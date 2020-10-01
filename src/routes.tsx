@@ -6,6 +6,8 @@ type RootStackParamList = {
   Login: undefined;
   CreateAccount: undefined;
   CreateProfile: undefined;
+  ViewProfile: undefined;
+  EditProfile: undefined;
 };
 
 // Login Page Types
@@ -36,4 +38,26 @@ export type CreateProfilePageRouteProp = RouteProp<
 export type CreateProfilePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CreateAccount"
+>;
+
+// View Profile Page Types
+export type ViewProfilePageRouteProp = RouteProp<
+  RootStackParamList,
+  "ViewProfile"
+>;
+
+export type ViewProfilePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ViewProfile"
+>;
+
+// View Profile Page Types
+export type EditProfilePageRouteProp = RouteProp<
+  RootStackParamList,
+  "EditProfile"
+>;
+
+export type EditProfilePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "EditProfile"
 >;
