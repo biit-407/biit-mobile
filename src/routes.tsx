@@ -8,6 +8,7 @@ type RootStackParamList = {
   CreateProfile: undefined;
   ViewProfile: undefined;
   EditProfile: undefined;
+  BannedUsers: undefined;
 };
 
 // Login Page Types
@@ -60,4 +61,15 @@ export type EditProfilePageRouteProp = RouteProp<
 export type EditProfilePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "EditProfile"
+>;
+
+// Banned Users Page Types
+export type BannedUsersPageRouteProp = RouteProp<
+  RootStackParamList,
+  "BannedUsers"
+>;
+
+export type BannedUsersPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "BannedUsers"
 >;

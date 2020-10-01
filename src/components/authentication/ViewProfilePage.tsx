@@ -1,6 +1,6 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 
 import {
   ViewProfilePageNavigationProp,
@@ -51,6 +51,12 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
           John Smith
         </Text>
       </ThemedCard>
+      <Button
+        title={"Test"}
+        onPress={() => {
+          navigation.push("BannedUsers");
+        }}
+      />
     </Box>
   );
 }

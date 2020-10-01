@@ -19,6 +19,9 @@ import EditProfilePage, {
   EditProfilePageOptions,
 } from "./src/components/authentication/EditProfilePage";
 import theme from "./src/theme";
+import BannedUsersPage, {
+  BannedUsersPageOptions,
+} from "./src/components/communities/BannedUsersPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -61,6 +64,11 @@ export default function App() {
           name="EditProfile"
           component={EditProfilePage}
           options={EditProfilePageOptions}
+        />
+        <Stack.Screen
+          name="BannedUsers"
+          component={BannedUsersPage}
+          options={BannedUsersPageOptions}
         />
       </Stack.Navigator>
     </LoadAssets>
