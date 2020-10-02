@@ -1,17 +1,15 @@
-import { useTheme } from "@shopify/restyle";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
-import { Icon, ListItem } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 
 import {
   BannedUsersPageNavigationProp,
   BannedUsersPageRouteProp,
 } from "../../routes";
-import { Theme } from "../../theme";
 import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedAvatar from "../themed/ThemedAvatar";
+import ThemedIcon from "../themed/ThemedIcon";
+import ThemedListItem from "../themed/ThemedListItem";
+import ThemedRefreshControl from "../themed/ThemedRefreshControl";
 
 // React Navigation Types and Page Options
 
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// Dummy info used for now
+// Dummy user info used for now
 
 type User = {
   id: number;
@@ -43,59 +41,88 @@ type User = {
   profileImage: string;
 };
 
-const dummyData: User[] = [];
-for (let i = 0; i <= 45; i++) {
-  dummyData.push({
-    id: i,
-    firstName: "John",
-    lastName: "Smith" + i,
-    profileImage:
-      "https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg",
-  });
-}
-
-console.log(dummyData);
+const showUnbanDialog = (
+  user: User,
+  onConfirm: (user: User) => void,
+  onCancel?: () => void
+) => {
+  const { firstName, lastName } = user;
+  Alert.alert(
+    `Unban ${firstName} ${lastName}?`,
+    `Are you sure you want to unban ${firstName} ${lastName} from this community?`,
+    [
+      {
+        text: "Cancel",
+        style: "cancel",
+        onPress: onCancel,
+      },
+      {
+        text: "OK",
+        onPress: () => onConfirm(user),
+      },
+    ]
+  );
+};
 
 // Page Definition
 
 export default function BannedUsersPage({}: BannedUsersPageProps) {
-  const theme = useTheme<Theme>();
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [bannedUsers, setBannedUsers] = useState<User[]>([]);
+  const unbanUser = (user: User) => {
+    bannedUsers.splice(bannedUsers.indexOf(user), 1);
+    setBannedUsers([...bannedUsers]);
+  };
+
+  const loadData = async () => {
+    setIsRefreshing(true);
+    // TODO: Fetch data from the backend to get updated users list
+    setTimeout(() => {
+      setBannedUsers([
+        ...bannedUsers,
+        {
+          id: Math.random() * 10000000,
+          firstName: "John",
+          lastName: "Smith" + bannedUsers.length,
+          profileImage:
+            "https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg",
+        },
+      ]);
+      setIsRefreshing(false);
+    }, 500);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <FlatList
-        data={dummyData}
+        data={bannedUsers}
         renderItem={({ item }) => (
-          <ListItem
-            bottomDivider
-            topDivider
-            containerStyle={{
-              backgroundColor: theme.colors.cardBackground,
-              borderColor: theme.colors.cardBorder,
-            }}
-          >
-            <ThemedAvatar size="small" uri={item.profileImage} />
-            <ListItem.Content>
-              <ListItem.Title>
-                <Text variant="listHeader">{`${item.firstName} ${item.lastName}`}</Text>
-              </ListItem.Title>
-            </ListItem.Content>
-            <Box mr="xs">
-              <Icon
-                size={24}
-                name="cross"
-                type="entypo"
-                color={theme.colors.iconPrimary}
-                onPress={() =>
-                  Alert.alert(
-                    `Unban ${item.firstName} ${item.lastName}?`,
-                    `Are you sure you want to unban ${item.firstName} ${item.lastName} from this community?`
-                  )
-                }
-              />
-            </Box>
-          </ListItem>
+          <ThemedListItem
+            avatarUri={item.profileImage}
+            title={`${item.firstName} ${item.lastName}`}
+            rightContent={
+              <Box mr="xs">
+                <ThemedIcon
+                  size={24}
+                  name="cross"
+                  type="entypo"
+                  onPress={() => showUnbanDialog(item, unbanUser)}
+                />
+              </Box>
+            }
+          />
         )}
         keyExtractor={(item: User) => item.id.toString()}
+        refreshControl={
+          <ThemedRefreshControl
+            onRefresh={loadData}
+            refreshing={isRefreshing}
+          />
+        }
       />
     </Box>
   );
