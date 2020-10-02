@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
+import { useAzureAuth, useAzureToken, useAzureUserInfo } from "../../hooks";
+import useAccount from "../../hooks/useAccount";
 
 import {
   CreateAccountPageNavigationProp,
@@ -37,11 +39,47 @@ const styles = StyleSheet.create({
 export default function CreateAccountPage({
   navigation,
 }: CreateAccountPageProps) {
-  const createAccount = () =>
+  const [/*request*/, response, promptAsync]: [any, any, any] = useAzureAuth();
+  const [setGrantToken, accessToken, /*refresh_token*/] = useAzureToken();
+  const [setAccessToken, userInfo]: [any, any] = useAzureUserInfo();
+  const [account, createAccount, loginAccount, logoutAccount, updateAccount, deleteAccount] = useAccount()
+
+  // NOTE: These chained useEffect calls may need to be replaced with a 
+  // state management library like redux or recoil
+  useEffect(() => {
+    if (response?.params?.code) {
+      setGrantToken(response?.params?.code)
+    }
+  }, [response])
+
+  useEffect(() => {
+    if (accessToken) {
+      setAccessToken(accessToken)
+    }
+  }, [accessToken])
+
+  useEffect(() => {
+    if (userInfo && accessToken) {
+      _createAccount(accessToken, userInfo.given_name, userInfo.family_name, userInfo.email)
+    }
+  }, [userInfo])
+
+  async function _createAccount(token: string, fname: string, lname: string, email: string) {
+    await createAccount({
+      fname: fname,
+      lname: lname,
+      email: email,
+      token: token
+    })
     navigation.reset({
       index: 0,
       routes: [{ name: "CreateProfile" }],
     });
+  }
+
+  function press() {
+    promptAsync({ useProxy: true });
+  }
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -52,7 +90,7 @@ export default function CreateAccountPage({
       </Text>
       <MicrosoftButton
         title="Create Account with Microsoft"
-        onPress={createAccount}
+        onPress={press}
       />
     </Box>
   );
