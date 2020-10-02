@@ -27,7 +27,7 @@ export interface AccountPOST {
     fname: string;
     lname: string;
     email: string;
-    refresh_token: string;
+    token: string;
 }
 
 /**
