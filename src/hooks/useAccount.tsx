@@ -8,10 +8,10 @@ import SecureStore from 'expo-secure-store'
  * functionality designated with it (REST API methods)
  * 
  */
-const useAccount = () => {
+const useAccount = (): [Account|null, (fields: AccountPOST) => Promise<void>, any, any, any, any] => {
     const [account, setAccount] = useState<Account | null>(null)
 
-    const _cacheAccount = async (cached_account: Account|null=null) => {
+    const _cacheAccount = async (cached_account: Account | null = null) => {
         await SecureStore.setItemAsync("biit-account", JSON.stringify(cached_account))
     }
 
@@ -29,7 +29,7 @@ const useAccount = () => {
         if (account === null) {
             _loadAccount()
         }
-        
+
         // we always update the internal storage with the most up to 
         // date information we have on the account. this includes an
         // account that is null or logged out 
@@ -43,11 +43,18 @@ const useAccount = () => {
      * 
      * @param fields the data to send in the request to the server
      */
-    const createAccount = async (fields: AccountPOST) => {
-        const endpoint = `${SERVER_ADDRESS}`
+    async function createAccount(fields: AccountPOST) {
+        const endpoint = `${SERVER_ADDRESS}/account`
         const body = JSON.stringify(fields)
-
-        return await fetch(endpoint, {body: body}).then(response => response.json()).then(responseJson => {
+        return await fetch(endpoint, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: body
+        }).then(response => response.json()).then(responseJson => {
+            console.log(responseJson)
             if (responseJson.status_code === 200) {
                 setAccount({
                     fname: responseJson['fname'],
@@ -108,7 +115,7 @@ const useAccount = () => {
     const updateAccount = async (fields: AccountPUT) => {
         const endpoint = `${SERVER_ADDRESS}?email=${fields.email}&refresh_token=${fields.refresh_token}`
 
-        return await fetch(endpoint, {body: JSON.stringify(fields)}).then(response => response.json()).then(responseJson => {
+        return await fetch(endpoint, { body: JSON.stringify(fields) }).then(response => response.json()).then(responseJson => {
             if (responseJson.status_code === 200) {
                 setAccount({
                     fname: responseJson['fname'],
@@ -136,7 +143,7 @@ const useAccount = () => {
         return await fetch(endpoint).then(response => response.json()).then(responseJson => {
             if (responseJson.status_code === 200) {
                 // TODO notify user
-                
+
                 // specifically remove the account from the cache
                 _cacheAccount(null)
 
