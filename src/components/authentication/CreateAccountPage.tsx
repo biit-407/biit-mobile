@@ -40,7 +40,7 @@ export default function CreateAccountPage({
   navigation,
 }: CreateAccountPageProps) {
   const [/*request*/, response, promptAsync]: [any, any, any] = useAzureAuth();
-  const [setGrantToken, accessToken, /*refresh_token*/] = useAzureToken();
+const [setGrantToken, accessToken, refresh_token] = useAzureToken();
   const [setAccessToken, userInfo]: [any, any] = useAzureUserInfo();
   const [account, createAccount, loginAccount, logoutAccount, updateAccount, deleteAccount] = useAccount()
 
@@ -59,8 +59,8 @@ export default function CreateAccountPage({
   }, [accessToken])
 
   useEffect(() => {
-    if (userInfo && accessToken) {
-      _createAccount(accessToken, userInfo.given_name, userInfo.family_name, userInfo.email)
+    if (userInfo && refresh_token) {
+      _createAccount(refresh_token, userInfo.given_name, userInfo.family_name, userInfo.email)
     }
   }, [userInfo])
 

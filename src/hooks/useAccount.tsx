@@ -53,7 +53,12 @@ const useAccount = (): [Account|null, (fields: AccountPOST) => Promise<void>, an
             },
             method: "POST",
             body: body
-        }).then(response => response.json()).then(responseJson => {
+        }).then(response => {
+            if (response.status !== 200) {
+                //! premptive error handling here
+            }
+            return response.json()
+        }).then(responseJson => {
             console.log(responseJson)
             if (responseJson.status_code === 200) {
                 setAccount({
