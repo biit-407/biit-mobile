@@ -4,12 +4,13 @@ import {
   StackHeaderLeftButtonProps,
   StackNavigationOptions,
 } from "@react-navigation/stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { BottomSheet, Input, ListItem } from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import {
   EditProfilePageNavigationProp,
@@ -86,9 +87,29 @@ const styles = StyleSheet.create({
   },
 });
 
+type FormValues = {
+  firstName: string;
+  lastName: string;
+};
+
+const formErrors = {
+  firstName: "First name cannot be empty",
+  lastName: "Last name cannot be empty",
+};
+
 // Page Definition
 
-export default function EditProfilePage({ navigation }: EditProfilePageProps) {
+export default function EditProfilePage({}: EditProfilePageProps) {
+  // Setup form validation for edit profile
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
+  useEffect(() => {
+    register("firstName", { required: true, minLength: 1 });
+    register("lastName", { required: true, minLength: 1 });
+    // TODO: Call setValue for both name fields if populating with initial data
+  }, [register]);
+  const submitProfile: SubmitHandler<FormValues> = (data) => {
+    Alert.alert("Submitted Data", data.firstName + " " + data.lastName);
+  };
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   // Hook used to store local image url for profile image
@@ -166,11 +187,19 @@ export default function EditProfilePage({ navigation }: EditProfilePageProps) {
           onSubmitEditing={() =>
             lastNameTextInput.current && lastNameTextInput.current.focus()
           }
+          onChangeText={(text) => {
+            setValue("firstName", text);
+          }}
+          errorMessage={errors.firstName ? formErrors.firstName : ""}
         />
         <ThemedInput
           placeholder="Smith"
           label="Last Name"
           ref={lastNameTextInput}
+          onChangeText={(text) => {
+            setValue("lastName", text);
+          }}
+          errorMessage={errors.lastName ? formErrors.lastName : ""}
         />
         {profileImageURL !== "" && (
           <Box marginVertical="md">
@@ -188,12 +217,7 @@ export default function EditProfilePage({ navigation }: EditProfilePageProps) {
       <Box marginVertical="md">
         <ThemedButton
           title="Save Profile"
-          onPress={() => {
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Login" }],
-            });
-          }}
+          onPress={handleSubmit(submitProfile)}
         />
       </Box>
       <BottomSheet

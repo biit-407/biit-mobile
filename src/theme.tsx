@@ -61,6 +61,7 @@ const theme = createTheme({
       fontSize: 16,
       color: "primaryText",
     },
+    listHeader: { fontSize: 20 },
   },
 });
 

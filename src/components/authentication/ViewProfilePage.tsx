@@ -1,6 +1,6 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 
 import {
   ViewProfilePageNavigationProp,
@@ -10,6 +10,9 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
+
+import LogoutButton from "./LogoutButton";
+import DeleteAccountButton from "./DeleteAccountButton";
 
 // React Navigation Types and Page Options
 
@@ -51,6 +54,20 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
           John Smith
         </Text>
       </ThemedCard>
+      <ThemedCard>
+        <LogoutButton />
+        <Box marginVertical="sm" />
+        <DeleteAccountButton />
+      </ThemedCard>
+      <Box marginVertical="md">
+        <Button
+          title={"Banned Users Temp Button"}
+          onPress={() => {
+            // TODO: Pass in relevant data {firstName, lastName, profileUrl}
+            navigation.push("BannedUsers");
+          }}
+        />
+      </Box>
     </Box>
   );
 }

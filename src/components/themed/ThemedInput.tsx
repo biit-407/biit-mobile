@@ -4,26 +4,22 @@ import { Input, InputProps } from "react-native-elements";
 
 import { Theme } from "../../theme";
 
-type ThemedInputProps = {
-  label?: string;
-  placeholder?: string;
-  returnKeyType?: InputProps["returnKeyType"];
-  onSubmitEditing?: () => void;
-};
+type ThemedInputProps = InputProps;
+// type ThemedInputProps = {
+//   label?: string;
+//   placeholder?: string;
+//   returnKeyType?: InputProps["returnKeyType"];
+//   onSubmitEditing?: () => void;
+// };
 
 // A reusable themed input
 const ThemedInput = React.forwardRef<Input, ThemedInputProps>(
-  (
-    { label, placeholder, returnKeyType, onSubmitEditing }: ThemedInputProps,
-    ref
-  ) => {
+  (props: ThemedInputProps, ref) => {
     const theme = useTheme<Theme>();
     return (
       <Input
         ref={ref}
-        label={label}
         labelStyle={{ color: theme.colors.textInputDefault }}
-        placeholder={placeholder}
         placeholderTextColor={theme.colors.textInputDefault}
         inputStyle={{ color: "#3D2400" }}
         inputContainerStyle={{
@@ -31,8 +27,7 @@ const ThemedInput = React.forwardRef<Input, ThemedInputProps>(
         }}
         containerStyle={{ width: "80%" }}
         selectionColor={theme.colors.textInputDefault}
-        returnKeyType={returnKeyType}
-        onSubmitEditing={onSubmitEditing}
+        {...props}
       />
     );
   }
