@@ -63,6 +63,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
         <Button
           title={"Banned Users Temp Button"}
           onPress={() => {
+            // TODO: Pass in relevant data {firstName, lastName, profileUrl}
             navigation.push("BannedUsers");
           }}
         />
