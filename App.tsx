@@ -22,6 +22,7 @@ import theme from "./src/theme";
 import BannedUsersPage, {
   BannedUsersPageOptions,
 } from "./src/components/communities/BannedUsersPage";
+import { TokenProvider } from "./src/components/tokenContext";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -32,6 +33,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <LoadAssets {...{ fonts }}>
+      <TokenProvider>
       <Stack.Navigator
         screenOptions={{
           headerStyle: {
@@ -71,6 +73,9 @@ export default function App() {
           options={BannedUsersPageOptions}
         />
       </Stack.Navigator>
+      </TokenProvider>
+        
+
     </LoadAssets>
   );
 }
