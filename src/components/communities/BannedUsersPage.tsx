@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 });
 
 // Dummy user info used for now
-
 type User = {
   id: number;
   firstName: string;
@@ -67,14 +66,18 @@ const showUnbanDialog = (
 // Page Definition
 
 export default function BannedUsersPage({}: BannedUsersPageProps) {
+  // Create state for refreshing data and list of banned users
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [bannedUsers, setBannedUsers] = useState<User[]>([]);
+  // Create function to unban a user on the backend
+  // TODO: Integrate functionality with backend
   const unbanUser = (user: User) => {
     bannedUsers.splice(bannedUsers.indexOf(user), 1);
     setBannedUsers([...bannedUsers]);
   };
-
-  const loadData = async () => {
+  // Create function to load banned user data
+  // TODO: Inegrate functionality with backend
+  const loadBannedUserData = async () => {
     setIsRefreshing(true);
     // TODO: Fetch data from the backend to get updated users list
     setTimeout(() => {
@@ -92,8 +95,9 @@ export default function BannedUsersPage({}: BannedUsersPageProps) {
     }, 500);
   };
 
+  // Create effect to load banned user data initially
   useEffect(() => {
-    loadData();
+    loadBannedUserData();
   }, []);
 
   return (
@@ -119,7 +123,7 @@ export default function BannedUsersPage({}: BannedUsersPageProps) {
         keyExtractor={(item: User) => item.id.toString()}
         refreshControl={
           <ThemedRefreshControl
-            onRefresh={loadData}
+            onRefresh={loadBannedUserData}
             refreshing={isRefreshing}
           />
         }
