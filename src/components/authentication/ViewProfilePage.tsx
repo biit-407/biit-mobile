@@ -10,6 +10,7 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
+import LogoutButton from "./LogoutButton";
 
 // React Navigation Types and Page Options
 
@@ -50,6 +51,9 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
         <Text marginBottom="md" variant="header">
           John Smith
         </Text>
+      </ThemedCard>
+      <ThemedCard>
+        <LogoutButton />
       </ThemedCard>
       <Button
         title={"Test"}
