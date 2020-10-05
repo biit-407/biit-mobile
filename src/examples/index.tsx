@@ -1,1 +1,1 @@
-export { default as AzureLoginButton } from './AzureLoginButton'
+export { default as AzureLoginButton } from "./AzureLoginButton";

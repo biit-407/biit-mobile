@@ -2,8 +2,25 @@ import {
   useAutoDiscovery,
   useAuthRequest,
   makeRedirectUri,
+  AuthRequest,
+  AuthRequestPromptOptions,
+  AuthError,
+  AuthSessionResult,
 } from "expo-auth-session";
+
 import { AZURE_TENANT_ID, AZURE_CLIENT_ID } from "../models";
+type CompletedAzureAuthResponse = {
+  type: "error" | "success";
+  errorCode: string | null;
+  error?: AuthError | null | undefined;
+  params: { [key: string]: string };
+  url: string;
+};
+type UseAzureAuthReturnType = [
+  AuthRequest | null,
+  { type: "cancel" | "dismiss" | "locked" } | CompletedAzureAuthResponse | null,
+  (options?: AuthRequestPromptOptions | undefined) => Promise<AuthSessionResult>
+];
 
 /**
  * @description hook that creates request, response and function to get a Grant Token
@@ -34,7 +51,7 @@ import { AZURE_TENANT_ID, AZURE_CLIENT_ID } from "../models";
  * be null until populated by the function that makes the request (aka the function
  * returned by this hook)
  */
-const useAzureAuth = () => {
+const useAzureAuth = (): UseAzureAuthReturnType => {
   const discovery = useAutoDiscovery(
     `https://login.microsoftonline.com/${AZURE_TENANT_ID}/v2.0`
   );
@@ -42,15 +59,22 @@ const useAzureAuth = () => {
   return useAuthRequest(
     {
       clientId: AZURE_CLIENT_ID,
-      scopes: ["openid", "profile", "email", "offline_access", "https://graph.microsoft.com/User.Read"],
+      scopes: [
+        "openid",
+        "profile",
+        "email",
+        "offline_access",
+        "https://graph.microsoft.com/User.Read",
+      ],
       // For usage in managed apps using the proxy
       redirectUri: makeRedirectUri({
         useProxy: true,
       }),
-      usePKCE: false
+      usePKCE: false,
     },
     discovery
   );
 };
 
 export default useAzureAuth;
+export { UseAzureAuthReturnType, CompletedAzureAuthResponse }; //eslint-disable-line no-undef
