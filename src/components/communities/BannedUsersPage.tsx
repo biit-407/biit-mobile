@@ -6,6 +6,7 @@ import {
   BannedUsersPageNavigationProp,
   BannedUsersPageRouteProp,
 } from "../../routes";
+import { Account } from "../../models/accounts";
 import Box from "../themed/Box";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
@@ -32,23 +33,15 @@ const styles = StyleSheet.create({
   },
 });
 
-// Dummy user info used for now
-type User = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  profileImage: string;
-};
-
 const showUnbanDialog = (
-  user: User,
-  onConfirm: (user: User) => void,
+  user: Account,
+  onConfirm: (user: Account) => void,
   onCancel?: () => void
 ) => {
-  const { firstName, lastName } = user;
+  const { fname, lname } = user;
   Alert.alert(
-    `Unban ${firstName} ${lastName}?`,
-    `Are you sure you want to unban ${firstName} ${lastName} from this community?`,
+    `Unban ${fname} ${lname}?`,
+    `Are you sure you want to unban ${fname} ${lname} from this community?`,
     [
       {
         text: "Cancel",
@@ -68,10 +61,10 @@ const showUnbanDialog = (
 export default function BannedUsersPage({}: BannedUsersPageProps) {
   // Create state for refreshing data and list of banned users
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [bannedUsers, setBannedUsers] = useState<User[]>([]);
+  const [bannedUsers, setBannedUsers] = useState<Account[]>([]);
   // Create function to unban a user on the backend
   // TODO: Integrate functionality with backend
-  const unbanUser = (user: User) => {
+  const unbanUser = (user: Account) => {
     bannedUsers.splice(bannedUsers.indexOf(user), 1);
     setBannedUsers([...bannedUsers]);
   };
@@ -80,19 +73,8 @@ export default function BannedUsersPage({}: BannedUsersPageProps) {
   const loadBannedUserData = async () => {
     setIsRefreshing(true);
     // TODO: Fetch data from the backend to get updated users list
-    setTimeout(() => {
-      setBannedUsers([
-        ...bannedUsers,
-        {
-          id: Math.random() * 10000000,
-          firstName: "John",
-          lastName: "Smith" + bannedUsers.length,
-          profileImage:
-            "https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg",
-        },
-      ]);
-      setIsRefreshing(false);
-    }, 500);
+
+    setIsRefreshing(false);
   };
 
   // Create effect to load banned user data initially
@@ -107,7 +89,7 @@ export default function BannedUsersPage({}: BannedUsersPageProps) {
         renderItem={({ item }) => (
           <ThemedListItem
             avatarUri={item.profileImage}
-            title={`${item.firstName} ${item.lastName}`}
+            title={`${item.fname} ${item.lname}`}
             rightContent={
               <Box mr="xs">
                 <ThemedIcon
@@ -120,7 +102,7 @@ export default function BannedUsersPage({}: BannedUsersPageProps) {
             }
           />
         )}
-        keyExtractor={(item: User) => item.id.toString()}
+        keyExtractor={(item: Account) => item.email} // TODO: Replace with UID field, though email should be unique
         refreshControl={
           <ThemedRefreshControl
             onRefresh={loadBannedUserData}
