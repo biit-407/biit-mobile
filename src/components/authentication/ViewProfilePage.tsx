@@ -10,7 +10,9 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
+
 import LogoutButton from "./LogoutButton";
+import DeleteAccountButton from "./DeleteAccountButton";
 
 // React Navigation Types and Page Options
 
@@ -54,13 +56,17 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
       </ThemedCard>
       <ThemedCard>
         <LogoutButton />
+        <Box marginVertical="sm" />
+        <DeleteAccountButton />
       </ThemedCard>
-      <Button
-        title={"Test"}
-        onPress={() => {
-          navigation.push("BannedUsers");
-        }}
-      />
+      <Box marginVertical="md">
+        <Button
+          title={"Banned Users Temp Button"}
+          onPress={() => {
+            navigation.push("BannedUsers");
+          }}
+        />
+      </Box>
     </Box>
   );
 }
