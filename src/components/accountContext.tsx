@@ -3,6 +3,7 @@ import React from "react";
 import { Account, BLANK_ACCOUNT } from "../models/accounts";
 import { SERVER_ADDRESS } from "../models/constants";
 
+import { Dispatch as TokenDispatch } from "./tokenContext";
 type AccountStatus = "logged out" | "logged in" | "updating" | "error";
 
 type AccountState = {
@@ -119,7 +120,7 @@ class AccountClient {
   public static async create(
     token: string,
     account: Account
-  ): Promise<Account> {
+  ): Promise<[Account, { refreshToken: string; accessToken: string }]> {
     const endpoint = `${SERVER_ADDRESS}/account`;
     return await fetch(endpoint, {
       method: "POST",
@@ -130,7 +131,19 @@ class AccountClient {
       body: JSON.stringify({ ...account, token: token }),
     })
       .then((response) => response.json())
-      .then((responseJson) => responseJson.response as Account);
+      .then((responseJson) => {
+        return [
+          {
+            lname: responseJson.response.lname,
+            fname: responseJson.response.fname,
+            email: responseJson.response.email,
+          } as Account,
+          {
+            refreshToken: responseJson.response.refreshToken,
+            accessToken: responseJson.response.accessToken,
+          },
+        ];
+      });
   }
 
   public static async update(
@@ -173,7 +186,8 @@ class AccountClient {
 async function createAccount(
   dispatch: Dispatch,
   token: string,
-  account: Account
+  account: Account,
+  tokenDispatch: TokenDispatch
 ) {
   dispatch({
     type: "start update",
@@ -182,11 +196,19 @@ async function createAccount(
   });
 
   try {
-    const createdAccount: Account = await AccountClient.create(token, account);
+    const [createdAccount, newTokens]: [
+      Account,
+      { refreshToken: string; accessToken: string }
+    ] = await AccountClient.create(token, account);
     dispatch({
       type: "finish update",
       account: createdAccount,
       error: "successfully created account",
+    });
+    tokenDispatch({
+      type: "set",
+      refreshToken: newTokens.refreshToken,
+      accessToken: newTokens.accessToken,
     });
   } catch (error) {
     dispatch({

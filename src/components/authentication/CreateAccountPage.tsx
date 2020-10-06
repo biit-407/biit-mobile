@@ -101,11 +101,16 @@ export default function CreateAccountPage({
       tokenState.refreshToken &&
       (accountState.status === "logged out" || accountState.status === "error")
     ) {
-      createAccount(accountDispatch, tokenState.refreshToken, {
-        fname: azureState.userInfo.givenName,
-        lname: azureState.userInfo.familyName,
-        email: azureState.userInfo.email,
-      });
+      createAccount(
+        accountDispatch,
+        tokenState.refreshToken,
+        {
+          fname: azureState.userInfo.givenName,
+          lname: azureState.userInfo.familyName,
+          email: azureState.userInfo.email,
+        },
+        tokenDispatch
+      );
       navigation.reset({
         index: 0,
         routes: [{ name: "CreateProfile" }],
@@ -117,6 +122,7 @@ export default function CreateAccountPage({
     accountState.status,
     navigation,
     tokenState.refreshToken,
+    tokenDispatch,
   ]);
 
   function press() {

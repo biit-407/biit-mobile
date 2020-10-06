@@ -10,7 +10,7 @@ type Action = {
   accessToken: string;
   refreshToken: string;
 };
-type Dispatch = (action: Action) => void;
+export type Dispatch = (action: Action) => void;
 type TokenProviderProps = {
   children: React.ReactNode;
 };
