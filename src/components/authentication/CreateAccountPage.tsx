@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
 
 import { useAzureAuth } from "../../hooks";
-import { useAccount, createAccount } from "../../components/accountContext";
+import { useAccount, createAccount } from "../accountContext";
 import {
   CompletedAzureAuthResponse,
   UseAzureAuthReturnType,
@@ -46,57 +46,83 @@ const styles = StyleSheet.create({
 export default function CreateAccountPage({
   navigation,
 }: CreateAccountPageProps) {
-  const [
-    ,
-    response,
-    promptAsync,
-  ]: UseAzureAuthReturnType = useAzureAuth();
+  const [, response, promptAsync]: UseAzureAuthReturnType = useAzureAuth();
 
-  const [tokenState, tokenDispatch] = useToken()
-  const [accountState, accountDispatch] = useAccount()
-  const [azureState, azureDispatch] = useAzure()
+  const [tokenState, tokenDispatch] = useToken();
+  const [accountState, accountDispatch] = useAccount();
+  const [azureState, azureDispatch] = useAzure();
 
   useEffect(() => {
-    if ((response as CompletedAzureAuthResponse)?.params?.code) {
-      const grantToken = (response as CompletedAzureAuthResponse)?.params?.code
-      azureDispatch({ type: 'set grant token', ...azureState, grantToken: grantToken })
-
+    if (
+      (response as CompletedAzureAuthResponse)?.params?.code &&
+      !azureState.grantToken
+    ) {
+      const grantToken = (response as CompletedAzureAuthResponse)?.params?.code;
+      azureDispatch({
+        type: "set grant token",
+        ...azureState,
+        grantToken: grantToken,
+      });
     }
-  }, [response]);
+  }, [response, azureDispatch, azureState]);
 
   useEffect(() => {
-    if (azureState.grantToken && !azureState.accessToken) {
-      requestTokens(azureDispatch, azureState)
+    if (
+      azureState.grantToken &&
+      !azureState.accessToken &&
+      !azureState.refreshToken
+    ) {
+      requestTokens(azureDispatch, azureState);
     }
-  }, [azureState.grantToken])
+  }, [azureDispatch, azureState]);
 
   useEffect(() => {
-    if (azureState.accessToken) {
-      tokenDispatch({ type: 'set', refreshToken: azureState.refreshToken, accessToken: azureState.accessToken })
-      requestUserInfo(azureDispatch, azureState)
+    if (azureState.accessToken && azureState.refreshToken) {
+      tokenDispatch({
+        type: "set",
+        refreshToken: azureState.refreshToken,
+        accessToken: azureState.accessToken,
+      });
+      requestUserInfo(azureDispatch, azureState);
     }
-  }, [azureState.accessToken])
+  }, [azureDispatch, tokenDispatch, azureState]);
 
   useEffect(() => {
-    if (accountState.status === 'logged in') {
+    if (accountState.status === "logged in") {
       // TODO an unexpected error has occurred
-      console.log('an unexpected error has occurred')
-      accountDispatch({ type: 'invalidate', account: BLANK_ACCOUNT, error: 'an unexpected error has occurred' })
-    } else if (azureState.userInfo.email != '' && tokenState.refreshToken && (accountState.status === 'logged out' || accountState.status === 'error')) {
+      console.log("an unexpected error has occurred");
+      accountDispatch({
+        type: "invalidate",
+        account: BLANK_ACCOUNT,
+        error: "an unexpected error has occurred",
+      });
+    } else if (
+      azureState.userInfo.email !== "" &&
+      tokenState.refreshToken &&
+      (accountState.status === "logged out" || accountState.status === "error")
+    ) {
       createAccount(accountDispatch, tokenState.refreshToken, {
         fname: azureState.userInfo.givenName,
         lname: azureState.userInfo.familyName,
-        email: azureState.userInfo.email
-      })
+        email: azureState.userInfo.email,
+      });
       navigation.reset({
         index: 0,
         routes: [{ name: "CreateProfile" }],
       });
     }
-  }, [azureState.userInfo])
+  }, [
+    azureState.userInfo,
+    accountDispatch,
+    accountState.status,
+    navigation,
+    tokenState.refreshToken,
+  ]);
 
   function press() {
-    promptAsync({ useProxy: true });
+    if (!azureState.grantToken) {
+      promptAsync({ useProxy: true });
+    }
   }
 
   return (
