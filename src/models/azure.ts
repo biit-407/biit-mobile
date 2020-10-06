@@ -14,3 +14,12 @@ export interface AzureUserInfo {
   givenName: string;
   email: string;
 }
+
+
+export const BLANK_AZURE_USER_INFO: AzureUserInfo = {
+  sub: '',
+  name: '',
+  familyName: '',
+  givenName: '',
+  email: ''
+}

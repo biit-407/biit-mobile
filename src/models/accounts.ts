@@ -5,9 +5,15 @@ export interface Account {
   fname: string;
   lname: string;
   email: string;
-  accessToken: string;
-  refreshToken: string;
+  // accessToken: string;
+  // refreshToken: string;
   profileImage?: string;
+}
+
+export const BLANK_ACCOUNT: Account = {
+  fname: "",
+  lname: "",
+  email: "",
 }
 
 /**
