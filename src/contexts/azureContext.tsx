@@ -23,7 +23,7 @@ type Action = {
   userInfo: AzureUserInfo;
 };
 
-type Dispatch = (action: Action) => void;
+export type Dispatch = (action: Action) => void;
 
 type AzureProviderProps = {
   children: React.ReactNode;
