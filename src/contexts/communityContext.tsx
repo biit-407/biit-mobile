@@ -1,5 +1,6 @@
 import React from "react";
 
+import { OauthToken } from "../models/azure";
 import { BLANK_COMMUNITY, Community } from "../models/community";
 import { SERVER_ADDRESS } from "../models/constants";
 
@@ -122,7 +123,7 @@ class CommunityClient {
   public static async create(
     token: string,
     community: Community
-  ): Promise<[Community, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community`;
 
     return await fetch(endpoint, {
@@ -155,7 +156,7 @@ class CommunityClient {
   public static async load(
     token: string,
     name: string
-  ): Promise<[Community, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}`;
 
     return await fetch(endpoint, {
@@ -187,7 +188,7 @@ class CommunityClient {
   public static async update(
     token: string,
     community: Community
-  ): Promise<[Community, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community`;
 
     return await fetch(endpoint, {
@@ -223,7 +224,7 @@ class CommunityClient {
   public static async delete(
     token: string,
     name: string
-  ): Promise<[boolean, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}`;
 
     return await fetch(endpoint, {
@@ -250,7 +251,7 @@ class CommunityClient {
     banner: string,
     bannee: string,
     community: string
-  ): Promise<[boolean, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/ban`;
     return await fetch(endpoint, {
       method: "POST",
@@ -282,7 +283,7 @@ class CommunityClient {
     banner: string,
     bannee: string,
     community: string
-  ): Promise<[boolean, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/ban?banner=${banner}&bannee=${bannee}&token=${token}&community=${community}`;
     return await fetch(endpoint, {
       method: "PUT",

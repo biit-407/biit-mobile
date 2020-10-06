@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Account, BLANK_ACCOUNT } from "../models/accounts";
+import { OauthToken } from "../models/azure";
 import { SERVER_ADDRESS } from "../models/constants";
 
 import { Dispatch as TokenDispatch } from "./tokenContext";
@@ -120,7 +121,7 @@ class AccountClient {
   public static async create(
     token: string,
     account: Account
-  ): Promise<[Account, { refreshToken: string; accessToken: string }]> {
+  ): Promise<[Account, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/account`;
     return await fetch(endpoint, {
       method: "POST",
@@ -146,11 +147,40 @@ class AccountClient {
       });
   }
 
+  public static async get(
+    token: string,
+    email: string
+  ): Promise<[Account, OauthToken]> {
+    const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
+
+    return await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return [
+          {
+            fname: responseJson.response.fname,
+            lname: responseJson.response.lname,
+            email: responseJson.response.email,
+          } as Account,
+          {
+            refreshToken: responseJson.response.refreshToken,
+            accessToken: responseJson.response.accessToken,
+          },
+        ];
+      });
+  }
+
   public static async update(
     token: string,
     account: Account,
     updates: Account
-  ): Promise<Account> {
+  ): Promise<[Account, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}`;
 
     return await fetch(endpoint, {
@@ -162,13 +192,23 @@ class AccountClient {
       body: JSON.stringify(updates),
     })
       .then((response) => response.json())
-      .then((responseJson) => responseJson.response as Account);
+      .then((responseJson) => [
+        {
+          lname: responseJson.response.lname,
+          fname: responseJson.response.fname,
+          email: responseJson.response.email,
+        } as Account,
+        {
+          refreshToken: responseJson.response.refreshToken,
+          accessToken: responseJson.response.accessToken,
+        },
+      ]);
   }
 
   public static async delete(
     token: string,
     account: Account
-  ): Promise<boolean> {
+  ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}`;
 
     return await fetch(endpoint, {
@@ -179,7 +219,15 @@ class AccountClient {
       },
     })
       .then((response) => response.json())
-      .then((responseJson) => responseJson.status === 200);
+      .then((responseJson) => {
+        return [
+          responseJson.status === 200,
+          {
+            refreshToken: responseJson.response.refreshToken,
+            accessToken: responseJson.response.accessToken,
+          },
+        ];
+      });
   }
 }
 
@@ -219,31 +267,62 @@ async function createAccount(
   }
 }
 
+async function getAccount(
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string
+) {
+  accountDispatch({
+    type: "start update",
+    account: BLANK_ACCOUNT,
+    error: "failed to create account",
+  });
+
+  try {
+    const [account, newToken] = await AccountClient.get(token, email);
+    tokenDispatch({ ...newToken, type: "set" });
+    accountDispatch({
+      type: "finish update",
+      account: account,
+      error: "Successfully got account",
+    });
+  } catch (error) {
+    accountDispatch({
+      type: "fail update",
+      account: BLANK_ACCOUNT,
+      error: "Failed to get account",
+    });
+  }
+}
+
 async function updateAccount(
-  dispatch: Dispatch,
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
   token: string,
   account: Account,
   updates: Account
 ) {
-  dispatch({
+  accountDispatch({
     type: "start update",
     account: account,
     error: "failed to update account",
   });
 
   try {
-    const updatedAccount: Account = await AccountClient.update(
+    const [updatedAccount, newToken] = await AccountClient.update(
       token,
       account,
       updates
     );
-    dispatch({
+    tokenDispatch({ ...newToken, type: "set" });
+    accountDispatch({
       type: "finish update",
       account: updatedAccount,
       error: "successfully updated account",
     });
   } catch (error) {
-    dispatch({
+    accountDispatch({
       type: "fail update",
       account: account,
       error: "failed to update account",
@@ -252,33 +331,35 @@ async function updateAccount(
 }
 
 async function deleteAccount(
-  dispatch: Dispatch,
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
   token: string,
   account: Account
 ) {
-  dispatch({
+  accountDispatch({
     type: "start update",
     account: account,
     error: "failed to delete account",
   });
 
   try {
-    const success: boolean = await AccountClient.delete(token, account);
+    const [success, newToken] = await AccountClient.delete(token, account);
+    tokenDispatch({ ...newToken, type: "set" });
     if (success) {
-      dispatch({
+      accountDispatch({
         type: "invalidate",
         account: BLANK_ACCOUNT,
         error: "successfully deleted account",
       });
     } else {
-      dispatch({
+      accountDispatch({
         type: "fail update",
         account: account,
         error: "failed to delete account",
       });
     }
   } catch (error) {
-    dispatch({
+    accountDispatch({
       type: "fail update",
       account: account,
       error: "failed to delete account",
@@ -290,6 +371,7 @@ export {
   useAccount,
   AccountProvider,
   createAccount,
+  getAccount,
   updateAccount,
   deleteAccount,
   useAccountDispatch,
