@@ -4,10 +4,15 @@ import { useNavigation } from "@react-navigation/native";
 
 import ThemedButton from "../themed/ThemedButton";
 import { useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useAzure } from "../../contexts/azureContext";
+import { BLANK_AZURE_USER_INFO, BLANK_TOKEN } from "../../models/azure";
 
 export default function LogoutButton() {
   const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();
+  const [, tokenDispatch] = useToken();
+  const [, azureDispatch] = useAzure();
 
   // Listen for account state to be logged out
   useEffect(() => {
@@ -31,6 +36,13 @@ export default function LogoutButton() {
         onPress: () => {
           // Invalidate the current user account to log them out
           accountDispatch({ type: "invalidate", ...accountState });
+          tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
+          azureDispatch({
+            type: "invalidate",
+            ...BLANK_TOKEN,
+            grantToken: "",
+            userInfo: BLANK_AZURE_USER_INFO,
+          });
         },
       },
     ]);
