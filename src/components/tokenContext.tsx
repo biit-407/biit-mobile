@@ -1,14 +1,14 @@
 import React from 'react'
 
 type TokenState = {
-    access_token: string;
-    refresh_token: string;
+    accessToken: string;
+    refreshToken: string;
 }
 type ActionType = 'set' | 'clear'
 type Action = {
     type: ActionType;
-    access_token: string;
-    refresh_token: string;
+    accessToken: string;
+    refreshToken: string;
 }
 type Dispatch = (action: Action) => void;
 type TokenProviderProps = {
@@ -21,16 +21,16 @@ const TokenDispatchContext = React.createContext<Dispatch | undefined>(undefined
 function tokenReducer(_state: TokenState, action: Action): TokenState {
     switch (action.type) {
         case 'set': {
-            return { access_token: action.access_token, refresh_token: action.refresh_token }
+            return { accessToken: action.accessToken, refreshToken: action.refreshToken }
         }
         case 'clear': {
-            return { access_token: '', refresh_token: '' }
+            return { accessToken: '', refreshToken: '' }
         }
     }
 }
 
 function TokenProvider({ children }: TokenProviderProps) {
-    const [state, dispatch] = React.useReducer(tokenReducer, { access_token: '', refresh_token: '' })
+    const [state, dispatch] = React.useReducer(tokenReducer, { accessToken: '', refreshToken: '' })
     return (
         <TokenStateContext.Provider value={state}>
             <TokenDispatchContext.Provider value={dispatch}>
@@ -56,8 +56,8 @@ function useTokenDispatch() {
     return context
 }
 
-function useToken() {
+function useToken(): [TokenState, Dispatch] {
     return [useTokenState(), useTokenDispatch()]
 }
 
-export { TokenProvider, useToken }
+export { TokenProvider, useToken, useTokenDispatch, useTokenState }

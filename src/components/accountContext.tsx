@@ -88,7 +88,7 @@ class AccountClient {
     public static async create(token: string, account: Account): Promise<Account> {
         const endpoint: string = `${SERVER_ADDRESS}/account`
         return await fetch(endpoint, {
-            method: "PUT",
+            method: "POST",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
@@ -115,7 +115,7 @@ class AccountClient {
         const endpoint: string = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}`
 
         return await fetch(endpoint, {
-            method: "PUT",
+            method: "DELETE",
             headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
