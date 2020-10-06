@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
 
-import { useAzureAuth, useAzureToken, useAzureUserInfo } from "../../hooks";
-import useAccount from "../../hooks/useAccount";
+import { useAzureAuth } from "../../hooks";
 import {
   CompletedAzureAuthResponse,
   UseAzureAuthReturnType,
 } from "../../hooks/useAzureAuth";
-import { AzureUserInfo } from "../../models";
 import {
   CreateAccountPageNavigationProp,
   CreateAccountPageRouteProp,
@@ -15,6 +13,14 @@ import {
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";
 import Text from "../themed/Text";
+import { BLANK_ACCOUNT } from "../../models/accounts";
+import { useAccount, createAccount } from "../../contexts/accountContext";
+import {
+  useAzure,
+  requestTokens,
+  requestUserInfo,
+} from "../../contexts/azureContext";
+import { useToken } from "../../contexts/tokenContext";
 
 // React Navigation Types and Page Options
 
@@ -44,74 +50,89 @@ const styles = StyleSheet.create({
 export default function CreateAccountPage({
   navigation,
 }: CreateAccountPageProps) {
-  const [
-    ,
-    /*request*/ response,
-    promptAsync,
-  ]: UseAzureAuthReturnType = useAzureAuth();
-  const [setGrantToken, accessToken, refreshToken] = useAzureToken();
-  const [setAccessToken, userInfo]: [
-    React.Dispatch<React.SetStateAction<string | null>>,
-    AzureUserInfo | null
-  ] = useAzureUserInfo();
-  const [
-    ,
-    /*account*/ createAccount,
-    /*loginAccount*/
-    /*logoutAccount*/
-    /*updateAccount*/
-    /*deleteAccount*/
-    ,
-    ,
-    ,
-    ,
-  ] = useAccount();
+  const [, response, promptAsync]: UseAzureAuthReturnType = useAzureAuth();
 
-  // NOTE: These chained useEffect calls may need to be replaced with a
-  // state management library like redux or recoil
+  const [tokenState, tokenDispatch] = useToken();
+  const [accountState, accountDispatch] = useAccount();
+  const [azureState, azureDispatch] = useAzure();
+
   useEffect(() => {
-    if ((response as CompletedAzureAuthResponse)?.params?.code) {
-      setGrantToken((response as CompletedAzureAuthResponse)?.params?.code);
+    if (
+      (response as CompletedAzureAuthResponse)?.params?.code &&
+      !azureState.grantToken
+    ) {
+      const grantToken = (response as CompletedAzureAuthResponse)?.params?.code;
+      azureDispatch({
+        type: "set grant token",
+        ...azureState,
+        grantToken: grantToken,
+      });
     }
-  }, [response, setGrantToken]);
+  }, [response, azureDispatch, azureState]);
 
   useEffect(() => {
-    if (accessToken) {
-      setAccessToken(accessToken);
+    if (
+      azureState.grantToken &&
+      !azureState.accessToken &&
+      !azureState.refreshToken
+    ) {
+      requestTokens(azureDispatch, azureState);
     }
-  }, [accessToken, setAccessToken]);
+  }, [azureDispatch, azureState]);
 
   useEffect(() => {
-    if (userInfo && refreshToken) {
-      _createAccount(
-        refreshToken,
-        userInfo.givenName,
-        userInfo.familyName,
-        userInfo.email
+    if (azureState.accessToken && azureState.refreshToken) {
+      tokenDispatch({
+        type: "set",
+        refreshToken: azureState.refreshToken,
+        accessToken: azureState.accessToken,
+      });
+      requestUserInfo(azureDispatch, azureState);
+    }
+  }, [azureDispatch, tokenDispatch, azureState]);
+
+  useEffect(() => {
+    if (accountState.status === "logged in") {
+      // TODO an unexpected error has occurred
+      console.log("an unexpected error has occurred");
+      accountDispatch({
+        type: "invalidate",
+        account: BLANK_ACCOUNT,
+        error: "an unexpected error has occurred",
+      });
+    } else if (
+      azureState.userInfo.email !== "" &&
+      tokenState.refreshToken &&
+      (accountState.status === "logged out" || accountState.status === "error")
+    ) {
+      createAccount(
+        accountDispatch,
+        tokenState.refreshToken,
+        {
+          fname: azureState.userInfo.givenName,
+          lname: azureState.userInfo.familyName,
+          email: azureState.userInfo.email,
+        },
+        tokenDispatch
       );
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "CreateProfile" }],
+      });
     }
-  }, [userInfo, refreshToken]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  async function _createAccount(
-    token: string,
-    fname: string,
-    lname: string,
-    email: string
-  ) {
-    await createAccount({
-      fname: fname,
-      lname: lname,
-      email: email,
-      token: token,
-    });
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "CreateProfile" }],
-    });
-  }
+  }, [
+    azureState.userInfo,
+    accountDispatch,
+    accountState.status,
+    navigation,
+    tokenState.refreshToken,
+    tokenDispatch,
+  ]);
 
   function press() {
-    promptAsync({ useProxy: true });
+    if (!azureState.grantToken) {
+      promptAsync({ useProxy: true });
+    }
   }
 
   return (

@@ -22,7 +22,7 @@ import theme from "./src/theme";
 import BannedUsersPage, {
   BannedUsersPageOptions,
 } from "./src/components/communities/BannedUsersPage";
-import { TokenProvider } from "./src/components/tokenContext";
+import { GlobalServiceProvider } from "./src/contexts";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -33,49 +33,47 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <LoadAssets {...{ fonts }}>
-      <TokenProvider>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: theme.colors.headerBackground,
-          },
-          headerTintColor: theme.colors.primaryText,
-        }}
-      >
-        <Stack.Screen
-          name="Login"
-          component={LoginPage}
-          options={LoginPageOptions}
-        />
-        <Stack.Screen
-          name="CreateAccount"
-          component={CreateAccountPage}
-          options={CreateAccountPageOptions}
-        />
-        <Stack.Screen
-          name="CreateProfile"
-          component={CreateProfilePage}
-          options={CreateProfilePageOptions}
-        />
-        <Stack.Screen
-          name="ViewProfile"
-          component={ViewProfilePage}
-          options={ViewProfilePageOptions}
-        />
-        <Stack.Screen
-          name="EditProfile"
-          component={EditProfilePage}
-          options={EditProfilePageOptions}
-        />
-        <Stack.Screen
-          name="BannedUsers"
-          component={BannedUsersPage}
-          options={BannedUsersPageOptions}
-        />
-      </Stack.Navigator>
-      </TokenProvider>
-        
-
+      <GlobalServiceProvider>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: theme.colors.headerBackground,
+            },
+            headerTintColor: theme.colors.primaryText,
+          }}
+        >
+          <Stack.Screen
+            name="Login"
+            component={LoginPage}
+            options={LoginPageOptions}
+          />
+          <Stack.Screen
+            name="CreateAccount"
+            component={CreateAccountPage}
+            options={CreateAccountPageOptions}
+          />
+          <Stack.Screen
+            name="CreateProfile"
+            component={CreateProfilePage}
+            options={CreateProfilePageOptions}
+          />
+          <Stack.Screen
+            name="ViewProfile"
+            component={ViewProfilePage}
+            options={ViewProfilePageOptions}
+          />
+          <Stack.Screen
+            name="EditProfile"
+            component={EditProfilePage}
+            options={EditProfilePageOptions}
+          />
+          <Stack.Screen
+            name="BannedUsers"
+            component={BannedUsersPage}
+            options={BannedUsersPageOptions}
+          />
+        </Stack.Navigator>
+      </GlobalServiceProvider>
     </LoadAssets>
   );
 }
