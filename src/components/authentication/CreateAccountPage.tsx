@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
 
 import { useAzureAuth } from "../../hooks";
-import { useAccount, createAccount } from "../accountContext";
 import {
   CompletedAzureAuthResponse,
   UseAzureAuthReturnType,
@@ -14,9 +13,14 @@ import {
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";
 import Text from "../themed/Text";
-import { useToken } from "../tokenContext";
-import { requestTokens, requestUserInfo, useAzure } from "../azureContext";
 import { BLANK_ACCOUNT } from "../../models/accounts";
+import { useAccount, createAccount } from "../../contexts/accountContext";
+import {
+  useAzure,
+  requestTokens,
+  requestUserInfo,
+} from "../../contexts/azureContext";
+import { useToken } from "../../contexts/tokenContext";
 
 // React Navigation Types and Page Options
 
