@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getAccount, useAccount } from "../../contexts/accountContext";
+import { requestTokens, requestUserInfo, useAzure } from "../../contexts/azureContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useAzureAuth } from "../../hooks";
+import { CompletedAzureAuthResponse, UseAzureAuthReturnType } from "../../hooks/useAzureAuth";
+import { BLANK_ACCOUNT } from "../../models/accounts";
 
 import { LoginPageNavigationProp, LoginPageRouteProp } from "../../routes";
 import Box from "../themed/Box";
@@ -30,9 +36,100 @@ const styles = StyleSheet.create({
   },
 });
 
+
 // Page Definition
 
 export default function LoginPage({ navigation }: LoginPageProps) {
+  const [, response, promptAsync]: UseAzureAuthReturnType = useAzureAuth();
+  const [azureState, azureDispatch] = useAzure();
+  const [tokenState, tokenDispatch] = useToken();
+  const [accountState, accountDispatch] = useAccount();
+
+  useEffect(() => {
+    if (
+      (response as CompletedAzureAuthResponse)?.params?.code &&
+      !azureState.grantToken
+    ) {
+      const grantToken = (response as CompletedAzureAuthResponse)?.params?.code;
+      azureDispatch({
+        type: "set grant token",
+        ...azureState,
+        grantToken: grantToken,
+      });
+    } else {
+      // user cancelled
+      // NO-OP
+    }
+  }, [response, azureDispatch, azureState])
+
+  useEffect(() => {
+    if (
+      azureState.grantToken &&
+      !azureState.accessToken &&
+      !azureState.refreshToken
+    ) {
+      requestTokens(azureDispatch, azureState);
+    }
+  }, [azureDispatch, azureState]);
+
+
+  useEffect(() => {
+    if (azureState.accessToken && azureState.refreshToken) {
+      tokenDispatch({
+        type: "set",
+        refreshToken: azureState.refreshToken,
+        accessToken: azureState.accessToken,
+      });
+      requestUserInfo(azureDispatch, azureState);
+    }
+  }, [azureDispatch, tokenDispatch, azureState]);
+
+
+  useEffect(() => {
+    if (accountState.status === "logged in") {
+      // TODO an unexpected error has occurred
+      console.log("an unexpected error has occurred");
+      accountDispatch({
+        type: "invalidate",
+        account: BLANK_ACCOUNT,
+        error: "an unexpected error has occurred",
+      });
+    } else if (
+      azureState.userInfo.email !== "" &&
+      tokenState.refreshToken &&
+      (accountState.status === "logged out" || accountState.status === "error")
+    ) {
+      getAccount(
+        accountDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        azureState.userInfo.email
+      );
+    }
+  }, [
+    azureState.userInfo,
+    accountDispatch,
+    accountState.status,
+    navigation,
+    tokenState.refreshToken,
+    tokenDispatch,
+  ]);
+
+  useEffect(() => {
+    if (accountState.status === 'logged in') {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "ViewProfile" }],
+      });
+    } 
+  }, [accountState.status])
+
+  function onPress() {
+    if (!azureState.grantToken) {
+      promptAsync({ useProxy: true })
+    }
+  }
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Image source={require("../../../assets/logo_200px.png")} />
@@ -40,7 +137,7 @@ export default function LoginPage({ navigation }: LoginPageProps) {
       <Text variant="body" mb="xl">
         Login and get started!
       </Text>
-      <MicrosoftButton title="Sign in with Microsoft" />
+      <MicrosoftButton title="Sign in with Microsoft" onPress={onPress} />
       <Box marginVertical="lg">
         <TouchableOpacity onPress={() => navigation.push("CreateAccount")}>
           <Text variant="link">Need to Create an Account?</Text>
