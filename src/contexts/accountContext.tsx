@@ -1,7 +1,11 @@
 import React from "react";
 
 import { Account, BLANK_ACCOUNT } from "../models/accounts";
-import { BLANK_AZURE_USER_INFO, BLANK_TOKEN, OauthToken } from "../models/azure";
+import {
+  BLANK_AZURE_USER_INFO,
+  BLANK_TOKEN,
+  OauthToken,
+} from "../models/azure";
 import { SERVER_ADDRESS } from "../models/constants";
 
 import { Dispatch as TokenDispatch } from "./tokenContext";
@@ -207,10 +211,7 @@ class AccountClient {
       ]);
   }
 
-  public static async delete(
-    token: string,
-    email: string
-  ): Promise<boolean> {
+  public static async delete(token: string, email: string): Promise<boolean> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
 
     return await fetch(endpoint, {
@@ -341,7 +342,12 @@ async function deleteAccount(
     const success = await AccountClient.delete(token, account.email);
     if (success) {
       tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
-      azureDispatch({type: 'invalidate', ...BLANK_TOKEN, grantToken: '', userInfo: BLANK_AZURE_USER_INFO})
+      azureDispatch({
+        type: "invalidate",
+        ...BLANK_TOKEN,
+        grantToken: "",
+        userInfo: BLANK_AZURE_USER_INFO,
+      });
       accountDispatch({
         type: "invalidate",
         account: BLANK_ACCOUNT,

@@ -9,10 +9,9 @@ import { useAzure } from "../../contexts/azureContext";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
-  const [accountState, accountDispatch] = useAccount()
-  const [tokenState, tokenDispatch] = useToken()
-  const [, azureDispatch] = useAzure()
-
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
+  const [, azureDispatch] = useAzure();
 
   const showDeletionDialog = () => {
     Alert.alert(
@@ -26,7 +25,13 @@ export default function DeleteAccountButton() {
         {
           text: "Confirm",
           onPress: () => {
-            deleteAccount(accountDispatch, tokenDispatch, azureDispatch, tokenState.refreshToken, accountState.account)
+            deleteAccount(
+              accountDispatch,
+              tokenDispatch,
+              azureDispatch,
+              tokenState.refreshToken,
+              accountState.account
+            );
 
             //Navigate back to login
             navigation.reset({
