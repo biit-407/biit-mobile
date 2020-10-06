@@ -22,3 +22,8 @@ export const BLANK_AZURE_USER_INFO: AzureUserInfo = {
   givenName: "",
   email: "",
 };
+
+export interface OauthToken {
+  refreshToken: string;
+  accessToken: string;
+}
