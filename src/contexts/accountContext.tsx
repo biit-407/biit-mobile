@@ -1,10 +1,12 @@
 import React from "react";
 
 import { Account, BLANK_ACCOUNT } from "../models/accounts";
-import { OauthToken } from "../models/azure";
+import { BLANK_AZURE_USER_INFO, BLANK_TOKEN, OauthToken } from "../models/azure";
 import { SERVER_ADDRESS } from "../models/constants";
 
 import { Dispatch as TokenDispatch } from "./tokenContext";
+import { Dispatch as AzureDispatch } from "./azureContext";
+
 type AccountStatus = "logged out" | "logged in" | "updating" | "error";
 
 type AccountState = {
@@ -207,9 +209,9 @@ class AccountClient {
 
   public static async delete(
     token: string,
-    account: Account
-  ): Promise<[boolean, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}`;
+    email: string
+  ): Promise<boolean> {
+    const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
 
     return await fetch(endpoint, {
       method: "DELETE",
@@ -219,15 +221,7 @@ class AccountClient {
       },
     })
       .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          responseJson.status === 200,
-          {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
-          },
-        ];
-      });
+      .then((responseJson) => responseJson.status === 200);
   }
 }
 
@@ -333,6 +327,7 @@ async function updateAccount(
 async function deleteAccount(
   accountDispatch: Dispatch,
   tokenDispatch: TokenDispatch,
+  azureDispatch: AzureDispatch,
   token: string,
   account: Account
 ) {
@@ -343,9 +338,10 @@ async function deleteAccount(
   });
 
   try {
-    const [success, newToken] = await AccountClient.delete(token, account);
-    tokenDispatch({ ...newToken, type: "set" });
+    const success = await AccountClient.delete(token, account.email);
     if (success) {
+      tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
+      azureDispatch({type: 'invalidate', ...BLANK_TOKEN, grantToken: '', userInfo: BLANK_AZURE_USER_INFO})
       accountDispatch({
         type: "invalidate",
         account: BLANK_ACCOUNT,

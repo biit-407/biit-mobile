@@ -27,3 +27,8 @@ export interface OauthToken {
   refreshToken: string;
   accessToken: string;
 }
+
+export const BLANK_TOKEN: OauthToken = {
+  refreshToken: '',
+  accessToken: ''
+}

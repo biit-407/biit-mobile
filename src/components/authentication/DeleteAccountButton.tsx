@@ -3,9 +3,17 @@ import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ThemedButton from "../themed/ThemedButton";
+import { deleteAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useAzure } from "../../contexts/azureContext";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
+  const [accountState, accountDispatch] = useAccount()
+  const [tokenState, tokenDispatch] = useToken()
+  const [, azureDispatch] = useAzure()
+
+
   const showDeletionDialog = () => {
     Alert.alert(
       "Delete Account?",
@@ -18,7 +26,8 @@ export default function DeleteAccountButton() {
         {
           text: "Confirm",
           onPress: () => {
-            // TODO: Run the delete account hook
+            deleteAccount(accountDispatch, tokenDispatch, azureDispatch, tokenState.refreshToken, accountState.account)
+
             //Navigate back to login
             navigation.reset({
               index: 0,
