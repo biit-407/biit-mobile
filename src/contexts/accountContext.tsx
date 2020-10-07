@@ -199,9 +199,9 @@ class AccountClient {
       .then((response) => response.json())
       .then((responseJson) => [
         {
-          lname: responseJson.data.lname,
-          fname: responseJson.data.fname,
-          email: responseJson.data.email,
+          lname: responseJson.lname,
+          fname: responseJson.fname,
+          email: responseJson.email,
         } as Account,
         {
           refreshToken: responseJson['refresh_token'],
