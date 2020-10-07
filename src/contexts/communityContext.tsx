@@ -317,7 +317,7 @@ class CommunityClient {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: email,
+        email: email,
         token: token,
       }),
     })
@@ -353,7 +353,7 @@ class CommunityClient {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: email,
+        email: email,
         token: token,
       }),
     })
