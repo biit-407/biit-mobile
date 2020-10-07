@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import {
   CreateCommunityPageRouteProp,
@@ -9,8 +10,6 @@ import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 import Text from "../themed/Text";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Community } from "../../models/community";
 
 type CreateCommunityPageProps = {
   route: CreateCommunityPageRouteProp;
@@ -55,9 +54,7 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CreateCommunityPage({
-  navigation,
-}: CreateCommunityPageProps) {
+export default function CreateCommunityPage({}: CreateCommunityPageProps) {
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
 
   useEffect(() => {
