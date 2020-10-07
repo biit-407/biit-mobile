@@ -32,11 +32,10 @@ const SkipButton = () => {
     <Box me="lg">
       <TouchableOpacity
         onPress={() => {
-          // navigation.reset({
-          //   index: 0,
-          //   routes: [{ name: "ViewProfile" }],
-          // });
-          navigation.navigate("ViewProfile");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: "DevelopmentLinks" }],
+          });
         }}
       >
         <Text variant="link">Skip</Text>
@@ -94,6 +93,7 @@ const formErrors = {
 };
 
 export default function CreateProfilePage({}: CreateProfilePageProps) {
+  const navigation = useNavigation();
   // Setup form validation for edit profile
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
   useEffect(() => {
@@ -103,6 +103,10 @@ export default function CreateProfilePage({}: CreateProfilePageProps) {
   }, [register]);
   const submitProfile: SubmitHandler<FormValues> = (data) => {
     Alert.alert("Submitted Data", data.firstName + " " + data.lastName);
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "DevelopmentLinks" }],
+    });
   };
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
