@@ -146,8 +146,8 @@ class CommunityClient {
             meetType: responseJson.data.meetType,
           } as Community,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -178,8 +178,8 @@ class CommunityClient {
             meetType: responseJson.data.meetType,
           } as Community,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -214,8 +214,8 @@ class CommunityClient {
             meetType: responseJson.data.meetType,
           } as Community,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -239,8 +239,8 @@ class CommunityClient {
         return [
           responseJson.status === 200,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -271,8 +271,8 @@ class CommunityClient {
         return [
           responseJson.status === 200,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -297,15 +297,19 @@ class CommunityClient {
         return [
           responseJson.status === 200,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
   }
 
-  public static async join(email: string, token: string, community: string): Promise<[Community, OauthToken]> {
-    const endpoint: string = `${SERVER_ADDRESS}/community/${community}/join`
+  public static async join(
+    email: string,
+    token: string,
+    community: string
+  ): Promise<[Community, OauthToken]> {
+    const endpoint = `${SERVER_ADDRESS}/community/${community}/join`;
     return await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -314,27 +318,34 @@ class CommunityClient {
       },
       body: JSON.stringify({
         name: email,
-        token: token
-      })
-    }).then(response => response.json()).then(responseJson => {
-      return [
-        {
-          name: responseJson.data.name,
-          codeOfConduct: responseJson.data.codeOfConduct,
-          admins: responseJson.data.admins,
-          members: responseJson.data.members,
-          mpm: responseJson.data.mpm,
-          meetType: responseJson.data.meetType,
-        } as Community, {
-          refreshToken: responseJson['refresh_token'],
-          accessToken: responseJson['access_token'],
-        },
-      ]
+        token: token,
+      }),
     })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return [
+          {
+            name: responseJson.data.name,
+            codeOfConduct: responseJson.data.codeOfConduct,
+            admins: responseJson.data.admins,
+            members: responseJson.data.members,
+            mpm: responseJson.data.mpm,
+            meetType: responseJson.data.meetType,
+          } as Community,
+          {
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
+          },
+        ];
+      });
   }
 
-  public static async leave(email: string, token: string, community: string): Promise<[Community, OauthToken]> {
-    const endpoint: string = `${SERVER_ADDRESS}/community/${community}/leave`
+  public static async leave(
+    email: string,
+    token: string,
+    community: string
+  ): Promise<[Community, OauthToken]> {
+    const endpoint = `${SERVER_ADDRESS}/community/${community}/leave`;
     return await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -343,23 +354,26 @@ class CommunityClient {
       },
       body: JSON.stringify({
         name: email,
-        token: token
-      })
-    }).then(response => response.json()).then(responseJson => {
-      return [
-        {
-          name: responseJson.data.name,
-          codeOfConduct: responseJson.data.codeOfConduct,
-          admins: responseJson.data.admins,
-          members: responseJson.data.members,
-          mpm: responseJson.data.mpm,
-          meetType: responseJson.data.meetType,
-        } as Community, {
-          refreshToken: responseJson['refresh_token'],
-          accessToken: responseJson['access_token'],
-        },
-      ]
+        token: token,
+      }),
     })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return [
+          {
+            name: responseJson.data.name,
+            codeOfConduct: responseJson.data.codeOfConduct,
+            admins: responseJson.data.admins,
+            members: responseJson.data.members,
+            mpm: responseJson.data.mpm,
+            meetType: responseJson.data.meetType,
+          } as Community,
+          {
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
+          },
+        ];
+      });
   }
 }
 
@@ -537,27 +551,71 @@ async function unbanUserFromCommunity(
   }
 }
 
-async function joinCommunity(communityDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string, community: string) {
-  communityDispatch({ type: 'start update', community: BLANK_COMMUNITY, error: 'Sent join community request to the server' })
+async function joinCommunity(
+  communityDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  community: string
+) {
+  communityDispatch({
+    type: "start update",
+    community: BLANK_COMMUNITY,
+    error: "Sent join community request to the server",
+  });
 
   try {
-    const [updatedCommunity, newToken] = await CommunityClient.join(email, token, community)
-    tokenDispatch({ ...newToken, type: 'set' })
-    communityDispatch({type: 'finish update', community: updatedCommunity, error: 'Successfully joined community'})
+    const [updatedCommunity, newToken] = await CommunityClient.join(
+      email,
+      token,
+      community
+    );
+    tokenDispatch({ ...newToken, type: "set" });
+    communityDispatch({
+      type: "finish update",
+      community: updatedCommunity,
+      error: "Successfully joined community",
+    });
   } catch (error) {
-    communityDispatch({ type: 'fail update', community: BLANK_COMMUNITY, error: 'Failed to join community' })
+    communityDispatch({
+      type: "fail update",
+      community: BLANK_COMMUNITY,
+      error: "Failed to join community",
+    });
   }
 }
 
-async function leaveCommunity(communityDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string, community: string) {
-  communityDispatch({ type: 'start update', community: BLANK_COMMUNITY, error: 'Sent leave community request to the server' })
+async function leaveCommunity(
+  communityDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  community: string
+) {
+  communityDispatch({
+    type: "start update",
+    community: BLANK_COMMUNITY,
+    error: "Sent leave community request to the server",
+  });
 
   try {
-    const [updatedCommunity, newToken] = await CommunityClient.leave(email, token, community)
-    tokenDispatch({ ...newToken, type: 'set' })
-    communityDispatch({ type: 'finish update', community: updatedCommunity, error: 'Successfully left community' })
+    const [updatedCommunity, newToken] = await CommunityClient.leave(
+      email,
+      token,
+      community
+    );
+    tokenDispatch({ ...newToken, type: "set" });
+    communityDispatch({
+      type: "finish update",
+      community: updatedCommunity,
+      error: "Successfully left community",
+    });
   } catch (error) {
-    communityDispatch({ type: 'fail update', community: BLANK_COMMUNITY, error: 'Failed to leave community' })
+    communityDispatch({
+      type: "fail update",
+      community: BLANK_COMMUNITY,
+      error: "Failed to leave community",
+    });
   }
 }
 
@@ -573,5 +631,5 @@ export {
   banUserFromCommunity,
   unbanUserFromCommunity,
   joinCommunity,
-  leaveCommunity
+  leaveCommunity,
 };
