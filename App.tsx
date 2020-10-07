@@ -23,23 +23,23 @@ import BannedUsersPage, {
   BannedUsersPageOptions,
 } from "./src/components/communities/BannedUsersPage";
 import JoinCommunityPage, {
-  JoinCommunityPageOptions
+  JoinCommunityPageOptions,
 } from "./src/components/communities/JoinCommunityPage";
 import LeaveCommunityPage, {
-  LeaveCommunityPageOptions
+  LeaveCommunityPageOptions,
 } from "./src/components/communities/LeaveCommunityPage";
 import DevelopmentLinksPage from "./src/components/communities/DevelopmentLinksPage";
 import UserSettingsPage, {
-  UserSettingsPageOptions
+  UserSettingsPageOptions,
 } from "./src/components/userUtils/userSettingsPage";
 import CreateCommunityPage, {
-  CreateCommunityPageOptions
+  CreateCommunityPageOptions,
 } from "./src/components/communities/CreateCommunityPage";
 import CommunityAdministrationPage, {
-  CommunityAdministrationPageOptions
+  CommunityAdministrationPageOptions,
 } from "./src/components/communities/CommunityAdministrationPage";
 import MemberListPage, {
-  MemberListPageOptions
+  MemberListPageOptions,
 } from "./src/components/communities/MemberListPage";
 import { GlobalServiceProvider } from "./src/contexts";
 
@@ -63,7 +63,10 @@ export default function App() {
             headerTintColor: theme.colors.primaryText,
           }}
         >
-          <Stack.Screen name="DevelopmentLinks" component={DevelopmentLinksPage} />
+          <Stack.Screen
+            name="DevelopmentLinks"
+            component={DevelopmentLinksPage}
+          />
           <Stack.Screen
             name="Login"
             component={LoginPage}
