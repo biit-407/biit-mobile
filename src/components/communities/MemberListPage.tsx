@@ -71,7 +71,7 @@ const DATA = [
     },
 ];
 
-const Item = ({ title }) => (
+const Item = ({ title }: {title: string}) => (
     <Box style={styles.listitem}>
         <Text>{title}</Text>
     </Box>
