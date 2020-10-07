@@ -367,7 +367,11 @@ async function deleteAccount(
   }
 }
 
-async function logoutAccount(accountDispatch: Dispatch, tokenDispatch: TokenDispatch, azureDispatch: AzureDispatch) {
+async function logoutAccount(
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  azureDispatch: AzureDispatch
+) {
   tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
   azureDispatch({
     type: "invalidate",
@@ -375,7 +379,11 @@ async function logoutAccount(accountDispatch: Dispatch, tokenDispatch: TokenDisp
     grantToken: "",
     userInfo: BLANK_AZURE_USER_INFO,
   });
-  accountDispatch({ type: "invalidate", account: BLANK_ACCOUNT, error: 'Failed to logout account' });
+  accountDispatch({
+    type: "invalidate",
+    account: BLANK_ACCOUNT,
+    error: "Failed to logout account",
+  });
 }
 
 export {
@@ -387,5 +395,5 @@ export {
   deleteAccount,
   useAccountDispatch,
   useAccountState,
-  logoutAccount
+  logoutAccount,
 };

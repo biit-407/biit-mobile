@@ -42,7 +42,7 @@ export default function LogoutButton() {
           //   userInfo: BLANK_AZURE_USER_INFO,
           // });
           // accountDispatch({ type: "invalidate", ...accountState });
-          logoutAccount(accountDispatch, tokenDispatch, azureDispatch)
+          logoutAccount(accountDispatch, tokenDispatch, azureDispatch);
         },
       },
     ]);
