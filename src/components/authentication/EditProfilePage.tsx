@@ -21,6 +21,8 @@ import Text from "../themed/Text";
 import ThemedInput from "../themed/ThemedInput";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedAvatar from "../themed/ThemedAvatar";
+import { updateAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 
 // React Navigation Types and Page Options
 
@@ -101,14 +103,27 @@ const formErrors = {
 
 export default function EditProfilePage({}: EditProfilePageProps) {
   // Setup form validation for edit profile
+  const navigation = useNavigation();
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
   useEffect(() => {
     register("firstName", { required: true, minLength: 1 });
     register("lastName", { required: true, minLength: 1 });
     // TODO: Call setValue for both name fields if populating with initial data
   }, [register]);
   const submitProfile: SubmitHandler<FormValues> = (data) => {
-    Alert.alert("Submitted Data", data.firstName + " " + data.lastName);
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      { ...accountState.account, fname: data.firstName, lname: data.lastName }
+    );
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "ViewProfile" }],
+    });
   };
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
@@ -181,7 +196,7 @@ export default function EditProfilePage({}: EditProfilePageProps) {
           Update and save your profile
         </Text>
         <ThemedInput
-          placeholder="John"
+          placeholder={accountState.account.fname}
           label="First Name"
           returnKeyType="next"
           onSubmitEditing={() =>
@@ -193,7 +208,7 @@ export default function EditProfilePage({}: EditProfilePageProps) {
           errorMessage={errors.firstName ? formErrors.firstName : ""}
         />
         <ThemedInput
-          placeholder="Smith"
+          placeholder={accountState.account.lname}
           label="Last Name"
           ref={lastNameTextInput}
           onChangeText={(text) => {

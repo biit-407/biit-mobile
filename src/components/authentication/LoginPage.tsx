@@ -1,13 +1,19 @@
 import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { getAccount, useAccount } from "../../contexts/accountContext";
-import { requestTokens, requestUserInfo, useAzure } from "../../contexts/azureContext";
+import {
+  requestTokens,
+  requestUserInfo,
+  useAzure,
+} from "../../contexts/azureContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzureAuth } from "../../hooks";
-import { CompletedAzureAuthResponse, UseAzureAuthReturnType } from "../../hooks/useAzureAuth";
-import { BLANK_ACCOUNT } from "../../models/accounts";
-
+import {
+  CompletedAzureAuthResponse,
+  UseAzureAuthReturnType,
+} from "../../hooks/useAzureAuth";
 import { LoginPageNavigationProp, LoginPageRouteProp } from "../../routes";
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";
@@ -36,7 +42,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 // Page Definition
 
 export default function LoginPage({ navigation }: LoginPageProps) {
@@ -60,7 +65,7 @@ export default function LoginPage({ navigation }: LoginPageProps) {
       // user cancelled
       // NO-OP
     }
-  }, [response, azureDispatch, azureState])
+  }, [response, azureDispatch, azureState]);
 
   useEffect(() => {
     if (
@@ -71,7 +76,6 @@ export default function LoginPage({ navigation }: LoginPageProps) {
       requestTokens(azureDispatch, azureState);
     }
   }, [azureDispatch, azureState]);
-
 
   useEffect(() => {
     if (azureState.accessToken && azureState.refreshToken) {
@@ -84,17 +88,8 @@ export default function LoginPage({ navigation }: LoginPageProps) {
     }
   }, [azureDispatch, tokenDispatch, azureState]);
 
-
   useEffect(() => {
-    if (accountState.status === "logged in") {
-      // TODO an unexpected error has occurred
-      console.log("an unexpected error has occurred");
-      accountDispatch({
-        type: "invalidate",
-        account: BLANK_ACCOUNT,
-        error: "an unexpected error has occurred",
-      });
-    } else if (
+    if (
       azureState.userInfo.email !== "" &&
       tokenState.refreshToken &&
       (accountState.status === "logged out" || accountState.status === "error")
@@ -116,17 +111,17 @@ export default function LoginPage({ navigation }: LoginPageProps) {
   ]);
 
   useEffect(() => {
-    if (accountState.status === 'logged in') {
+    if (accountState.status === "logged in") {
       navigation.reset({
         index: 0,
         routes: [{ name: "ViewProfile" }],
       });
-    } 
-  }, [accountState.status])
+    }
+  }, [accountState.status, navigation]);
 
   function onPress() {
     if (!azureState.grantToken) {
-      promptAsync({ useProxy: true })
+      promptAsync({ useProxy: true });
     }
   }
 

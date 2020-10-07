@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -12,6 +12,16 @@ export default function DeleteAccountButton() {
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();
+
+  useEffect(() => {
+    if (accountState.status === "logged out") {
+      // Navigate back to the login page once account is logged out
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    }
+  }, [accountState.status, navigation]);
 
   const showDeletionDialog = () => {
     Alert.alert(
@@ -32,12 +42,6 @@ export default function DeleteAccountButton() {
               tokenState.refreshToken,
               accountState.account
             );
-
-            //Navigate back to login
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Login" }],
-            });
           },
         },
       ]

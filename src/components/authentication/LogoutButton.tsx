@@ -35,7 +35,6 @@ export default function LogoutButton() {
         text: "Confirm",
         onPress: () => {
           // Invalidate the current user account to log them out
-          accountDispatch({ type: "invalidate", ...accountState });
           tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
           azureDispatch({
             type: "invalidate",
@@ -43,6 +42,7 @@ export default function LogoutButton() {
             grantToken: "",
             userInfo: BLANK_AZURE_USER_INFO,
           });
+          accountDispatch({ type: "invalidate", ...accountState });
         },
       },
     ]);
