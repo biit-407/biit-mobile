@@ -90,15 +90,7 @@ export default function LoginPage({ navigation }: LoginPageProps) {
   }, [azureDispatch, tokenDispatch, azureState]);
 
   useEffect(() => {
-    if (accountState.status === "logged in") {
-      // TODO an unexpected error has occurred
-      console.log("an unexpected error has occurred");
-      accountDispatch({
-        type: "invalidate",
-        account: BLANK_ACCOUNT,
-        error: "an unexpected error has occurred",
-      });
-    } else if (
+    if (
       azureState.userInfo.email !== "" &&
       tokenState.refreshToken &&
       (accountState.status === "logged out" || accountState.status === "error")
