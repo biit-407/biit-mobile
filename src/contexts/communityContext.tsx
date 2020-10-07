@@ -138,16 +138,16 @@ class CommunityClient {
       .then((responseJson) => {
         return [
           {
-            name: responseJson.response.name,
-            codeOfConduct: responseJson.response.codeOfConduct,
-            admins: responseJson.response.admins,
-            members: responseJson.response.members,
-            mpm: responseJson.response.mpm,
-            meetType: responseJson.response.meetType,
+            name: responseJson.data.name,
+            codeOfConduct: responseJson.data.codeOfConduct,
+            admins: responseJson.data.admins,
+            members: responseJson.data.members,
+            mpm: responseJson.data.mpm,
+            meetType: responseJson.data.meetType,
           } as Community,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -170,16 +170,16 @@ class CommunityClient {
       .then((responseJson) => {
         return [
           {
-            name: responseJson.response.name,
-            codeOfConduct: responseJson.response.codeOfConduct,
-            admins: responseJson.response.admins,
-            members: responseJson.response.members,
-            mpm: responseJson.response.mpm,
-            meetType: responseJson.response.meetType,
+            name: responseJson.data.name,
+            codeOfConduct: responseJson.data.codeOfConduct,
+            admins: responseJson.data.admins,
+            members: responseJson.data.members,
+            mpm: responseJson.data.mpm,
+            meetType: responseJson.data.meetType,
           } as Community,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -206,16 +206,16 @@ class CommunityClient {
       .then((responseJson) => {
         return [
           {
-            name: responseJson.response.name,
-            codeOfConduct: responseJson.response.codeOfConduct,
-            admins: responseJson.response.admins,
-            members: responseJson.response.members,
-            mpm: responseJson.response.mpm,
-            meetType: responseJson.response.meetType,
+            name: responseJson.data.name,
+            codeOfConduct: responseJson.data.codeOfConduct,
+            admins: responseJson.data.admins,
+            members: responseJson.data.members,
+            mpm: responseJson.data.mpm,
+            meetType: responseJson.data.meetType,
           } as Community,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -239,8 +239,8 @@ class CommunityClient {
         return [
           responseJson.status === 200,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -271,8 +271,8 @@ class CommunityClient {
         return [
           responseJson.status === 200,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.rsponse.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -297,8 +297,8 @@ class CommunityClient {
         return [
           responseJson.status === 200,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.rsponse.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
