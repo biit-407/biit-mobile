@@ -126,7 +126,7 @@ class AzureClient {
       body: formBodyStr,
     })
       .then((response) => {
-        return response.json()
+        return response.json();
       })
       .then((responseJson) => {
         return {
@@ -169,7 +169,7 @@ async function requestTokens(dispatch: Dispatch, state: AzureState) {
       accessToken: tokens.accessToken,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     dispatch({ ...state, type: "invalidate" });
   }
 }

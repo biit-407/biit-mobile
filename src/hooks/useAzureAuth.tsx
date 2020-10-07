@@ -4,7 +4,7 @@ import {
   AuthRequest,
   AuthRequestPromptOptions,
   AuthError,
-  AuthSessionResult, makeRedirectUri
+  AuthSessionResult,
 } from "expo-auth-session";
 
 import { AZURE_TENANT_ID, AZURE_CLIENT_ID } from "../models";
