@@ -23,12 +23,33 @@ import BannedUsersPage, {
   BannedUsersPageOptions,
 } from "./src/components/communities/BannedUsersPage";
 import { TokenProvider } from "./src/components/tokenContext";
+import JoinCommunityPage, {
+  JoinCommunityPageOptions
+} from "./src/components/communities/JoinCommunityPage";
+import LeaveCommunityPage, {
+  LeaveCommunityPageOptions
+} from "./src/components/communities/LeaveCommunityPage";
+import DevelopmentLinksPage from "./src/components/communities/DevelopmentLinksPage";
+import UserSettingsPage, {
+  UserSettingsPageOptions
+} from "./src/components/userUtils/userSettingsPage";
+import CreateCommunityPage, {
+  CreateCommunityPageOptions
+} from "./src/components/communities/CreateCommunityPage";
+import CommunityAdministrationPage, {
+  CommunityAdministrationPageOptions
+} from "./src/components/communities/CommunityAdministrationPage";
+import MemberListPage, {
+  MemberListPageOptions
+} from "./src/components/communities/MemberListPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
 };
 
 const Stack = createStackNavigator();
+
+//TODO remove "DevelopmentLinks" for release
 
 export default function App() {
   return (
@@ -42,6 +63,7 @@ export default function App() {
           headerTintColor: theme.colors.primaryText,
         }}
       >
+        <Stack.Screen name="DevelopmentLinks" component={DevelopmentLinksPage} />
         <Stack.Screen
           name="Login"
           component={LoginPage}
@@ -71,6 +93,36 @@ export default function App() {
           name="BannedUsers"
           component={BannedUsersPage}
           options={BannedUsersPageOptions}
+        />
+        <Stack.Screen
+          name="CommunityAdministration"
+          component={CommunityAdministrationPage}
+          options={CommunityAdministrationPageOptions}
+        />
+        <Stack.Screen
+          name="MemberList"
+          component={MemberListPage}
+          options={MemberListPageOptions}
+        />
+        <Stack.Screen
+          name="UserSettings"
+          component={UserSettingsPage}
+          options={UserSettingsPageOptions}
+        />
+        <Stack.Screen
+          name="CreateCommunity"
+          component={CreateCommunityPage}
+          options={CreateCommunityPageOptions}
+        />
+        <Stack.Screen
+          name="JoinCommunity"
+          component={JoinCommunityPage}
+          options={JoinCommunityPageOptions}
+        />
+        <Stack.Screen
+          name="LeaveCommunity"
+          component={LeaveCommunityPage} 
+          options={LeaveCommunityPageOptions}
         />
       </Stack.Navigator>
       </TokenProvider>

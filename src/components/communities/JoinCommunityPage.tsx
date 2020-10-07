@@ -12,8 +12,8 @@ type JoinCommunityPageProps = {
 };
 
 export const JoinCommunityPageOptions = {
-    title: "",
-    headerTransparent: true,
+    title: "Join Community",
+    headerTransparent: false,
 }
 
 const styles = StyleSheet.create({

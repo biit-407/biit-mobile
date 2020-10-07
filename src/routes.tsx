@@ -9,7 +9,26 @@ type RootStackParamList = {
   ViewProfile: undefined;
   EditProfile: undefined;
   BannedUsers: undefined;
+  CreateCommunity: undefined;
+  JoinCommunity: undefined;
+  LeaveCommunity: undefined;
+  CommunityAdministration: undefined;
+  UserSettings: undefined;
+  MemberList: undefined;
+  DevelopmentLinks: undefined;
 };
+
+//TODO remove for release
+// Development Links Page Types
+export type DevelopmentLinksPageRouteProp = RouteProp<
+  RootStackParamList,
+  "DevelopmentLinks"
+>;
+
+export type DevelopmentLinksPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "DevelopmentLinks"
+>;
 
 // Login Page Types
 export type LoginPageRouteProp = RouteProp<RootStackParamList, "Login">;
@@ -72,4 +91,70 @@ export type BannedUsersPageRouteProp = RouteProp<
 export type BannedUsersPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "BannedUsers"
+>;
+
+// Create Community Page Types
+export type CreateCommunityPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CreateCommunity"
+>;
+
+export type CreateCommunityPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CreateCommunity"
+>;
+
+// Join Community Page Types
+export type JoinCommunityPageRouteProp = RouteProp<
+  RootStackParamList,
+  "JoinCommunity"
+>;
+
+export type JoinCommunityPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "JoinCommunity"
+>;
+
+// Leave Community Page Types
+export type LeaveCommunityPageRouteProp = RouteProp<
+  RootStackParamList,
+  "LeaveCommunity"
+>;
+
+export type LeaveCommunityPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "LeaveCommunity"
+>;
+
+// Member List Page Types
+export type MemberListPageRouteProp = RouteProp<
+  RootStackParamList,
+  "MemberList"
+>;
+
+export type MemberListPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "MemberList"
+>;
+
+// Community Administration Page Types
+export type CommunityAdministrationPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunityAdministration"
+>;
+
+export type CommunityAdministrationPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunityAdministration"
+>;
+
+// User Settings Page Types
+export type UserSettingsPageRouteProp = RouteProp<
+  RootStackParamList,
+  "UserSettings"
+>;
+
+export type UserSettingsPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "UserSettings"
 >;
