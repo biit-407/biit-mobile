@@ -10,10 +10,10 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
+import { useAccountState } from "../../contexts/accountContext";
 
 import LogoutButton from "./LogoutButton";
 import DeleteAccountButton from "./DeleteAccountButton";
-import { useAccountState } from "../../contexts/accountContext";
 
 // React Navigation Types and Page Options
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 // Page Definition
 
 export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
-  const accountState = useAccountState()
+  const accountState = useAccountState();
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ThemedCard>

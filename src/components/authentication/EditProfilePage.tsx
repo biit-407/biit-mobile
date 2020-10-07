@@ -53,7 +53,7 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   quality: 1,
 };
 
-function EditBackButton({ }: StackHeaderLeftButtonProps) {
+function EditBackButton({}: StackHeaderLeftButtonProps) {
   const navigator = useNavigation();
   return (
     <HeaderBackButton
@@ -101,19 +101,25 @@ const formErrors = {
 
 // Page Definition
 
-export default function EditProfilePage({ }: EditProfilePageProps) {
+export default function EditProfilePage({}: EditProfilePageProps) {
   // Setup form validation for edit profile
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
-  const [accountState, accountDispatch] = useAccount()
-  const [tokenState, tokenDispatch] = useToken()
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
   useEffect(() => {
     register("firstName", { required: true, minLength: 1 });
     register("lastName", { required: true, minLength: 1 });
     // TODO: Call setValue for both name fields if populating with initial data
   }, [register]);
   const submitProfile: SubmitHandler<FormValues> = (data) => {
-    updateAccount(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account, { ...accountState.account, fname: data.firstName, lname: data.lastName })
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      { ...accountState.account, fname: data.firstName, lname: data.lastName }
+    );
     navigation.reset({
       index: 0,
       routes: [{ name: "ViewProfile" }],

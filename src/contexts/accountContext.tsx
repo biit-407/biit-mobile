@@ -146,8 +146,8 @@ class AccountClient {
             email: responseJson.email,
           } as Account,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -175,8 +175,8 @@ class AccountClient {
             email: responseJson.data.email,
           } as Account,
           {
-            refreshToken: responseJson['refresh_token'],
-            accessToken: responseJson['access_token'],
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
           },
         ];
       });
@@ -187,7 +187,9 @@ class AccountClient {
     account: Account,
     updates: Account
   ): Promise<[Account, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}&updateFields=${JSON.stringify(updates)}`;
+    const endpoint = `${SERVER_ADDRESS}/account?email=${
+      account.email
+    }&token=${token}&updateFields=${JSON.stringify(updates)}`;
 
     return await fetch(endpoint, {
       method: "PUT",
@@ -204,8 +206,8 @@ class AccountClient {
           email: responseJson.email,
         } as Account,
         {
-          refreshToken: responseJson['refresh_token'],
-          accessToken: responseJson['access_token'],
+          refreshToken: responseJson.refresh_token,
+          accessToken: responseJson.access_token,
         },
       ]);
   }
@@ -219,8 +221,7 @@ class AccountClient {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    })
-      .then((response) => response.ok);
+    }).then((response) => response.ok);
   }
 }
 

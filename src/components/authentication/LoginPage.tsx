@@ -14,7 +14,6 @@ import {
   CompletedAzureAuthResponse,
   UseAzureAuthReturnType,
 } from "../../hooks/useAzureAuth";
-import { BLANK_ACCOUNT } from "../../models/accounts";
 import { LoginPageNavigationProp, LoginPageRouteProp } from "../../routes";
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";

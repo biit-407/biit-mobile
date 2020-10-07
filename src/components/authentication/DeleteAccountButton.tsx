@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -6,13 +6,12 @@ import ThemedButton from "../themed/ThemedButton";
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
-import { useEffect } from "react";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
-  const [azureState, azureDispatch] = useAzure();
+  const [, azureDispatch] = useAzure();
 
   useEffect(() => {
     if (accountState.status === "logged out") {
