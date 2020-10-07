@@ -13,6 +13,7 @@ import ThemedCard from "../themed/ThemedCard";
 
 import LogoutButton from "./LogoutButton";
 import DeleteAccountButton from "./DeleteAccountButton";
+import { useAccountState } from "../../contexts/accountContext";
 
 // React Navigation Types and Page Options
 
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
 // Page Definition
 
 export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
+  const accountState = useAccountState()
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ThemedCard>
@@ -51,7 +53,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
           }}
         />
         <Text marginBottom="md" variant="header">
-          John Smith
+          {accountState.account.fname + " " + accountState.account.lname}
         </Text>
       </ThemedCard>
       <ThemedCard>
