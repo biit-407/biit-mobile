@@ -141,13 +141,13 @@ class AccountClient {
       .then((responseJson) => {
         return [
           {
-            lname: responseJson.response.lname,
-            fname: responseJson.response.fname,
-            email: responseJson.response.email,
+            lname: responseJson.lname,
+            fname: responseJson.fname,
+            email: responseJson.email,
           } as Account,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -170,13 +170,13 @@ class AccountClient {
       .then((responseJson) => {
         return [
           {
-            fname: responseJson.response.fname,
-            lname: responseJson.response.lname,
-            email: responseJson.response.email,
+            fname: responseJson.data.fname,
+            lname: responseJson.data.lname,
+            email: responseJson.data.email,
           } as Account,
           {
-            refreshToken: responseJson.response.refreshToken,
-            accessToken: responseJson.response.accessToken,
+            refreshToken: responseJson['refresh_token'],
+            accessToken: responseJson['access_token'],
           },
         ];
       });
@@ -187,7 +187,7 @@ class AccountClient {
     account: Account,
     updates: Account
   ): Promise<[Account, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}`;
+    const endpoint = `${SERVER_ADDRESS}/account?email=${account.email}&token=${token}&updateFields=${JSON.stringify(updates)}`;
 
     return await fetch(endpoint, {
       method: "PUT",
@@ -195,18 +195,17 @@ class AccountClient {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates),
     })
       .then((response) => response.json())
       .then((responseJson) => [
         {
-          lname: responseJson.response.lname,
-          fname: responseJson.response.fname,
-          email: responseJson.response.email,
+          lname: responseJson.data.lname,
+          fname: responseJson.data.fname,
+          email: responseJson.data.email,
         } as Account,
         {
-          refreshToken: responseJson.response.refreshToken,
-          accessToken: responseJson.response.accessToken,
+          refreshToken: responseJson['refresh_token'],
+          accessToken: responseJson['access_token'],
         },
       ]);
   }
@@ -221,8 +220,7 @@ class AccountClient {
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
-      .then((responseJson) => responseJson.status === 200);
+      .then((response) => response.ok);
   }
 }
 
@@ -337,7 +335,6 @@ async function deleteAccount(
     account: account,
     error: "failed to delete account",
   });
-
   try {
     const success = await AccountClient.delete(token, account.email);
     if (success) {
