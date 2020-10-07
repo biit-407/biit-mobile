@@ -4,7 +4,7 @@ import {
   AuthRequest,
   AuthRequestPromptOptions,
   AuthError,
-  AuthSessionResult,
+  AuthSessionResult, makeRedirectUri
 } from "expo-auth-session";
 
 import { AZURE_TENANT_ID, AZURE_CLIENT_ID } from "../models";
@@ -69,7 +69,8 @@ const useAzureAuth = (): UseAzureAuthReturnType => {
       // redirectUri: makeRedirectUri({
       //   useProxy: true,
       // }),
-      redirectUri: "https://auth.expo.io/@stephend17/biit-mobile",
+      redirectUri: "https://auth.expo.io/@biit/biit-mobile",
+      // redirectUri: 'biit-mobile://login',
       usePKCE: false,
     },
     discovery

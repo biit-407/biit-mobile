@@ -64,6 +64,7 @@ export default function LoginPage({ navigation }: LoginPageProps) {
     } else {
       // user cancelled
       // NO-OP
+      // console.log(response)
     }
   }, [response, azureDispatch, azureState]);
 
@@ -85,6 +86,8 @@ export default function LoginPage({ navigation }: LoginPageProps) {
         accessToken: azureState.accessToken,
       });
       requestUserInfo(azureDispatch, azureState);
+    } else {
+      // console.log(azureState)
     }
   }, [azureDispatch, tokenDispatch, azureState]);
 
