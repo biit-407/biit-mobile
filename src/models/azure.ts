@@ -14,3 +14,21 @@ export interface AzureUserInfo {
   givenName: string;
   email: string;
 }
+
+export const BLANK_AZURE_USER_INFO: AzureUserInfo = {
+  sub: "",
+  name: "",
+  familyName: "",
+  givenName: "",
+  email: "",
+};
+
+export interface OauthToken {
+  refreshToken: string;
+  accessToken: string;
+}
+
+export const BLANK_TOKEN: OauthToken = {
+  refreshToken: "",
+  accessToken: "",
+};

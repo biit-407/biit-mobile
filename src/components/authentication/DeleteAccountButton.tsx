@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ThemedButton from "../themed/ThemedButton";
+import { deleteAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useAzure } from "../../contexts/azureContext";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
+  const [, azureDispatch] = useAzure();
+
+  useEffect(() => {
+    if (accountState.status === "logged out") {
+      // Navigate back to the login page once account is logged out
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    }
+  }, [accountState.status, navigation]);
+
   const showDeletionDialog = () => {
     Alert.alert(
       "Delete Account?",
@@ -18,12 +35,13 @@ export default function DeleteAccountButton() {
         {
           text: "Confirm",
           onPress: () => {
-            // TODO: Run the delete account hook
-            //Navigate back to login
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Login" }],
-            });
+            deleteAccount(
+              accountDispatch,
+              tokenDispatch,
+              azureDispatch,
+              tokenState.refreshToken,
+              accountState.account
+            );
           },
         },
       ]

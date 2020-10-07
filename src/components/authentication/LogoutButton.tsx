@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import ThemedButton from "../themed/ThemedButton";
+import { logoutAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useAzure } from "../../contexts/azureContext";
 
 export default function LogoutButton() {
   const navigation = useNavigation();
+  const [accountState, accountDispatch] = useAccount();
+  const [, tokenDispatch] = useToken();
+  const [, azureDispatch] = useAzure();
+
+  // Listen for account state to be logged out
+  useEffect(() => {
+    if (accountState.status === "logged out") {
+      // Navigate back to the login page once account is logged out
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    }
+  }, [accountState.status, navigation]);
+
   const showLogoutDialog = () => {
     Alert.alert("Logout?", "Are you sure you want to logout of your account?", [
       {
@@ -15,12 +33,16 @@ export default function LogoutButton() {
       {
         text: "Confirm",
         onPress: () => {
-          // TODO: Run the logout hook
-          //Navigate back to login
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Login" }],
-          });
+          // Invalidate the current user account to log them out
+          // tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
+          // azureDispatch({
+          //   type: "invalidate",
+          //   ...BLANK_TOKEN,
+          //   grantToken: "",
+          //   userInfo: BLANK_AZURE_USER_INFO,
+          // });
+          // accountDispatch({ type: "invalidate", ...accountState });
+          logoutAccount(accountDispatch, tokenDispatch, azureDispatch);
         },
       },
     ]);

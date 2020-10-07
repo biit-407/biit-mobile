@@ -1,7 +1,6 @@
 import {
   useAutoDiscovery,
   useAuthRequest,
-  makeRedirectUri,
   AuthRequest,
   AuthRequestPromptOptions,
   AuthError,
@@ -67,9 +66,11 @@ const useAzureAuth = (): UseAzureAuthReturnType => {
         "https://graph.microsoft.com/User.Read",
       ],
       // For usage in managed apps using the proxy
-      redirectUri: makeRedirectUri({
-        useProxy: true,
-      }),
+      // redirectUri: makeRedirectUri({
+      //   useProxy: true,
+      // }),
+      redirectUri: "https://auth.expo.io/@biit/biit-mobile",
+      // redirectUri: 'biit-mobile://login',
       usePKCE: false,
     },
     discovery

@@ -22,6 +22,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "biit-mobile"
+    "scheme": "biit-mobile",
+    "android": {
+      "package": "biit.mobile"
+    }
   }
 }
