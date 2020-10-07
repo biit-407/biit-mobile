@@ -6,12 +6,23 @@ import ThemedButton from "../themed/ThemedButton";
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
+import { useEffect } from "react";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
-  const [, azureDispatch] = useAzure();
+  const [azureState, azureDispatch] = useAzure();
+
+  useEffect(() => {
+    if (accountState.status === "logged out") {
+      // Navigate back to the login page once account is logged out
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Login" }],
+      });
+    }
+  }, [accountState.status, navigation]);
 
   const showDeletionDialog = () => {
     Alert.alert(
@@ -32,12 +43,6 @@ export default function DeleteAccountButton() {
               tokenState.refreshToken,
               accountState.account
             );
-
-            //Navigate back to login
-            navigation.reset({
-              index: 0,
-              routes: [{ name: "Login" }],
-            });
           },
         },
       ]
