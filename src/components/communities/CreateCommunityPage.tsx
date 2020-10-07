@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ScrollView, Switch, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
 
 import {
   CreateCommunityPageRouteProp,
@@ -9,6 +9,8 @@ import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 import Text from "../themed/Text";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Community } from "../../models/community";
 
 type CreateCommunityPageProps = {
   route: CreateCommunityPageRouteProp;
@@ -41,9 +43,34 @@ const styles = StyleSheet.create({
   },
 });
 
+type FormValues = {
+  name: string;
+  description: string;
+  codeOfConduct: string;
+};
+
+const formErrors = {
+  name: "Community name cannot be empty",
+  description: "Description cannot be empty",
+  codeOfConduct: "Code of Conduct cannot be empty",
+};
+
 export default function CreateCommunityPage({
   navigation,
 }: CreateCommunityPageProps) {
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
+
+  useEffect(() => {
+    register("name", { required: true, minLength: 1 });
+    register("description", { required: true, minLength: 1 });
+    register("codeOfConduct", { required: true, minLength: 1 });
+  }, [register]);
+
+  const submitCommunity: SubmitHandler<FormValues> = (data) => {
+    Alert.alert("", data.name + data.description + data.codeOfConduct);
+    // const test: Community = {};
+  };
+
   const [sw1, setSw1] = useState(false);
   const toggleSw1 = () => setSw1((previousState) => !previousState);
   const [sw2, setSw2] = useState(false);
@@ -62,6 +89,10 @@ export default function CreateCommunityPage({
         <ThemedInput
           placeholder="The Ooga Booga Club"
           label="What should your community be called?"
+          onChangeText={(text) => {
+            setValue("name", text);
+          }}
+          errorMessage={errors.name ? formErrors.name : ""}
         />
       </Box>
       <Box backgroundColor="headerBackground">
@@ -73,6 +104,10 @@ export default function CreateCommunityPage({
         <ThemedInput
           placeholder="Ooga. Booga. Oogabooga!"
           label="Add a brief description of this community."
+          onChangeText={(text) => {
+            setValue("description", text);
+          }}
+          errorMessage={errors.description ? formErrors.description : ""}
         />
       </Box>
       <Box backgroundColor="headerBackground">
@@ -84,6 +119,10 @@ export default function CreateCommunityPage({
         <ThemedInput
           placeholder="Booga oog, o boo gaboo agoo."
           label="What rules should members follow?"
+          onChangeText={(text) => {
+            setValue("codeOfConduct", text);
+          }}
+          errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
         />
       </Box>
       <Box backgroundColor="headerBackground">
@@ -120,10 +159,7 @@ export default function CreateCommunityPage({
           />
         </Box>
       </Box>
-      <ThemedButton
-        title="Submit"
-        onPress={() => navigation.push("DevelopmentLinks")}
-      />
+      <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
     </ScrollView>
   );
 }
