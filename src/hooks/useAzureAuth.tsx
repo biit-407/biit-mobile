@@ -1,7 +1,6 @@
 import {
   useAutoDiscovery,
   useAuthRequest,
-  makeRedirectUri,
   AuthRequest,
   AuthRequestPromptOptions,
   AuthError,
@@ -70,7 +69,8 @@ const useAzureAuth = (): UseAzureAuthReturnType => {
       // redirectUri: makeRedirectUri({
       //   useProxy: true,
       // }),
-      redirectUri: 'https://auth.expo.io/@stephend17/biit-mobile',
+      redirectUri: "https://auth.expo.io/@biit/biit-mobile",
+      // redirectUri: 'biit-mobile://login',
       usePKCE: false,
     },
     discovery

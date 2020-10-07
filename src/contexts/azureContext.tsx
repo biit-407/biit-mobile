@@ -109,9 +109,9 @@ class AzureClient {
       client_id: AZURE_CLIENT_ID, // eslint-disable-line camelcase
       scope: "https://graph.microsoft.com/User.Read",
       code: grantToken,
-      redirect_uri: "https://auth.expo.io/@stephend17/biit-mobile", // eslint-disable-line camelcase
+      redirect_uri: "https://auth.expo.io/@biit/biit-mobile", // eslint-disable-line camelcase
     };
-
+    // console.log(grantToken)
     const formBodyStr = Object.keys(body)
       .map(
         (key) => encodeURIComponent(key) + "=" + encodeURIComponent(body[key])
@@ -125,7 +125,9 @@ class AzureClient {
       },
       body: formBodyStr,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        return response.json();
+      })
       .then((responseJson) => {
         return {
           accessToken: responseJson.access_token,
@@ -159,6 +161,7 @@ class AzureClient {
 async function requestTokens(dispatch: Dispatch, state: AzureState) {
   try {
     const tokens = await AzureClient.requestTokens(state.grantToken);
+    // console.log(tokens)
     dispatch({
       ...state,
       type: "set tokens",
@@ -166,6 +169,7 @@ async function requestTokens(dispatch: Dispatch, state: AzureState) {
       accessToken: tokens.accessToken,
     });
   } catch (error) {
+    console.log(error);
     dispatch({ ...state, type: "invalidate" });
   }
 }

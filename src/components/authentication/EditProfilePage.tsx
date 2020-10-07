@@ -104,14 +104,20 @@ const formErrors = {
 export default function EditProfilePage({}: EditProfilePageProps) {
   // Setup form validation for edit profile
   const navigation = useNavigation();
-  const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
   const [accountState, accountDispatch] = useAccount();
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>({
+    defaultValues: {
+      firstName: accountState.account.fname,
+      lastName: accountState.account.lname,
+    },
+  });
   const [tokenState, tokenDispatch] = useToken();
+
   useEffect(() => {
     register("firstName", { required: true, minLength: 1 });
     register("lastName", { required: true, minLength: 1 });
-    // TODO: Call setValue for both name fields if populating with initial data
   }, [register]);
+
   const submitProfile: SubmitHandler<FormValues> = (data) => {
     updateAccount(
       accountDispatch,
@@ -125,10 +131,12 @@ export default function EditProfilePage({}: EditProfilePageProps) {
       routes: [{ name: "ViewProfile" }],
     });
   };
+
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   // Hook used to store local image url for profile image
   const [profileImageURL, setProfileImageURL] = useState("");
+
   // Generic method that allows user to select an image from the gallery/camera after requesting permissions
   // TODO: Add dialog/alert if user denies permission
   const selectImage = async (
