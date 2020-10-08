@@ -53,13 +53,23 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Join Community"
-          onPress={() => navigation.push("JoinCommunity")}
+          onPress={() =>
+            navigation.push("JoinCommunity", {
+              name:
+                "the group of students who decided to build this application",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>
         <Button
           title="Leave Community"
-          onPress={() => navigation.push("LeaveCommunity")}
+          onPress={() =>
+            navigation.push("LeaveCommunity", {
+              name:
+                "the group of students who decided to build this application",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>
