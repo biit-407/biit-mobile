@@ -188,9 +188,12 @@ class CommunityClient {
   public static async update(
     token: string,
     email: string,
+    name: string,
     community: Community
   ): Promise<[Community, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}&email=${email}&updateFields=${JSON.stringify(community)}`;
+    const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}&email=${email}&updateFields=${JSON.stringify(
+      community
+    )}`;
 
     return await fetch(endpoint, {
       method: "PUT",
@@ -444,6 +447,7 @@ async function updateCommunity(
   tokenDispatch: TokenDispatch,
   token: string,
   email: string,
+  name: string,
   community: Community
 ) {
   communityDispatch({
@@ -456,6 +460,7 @@ async function updateCommunity(
     const [updatedCommunity, newToken] = await CommunityClient.update(
       token,
       email,
+      name,
       community
     );
     tokenDispatch({ ...newToken, type: "set" });

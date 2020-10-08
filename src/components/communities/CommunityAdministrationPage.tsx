@@ -93,6 +93,7 @@ export default function CommunityAdministrationPage({
       tokenDispatch,
       tokenState.refreshToken,
       accountState.account.email,
+      community.name,
       {
         ...community,
         name: data.name,
