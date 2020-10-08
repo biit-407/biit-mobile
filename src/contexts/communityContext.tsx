@@ -190,7 +190,7 @@ class CommunityClient {
     email: string,
     community: Community
   ): Promise<[Community, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}&email=${email}&updatedFields=${JSON.stringify(community)}`;
+    const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}&email=${email}&updateFields=${JSON.stringify(community)}`;
 
     return await fetch(endpoint, {
       method: "PUT",
