@@ -621,24 +621,24 @@ async function leaveCommunity(
 
 function getCommunity(communityState: CommunityState, name: string) {
   for (let i = 0; i < communityState.communities.length; i++) {
-    const element = communityState.communities[i]
+    const element = communityState.communities[i];
     if (element.name.toLowerCase() === name.toLowerCase()) {
-      return element
+      return element;
     }
   }
 
-  return BLANK_COMMUNITY
+  return BLANK_COMMUNITY;
 }
 
-function isCommunityLoaded(communityState: CommunityState, name: stirng) {
+function isCommunityLoaded(communityState: CommunityState, name: string) {
   for (let i = 0; i < communityState.communities.length; i++) {
-    const element = communityState.communities[i]
+    const element = communityState.communities[i];
     if (element.name.toLowerCase() === name.toLowerCase()) {
-      return true
+      return true;
     }
   }
 
-  return false
+  return false;
 }
 
 export {
@@ -655,5 +655,5 @@ export {
   joinCommunity,
   leaveCommunity,
   getCommunity,
-  isCommunityLoaded
+  isCommunityLoaded,
 };

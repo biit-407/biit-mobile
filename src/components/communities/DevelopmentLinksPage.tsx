@@ -75,7 +75,12 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Member List"
-          onPress={() => navigation.push("MemberList", { name: "the group of students who decided to build this application"})}
+          onPress={() =>
+            navigation.push("MemberList", {
+              name:
+                "the group of students who decided to build this application",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>
