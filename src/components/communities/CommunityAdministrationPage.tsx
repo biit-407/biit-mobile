@@ -16,6 +16,7 @@ import {
   useCommunityState,
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
+import { useAccount, useAccountState } from "../../contexts/accountContext";
 
 type CommunityAdministrationPageProps = {
   route: CommunityAdministrationPageRouteProp;
@@ -84,8 +85,10 @@ export default function CommunityAdministrationPage({
   // Create a handler for submitting the form
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
+  const accountState = useAccountState();
+
   const submitCommunity: SubmitHandler<FormValues> = (data) => {
-    updateCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, {
+    updateCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, accountState.account.email, {
       ...community,
       name: data.name,
       codeofconduct: data.codeOfConduct,
