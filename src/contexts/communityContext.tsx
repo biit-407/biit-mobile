@@ -139,11 +139,11 @@ class CommunityClient {
         return [
           {
             name: responseJson.data.name,
-            codeOfConduct: responseJson.data.codeOfConduct,
-            admins: responseJson.data.admins,
-            members: responseJson.data.members,
+            codeofconduct: responseJson.data.codeofconduct,
+            Admins: responseJson.data.Admins,
+            Members: responseJson.data.Members,
             mpm: responseJson.data.mpm,
-            meetType: responseJson.data.meetType,
+            meettype: responseJson.data.meettype,
           } as Community,
           {
             refreshToken: responseJson.refresh_token,
@@ -171,11 +171,11 @@ class CommunityClient {
         return [
           {
             name: responseJson.data.name,
-            codeOfConduct: responseJson.data.codeOfConduct,
-            admins: responseJson.data.admins,
-            members: responseJson.data.members,
+            codeofconduct: responseJson.data.codeofconduct,
+            Admins: responseJson.data.Admins,
+            Members: responseJson.data.Members,
             mpm: responseJson.data.mpm,
-            meetType: responseJson.data.meetType,
+            meettype: responseJson.data.meettype,
           } as Community,
           {
             refreshToken: responseJson.refresh_token,
@@ -207,11 +207,11 @@ class CommunityClient {
         return [
           {
             name: responseJson.data.name,
-            codeOfConduct: responseJson.data.codeOfConduct,
-            admins: responseJson.data.admins,
-            members: responseJson.data.members,
+            codeofconduct: responseJson.data.codeofconduct,
+            Admins: responseJson.data.Admins,
+            Members: responseJson.data.Members,
             mpm: responseJson.data.mpm,
-            meetType: responseJson.data.meetType,
+            meettype: responseJson.data.meettype,
           } as Community,
           {
             refreshToken: responseJson.refresh_token,
@@ -326,11 +326,11 @@ class CommunityClient {
         return [
           {
             name: responseJson.data.name,
-            codeOfConduct: responseJson.data.codeOfConduct,
-            admins: responseJson.data.admins,
-            members: responseJson.data.members,
+            codeofconduct: responseJson.data.codeofconduct,
+            Admins: responseJson.data.Admins,
+            Members: responseJson.data.Members,
             mpm: responseJson.data.mpm,
-            meetType: responseJson.data.meetType,
+            meettype: responseJson.data.meettype,
           } as Community,
           {
             refreshToken: responseJson.refresh_token,
@@ -362,11 +362,11 @@ class CommunityClient {
         return [
           {
             name: responseJson.data.name,
-            codeOfConduct: responseJson.data.codeOfConduct,
-            admins: responseJson.data.admins,
-            members: responseJson.data.members,
+            codeofconduct: responseJson.data.codeofconduct,
+            Admins: responseJson.data.Admins,
+            Members: responseJson.data.Members,
             mpm: responseJson.data.mpm,
-            meetType: responseJson.data.meetType,
+            meettype: responseJson.data.meettype,
           } as Community,
           {
             refreshToken: responseJson.refresh_token,
