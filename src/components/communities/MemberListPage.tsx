@@ -1,6 +1,12 @@
-import React from "react";
-import { StyleSheet, SectionList, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, SectionList } from "react-native";
 
+import {
+  getCommunity,
+  loadCommunity,
+  useCommunity,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
 import {
   MemberListPageRouteProp,
   MemberListPageNavigationProp,
@@ -19,60 +25,24 @@ export const MemberListPageOptions = {
 };
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#FFE8C6",
-    },
-    list: {
-        width: "100%",
-    },
-    listitem: {
-        paddingLeft: 10,
-        borderBottomWidth: 1,
-    },
-    header: {
-        paddingLeft: 5,
-    },
+  root: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFE8C6",
+  },
+  list: {
+    width: "100%",
+  },
+  listitem: {
+    paddingLeft: 10,
+    borderBottomWidth: 1,
+  },
+  header: {
+    paddingLeft: 5,
+  },
 });
-
-// Mocked data
-const DATA = [
-  {
-    title: "A",
-    data: ["Aaron", "Angie", "Arnold"],
-  },
-  {
-    title: "B",
-    data: ["Barney", "Brian", "Buster"],
-  },
-  {
-    title: "C",
-    data: ["Candace", "Cassie", "Cleo", "Cori"],
-  },
-  {
-    title: "D",
-    data: ["Dawn", "Doris", "Dwayne"],
-  },
-  {
-    title: "E",
-    data: ["Earl", "Erin", "Esther"],
-  },
-  {
-    title: "F",
-    data: ["Felix", "Flint", "Frank"],
-  },
-  {
-    title: "G",
-    data: ["Garrett", "Grace", "Grant"],
-  },
-  {
-    title: "H",
-    data: ["Harold", "Heather", "Henry"],
-  },
-];
 
 const Item = ({ title }: { title: string }) => (
   <Box style={styles.listitem}>
@@ -80,25 +50,46 @@ const Item = ({ title }: { title: string }) => (
   </Box>
 );
 
-export default function MemberListPage(_props: MemberListPageProps) {
+export default function MemberListPage({ route }: MemberListPageProps) {
+  const [communityState, communityDispatch] = useCommunity();
+  const [data, setData] = useState<{ title: string; data: string[] }[]>([]);
+  const [tokenState, tokenDispatch] = useToken();
+
+  useEffect(() => {
+    // automatically queue a data update
+    loadCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      route.params.name
+    );
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const community = getCommunity(communityState, route.params.name);
+    setData([
+      { title: "Admins", data: community.Admins },
+      { title: "Members", data: community.Members },
+    ]);
+  }, [communityState, route.params.name]);
+
   return (
     <Box style={styles.root}>
       <Box>
         <Text>Community Name</Text>
       </Box>
-      <ScrollView style={styles.list}>
-        <SectionList
-          sections={DATA}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <Item title={item} />}
-          renderSectionHeader={({ section: { title } }) => (
-            <Box backgroundColor="headerBackground" style={styles.header}>
-              <Text>{title}</Text>
-            </Box>
-          )}
-          ListEmptyComponent={() => <Text>No members exist</Text>}
-        />
-      </ScrollView>
+      <SectionList
+        style={styles.list}
+        sections={data}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => <Item title={item} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <Box backgroundColor="headerBackground" style={styles.header}>
+            <Text>{title}</Text>
+          </Box>
+        )}
+        ListEmptyComponent={() => <Text>No members exist</Text>}
+      />
     </Box>
   );
 }
