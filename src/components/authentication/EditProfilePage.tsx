@@ -126,10 +126,7 @@ export default function EditProfilePage({}: EditProfilePageProps) {
       accountState.account,
       { ...accountState.account, fname: data.firstName, lname: data.lastName }
     );
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "ViewProfile" }],
-    });
+    navigation.goBack();
   };
 
   // Hook used to show and hide the bottomsheet for image selection

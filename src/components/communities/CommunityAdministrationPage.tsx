@@ -88,11 +88,17 @@ export default function CommunityAdministrationPage({
   const accountState = useAccountState();
 
   const submitCommunity: SubmitHandler<FormValues> = (data) => {
-    updateCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, accountState.account.email, {
-      ...community,
-      name: data.name,
-      codeofconduct: data.codeOfConduct,
-    })
+    updateCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account.email,
+      {
+        ...community,
+        name: data.name,
+        codeofconduct: data.codeOfConduct,
+      }
+    )
       .then(() => Alert.alert("Updated Community!"))
       .catch((err) => Alert.alert("Error Updating Community!", err));
   };
