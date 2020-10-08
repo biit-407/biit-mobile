@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Switch, StyleSheet, Alert, BUtton } from "react-native";
+import { ScrollView, Switch, StyleSheet, Alert, Button } from "react-native";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import {
