@@ -54,12 +54,18 @@ const useLoadAssets = (assets: number[], fonts: FontSource): boolean => {
 interface LoadAssetsProps {
   fonts?: FontSource;
   assets?: number[];
+  saveState?: boolean;
   children: ReactElement | ReactElement[];
 }
 
-const LoadAssets = ({ assets, fonts, children }: LoadAssetsProps) => {
+const LoadAssets = ({
+  assets,
+  fonts,
+  saveState,
+  children,
+}: LoadAssetsProps) => {
   // will save navigation state when refreshing a developer build
-  const [isNavigationReady, setIsNavigationReady] = useState(!__DEV__);
+  const [isNavigationReady, setIsNavigationReady] = useState(!saveState); // __DEV__
   const [initialState, setInitialState] = useState<InitialState | undefined>();
   const ready = useLoadAssets(assets || [], fonts || {});
   useEffect(() => {
@@ -71,7 +77,7 @@ const LoadAssets = ({ assets, fonts, children }: LoadAssetsProps) => {
         const state = savedStateString
           ? JSON.parse(savedStateString)
           : undefined;
-        // setInitialState(state);
+        setInitialState(state);
       } finally {
         setIsNavigationReady(true);
       }
