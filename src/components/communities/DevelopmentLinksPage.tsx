@@ -77,8 +77,7 @@ export default function DevelopmentLinksPage({
           title="Member List"
           onPress={() =>
             navigation.push("MemberList", {
-              name:
-                "the group of students who decided to build this application",
+              name: "Johnsons",
             })
           }
         />
