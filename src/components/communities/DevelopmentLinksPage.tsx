@@ -77,8 +77,7 @@ export default function DevelopmentLinksPage({
           title="Member List"
           onPress={() =>
             navigation.push("MemberList", {
-              name:
-                "the group of students who decided to build this application",
+              name: "Johnsons",
             })
           }
         />
@@ -92,7 +91,11 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Community Administration"
-          onPress={() => navigation.push("CommunityAdministration")}
+          onPress={() =>
+            navigation.push("CommunityAdministration", {
+              name: "NewFinal",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>

@@ -12,7 +12,7 @@ type RootStackParamList = {
   CreateCommunity: undefined;
   JoinCommunity: { name: string };
   LeaveCommunity: { name: string };
-  CommunityAdministration: undefined;
+  CommunityAdministration: { name: string };
   UserSettings: undefined;
   MemberList: { name: string };
   DevelopmentLinks: undefined;
