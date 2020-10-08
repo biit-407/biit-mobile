@@ -50,12 +50,10 @@ const styles = StyleSheet.create({
 });
 
 type FormValues = {
-  name: string;
   codeOfConduct: string;
 };
 
 const formErrors = {
-  name: "Community name cannot be empty",
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
@@ -71,14 +69,12 @@ export default function CommunityAdministrationPage({
   // Setup initial form
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>({
     defaultValues: {
-      name: community.name,
       codeOfConduct: community.codeofconduct,
     },
   });
 
   // Register the form values
   useEffect(() => {
-    register("name", { required: true, minLength: 1 });
     register("codeOfConduct", { required: true, minLength: 1 });
   }, [register]);
 
@@ -96,7 +92,6 @@ export default function CommunityAdministrationPage({
       community.name,
       {
         ...community,
-        name: data.name,
         codeofconduct: data.codeOfConduct,
       }
     )
@@ -113,21 +108,6 @@ export default function CommunityAdministrationPage({
 
   return (
     <ScrollView style={styles.root}>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Title
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder={community.name}
-          label="Edit Community Name"
-          onChangeText={(text) => {
-            setValue("name", text);
-          }}
-          errorMessage={errors.name ? formErrors.name : ""}
-        />
-      </Box>
       <Box backgroundColor="headerBackground">
         <Text variant="header" style={styles.header}>
           Code of Conduct
