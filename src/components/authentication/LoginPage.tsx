@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, Linking } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { getAccount, useAccount } from "../../contexts/accountContext";
@@ -136,9 +136,18 @@ export default function LoginPage({ navigation }: LoginPageProps) {
         Login and get started!
       </Text>
       <MicrosoftButton title="Sign in with Microsoft" onPress={onPress} />
-      <Box marginVertical="lg">
+      <Box marginTop="lg">
         <TouchableOpacity onPress={() => navigation.push("CreateAccount")}>
           <Text variant="link">Need to Create an Account?</Text>
+        </TouchableOpacity>
+      </Box>
+      <Box marginTop="lg">
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL("https://account.live.com/password/reset")
+          }
+        >
+          <Text variant="link">Forgot your password?</Text>
         </TouchableOpacity>
       </Box>
     </Box>
