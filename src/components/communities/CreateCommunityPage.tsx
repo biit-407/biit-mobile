@@ -10,6 +10,13 @@ import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 import Text from "../themed/Text";
+import {
+  createCommunity,
+  useCommunityDispatch,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { BLANK_COMMUNITY } from "../../models/community";
+import { useAccountState } from "../../contexts/accountContext";
 
 type CreateCommunityPageProps = {
   route: CreateCommunityPageRouteProp;
@@ -44,13 +51,11 @@ const styles = StyleSheet.create({
 
 type FormValues = {
   name: string;
-  description: string;
   codeOfConduct: string;
 };
 
 const formErrors = {
   name: "Community name cannot be empty",
-  description: "Description cannot be empty",
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
@@ -59,13 +64,32 @@ export default function CreateCommunityPage({}: CreateCommunityPageProps) {
 
   useEffect(() => {
     register("name", { required: true, minLength: 1 });
-    register("description", { required: true, minLength: 1 });
     register("codeOfConduct", { required: true, minLength: 1 });
   }, [register]);
 
+  const communityDispatch = useCommunityDispatch();
+  const [tokenState, tokenDispatch] = useToken();
+  const accountState = useAccountState();
+
   const submitCommunity: SubmitHandler<FormValues> = (data) => {
-    Alert.alert("", data.name + data.description + data.codeOfConduct);
-    // const test: Community = {};
+    console.log({
+      ...BLANK_COMMUNITY,
+      name: data.name,
+      codeOfConduct: data.codeOfConduct,
+      admins: [accountState.account.email],
+      members: [accountState.account.email],
+      token: tokenState.refreshToken,
+    });
+    createCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, {
+      ...BLANK_COMMUNITY,
+      name: data.name,
+      codeOfConduct: data.codeOfConduct,
+      admins: [accountState.account.email],
+      members: [accountState.account.email],
+      token: tokenState.accessToken,
+    })
+      .then(() => Alert.alert("Created Community!"))
+      .catch((err) => Alert.alert("Error Creating Community!", err));
   };
 
   const [sw1, setSw1] = useState(false);
@@ -84,7 +108,7 @@ export default function CreateCommunityPage({}: CreateCommunityPageProps) {
       </Box>
       <Box style={styles.detailbox}>
         <ThemedInput
-          placeholder="The Ooga Booga Club"
+          placeholder="Community Name"
           label="What should your community be called?"
           onChangeText={(text) => {
             setValue("name", text);
@@ -92,21 +116,7 @@ export default function CreateCommunityPage({}: CreateCommunityPageProps) {
           errorMessage={errors.name ? formErrors.name : ""}
         />
       </Box>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Description
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder="Ooga. Booga. Oogabooga!"
-          label="Add a brief description of this community."
-          onChangeText={(text) => {
-            setValue("description", text);
-          }}
-          errorMessage={errors.description ? formErrors.description : ""}
-        />
-      </Box>
+
       <Box backgroundColor="headerBackground">
         <Text variant="header" style={styles.header}>
           Code of Conduct
@@ -120,6 +130,7 @@ export default function CreateCommunityPage({}: CreateCommunityPageProps) {
             setValue("codeOfConduct", text);
           }}
           errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
+          multiline={true}
         />
       </Box>
       <Box backgroundColor="headerBackground">
