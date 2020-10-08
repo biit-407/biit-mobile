@@ -193,6 +193,7 @@ export default function CommunityAdministrationPage({
             }}
           />
         </Box>
+      </Box>
       <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
     </ScrollView>
   );
