@@ -619,6 +619,28 @@ async function leaveCommunity(
   }
 }
 
+function getCommunity(communityState: CommunityState, name: string) {
+  for (let i = 0; i < communityState.communities.length; i++) {
+    const element = communityState.communities[i]
+    if (element.name.toLowerCase() === name.toLowerCase()) {
+      return element
+    }
+  }
+
+  return BLANK_COMMUNITY
+}
+
+function isCommunityLoaded(communityState: CommunityState, name: stirng) {
+  for (let i = 0; i < communityState.communities.length; i++) {
+    const element = communityState.communities[i]
+    if (element.name.toLowerCase() === name.toLowerCase()) {
+      return true
+    }
+  }
+
+  return false
+}
+
 export {
   CommunityProvider,
   useCommunity,
@@ -632,4 +654,6 @@ export {
   unbanUserFromCommunity,
   joinCommunity,
   leaveCommunity,
+  getCommunity,
+  isCommunityLoaded
 };
