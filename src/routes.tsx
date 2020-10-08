@@ -10,8 +10,8 @@ type RootStackParamList = {
   EditProfile: undefined;
   BannedUsers: undefined;
   CreateCommunity: undefined;
-  JoinCommunity: {name: string};
-  LeaveCommunity: {name: string};
+  JoinCommunity: { name: string };
+  LeaveCommunity: { name: string };
   CommunityAdministration: undefined;
   UserSettings: undefined;
   MemberList: undefined;

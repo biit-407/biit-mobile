@@ -19,23 +19,23 @@ export const MemberListPageOptions = {
 };
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#FFE8C6",
-    },
-    list: {
-        width: "100%",
-    },
-    listitem: {
-        paddingLeft: 10,
-        borderBottomWidth: 1,
-    },
-    header: {
-        paddingLeft: 5,
-    },
+  root: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFE8C6",
+  },
+  list: {
+    width: "100%",
+  },
+  listitem: {
+    paddingLeft: 10,
+    borderBottomWidth: 1,
+  },
+  header: {
+    paddingLeft: 5,
+  },
 });
 
 // Mocked data
