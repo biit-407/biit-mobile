@@ -87,7 +87,11 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Community Administration"
-          onPress={() => navigation.push("CommunityAdministration")}
+          onPress={() =>
+            navigation.push("CommunityAdministration", {
+              name: "X",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>

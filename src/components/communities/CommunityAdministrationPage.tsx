@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { ScrollView, Switch, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import {
   CommunityAdministrationPageRouteProp,
@@ -9,6 +10,12 @@ import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 import Text from "../themed/Text";
+import {
+  updateCommunity,
+  useCommunityDispatch,
+  useCommunityState,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
 
 type CommunityAdministrationPageProps = {
   route: CommunityAdministrationPageRouteProp;
@@ -41,9 +48,52 @@ const styles = StyleSheet.create({
   },
 });
 
+type FormValues = {
+  name: string;
+  codeOfConduct: string;
+};
+
+const formErrors = {
+  name: "Community name cannot be empty",
+  codeOfConduct: "Code of Conduct cannot be empty",
+};
+
 export default function CommunityAdministrationPage({
-  navigation,
+  route,
 }: CommunityAdministrationPageProps) {
+  // TODO: Refactor using Stephen's hook (Stephen has a hook in the yet to be merged PR)
+  const communityState = useCommunityState();
+  const [community] = communityState.communities.filter(
+    (element) => element.name.toLowerCase() === route.params.name.toLowerCase()
+  );
+
+  // Setup initial form
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>({
+    defaultValues: {
+      name: community.name,
+      codeOfConduct: community.codeofconduct,
+    },
+  });
+
+  // Register the form values
+  useEffect(() => {
+    register("name", { required: true, minLength: 1 });
+    register("codeOfConduct", { required: true, minLength: 1 });
+  }, [register]);
+
+  // Create a handler for submitting the form
+  const communityDispatch = useCommunityDispatch();
+  const [tokenState, tokenDispatch] = useToken();
+  const submitCommunity: SubmitHandler<FormValues> = (data) => {
+    updateCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, {
+      ...community,
+      name: data.name,
+      codeofconduct: data.codeOfConduct,
+    })
+      .then(() => Alert.alert("Updated Community!"))
+      .catch((err) => Alert.alert("Error Updating Community!", err));
+  };
+
   const [sw1, setSw1] = useState(false);
   const toggleSw1 = () => setSw1((previousState) => !previousState);
   const [sw2, setSw2] = useState(false);
@@ -60,19 +110,12 @@ export default function CommunityAdministrationPage({
       </Box>
       <Box style={styles.detailbox}>
         <ThemedInput
-          placeholder="The Ooga Booga Club"
+          placeholder={community.name}
           label="Edit Community Name"
-        />
-      </Box>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Description
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder="Ooga. Booga. Oogabooga!"
-          label="Edit Community Description"
+          onChangeText={(text) => {
+            setValue("name", text);
+          }}
+          errorMessage={errors.name ? formErrors.name : ""}
         />
       </Box>
       <Box backgroundColor="headerBackground">
@@ -82,8 +125,13 @@ export default function CommunityAdministrationPage({
       </Box>
       <Box style={styles.detailbox}>
         <ThemedInput
-          placeholder="Booga oog, o boo gaboo agoo."
+          placeholder={community.codeofconduct}
           label="Edit Code of Conduct"
+          onChangeText={(text) => {
+            setValue("codeOfConduct", text);
+          }}
+          errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
+          multiline={true}
         />
       </Box>
       <Box backgroundColor="headerBackground">
@@ -120,10 +168,7 @@ export default function CommunityAdministrationPage({
           />
         </Box>
       </Box>
-      <ThemedButton
-        title="Submit"
-        onPress={() => navigation.push("DevelopmentLinks")}
-      />
+      <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
     </ScrollView>
   );
 }
