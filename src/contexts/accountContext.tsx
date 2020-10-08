@@ -200,8 +200,7 @@ class AccountClient {
 
   public static async update(
     token: string,
-    account: Account,
-    updates: Account
+    { account, updates }: { account: Account; updates: Account }
   ): Promise<[Account, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${
       account.email
@@ -223,47 +222,12 @@ class AccountClient {
   }
 }
 
-async function createAccount(
-  dispatch: Dispatch,
-  token: string,
-  account: Account,
-  tokenDispatch: TokenDispatch
-) {
-  dispatch({
-    type: "start update",
-    account: account,
-    error: "failed to create account",
-  });
-
-  try {
-    const [createdAccount, newTokens]: [
-      Account,
-      { refreshToken: string; accessToken: string }
-    ] = await AccountClient.create(token, account);
-    dispatch({
-      type: "finish update",
-      account: createdAccount,
-      error: "successfully created account",
-    });
-    tokenDispatch({
-      type: "set",
-      refreshToken: newTokens.refreshToken,
-      accessToken: newTokens.accessToken,
-    });
-  } catch (error) {
-    dispatch({
-      type: "fail update",
-      account: account,
-      error: "failed to create account",
-    });
-  }
-}
-
-async function getAccount(
+async function _accountHelper<T, R>(
   accountDispatch: Dispatch,
-  tokenDispatch: TokenDispatch,
   token: string,
-  email: string
+  account: T,
+  requestFunc: (token: string, account: T) => Promise<R>,
+  handleResponse: (response: R) => void
 ) {
   accountDispatch({
     type: "start update",
@@ -272,21 +236,63 @@ async function getAccount(
   });
 
   try {
-    const [account, newToken] = await AccountClient.get(token, email);
-    tokenDispatch({ ...newToken, type: "set" });
-    accountDispatch({
-      type: "finish update",
-      account: account,
-      error: "Successfully got account",
-    });
+    const response: R = await requestFunc(token, account);
+    handleResponse(response);
   } catch (error) {
-    console.log(error);
     accountDispatch({
       type: "fail update",
       account: BLANK_ACCOUNT,
-      error: "Failed to get account",
+      error: "failed to create account",
     });
   }
+}
+
+async function createAccount(
+  dispatch: Dispatch,
+  token: string,
+  account: Account,
+  tokenDispatch: TokenDispatch
+) {
+  await _accountHelper<Account, [Account, OauthToken]>(
+    dispatch,
+    token,
+    account,
+    AccountClient.create,
+    (response) => {
+      dispatch({
+        type: "finish update",
+        account: response[0],
+        error: "successfully created account",
+      });
+      tokenDispatch({
+        type: "set",
+        refreshToken: response[1].refreshToken,
+        accessToken: response[1].accessToken,
+      });
+    }
+  );
+}
+
+async function getAccount(
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string
+) {
+  await _accountHelper<string, [Account, OauthToken]>(
+    accountDispatch,
+    token,
+    email,
+    AccountClient.get,
+    (response) => {
+      tokenDispatch({ ...response[1], type: "set" });
+      accountDispatch({
+        type: "finish update",
+        account: response[0],
+        error: "Successfully got account",
+      });
+    }
+  );
 }
 
 async function updateAccount(
@@ -296,31 +302,23 @@ async function updateAccount(
   account: Account,
   updates: Account
 ) {
-  accountDispatch({
-    type: "start update",
-    account: account,
-    error: "failed to update account",
-  });
-
-  try {
-    const [updatedAccount, newToken] = await AccountClient.update(
-      token,
-      account,
-      updates
-    );
-    tokenDispatch({ ...newToken, type: "set" });
-    accountDispatch({
-      type: "finish update",
-      account: updatedAccount,
-      error: "successfully updated account",
-    });
-  } catch (error) {
-    accountDispatch({
-      type: "fail update",
-      account: account,
-      error: "failed to update account",
-    });
-  }
+  await _accountHelper<
+    { account: Account; updates: Account },
+    [Account, OauthToken]
+  >(
+    accountDispatch,
+    token,
+    { account, updates },
+    AccountClient.update,
+    (response) => {
+      tokenDispatch({ ...response[1], type: "set" });
+      accountDispatch({
+        type: "finish update",
+        account: response[0],
+        error: "Successfully updated account",
+      });
+    }
+  );
 }
 
 async function deleteAccount(
@@ -330,40 +328,34 @@ async function deleteAccount(
   token: string,
   account: Account
 ) {
-  accountDispatch({
-    type: "start update",
-    account: account,
-    error: "failed to delete account",
-  });
-  try {
-    const success = await AccountClient.delete(token, account.email);
-    if (success) {
-      tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
-      azureDispatch({
-        type: "invalidate",
-        ...BLANK_TOKEN,
-        grantToken: "",
-        userInfo: BLANK_AZURE_USER_INFO,
-      });
-      accountDispatch({
-        type: "invalidate",
-        account: BLANK_ACCOUNT,
-        error: "successfully deleted account",
-      });
-    } else {
-      accountDispatch({
-        type: "fail update",
-        account: account,
-        error: "failed to delete account",
-      });
+  await _accountHelper<string, boolean>(
+    accountDispatch,
+    token,
+    account.email,
+    AccountClient.delete,
+    (response) => {
+      if (response) {
+        tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
+        azureDispatch({
+          type: "invalidate",
+          ...BLANK_TOKEN,
+          grantToken: "",
+          userInfo: BLANK_AZURE_USER_INFO,
+        });
+        accountDispatch({
+          type: "invalidate",
+          account: BLANK_ACCOUNT,
+          error: "successfully deleted account",
+        });
+      } else {
+        accountDispatch({
+          type: "fail update",
+          account: account,
+          error: "failed to delete account",
+        });
+      }
     }
-  } catch (error) {
-    accountDispatch({
-      type: "fail update",
-      account: account,
-      error: "failed to delete account",
-    });
-  }
+  );
 }
 
 async function logoutAccount(
