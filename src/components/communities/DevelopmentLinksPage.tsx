@@ -105,6 +105,12 @@ export default function DevelopmentLinksPage({
           onPress={() => navigation.push("UserSettings")}
         />
       </Box>
+      <Box style={styles.btnbox}>
+        <Button
+          title="View Profile"
+          onPress={() => navigation.push("ViewProfile")}
+        />
+      </Box>
     </Box>
   );
 }
