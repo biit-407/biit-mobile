@@ -91,12 +91,9 @@ export default function DevelopmentLinksPage({
         />
       </Box>
       <Box style={styles.btnbox}>
-        <Button title="Login" onPress={() => navigation.push("Login")} />
-      </Box>
-      <Box style={styles.btnbox}>
         <Button
-          title="Create Account"
-          onPress={() => navigation.push("CreateAccount")}
+          title="Banned Users"
+          onPress={() => navigation.push("BannedUsers")}
         />
       </Box>
       <Box style={styles.btnbox}>

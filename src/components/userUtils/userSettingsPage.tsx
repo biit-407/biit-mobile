@@ -7,9 +7,9 @@ import {
   UserSettingsPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
+import LogoutButton from "../authentication/LogoutButton";
 
 type UserSettingsPageProps = {
   route: UserSettingsPageRouteProp;
@@ -32,10 +32,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 3,
     width: "100%",
   },
-  // header: {
-  //   width: "100%",
-  //   paddingLeft: 5,
-  // },
   itemframe: {
     flexDirection: "column",
     borderBottomWidth: 3,
@@ -56,9 +52,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function UserSettingsPage({
-  navigation,
-}: UserSettingsPageProps) {
+export default function UserSettingsPage({}: UserSettingsPageProps) {
   const [sw1, setSw1] = useState(false);
   const toggleSw1 = () => setSw1((previousState) => !previousState);
   const [sw2, setSw2] = useState(false);
@@ -71,19 +65,6 @@ export default function UserSettingsPage({
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={styles.scrollview}>
-        <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Edit profile</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <ThemedButton
-                title="Edit Profile"
-                onPress={() => navigation.push("EditProfile")}
-              />
-            </Box>
-          </Box>
-        </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
             <Box style={styles.txt}>
@@ -141,6 +122,14 @@ export default function UserSettingsPage({
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
             <Box style={styles.txt}>
+              <Text>Logout</Text>
+            </Box>
+            <Box style={styles.btn}>
+              <LogoutButton />
+            </Box>
+          </Box>
+          <Box style={styles.item}>
+            <Box style={styles.txt}>
               <Text>Delete Account</Text>
             </Box>
             <Box style={styles.btn}>
@@ -148,10 +137,6 @@ export default function UserSettingsPage({
             </Box>
           </Box>
         </Box>
-        <ThemedButton
-          title="Save"
-          onPress={() => navigation.push("DevelopmentLinks")}
-        />
       </ScrollView>
     </Box>
   );

@@ -54,9 +54,7 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CreateCommunityPage({
-  navigation,
-}: CreateCommunityPageProps) {
+export default function CreateCommunityPage({}: CreateCommunityPageProps) {
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
 
   useEffect(() => {
@@ -158,13 +156,7 @@ export default function CreateCommunityPage({
           />
         </Box>
       </Box>
-      <ThemedButton
-        title="Submit"
-        onPress={() => {
-          handleSubmit(submitCommunity);
-          navigation.push("DevelopmentLinks");
-        }}
-      />
+      <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
     </ScrollView>
   );
 }
