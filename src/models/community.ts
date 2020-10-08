@@ -1,19 +1,17 @@
 export interface Community {
   name: string;
-  codeOfConduct: string;
-  admins: string[];
-  members: string[];
+  codeofconduct: string;
+  Admins: string[];
+  Members: string[];
   mpm: string;
-  meetType: string;
-  token: string;
+  meettype: string;
 }
 
 export const BLANK_COMMUNITY: Community = {
   name: "",
-  codeOfConduct: "",
-  admins: [],
-  members: [],
+  codeofconduct: "",
+  Admins: [],
+  Members: [],
   mpm: "",
-  meetType: "",
-  token: "",
+  meettype: "",
 };

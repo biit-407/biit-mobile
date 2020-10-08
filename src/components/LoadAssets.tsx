@@ -71,7 +71,7 @@ const LoadAssets = ({ assets, fonts, children }: LoadAssetsProps) => {
         const state = savedStateString
           ? JSON.parse(savedStateString)
           : undefined;
-        setInitialState(state);
+        // setInitialState(state);
       } finally {
         setIsNavigationReady(true);
       }

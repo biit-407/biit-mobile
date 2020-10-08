@@ -75,18 +75,18 @@ export default function CreateCommunityPage({}: CreateCommunityPageProps) {
     console.log({
       ...BLANK_COMMUNITY,
       name: data.name,
-      codeOfConduct: data.codeOfConduct,
-      admins: [accountState.account.email],
-      members: [accountState.account.email],
+      codeofconduct: data.codeOfConduct,
+      Admins: [accountState.account.email],
+      Members: [accountState.account.email],
       token: tokenState.refreshToken,
     });
     createCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, {
       ...BLANK_COMMUNITY,
       name: data.name,
-      codeOfConduct: data.codeOfConduct,
-      admins: [accountState.account.email],
-      members: [accountState.account.email],
-      token: tokenState.accessToken,
+      codeofconduct: data.codeOfConduct,
+      Admins: [accountState.account.email],
+      Members: [accountState.account.email],
+      // token: tokenState.accessToken,
     })
       .then(() => Alert.alert("Created Community!"))
       .catch((err) => Alert.alert("Error Creating Community!", err));
