@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SectionList, Alert } from "react-native";
-import { acc } from "react-native-reanimated";
-import { useAccountState } from "../../contexts/accountContext";
 
 import {
   banUserFromCommunity,
@@ -12,6 +10,7 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { Account } from "../../models/accounts";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
+import { useAccountState } from "../../contexts/accountContext";
 import {
   MemberListPageRouteProp,
   MemberListPageNavigationProp,
