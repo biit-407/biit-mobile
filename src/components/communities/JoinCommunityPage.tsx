@@ -8,6 +8,9 @@ import {
 import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
+import { joinCommunity, useCommunityDispatch } from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useAccountState } from "../../contexts/accountContext";
 
 type JoinCommunityPageProps = {
   route: JoinCommunityPageRouteProp;
@@ -47,8 +50,17 @@ const styles = StyleSheet.create({
 });
 
 export default function JoinCommunityPage({
+  route,
   navigation,
 }: JoinCommunityPageProps) {
+  const  communityDispatch = useCommunityDispatch()
+  const [tokenState, tokenDispatch] =  useToken()
+  const accountState = useAccountState()
+  
+  function join() {
+    joinCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, accountState.account.email, route.params.name)
+  }
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={styles.txtbox}>
@@ -58,7 +70,7 @@ export default function JoinCommunityPage({
         <Box style={styles.ybtn}>
           <ThemedButton
             title="Yes"
-            onPress={() => navigation.push("DevelopmentLinks")}
+            onPress={() => { join(); navigation.push("DevelopmentLinks") }}
           />
         </Box>
         <Box style={styles.nbtn}>
