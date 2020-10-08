@@ -115,6 +115,7 @@ export default function CreateCommunityPage({}: CreateCommunityPageProps) {
           }}
           errorMessage={errors.name ? formErrors.name : ""}
         />
+        <Text variant="body">* Community name is final</Text>
       </Box>
 
       <Box backgroundColor="headerBackground">
