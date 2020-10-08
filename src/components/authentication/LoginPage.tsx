@@ -117,7 +117,7 @@ export default function LoginPage({ navigation }: LoginPageProps) {
     if (accountState.status === "logged in") {
       navigation.reset({
         index: 0,
-        routes: [{ name: "ViewProfile" }],
+        routes: [{ name: "DevelopmentLinks" }],
       });
     }
   }, [accountState.status, navigation]);
