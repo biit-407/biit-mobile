@@ -7,6 +7,13 @@ import {
   OauthToken,
 } from "../models/azure";
 import { SERVER_ADDRESS } from "../models/constants";
+import {
+  AuthenticatedRequestHandler,
+  AuthenticatedResponseJsonType,
+  Json,
+  RequestHandler,
+  ResponseJsonType,
+} from "../utils/requestHandler";
 
 import { Dispatch as TokenDispatch } from "./tokenContext";
 import { Dispatch as AzureDispatch } from "./azureContext";
@@ -42,6 +49,49 @@ const AccountStateContext = React.createContext<AccountState | undefined>(
 const AccountDispatchContext = React.createContext<Dispatch | undefined>(
   undefined
 );
+
+interface AccountAuthenticatedResponseJson
+  extends AuthenticatedResponseJsonType {
+  lname: string;
+  fname: string;
+  email: string;
+}
+
+function mapAccountResponseJson(
+  responseJson: AccountAuthenticatedResponseJson
+): Account {
+  return {
+    fname: responseJson.fname,
+    lname: responseJson.lname,
+    email: responseJson.email,
+  };
+}
+
+interface AccountAuthenticatedDataResponseJson
+  extends AuthenticatedResponseJsonType {
+  data: {
+    lname: string;
+    fname: string;
+    email: string;
+  };
+}
+
+function mapAccountDataResponseJson(
+  responseJson: AccountAuthenticatedDataResponseJson
+): Account {
+  return {
+    fname: responseJson.data.fname,
+    lname: responseJson.data.lname,
+    email: responseJson.data.email,
+  };
+}
+
+interface AccountCreateJson extends Json {
+  lname: string;
+  fname: string;
+  email: string;
+  token: string;
+}
 
 function accountReducer(
   accountState: AccountState,
@@ -129,28 +179,11 @@ class AccountClient {
     account: Account
   ): Promise<[Account, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/account`;
-    return await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...account, token: token }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            lname: responseJson.lname,
-            fname: responseJson.fname,
-            email: responseJson.email,
-          } as Account,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.post<
+      Account,
+      AccountAuthenticatedResponseJson,
+      AccountCreateJson
+    >(endpoint, mapAccountResponseJson, { ...account, token: token });
   }
 
   public static async get(
@@ -158,28 +191,11 @@ class AccountClient {
     email: string
   ): Promise<[Account, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
-
-    return await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            fname: responseJson.data.fname,
-            lname: responseJson.data.lname,
-            email: responseJson.data.email,
-          } as Account,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.get<
+      Account,
+      AccountAuthenticatedDataResponseJson,
+      Json
+    >(endpoint, mapAccountDataResponseJson);
   }
 
   public static async update(
@@ -190,38 +206,20 @@ class AccountClient {
     const endpoint = `${SERVER_ADDRESS}/account?email=${
       account.email
     }&token=${token}&updateFields=${JSON.stringify(updates)}`;
-
-    return await fetch(endpoint, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => [
-        {
-          lname: responseJson.lname,
-          fname: responseJson.fname,
-          email: responseJson.email,
-        } as Account,
-        {
-          refreshToken: responseJson.refresh_token,
-          accessToken: responseJson.access_token,
-        },
-      ]);
+    return AuthenticatedRequestHandler.put<
+      Account,
+      AccountAuthenticatedResponseJson,
+      Json
+    >(endpoint, mapAccountResponseJson);
   }
 
   public static async delete(token: string, email: string): Promise<boolean> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
 
-    return await fetch(endpoint, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }).then((response) => response.ok);
+    return RequestHandler.delete<boolean, ResponseJsonType, Json>(
+      endpoint,
+      (responseJson) => responseJson.status_code === 200
+    );
   }
 }
 
@@ -282,6 +280,7 @@ async function getAccount(
       error: "Successfully got account",
     });
   } catch (error) {
+    console.log(error);
     accountDispatch({
       type: "fail update",
       account: BLANK_ACCOUNT,
