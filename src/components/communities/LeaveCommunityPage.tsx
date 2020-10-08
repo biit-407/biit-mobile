@@ -8,6 +8,9 @@ import {
 import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
+import { leaveCommunity, useCommunityDispatch } from "../../contexts/communityContext";
+import { useAccountState } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 
 type LeaveCommunityPageProps = {
   route: LeaveCommunityPageRouteProp;
@@ -47,8 +50,18 @@ const styles = StyleSheet.create({
 });
 
 export default function LeaveCommunityPage({
+  route,
   navigation,
 }: LeaveCommunityPageProps) {
+  const communityDispatch = useCommunityDispatch()
+  const [tokenState, tokenDispatch] = useToken()
+  const accountState = useAccountState()
+
+  function leave() {
+    leaveCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, accountState.account.email, route.params.name)
+  }
+
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={styles.txtbox}>
@@ -58,7 +71,7 @@ export default function LeaveCommunityPage({
         <Box style={styles.ybtn}>
           <ThemedButton
             title="Yes"
-            onPress={() => navigation.push("DevelopmentLinks")}
+            onPress={() => { leave(); navigation.push("DevelopmentLinks") }}
           />
         </Box>
         <Box style={styles.nbtn}>

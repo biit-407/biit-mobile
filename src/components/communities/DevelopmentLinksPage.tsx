@@ -2,16 +2,16 @@ import React from "react";
 import { Button, StyleSheet } from "react-native"
 
 import {
-  DevelopmentLinksPageRouteProp,
-  DevelopmentLinksPageNavigationProp,
+    DevelopmentLinksPageRouteProp,
+    DevelopmentLinksPageNavigationProp,
 } from "../../routes";
 
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 
 type DevelopmentLinksPageProps = {
-  route: DevelopmentLinksPageRouteProp;
-  navigation: DevelopmentLinksPageNavigationProp;
+    route: DevelopmentLinksPageRouteProp;
+    navigation: DevelopmentLinksPageNavigationProp;
 };
 
 const styles = StyleSheet.create({
@@ -37,20 +37,20 @@ export default function DevelopmentLinksPage({ navigation }: DevelopmentLinksPag
             headerRight: () => (
                 <Box style={styles.topbarright}>
                     <Button
-                    title="Settings"
-                    onPress={() => navigation.push("UserSettings")}
-                    color="#73572C"
+                        title="Settings"
+                        onPress={() => navigation.push("UserSettings")}
+                        color="#73572C"
                     />
                 </Box>
             ),
         })
     });
 
-    return(
+    return (
         <Box backgroundColor="mainBackground" style={styles.root}>
             <Text>Hello World! Development Links page here.</Text>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Join Community"
                     onPress={() => navigation.push("JoinCommunity", {
                         name: 'the group of students who decided to build this application'
@@ -58,43 +58,43 @@ export default function DevelopmentLinksPage({ navigation }: DevelopmentLinksPag
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Leave Community"
-                    onPress={() => navigation.push("LeaveCommunity")}
+                    onPress={() => navigation.push("LeaveCommunity", { name: 'the group of students who decided to build this application' })}
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Member List"
                     onPress={() => navigation.push("MemberList")}
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Create Community"
                     onPress={() => navigation.push("CreateCommunity")}
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Community Administration"
                     onPress={() => navigation.push("CommunityAdministration")}
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Login"
                     onPress={() => navigation.push("Login")}
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="Create Account"
                     onPress={() => navigation.push("CreateAccount")}
                 />
             </Box>
             <Box style={styles.btnbox}>
-                <Button 
+                <Button
                     title="User Settings"
                     onPress={() => navigation.push("UserSettings")}
                 />
