@@ -5,7 +5,6 @@ import {
   DevelopmentLinksPageRouteProp,
   DevelopmentLinksPageNavigationProp,
 } from "../../routes";
-
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 
@@ -54,13 +53,23 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Join Community"
-          onPress={() => navigation.push("JoinCommunity")}
+          onPress={() =>
+            navigation.push("JoinCommunity", {
+              name:
+                "the group of students who decided to build this application",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>
         <Button
           title="Leave Community"
-          onPress={() => navigation.push("LeaveCommunity")}
+          onPress={() =>
+            navigation.push("LeaveCommunity", {
+              name:
+                "the group of students who decided to build this application",
+            })
+          }
         />
       </Box>
       <Box style={styles.btnbox}>
@@ -81,7 +90,15 @@ export default function DevelopmentLinksPage({
           onPress={() => navigation.push("CommunityAdministration")}
         />
       </Box>
-
+      <Box style={styles.btnbox}>
+        <Button title="Login" onPress={() => navigation.push("Login")} />
+      </Box>
+      <Box style={styles.btnbox}>
+        <Button
+          title="Create Account"
+          onPress={() => navigation.push("CreateAccount")}
+        />
+      </Box>
       <Box style={styles.btnbox}>
         <Button
           title="User Settings"
