@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { ScrollView, Switch, StyleSheet } from "react-native";
+import { ScrollView, Switch, StyleSheet, Alert, Button } from "react-native";
 
 import {
   CommunityAdministrationPageRouteProp,
   CommunityAdministrationPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 import Text from "../themed/Text";
 
@@ -38,6 +37,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingBottom: 10,
+  },
+  btncontainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    backgroundColor: "#D8AD6D",
+    padding: "3.5%",
+  },
+  btnbox: {
+    margin: 5,
+    width: "30%",
   },
 });
 
@@ -120,10 +130,39 @@ export default function CommunityAdministrationPage({
           />
         </Box>
       </Box>
-      <ThemedButton
-        title="Submit"
-        onPress={() => navigation.push("DevelopmentLinks")}
-      />
+      <Box style={styles.btncontainer}>
+        <Box style={styles.btnbox}>
+          <Button
+            title="Cancel"
+            color="#b6420c"
+            onPress={() => {
+              Alert.alert(
+                'Cancel Operation',
+                'Are you sure you want to discard these changes?',
+                [
+                  {
+                    text: "Yes",
+                    onPress: () => {
+                      navigation.goBack();
+                    },
+                  },
+                  {
+                    text: "No",
+                    style: "cancel",
+                  },
+                ]
+              );
+            }}
+          />
+        </Box>
+        <Box style={styles.btnbox}>
+          <Button
+            title="Submit"
+            color="#B88953"
+            onPress={() => navigation.push("DevelopmentLinks")}
+          />
+        </Box>
+      </Box>
     </ScrollView>
   );
 }
