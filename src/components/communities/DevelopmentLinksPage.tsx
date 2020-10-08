@@ -5,7 +5,6 @@ import {
   DevelopmentLinksPageRouteProp,
   DevelopmentLinksPageNavigationProp,
 } from "../../routes";
-
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 
@@ -81,7 +80,12 @@ export default function DevelopmentLinksPage({
           onPress={() => navigation.push("CommunityAdministration")}
         />
       </Box>
-
+      <Box style={styles.btnbox}>
+        <Button
+          title="Banned Users"
+          onPress={() => navigation.push("BannedUsers")}
+        />
+      </Box>
       <Box style={styles.btnbox}>
         <Button
           title="User Settings"
