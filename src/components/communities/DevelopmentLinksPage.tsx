@@ -89,7 +89,7 @@ export default function DevelopmentLinksPage({
           title="Community Administration"
           onPress={() =>
             navigation.push("CommunityAdministration", {
-              name: "Y",
+              name: "Z",
             })
           }
         />

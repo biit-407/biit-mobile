@@ -16,7 +16,7 @@ import {
   useCommunityState,
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
-import { useAccount, useAccountState } from "../../contexts/accountContext";
+import { useAccountState } from "../../contexts/accountContext";
 
 type CommunityAdministrationPageProps = {
   route: CommunityAdministrationPageRouteProp;
