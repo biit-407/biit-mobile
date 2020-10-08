@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
+import { ScrollView, Switch, StyleSheet, Alert, BUtton } from "react-native";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import {
@@ -8,6 +8,7 @@ import {
 } from "../../routes";
 import Box from "../themed/Box";
 import ThemedInput from "../themed/ThemedInput";
+import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
 import {
   updateCommunity,
@@ -67,7 +68,7 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CommunityAdministrationPage({
+export default function CommunityAdministrationPage({navigation,
   route,
 }: CommunityAdministrationPageProps) {
   // TODO: Refactor using Stephen's hook (Stephen has a hook in the yet to be merged PR)
