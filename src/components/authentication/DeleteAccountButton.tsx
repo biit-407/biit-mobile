@@ -6,7 +6,6 @@ import ThemedButton from "../themed/ThemedButton";
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
-import { acc } from "react-native-reanimated";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
