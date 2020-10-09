@@ -146,10 +146,9 @@ export default function EditProfilePage({}: EditProfilePageProps) {
       accountState.account,
       profileImageURL
     );
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "ViewProfile" }],
-    });
+
+    setProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account, profileImageURL)
+    navigation.goBack();
   };
 
   // Generic method that allows user to select an image from the gallery/camera after requesting permissions
