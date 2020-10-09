@@ -1,5 +1,5 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 
 import {
@@ -11,7 +11,6 @@ import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import { getProfilePicture, useAccount } from "../../contexts/accountContext";
-import { useState } from "react";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { useToken } from "../../contexts/tokenContext";
 
@@ -42,16 +41,24 @@ const styles = StyleSheet.create({
 export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
-  const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC)
+  const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
 
   useEffect(() => {
-    getProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account)
-  }, [])
+    getProfilePicture(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account
+    );
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    // console.log(accountState.account.profileImage)
-    setAvatar(accountState.account.profileImage ? accountState.account.profileImage : EMPTY_PROFILE_PIC)
-  }, [accountState])
+    setAvatar(
+      accountState.account.profileImage
+        ? accountState.account.profileImage
+        : EMPTY_PROFILE_PIC
+    );
+  }, [accountState.account.profileImage]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>

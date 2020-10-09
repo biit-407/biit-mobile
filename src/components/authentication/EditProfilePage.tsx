@@ -21,7 +21,11 @@ import Text from "../themed/Text";
 import ThemedInput from "../themed/ThemedInput";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedAvatar from "../themed/ThemedAvatar";
-import { setProfilePicture, updateAccount, useAccount } from "../../contexts/accountContext";
+import {
+  setProfilePicture,
+  updateAccount,
+  useAccount,
+} from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 
@@ -54,7 +58,7 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   quality: 1,
 };
 
-function EditBackButton({ }: StackHeaderLeftButtonProps) {
+function EditBackButton({}: StackHeaderLeftButtonProps) {
   const navigator = useNavigation();
   return (
     <HeaderBackButton
@@ -102,7 +106,7 @@ const formErrors = {
 
 // Page Definition
 
-export default function EditProfilePage({ }: EditProfilePageProps) {
+export default function EditProfilePage({}: EditProfilePageProps) {
   // Setup form validation for edit profile
   const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();
@@ -116,7 +120,11 @@ export default function EditProfilePage({ }: EditProfilePageProps) {
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
   // Hook used to store local image url for profile image
-  const [profileImageURL, setProfileImageURL] = useState(accountState.account.profileImage ? accountState.account.profileImage : EMPTY_PROFILE_PIC);
+  const [profileImageURL, setProfileImageURL] = useState(
+    accountState.account.profileImage
+      ? accountState.account.profileImage
+      : EMPTY_PROFILE_PIC
+  );
 
   useEffect(() => {
     register("firstName", { required: true, minLength: 1 });
@@ -131,14 +139,19 @@ export default function EditProfilePage({ }: EditProfilePageProps) {
       accountState.account,
       { ...accountState.account, fname: data.firstName, lname: data.lastName }
     );
-    setProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account, profileImageURL)
+    setProfilePicture(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      profileImageURL
+    );
     navigation.reset({
       index: 0,
       routes: [{ name: "ViewProfile" }],
     });
   };
 
- 
   // Generic method that allows user to select an image from the gallery/camera after requesting permissions
   // TODO: Add dialog/alert if user denies permission
   const selectImage = async (
@@ -150,15 +163,18 @@ export default function EditProfilePage({ }: EditProfilePageProps) {
       const result = await selectionMethod(imagePickerOptions);
       if (!result.cancelled) {
         setProfileImageURL(result.uri);
-        
       }
     }
     setBottomSheetVisible(false);
   };
 
   useEffect(() => {
-    setProfileImageURL(accountState.account.profileImage ? accountState.account.profileImage : EMPTY_PROFILE_PIC)
-  }, [accountState.account.profileImage])
+    setProfileImageURL(
+      accountState.account.profileImage
+        ? accountState.account.profileImage
+        : EMPTY_PROFILE_PIC
+    );
+  }, [accountState.account.profileImage]);
 
   // Array that holds the 'data' to use for the bottomsheet options
   // It is in this scope since it needs access to the bottomsheet hooks

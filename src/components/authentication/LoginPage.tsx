@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { getAccount, getProfilePicture, useAccount } from "../../contexts/accountContext";
+import { getAccount, useAccount } from "../../contexts/accountContext";
 import {
   requestTokens,
   requestUserInfo,
