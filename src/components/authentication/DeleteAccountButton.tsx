@@ -14,7 +14,11 @@ export default function DeleteAccountButton() {
   const [, azureDispatch] = useAzure();
 
   useEffect(() => {
-    if (accountState.status === "logged out") {
+    console.log(accountState.status);
+    if (
+      accountState.status === "logged out" ||
+      accountState.status === "error"
+    ) {
       // Navigate back to the login page once account is logged out
       navigation.reset({
         index: 0,

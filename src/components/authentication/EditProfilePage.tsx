@@ -147,7 +147,6 @@ export default function EditProfilePage({}: EditProfilePageProps) {
       profileImageURL
     );
 
-    setProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account, profileImageURL)
     navigation.goBack();
   };
 
