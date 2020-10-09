@@ -1,5 +1,5 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 
 import {
@@ -10,7 +10,10 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
-import { useAccountState } from "../../contexts/accountContext";
+import { getProfilePicture, useAccount } from "../../contexts/accountContext";
+import { useState } from "react";
+import { EMPTY_PROFILE_PIC } from "../../models/constants";
+import { useToken } from "../../contexts/tokenContext";
 
 // React Navigation Types and Page Options
 
@@ -37,12 +40,24 @@ const styles = StyleSheet.create({
 // Page Definition
 
 export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
-  const accountState = useAccountState();
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
+  const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC)
+
+  useEffect(() => {
+    getProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account)
+  }, [])
+
+  useEffect(() => {
+    // console.log(accountState.account.profileImage)
+    setAvatar(accountState.account.profileImage ? accountState.account.profileImage : EMPTY_PROFILE_PIC)
+  }, [accountState])
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ThemedCard>
         <ThemedAvatar
-          uri="https://t4.ftcdn.net/jpg/02/15/84/43/240_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+          uri={avatar}
           size="xlarge"
           edit={true}
           onEdit={() => {
