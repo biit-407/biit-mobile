@@ -64,13 +64,13 @@ export default function App() {
           }}
         >
           <Stack.Screen
-            name="DevelopmentLinks"
-            component={DevelopmentLinksPage}
-          />
-          <Stack.Screen
             name="Login"
             component={LoginPage}
             options={LoginPageOptions}
+          />
+          <Stack.Screen
+            name="DevelopmentLinks"
+            component={DevelopmentLinksPage}
           />
           <Stack.Screen
             name="CreateAccount"
