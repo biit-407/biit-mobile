@@ -6,6 +6,7 @@ import ThemedButton from "../themed/ThemedButton";
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
+import { acc } from "react-native-reanimated";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
@@ -14,7 +15,11 @@ export default function DeleteAccountButton() {
   const [, azureDispatch] = useAzure();
 
   useEffect(() => {
-    if (accountState.status === "logged out") {
+    console.log(accountState.status);
+    if (
+      accountState.status === "logged out" ||
+      accountState.status === "error"
+    ) {
       // Navigate back to the login page once account is logged out
       navigation.reset({
         index: 0,
