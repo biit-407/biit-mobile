@@ -16,6 +16,7 @@ type RootStackParamList = {
   UserSettings: undefined;
   MemberList: { name: string };
   DevelopmentLinks: undefined;
+  CodeOfConduct: { name: string };
 };
 
 //TODO remove for release
@@ -135,6 +136,17 @@ export type MemberListPageRouteProp = RouteProp<
 export type MemberListPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "MemberList"
+>;
+
+// Code of Conduct Page Types
+export type CodeOfConductPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CodeOfConduct"
+>;
+
+export type CodeOfConductPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CodeOfConduct"
 >;
 
 // Community Administration Page Types
