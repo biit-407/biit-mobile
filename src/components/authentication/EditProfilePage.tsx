@@ -132,10 +132,7 @@ export default function EditProfilePage({ }: EditProfilePageProps) {
       { ...accountState.account, fname: data.firstName, lname: data.lastName }
     );
     setProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account, profileImageURL)
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "ViewProfile" }],
-    });
+    navigation.goBack();
   };
 
  
