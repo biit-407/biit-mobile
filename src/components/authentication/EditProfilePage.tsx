@@ -58,7 +58,7 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   quality: 1,
 };
 
-function EditBackButton({}: StackHeaderLeftButtonProps) {
+function EditBackButton({ }: StackHeaderLeftButtonProps) {
   const navigator = useNavigation();
   return (
     <HeaderBackButton
@@ -106,7 +106,7 @@ const formErrors = {
 
 // Page Definition
 
-export default function EditProfilePage({}: EditProfilePageProps) {
+export default function EditProfilePage({ }: EditProfilePageProps) {
   // Setup form validation for edit profile
   const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();
@@ -132,19 +132,19 @@ export default function EditProfilePage({}: EditProfilePageProps) {
   }, [register]);
 
   const submitProfile: SubmitHandler<FormValues> = (data) => {
+    setProfilePicture(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      { ...accountState.account, fname: data.firstName, lname: data.lastName },
+      profileImageURL
+    );
     updateAccount(
       accountDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       accountState.account,
       { ...accountState.account, fname: data.firstName, lname: data.lastName }
-    );
-    setProfilePicture(
-      accountDispatch,
-      tokenDispatch,
-      tokenState.refreshToken,
-      accountState.account,
-      profileImageURL
     );
 
     navigation.goBack();
