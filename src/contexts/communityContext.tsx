@@ -45,10 +45,12 @@ function communityReducer(
     }
     case "finish update": {
       let communityList = state.communities;
-      communityList.filter((community, _index, _communityList) => {
-        // only keep the commnities that were not updated
-        return community.name !== action.community.name;
-      });
+      communityList = communityList.filter(
+        (community, _index, _communityList) => {
+          // only keep the commnities that were not updated
+          return community.name !== action.community.name;
+        }
+      );
 
       // allow for the deletion of communities
       if (action.community !== BLANK_COMMUNITY) {
@@ -142,6 +144,7 @@ class CommunityClient {
             codeofconduct: responseJson.data.codeofconduct,
             Admins: responseJson.data.Admins,
             Members: responseJson.data.Members,
+            bans: responseJson.data.bans,
             mpm: responseJson.data.mpm,
             meettype: responseJson.data.meettype,
           } as Community,
@@ -174,6 +177,7 @@ class CommunityClient {
             codeofconduct: responseJson.data.codeofconduct,
             Admins: responseJson.data.Admins,
             Members: responseJson.data.Members,
+            bans: responseJson.data.bans,
             mpm: responseJson.data.mpm,
             meettype: responseJson.data.meettype,
           } as Community,
@@ -210,6 +214,7 @@ class CommunityClient {
             codeofconduct: responseJson.data.codeofconduct,
             Admins: responseJson.data.Admins,
             Members: responseJson.data.Members,
+            bans: responseJson.data.bans,
             mpm: responseJson.data.mpm,
             meettype: responseJson.data.meettype,
           } as Community,
@@ -329,6 +334,7 @@ class CommunityClient {
             codeofconduct: responseJson.data.codeofconduct,
             Admins: responseJson.data.Admins,
             Members: responseJson.data.Members,
+            bans: responseJson.data.bans,
             mpm: responseJson.data.mpm,
             meettype: responseJson.data.meettype,
           } as Community,
@@ -365,6 +371,7 @@ class CommunityClient {
             codeofconduct: responseJson.data.codeofconduct,
             Admins: responseJson.data.Admins,
             Members: responseJson.data.Members,
+            bans: responseJson.data.bans,
             mpm: responseJson.data.mpm,
             meettype: responseJson.data.meettype,
           } as Community,

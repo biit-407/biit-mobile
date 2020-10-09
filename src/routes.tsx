@@ -8,7 +8,7 @@ type RootStackParamList = {
   CreateProfile: undefined;
   ViewProfile: undefined;
   EditProfile: undefined;
-  BannedUsers: undefined;
+  BannedUsers: { name: string };
   CreateCommunity: undefined;
   JoinCommunity: { name: string };
   LeaveCommunity: { name: string };

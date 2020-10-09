@@ -101,7 +101,7 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Banned Users"
-          onPress={() => navigation.push("BannedUsers")}
+          onPress={() => navigation.push("BannedUsers", { name: "Johnsons" })}
         />
       </Box>
       <Box style={styles.btnbox}>
