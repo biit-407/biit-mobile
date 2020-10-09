@@ -6,7 +6,6 @@ import {
   LeaveCommunityPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
 import {
   leaveCommunity,
