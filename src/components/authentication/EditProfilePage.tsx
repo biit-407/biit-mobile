@@ -21,8 +21,13 @@ import Text from "../themed/Text";
 import ThemedInput from "../themed/ThemedInput";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedAvatar from "../themed/ThemedAvatar";
-import { updateAccount, useAccount } from "../../contexts/accountContext";
+import {
+  setProfilePicture,
+  updateAccount,
+  useAccount,
+} from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
+import { EMPTY_PROFILE_PIC } from "../../models/constants";
 
 // React Navigation Types and Page Options
 
@@ -112,6 +117,14 @@ export default function EditProfilePage({}: EditProfilePageProps) {
     },
   });
   const [tokenState, tokenDispatch] = useToken();
+  // Hook used to show and hide the bottomsheet for image selection
+  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
+  // Hook used to store local image url for profile image
+  const [profileImageURL, setProfileImageURL] = useState(
+    accountState.account.profileImage
+      ? accountState.account.profileImage
+      : EMPTY_PROFILE_PIC
+  );
 
   useEffect(() => {
     register("firstName", { required: true, minLength: 1 });
@@ -126,13 +139,17 @@ export default function EditProfilePage({}: EditProfilePageProps) {
       accountState.account,
       { ...accountState.account, fname: data.firstName, lname: data.lastName }
     );
+    setProfilePicture(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      profileImageURL
+    );
+
+    setProfilePicture(accountDispatch, tokenDispatch, tokenState.refreshToken, accountState.account, profileImageURL)
     navigation.goBack();
   };
-
-  // Hook used to show and hide the bottomsheet for image selection
-  const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
-  // Hook used to store local image url for profile image
-  const [profileImageURL, setProfileImageURL] = useState("");
 
   // Generic method that allows user to select an image from the gallery/camera after requesting permissions
   // TODO: Add dialog/alert if user denies permission
@@ -149,6 +166,14 @@ export default function EditProfilePage({}: EditProfilePageProps) {
     }
     setBottomSheetVisible(false);
   };
+
+  useEffect(() => {
+    setProfileImageURL(
+      accountState.account.profileImage
+        ? accountState.account.profileImage
+        : EMPTY_PROFILE_PIC
+    );
+  }, [accountState.account.profileImage]);
 
   // Array that holds the 'data' to use for the bottomsheet options
   // It is in this scope since it needs access to the bottomsheet hooks
@@ -175,7 +200,7 @@ export default function EditProfilePage({}: EditProfilePageProps) {
       title: "Clear",
       icon: <Icon name="trash" size={16} color="gray" />,
       onPress: () => {
-        setProfileImageURL("");
+        setProfileImageURL(EMPTY_PROFILE_PIC);
         setBottomSheetVisible(false);
       },
     },

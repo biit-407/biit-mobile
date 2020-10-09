@@ -23,6 +23,7 @@
     "expo-asset": "^8.1.7",
     "expo-auth-session": "~1.4.0",
     "expo-constants": "^9.1.1",
+    "expo-file-system": "~9.0.1",
     "expo-font": "^8.2.2",
     "expo-image-picker": "~8.3.0",
     "expo-secure-store": "~9.0.1",
@@ -37,7 +38,8 @@
     "react-native-reanimated": "~1.9.0",
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
-    "react-native-web": "~0.11.7"
+    "react-native-web": "~0.11.7",
+    "rn-fetch-blob": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

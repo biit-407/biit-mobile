@@ -1,4 +1,5 @@
 import React from "react";
+import * as FileSystem from "expo-file-system";
 
 import { Account, BLANK_ACCOUNT } from "../models/accounts";
 import {
@@ -50,6 +51,18 @@ const AccountDispatchContext = React.createContext<Dispatch | undefined>(
   undefined
 );
 
+const PROFILE_PICTURE_LOCATION = (): string => {
+  const today = new Date();
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  const hhmmss =
+    String(today.getHours()) +
+    String(today.getMinutes()) +
+    String(today.getSeconds());
+
+  return FileSystem.documentDirectory + mm + dd + hhmmss + "profilepicture.jpg";
+};
+
 interface AccountAuthenticatedResponseJson
   extends AuthenticatedResponseJsonType {
   lname: string;
@@ -84,6 +97,17 @@ function mapAccountDataResponseJson(
     lname: responseJson.data.lname,
     email: responseJson.data.email,
   };
+}
+
+interface AccountAuthenticatedProfileResponseJson
+  extends AuthenticatedResponseJsonType {
+  data: string;
+}
+
+function mapAccountProfileResponseJson(
+  responseJson: AccountAuthenticatedProfileResponseJson
+): string {
+  return responseJson.data;
 }
 
 interface AccountCreateJson extends Json {
@@ -219,6 +243,46 @@ class AccountClient {
       endpoint,
       (responseJson) => responseJson.status_code === 200
     );
+  }
+
+  public static async setProfilePicture(
+    token: string,
+    { email, filepath }: { email: string; filepath: string }
+  ): Promise<[boolean, OauthToken]> {
+    const signature = await FileSystem.readAsStringAsync(filepath, {
+      encoding: "base64",
+    });
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("token", token);
+    formData.append("file", signature);
+    formData.append("filename", "profilepicture.jpg");
+    return await fetch(`${SERVER_ADDRESS}/profile`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        return [
+          responseJson.status_code === 200,
+          {
+            refreshToken: responseJson.refresh_token,
+            accessToken: responseJson.access_token,
+          },
+        ];
+      });
+  }
+
+  public static async getProfilePicture(
+    token: string,
+    { email, filename }: { email: string; filename: string }
+  ): Promise<[string, OauthToken]> {
+    const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${filename}`;
+    return AuthenticatedRequestHandler.get<
+      string,
+      AccountAuthenticatedProfileResponseJson,
+      Json
+    >(endpoint, mapAccountProfileResponseJson);
   }
 }
 
@@ -377,6 +441,82 @@ async function logoutAccount(
   });
 }
 
+async function setProfilePicture(
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  account: Account,
+  filepath: string
+) {
+  await _accountHelper<
+    { email: string; filepath: string },
+    [boolean, OauthToken]
+  >(
+    accountDispatch,
+    token,
+    { email: account.email, filepath },
+    AccountClient.setProfilePicture,
+    async (response) => {
+      tokenDispatch({ ...response[1], type: "clear" });
+      if (response[0]) {
+        const content = await FileSystem.readAsStringAsync(filepath, {
+          encoding: "base64",
+        });
+        const location = PROFILE_PICTURE_LOCATION();
+        if (account.profileImage) {
+          const file = await FileSystem.getInfoAsync(account.profileImage);
+          if (file.exists) {
+            await FileSystem.deleteAsync(account.profileImage);
+          }
+        }
+        await FileSystem.writeAsStringAsync(location, content, {
+          encoding: "base64",
+        });
+        accountDispatch({
+          type: "finish update",
+          account: { ...account, profileImage: location },
+          error: "Successfully updated profile image",
+        });
+      }
+    }
+  );
+}
+
+async function getProfilePicture(
+  accountDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  account: Account
+) {
+  await _accountHelper<
+    { email: string; filename: string },
+    [string, OauthToken]
+  >(
+    accountDispatch,
+    token,
+    { email: account.email, filename: "profilepicture.jpg" },
+    AccountClient.getProfilePicture,
+    async (response) => {
+      tokenDispatch({ ...response[1], type: "clear" });
+      const location = PROFILE_PICTURE_LOCATION();
+      if (account.profileImage) {
+        const file = await FileSystem.getInfoAsync(account.profileImage);
+        if (file.exists) {
+          await FileSystem.deleteAsync(account.profileImage);
+        }
+      }
+      await FileSystem.writeAsStringAsync(location, response[0], {
+        encoding: "base64",
+      });
+      accountDispatch({
+        type: "finish update",
+        account: { ...account, profileImage: location },
+        error: "Successfully updated profile image",
+      });
+    }
+  );
+}
+
 export {
   useAccount,
   AccountProvider,
@@ -387,4 +527,6 @@ export {
   useAccountDispatch,
   useAccountState,
   logoutAccount,
+  setProfilePicture,
+  getProfilePicture,
 };
