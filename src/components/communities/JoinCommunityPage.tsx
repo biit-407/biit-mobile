@@ -6,7 +6,6 @@ import {
   JoinCommunityPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
 import {
   joinCommunity,
@@ -14,6 +13,7 @@ import {
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAccountState } from "../../contexts/accountContext";
+import ThemedIcon from "../themed/ThemedIcon";
 
 type JoinCommunityPageProps = {
   route: JoinCommunityPageRouteProp;
@@ -73,12 +73,20 @@ export default function JoinCommunityPage({
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={styles.txtbox}>
-        <Text>Are you sure you want to join this community?</Text>
+        <Text variant="header" style={{ textAlign: "center" }}>
+          Joining "{route.params.name}"
+        </Text>
+        <Text variant="body">
+          Are you sure you want to join this community?
+        </Text>
       </Box>
       <Box style={styles.ynbox}>
         <Box style={styles.ybtn}>
-          <ThemedButton
-            title="Yes"
+          <ThemedIcon
+            name="check"
+            type="entypo"
+            size={32}
+            reverse
             onPress={() => {
               join();
               navigation.push("DevelopmentLinks");
@@ -86,8 +94,11 @@ export default function JoinCommunityPage({
           />
         </Box>
         <Box style={styles.nbtn}>
-          <ThemedButton
-            title="No"
+          <ThemedIcon
+            name="cross"
+            type="entypo"
+            size={32}
+            reverse
             onPress={() => navigation.push("DevelopmentLinks")}
           />
         </Box>

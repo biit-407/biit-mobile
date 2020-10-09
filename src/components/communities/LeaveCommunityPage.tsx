@@ -6,7 +6,6 @@ import {
   LeaveCommunityPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
 import {
   leaveCommunity,
@@ -14,6 +13,7 @@ import {
 } from "../../contexts/communityContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
+import ThemedIcon from "../themed/ThemedIcon";
 
 type LeaveCommunityPageProps = {
   route: LeaveCommunityPageRouteProp;
@@ -21,8 +21,8 @@ type LeaveCommunityPageProps = {
 };
 
 export const LeaveCommunityPageOptions = {
-  title: "",
-  headerTransparent: true,
+  title: "Leave Community",
+  headerTransparent: false,
 };
 
 const styles = StyleSheet.create({
@@ -73,12 +73,20 @@ export default function LeaveCommunityPage({
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={styles.txtbox}>
-        <Text>Are you sure you want to leave this community?</Text>
+        <Text variant="header" style={{ textAlign: "center" }}>
+          Leaving "{route.params.name}"
+        </Text>
+        <Text variant="body">
+          Are you sure you want to leave this community?
+        </Text>
       </Box>
       <Box style={styles.ynbox}>
         <Box style={styles.ybtn}>
-          <ThemedButton
-            title="Yes"
+          <ThemedIcon
+            name="check"
+            type="entypo"
+            size={32}
+            reverse
             onPress={() => {
               leave();
               navigation.push("DevelopmentLinks");
@@ -86,8 +94,11 @@ export default function LeaveCommunityPage({
           />
         </Box>
         <Box style={styles.nbtn}>
-          <ThemedButton
-            title="No"
+          <ThemedIcon
+            name="cross"
+            type="entypo"
+            size={32}
+            reverse
             onPress={() => navigation.push("DevelopmentLinks")}
           />
         </Box>

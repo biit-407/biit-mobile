@@ -11,12 +11,14 @@ import ThemedInput from "../themed/ThemedInput";
 import ThemedButton from "../themed/ThemedButton";
 import Text from "../themed/Text";
 import {
+  getCommunity,
+  loadCommunity,
   updateCommunity,
-  useCommunityDispatch,
-  useCommunityState,
+  useCommunity,
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAccountState } from "../../contexts/accountContext";
+import { BLANK_COMMUNITY } from "../../models/community";
 
 type CommunityAdministrationPageProps = {
   route: CommunityAdministrationPageRouteProp;
@@ -68,14 +70,28 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CommunityAdministrationPage({navigation,
+export default function CommunityAdministrationPage({
+  navigation,
   route,
 }: CommunityAdministrationPageProps) {
   // TODO: Refactor using Stephen's hook (Stephen has a hook in the yet to be merged PR)
-  const communityState = useCommunityState();
-  const [community] = communityState.communities.filter(
-    (element) => element.name.toLowerCase() === route.params.name.toLowerCase()
-  );
+  const [communityState, communityDispatch] = useCommunity();
+  const [community, setCommunity] = useState(BLANK_COMMUNITY);
+
+  useEffect(() => {
+    // automatically queue a data update
+    loadCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      route.params.name
+    );
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const tempCommunity = getCommunity(communityState, route.params.name);
+    setCommunity(tempCommunity);
+  }, [communityState, route.params.name]);
 
   // Setup initial form
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>({
@@ -90,7 +106,6 @@ export default function CommunityAdministrationPage({navigation,
   }, [register]);
 
   // Create a handler for submitting the form
-  const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
 
@@ -176,8 +191,8 @@ export default function CommunityAdministrationPage({navigation,
             color="#b6420c"
             onPress={() => {
               Alert.alert(
-                'Cancel Operation',
-                'Are you sure you want to discard these changes?',
+                "Cancel Operation",
+                "Are you sure you want to discard these changes?",
                 [
                   {
                     text: "Yes",
