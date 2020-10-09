@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
 import { Input, BottomSheet, ListItem } from "react-native-elements";
@@ -17,6 +17,13 @@ import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
 import ThemedAvatar from "../themed/ThemedAvatar";
+import {
+  setProfilePicture,
+  updateAccount,
+  useAccount,
+} from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { EMPTY_PROFILE_PIC } from "../../models/constants";
 
 // React Navigation Types and Page Options
 
@@ -92,26 +99,68 @@ const formErrors = {
   lastName: "Last name cannot be empty",
 };
 
-export default function CreateProfilePage({}: CreateProfilePageProps) {
-  const navigation = useNavigation();
+export default function CreateProfilePage({
+  navigation,
+}: CreateProfilePageProps) {
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
+
   // Setup form validation for edit profile
-  const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>({
+    defaultValues: {
+      firstName: accountState.account.fname,
+      lastName: accountState.account.lname,
+    },
+  });
+
   useEffect(() => {
     register("firstName", { required: true, minLength: 1 });
     register("lastName", { required: true, minLength: 1 });
     // TODO: Call setValue for both name fields if populating with initial data
   }, [register]);
+
+  // Hook used to store local image url for profile image
+  const [profileImageURL, setProfileImageURL] = useState(
+    accountState.account.profileImage
+      ? accountState.account.profileImage
+      : EMPTY_PROFILE_PIC
+  );
+
+  // Submit the profile data
   const submitProfile: SubmitHandler<FormValues> = (data) => {
-    Alert.alert("Submitted Data", data.firstName + " " + data.lastName);
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      { ...accountState.account, fname: data.firstName, lname: data.lastName }
+    );
+
+    setProfilePicture(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      profileImageURL
+    );
+
     navigation.reset({
       index: 0,
       routes: [{ name: "DevelopmentLinks" }],
     });
   };
+
+  useEffect(() => {
+    setProfileImageURL(
+      accountState.account.profileImage
+        ? accountState.account.profileImage
+        : EMPTY_PROFILE_PIC
+    );
+  }, [accountState.account.profileImage]);
+
   // Hook used to show and hide the bottomsheet for image selection
   const [isBottomSheetVisible, setBottomSheetVisible] = useState(false);
-  // Hook used to store local image url for profile image
-  const [profileImageURL, setProfileImageURL] = useState("");
+
   // Generic method that allows user to select an image from the gallery/camera after requesting permissions
   // TODO: Add dialog/alert if user denies permission
   const selectImage = async (
@@ -183,7 +232,7 @@ export default function CreateProfilePage({}: CreateProfilePageProps) {
           Take a minute to customize your profile
         </Text>
         <ThemedInput
-          placeholder="John"
+          placeholder={accountState.account.fname}
           label="First Name"
           returnKeyType="next"
           onSubmitEditing={() =>
@@ -195,7 +244,7 @@ export default function CreateProfilePage({}: CreateProfilePageProps) {
           errorMessage={errors.firstName ? formErrors.firstName : ""}
         />
         <ThemedInput
-          placeholder="Smith"
+          placeholder={accountState.account.lname}
           label="Last Name"
           ref={lastNameTextInput}
           onChangeText={(text) => {
