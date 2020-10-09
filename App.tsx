@@ -42,6 +42,9 @@ import MemberListPage, {
   MemberListPageOptions,
 } from "./src/components/communities/MemberListPage";
 import { GlobalServiceProvider } from "./src/contexts";
+import CodeOfConductPage, {
+  CodeOfConductPageOptions,
+} from "./src/components/communities/CodeOfConductPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -96,6 +99,11 @@ export default function App() {
             name="BannedUsers"
             component={BannedUsersPage}
             options={BannedUsersPageOptions}
+          />
+          <Stack.Screen
+            name="CodeOfConduct"
+            component={CodeOfConductPage}
+            options={CodeOfConductPageOptions}
           />
           <Stack.Screen
             name="CommunityAdministration"

@@ -84,6 +84,16 @@ export default function DevelopmentLinksPage({
       </Box>
       <Box style={styles.btnbox}>
         <Button
+          title="Code of Conduct"
+          onPress={() =>
+            navigation.push("CodeOfConduct", {
+              name: "Johnsons",
+            })
+          }
+        />
+      </Box>
+      <Box style={styles.btnbox}>
+        <Button
           title="Create Community"
           onPress={() => navigation.push("CreateCommunity")}
         />
