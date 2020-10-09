@@ -238,11 +238,22 @@ class AccountClient {
 
   public static async delete(token: string, email: string): Promise<boolean> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
-
-    return RequestHandler.delete<boolean, ResponseJsonType, Json>(
-      endpoint,
-      (responseJson) => responseJson.status_code === 200
-    );
+    return await fetch(endpoint, {
+      method: 'DELETE',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then(response => {
+      return response.ok
+    })
+    // TODO when server response is fixed go back to this
+    // return RequestHandler.delete<boolean, ResponseJsonType, Json>(
+    //   endpoint,
+    //   (responseJson) => {
+    //     return responseJson.status_code === 200
+    //   }
+    // );
   }
 
   public static async setProfilePicture(
@@ -397,8 +408,15 @@ async function deleteAccount(
     token,
     account.email,
     AccountClient.delete,
-    (response) => {
+    async (response) => {
       if (response) {
+        if (account.profileImage) {
+          const file = await FileSystem.getInfoAsync(account.profileImage);
+          if (file.exists) {
+            await FileSystem.deleteAsync(account.profileImage);
+          }
+        }
+
         tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
         azureDispatch({
           type: "invalidate",
