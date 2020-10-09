@@ -89,13 +89,19 @@ export default function MemberListPage({ route }: MemberListPageProps) {
         },
         {
           text: "OK",
-          onPress: () => {
-            banUserFromCommunity(
+          onPress: async () => {
+            await banUserFromCommunity(
               tokenDispatch,
               tokenState.refreshToken,
               accountState.account.email,
               email,
               communityName
+            );
+            loadCommunity(
+              communityDispatch,
+              tokenDispatch,
+              tokenState.refreshToken,
+              route.params.name
             );
           },
         },

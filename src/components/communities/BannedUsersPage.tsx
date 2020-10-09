@@ -6,11 +6,18 @@ import {
   BannedUsersPageNavigationProp,
   BannedUsersPageRouteProp,
 } from "../../routes";
-import { Account } from "../../models/accounts";
 import Box from "../themed/Box";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedRefreshControl from "../themed/ThemedRefreshControl";
+import {
+  getCommunity,
+  loadCommunity,
+  unbanUserFromCommunity,
+  useCommunity,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { Ban } from "../../models/community";
 
 // React Navigation Types and Page Options
 
@@ -34,14 +41,14 @@ const styles = StyleSheet.create({
 });
 
 const showUnbanDialog = (
-  user: Account,
-  onConfirm: (user: Account) => void,
+  ban: Ban,
+  onConfirm: (unbannedEmail: Ban) => void,
   onCancel?: () => void
 ) => {
-  const { fname, lname } = user;
+  const { name } = ban;
   Alert.alert(
-    `Unban ${fname} ${lname}?`,
-    `Are you sure you want to unban ${fname} ${lname} from this community?`,
+    `Unban ${name}?`,
+    `Are you sure you want to unban ${name} from this community?`,
     [
       {
         text: "Cancel",
@@ -50,7 +57,7 @@ const showUnbanDialog = (
       },
       {
         text: "OK",
-        onPress: () => onConfirm(user),
+        onPress: () => onConfirm(ban),
       },
     ]
   );
@@ -58,24 +65,43 @@ const showUnbanDialog = (
 
 // Page Definition
 
-export default function BannedUsersPage({}: BannedUsersPageProps) {
+export default function BannedUsersPage({ route }: BannedUsersPageProps) {
   // Create state for refreshing data and list of banned users
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [bannedUsers, setBannedUsers] = useState<Account[]>([]);
+  const [bannedUsers, setBannedUsers] = useState<Ban[]>([]);
   // Create function to unban a user on the backend
   // TODO: Integrate functionality with backend
-  const unbanUser = (user: Account) => {
-    bannedUsers.splice(bannedUsers.indexOf(user), 1);
-    setBannedUsers([...bannedUsers]);
+  const [communityState, communityDispatch] = useCommunity();
+  const [tokenState, tokenDispatch] = useToken();
+
+  const unbanUser = async (ban: Ban) => {
+    await unbanUserFromCommunity(
+      tokenDispatch,
+      tokenState.refreshToken,
+      ban.ordered_by,
+      ban.name,
+      route.params.name
+    );
+    loadBannedUserData();
   };
   // Create function to load banned user data
   // TODO: Inegrate functionality with backend
   const loadBannedUserData = async () => {
     setIsRefreshing(true);
     // TODO: Fetch data from the backend to get updated users list
-
+    await loadCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      route.params.name
+    );
     setIsRefreshing(false);
   };
+
+  useEffect(() => {
+    const loadedCommunity = getCommunity(communityState, route.params.name);
+    setBannedUsers(loadedCommunity.bans);
+  }, [communityState, route.params.name]);
 
   // Create effect to load banned user data initially
   useEffect(() => {
@@ -86,23 +112,25 @@ export default function BannedUsersPage({}: BannedUsersPageProps) {
     <Box backgroundColor="mainBackground" style={styles.root}>
       <FlatList
         data={bannedUsers}
-        renderItem={({ item }) => (
-          <ThemedListItem
-            avatarUri={item.profileImage}
-            title={`${item.fname} ${item.lname}`}
-            rightContent={
-              <Box mr="xs">
-                <ThemedIcon
-                  size={24}
-                  name="cross"
-                  type="entypo"
-                  onPress={() => showUnbanDialog(item, unbanUser)}
-                />
-              </Box>
-            }
-          />
-        )}
-        keyExtractor={(item: Account) => item.email} // TODO: Replace with UID field, though email should be unique
+        renderItem={({ item }) => {
+          console.log(item);
+          return (
+            <ThemedListItem
+              title={item.name}
+              rightContent={
+                <Box mr="xs">
+                  <ThemedIcon
+                    size={24}
+                    name="cross"
+                    type="entypo"
+                    onPress={() => showUnbanDialog(item, unbanUser)}
+                  />
+                </Box>
+              }
+            />
+          );
+        }}
+        keyExtractor={(item: Ban) => item.name}
         refreshControl={
           <ThemedRefreshControl
             onRefresh={loadBannedUserData}
