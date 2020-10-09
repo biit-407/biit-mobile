@@ -244,7 +244,9 @@ class AccountClient {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then(response => response.ok)
+    }).then(response => {
+      return response.ok
+    })
     // TODO when server response is fixed go back to this
     // return RequestHandler.delete<boolean, ResponseJsonType, Json>(
     //   endpoint,
@@ -265,7 +267,7 @@ class AccountClient {
     formData.append("email", email);
     formData.append("token", token);
     formData.append("file", signature);
-    formData.append("filename", "profilepicture.jpg");
+    formData.append("filename", `${email}.jpg`);
     return await fetch(`${SERVER_ADDRESS}/profile`, {
       method: "POST",
       body: formData,
@@ -286,7 +288,7 @@ class AccountClient {
     token: string,
     { email, filename }: { email: string; filename: string }
   ): Promise<[string, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${filename}`;
+    const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${email}`;
     return AuthenticatedRequestHandler.get<
       string,
       AccountAuthenticatedProfileResponseJson,
@@ -406,8 +408,15 @@ async function deleteAccount(
     token,
     account.email,
     AccountClient.delete,
-    (response) => {
+    async (response) => {
       if (response) {
+        if (account.profileImage) {
+          const file = await FileSystem.getInfoAsync(account.profileImage);
+          if (file.exists) {
+            await FileSystem.deleteAsync(account.profileImage);
+          }
+        }
+
         tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
         azureDispatch({
           type: "invalidate",
