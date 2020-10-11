@@ -106,7 +106,7 @@ export default function BannedUsersPage({ route }: BannedUsersPageProps) {
   // Create effect to load banned user data initially
   useEffect(() => {
     loadBannedUserData();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>

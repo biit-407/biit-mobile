@@ -12,8 +12,6 @@ import {
   AuthenticatedRequestHandler,
   AuthenticatedResponseJsonType,
   Json,
-  RequestHandler,
-  ResponseJsonType,
 } from "../utils/requestHandler";
 
 import { Dispatch as TokenDispatch } from "./tokenContext";
@@ -239,14 +237,14 @@ class AccountClient {
   public static async delete(token: string, email: string): Promise<boolean> {
     const endpoint = `${SERVER_ADDRESS}/account?email=${email}&token=${token}`;
     return await fetch(endpoint, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-    }).then(response => {
-      return response.ok
-    })
+    }).then((response) => {
+      return response.ok;
+    });
     // TODO when server response is fixed go back to this
     // return RequestHandler.delete<boolean, ResponseJsonType, Json>(
     //   endpoint,
@@ -286,7 +284,7 @@ class AccountClient {
 
   public static async getProfilePicture(
     token: string,
-    { email, filename }: { email: string; filename: string }
+    email: string
   ): Promise<[string, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${email}`;
     return AuthenticatedRequestHandler.get<
@@ -506,13 +504,10 @@ async function getProfilePicture(
   token: string,
   account: Account
 ) {
-  await _accountHelper<
-    { email: string; filename: string },
-    [string, OauthToken]
-  >(
+  await _accountHelper<string, [string, OauthToken]>(
     accountDispatch,
     token,
-    { email: account.email, filename: "profilepicture.jpg" },
+    account.email,
     AccountClient.getProfilePicture,
     async (response) => {
       tokenDispatch({ ...response[1], type: "clear" });

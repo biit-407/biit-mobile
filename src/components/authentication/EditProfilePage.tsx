@@ -58,7 +58,7 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
   quality: 1,
 };
 
-function EditBackButton({ }: StackHeaderLeftButtonProps) {
+function EditBackButton({}: StackHeaderLeftButtonProps) {
   const navigator = useNavigation();
   return (
     <HeaderBackButton
@@ -106,7 +106,7 @@ const formErrors = {
 
 // Page Definition
 
-export default function EditProfilePage({ }: EditProfilePageProps) {
+export default function EditProfilePage({}: EditProfilePageProps) {
   // Setup form validation for edit profile
   const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();

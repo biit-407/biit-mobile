@@ -1,6 +1,7 @@
 export interface Ban {
   name: string;
-  ordered_by: string;
+  // TODO make camelcase
+  ordered_by: string; // eslint-disable-line camelcase
 }
 
 export interface Community {

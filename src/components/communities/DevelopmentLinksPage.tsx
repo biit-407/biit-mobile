@@ -55,8 +55,7 @@ export default function DevelopmentLinksPage({
           title="Join Community"
           onPress={() =>
             navigation.push("JoinCommunity", {
-              name:
-                "biit",
+              name: "biit",
             })
           }
         />
@@ -66,8 +65,7 @@ export default function DevelopmentLinksPage({
           title="Leave Community"
           onPress={() =>
             navigation.push("LeaveCommunity", {
-              name:
-                "biit",
+              name: "biit",
             })
           }
         />

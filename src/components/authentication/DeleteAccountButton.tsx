@@ -15,9 +15,7 @@ export default function DeleteAccountButton() {
 
   useEffect(() => {
     console.log(accountState.status);
-    if (
-      accountState.status === "logged out"
-    ) {
+    if (accountState.status === "logged out") {
       // Navigate back to the login page once account is logged out
       navigation.reset({
         index: 0,

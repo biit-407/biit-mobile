@@ -1,8 +1,12 @@
 import React from "react";
 
 import { OauthToken } from "../models/azure";
-import { BLANK_COMMUNITY, Community } from "../models/community";
+import { Ban, BLANK_COMMUNITY, Community } from "../models/community";
 import { SERVER_ADDRESS } from "../models/constants";
+import {
+  AuthenticatedRequestHandler,
+  AuthenticatedResponseJsonType,
+} from "../utils/requestHandler";
 
 import { Dispatch as TokenDispatch } from "./tokenContext";
 
@@ -27,6 +31,33 @@ type Dispatch = (action: Action) => void;
 type CommunityProviderProps = {
   children: React.ReactNode;
 };
+
+interface CommunityAuthenticatedResponseJson
+  extends AuthenticatedResponseJsonType {
+  data: {
+    name: string;
+    codeofconduct: string;
+    Admins: string[];
+    Members: string[];
+    bans: Ban[];
+    mpm: string;
+    meettype: string;
+  };
+}
+
+function mapCommunityResponseJson(
+  responseJson: CommunityAuthenticatedResponseJson
+) {
+  return {
+    name: responseJson.data.name,
+    codeofconduct: responseJson.data.codeofconduct,
+    Admins: responseJson.data.Admins,
+    Members: responseJson.data.Members,
+    bans: responseJson.data.bans,
+    mpm: responseJson.data.mpm,
+    meettype: responseJson.data.meettype,
+  };
+}
 
 const CommunityStateContext = React.createContext<CommunityState | undefined>(
   undefined
@@ -128,32 +159,11 @@ class CommunityClient {
   ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community`;
 
-    return await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...community, token: token }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            name: responseJson.data.name,
-            codeofconduct: responseJson.data.codeofconduct,
-            Admins: responseJson.data.Admins,
-            Members: responseJson.data.Members,
-            bans: responseJson.data.bans,
-            mpm: responseJson.data.mpm,
-            meettype: responseJson.data.meettype,
-          } as Community,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.post(
+      endpoint,
+      mapCommunityResponseJson,
+      { ...community, token: token }
+    );
   }
 
   public static async load(
@@ -162,68 +172,26 @@ class CommunityClient {
   ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}`;
 
-    return await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            name: responseJson.data.name,
-            codeofconduct: responseJson.data.codeofconduct,
-            Admins: responseJson.data.Admins,
-            Members: responseJson.data.Members,
-            bans: responseJson.data.bans,
-            mpm: responseJson.data.mpm,
-            meettype: responseJson.data.meettype,
-          } as Community,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.get(endpoint, mapCommunityResponseJson);
   }
 
   public static async update(
     token: string,
-    email: string,
-    name: string,
-    community: Community
+    {
+      email,
+      name,
+      community,
+    }: {
+      email: string;
+      name: string;
+      community: Community;
+    }
   ): Promise<[Community, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}&email=${email}&updateFields=${JSON.stringify(
+    const endpoint = `${SERVER_ADDRESS}/community?updateFields=${JSON.stringify(
       community
-    )}`;
+    )}&name=${name}&token=${token}&email=${email}`;
 
-    return await fetch(endpoint, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            name: responseJson.data.name,
-            codeofconduct: responseJson.data.codeofconduct,
-            Admins: responseJson.data.Admins,
-            Members: responseJson.data.Members,
-            bans: responseJson.data.bans,
-            mpm: responseJson.data.mpm,
-            meettype: responseJson.data.meettype,
-          } as Community,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.put(endpoint, mapCommunityResponseJson);
   }
 
   public static async delete(
@@ -231,24 +199,10 @@ class CommunityClient {
     name: string
   ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}`;
-
-    return await fetch(endpoint, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          responseJson.status === 200,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.delete(
+      endpoint,
+      (responseJson) => responseJson.status_code === 200
+    );
   }
 
   public static async banUser(
@@ -258,29 +212,17 @@ class CommunityClient {
     community: string
   ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/ban`;
-    return await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+
+    return AuthenticatedRequestHandler.post(
+      endpoint,
+      (responseJson) => responseJson.status_code === 200,
+      {
         token: token,
         banner: banner,
         bannee: bannee,
         community: community,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          responseJson.status === 200,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+      }
+    );
   }
 
   public static async unbanUser(
@@ -290,97 +232,89 @@ class CommunityClient {
     community: string
   ): Promise<[boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/ban?banner=${banner}&bannee=${bannee}&token=${token}&community=${community}`;
-    return await fetch(endpoint, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          responseJson.status === 200,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+
+    return AuthenticatedRequestHandler.put(
+      endpoint,
+      (responseJson) => responseJson.status_code === 200
+    );
   }
 
   public static async join(
-    email: string,
     token: string,
-    community: string
+    {
+      email,
+      community,
+    }: {
+      email: string;
+      community: string;
+    }
   ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community/${community}/join`;
-    return await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        token: token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            name: responseJson.data.name,
-            codeofconduct: responseJson.data.codeofconduct,
-            Admins: responseJson.data.Admins,
-            Members: responseJson.data.Members,
-            bans: responseJson.data.bans,
-            mpm: responseJson.data.mpm,
-            meettype: responseJson.data.meettype,
-          } as Community,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+
+    return AuthenticatedRequestHandler.post(
+      endpoint,
+      mapCommunityResponseJson,
+      { email: email, token: token }
+    );
   }
 
   public static async leave(
-    email: string,
     token: string,
-    community: string
+    {
+      email,
+      community,
+    }: {
+      email: string;
+      community: string;
+    }
   ): Promise<[Community, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/community/${community}/leave`;
-    return await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        token: token,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return [
-          {
-            name: responseJson.data.name,
-            codeofconduct: responseJson.data.codeofconduct,
-            Admins: responseJson.data.Admins,
-            Members: responseJson.data.Members,
-            bans: responseJson.data.bans,
-            mpm: responseJson.data.mpm,
-            meettype: responseJson.data.meettype,
-          } as Community,
-          {
-            refreshToken: responseJson.refresh_token,
-            accessToken: responseJson.access_token,
-          },
-        ];
-      });
+    return AuthenticatedRequestHandler.post(
+      endpoint,
+      mapCommunityResponseJson,
+      { email: email, token: token }
+    );
+  }
+}
+
+function _defaultUpdateHelper(
+  tokenDispatch: TokenDispatch,
+  communityDispatch: Dispatch,
+  response: [Community, OauthToken]
+): void {
+  tokenDispatch({
+    ...response[1],
+    type: "set",
+  });
+  communityDispatch({
+    type: "finish update",
+    community: response[0],
+    error: "Successfully created new community",
+  });
+}
+
+async function _communityHelper<T, R>(
+  communityDispatch: Dispatch,
+  token: string,
+  data: T,
+  requestFunc: (token: string, data: T) => Promise<R>,
+  handleResponse: (response: R) => void
+) {
+  communityDispatch({
+    type: "start update",
+    community: BLANK_COMMUNITY,
+    error: "Failed to update community",
+  });
+
+  try {
+    const response: R = await requestFunc(token, data);
+    handleResponse(response);
+  } catch (error) {
+    communityDispatch({
+      type: "fail update",
+      community: BLANK_COMMUNITY,
+      error: "Failed to update community",
+    });
   }
 }
 
@@ -390,34 +324,15 @@ async function createCommunity(
   token: string,
   community: Community
 ) {
-  communityDispatch({
-    type: "start update",
-    community: community,
-    error: "Sent create community request to the server",
-  });
-
-  try {
-    const [createdCommunity, newToken] = await CommunityClient.create(
-      token,
-      community
-    );
-    tokenDispatch({
-      type: "set",
-      refreshToken: newToken.refreshToken,
-      accessToken: newToken.accessToken,
-    });
-    communityDispatch({
-      type: "finish update",
-      community: createdCommunity,
-      error: "Successfully created new community",
-    });
-  } catch (error) {
-    communityDispatch({
-      type: "fail update",
-      community: community,
-      error: "Failed to create community",
-    });
-  }
+  await _communityHelper(
+    communityDispatch,
+    token,
+    community,
+    CommunityClient.create,
+    (response) => {
+      _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
+    }
+  );
 }
 
 async function loadCommunity(
@@ -426,27 +341,15 @@ async function loadCommunity(
   token: string,
   name: string
 ) {
-  communityDispatch({
-    type: "start update",
-    community: BLANK_COMMUNITY,
-    error: "Sent get community request to the server",
-  });
-
-  try {
-    const [loadedCommunity, newToken] = await CommunityClient.load(token, name);
-    tokenDispatch({ ...newToken, type: "set" });
-    communityDispatch({
-      type: "finish update",
-      community: loadedCommunity,
-      error: "Successfully loaded community",
-    });
-  } catch (error) {
-    communityDispatch({
-      type: "fail update",
-      community: BLANK_COMMUNITY,
-      error: "Failed to load community",
-    });
-  }
+  await _communityHelper(
+    communityDispatch,
+    token,
+    name,
+    CommunityClient.load,
+    (response) => {
+      _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
+    }
+  );
 }
 
 async function updateCommunity(
@@ -457,32 +360,15 @@ async function updateCommunity(
   name: string,
   community: Community
 ) {
-  communityDispatch({
-    type: "start update",
-    community: community,
-    error: "Sent update community request to the server",
-  });
-
-  try {
-    const [updatedCommunity, newToken] = await CommunityClient.update(
-      token,
-      email,
-      name,
-      community
-    );
-    tokenDispatch({ ...newToken, type: "set" });
-    communityDispatch({
-      type: "finish update",
-      community: updatedCommunity,
-      error: "Successfully updated community",
-    });
-  } catch (error) {
-    communityDispatch({
-      type: "fail update",
-      community: community,
-      error: "Failed to update community",
-    });
-  }
+  await _communityHelper(
+    communityDispatch,
+    token,
+    { email: email, name: name, community: community },
+    CommunityClient.update,
+    (response) => {
+      _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
+    }
+  );
 }
 
 async function deleteCommunity(
@@ -491,35 +377,28 @@ async function deleteCommunity(
   token: string,
   name: string
 ) {
-  communityDispatch({
-    type: "start update",
-    community: BLANK_COMMUNITY,
-    error: "Sent delete community request to the server",
-  });
-
-  try {
-    const [success, newToken] = await CommunityClient.delete(token, name);
-    tokenDispatch({ ...newToken, type: "set" });
-    if (success) {
-      communityDispatch({
-        type: "finish update",
-        community: BLANK_COMMUNITY,
-        error: "Successfully deleted community",
-      });
-    } else {
-      communityDispatch({
-        type: "fail update",
-        community: BLANK_COMMUNITY,
-        error: "Failed to delete community",
-      });
+  await _communityHelper(
+    communityDispatch,
+    token,
+    name,
+    CommunityClient.delete,
+    (response) => {
+      tokenDispatch({ ...response[1], type: "set" });
+      if (response[0]) {
+        communityDispatch({
+          type: "finish update",
+          community: BLANK_COMMUNITY,
+          error: "Successfully deleted community",
+        });
+      } else {
+        communityDispatch({
+          type: "fail update",
+          community: BLANK_COMMUNITY,
+          error: "Failed to delete community",
+        });
+      }
     }
-  } catch (error) {
-    communityDispatch({
-      type: "fail update",
-      community: BLANK_COMMUNITY,
-      error: "Failed to delete community",
-    });
-  }
+  );
 }
 
 async function banUserFromCommunity(
@@ -569,31 +448,15 @@ async function joinCommunity(
   email: string,
   community: string
 ) {
-  communityDispatch({
-    type: "start update",
-    community: BLANK_COMMUNITY,
-    error: "Sent join community request to the server",
-  });
-
-  try {
-    const [updatedCommunity, newToken] = await CommunityClient.join(
-      email,
-      token,
-      community
-    );
-    tokenDispatch({ ...newToken, type: "set" });
-    communityDispatch({
-      type: "finish update",
-      community: updatedCommunity,
-      error: "Successfully joined community",
-    });
-  } catch (error) {
-    communityDispatch({
-      type: "fail update",
-      community: BLANK_COMMUNITY,
-      error: "Failed to join community",
-    });
-  }
+  await _communityHelper(
+    communityDispatch,
+    token,
+    { email: email, community: community },
+    CommunityClient.join,
+    (response) => {
+      _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
+    }
+  );
 }
 
 async function leaveCommunity(
@@ -603,31 +466,15 @@ async function leaveCommunity(
   email: string,
   community: string
 ) {
-  communityDispatch({
-    type: "start update",
-    community: BLANK_COMMUNITY,
-    error: "Sent leave community request to the server",
-  });
-
-  try {
-    const [updatedCommunity, newToken] = await CommunityClient.leave(
-      email,
-      token,
-      community
-    );
-    tokenDispatch({ ...newToken, type: "set" });
-    communityDispatch({
-      type: "finish update",
-      community: updatedCommunity,
-      error: "Successfully left community",
-    });
-  } catch (error) {
-    communityDispatch({
-      type: "fail update",
-      community: BLANK_COMMUNITY,
-      error: "Failed to leave community",
-    });
-  }
+  await _communityHelper(
+    communityDispatch,
+    token,
+    { email: email, community: community },
+    CommunityClient.leave,
+    (response) => {
+      _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
+    }
+  );
 }
 
 function getCommunity(communityState: CommunityState, name: string) {
