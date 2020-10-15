@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Alert, StyleProp, StyleSheet, ViewStyle } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { BottomSheet, Input, ListItem } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import * as ImagePicker from "expo-image-picker";
@@ -20,6 +20,7 @@ import ThemedInput from "../themed/ThemedInput";
 import { useToken } from "../../contexts/tokenContext";
 
 const styles = StyleSheet.create({
+  root: { flexGrow: 1, flex: 1, alignItems: "center" },
   form: { width: "100%" },
   formContent: { display: "flex", alignItems: "center" },
 });
@@ -76,12 +77,10 @@ const imagePickerOptions: ImagePicker.ImagePickerOptions = {
 
 type UpdateProfileFormProps = {
   onFormSubmit: () => void;
-  style?: StyleProp<ViewStyle>;
 };
 
 export default function UpdateProfileForm({
   onFormSubmit,
-  style,
 }: UpdateProfileFormProps) {
   // Setup form validation
   const [accountState, accountDispatch] = useAccount();
@@ -171,7 +170,7 @@ export default function UpdateProfileForm({
   };
 
   return (
-    <Box style={style}>
+    <Box style={styles.root}>
       <ScrollView
         style={styles.form}
         contentContainerStyle={styles.formContent}

@@ -30,7 +30,7 @@ export const EditProfilePageOptions: StackNavigationOptions = {
 
 // Generic Image Selection
 
-function EditBackButton({ navigation }: StackHeaderLeftButtonProps) {
+function EditBackButton({}: StackHeaderLeftButtonProps) {
   const navigator = useNavigation();
   return (
     <HeaderBackButton
@@ -59,11 +59,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "flex-start",
   },
-  form: {
-    flexGrow: 1,
-    flex: 1,
-    alignItems: "center",
-  },
 });
 
 // Page Definition
@@ -74,7 +69,7 @@ export default function EditProfilePage({ navigation }: EditProfilePageProps) {
       <Text variant="body" mb="lg" textAlign="center">
         Update and save your profile
       </Text>
-      <UpdateProfileForm style={styles.form} onFormSubmit={navigation.goBack} />
+      <UpdateProfileForm onFormSubmit={navigation.goBack} />
     </Box>
   );
 }
