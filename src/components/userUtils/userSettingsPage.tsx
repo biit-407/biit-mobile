@@ -10,6 +10,8 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import ThemedMultiSlider from "../themed/ThemedMultiSlider";
 
 type UserSettingsPageProps = {
   route: UserSettingsPageRouteProp;
@@ -62,9 +64,12 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
   const [sw4, setSw4] = useState(false);
   const toggleSw4 = () => setSw4((previousState) => !previousState);
 
+  // Add scroll control due to slider constraints
+  const [scrollable, setScrollable] = useState(true);
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <ScrollView style={styles.scrollview}>
+      <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
             <Box style={styles.txt}>
@@ -117,6 +122,34 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
                 value={sw4}
               />
             </Box>
+          </Box>
+        </Box>
+        <Box style={styles.itemframe}>
+          <Box style={styles.item}>
+            <Text>Age Preference</Text>
+          </Box>
+          <Box
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text marginEnd="md">18</Text>
+            <ThemedMultiSlider
+              values={[18, 100]}
+              min={18}
+              max={100}
+              enableLabel={!scrollable}
+              snapped
+              onValuesChangeStart={() => setScrollable(false)}
+              onValuesChangeFinish={(values) => {
+                console.log(values);
+                setScrollable(true);
+              }}
+            />
+            <Text marginStart="md">100</Text>
           </Box>
         </Box>
         <Box style={styles.itemframe}>

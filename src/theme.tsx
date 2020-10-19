@@ -28,6 +28,11 @@ const theme = createTheme({
     textInputDefault: palette.brownLight,
     secondaryText: palette.white,
     iconPrimary: palette.brownPrimary,
+
+    sliderMarkerDisabled: palette.tanDark,
+    sliderMarkerEnabled: palette.brownLight,
+    sliderTrackSelected: palette.tanPrimary,
+    sliderTrackUnselected: palette.brownPrimary,
   },
   spacing: {
     xs: 4,
