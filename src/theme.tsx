@@ -31,8 +31,8 @@ const theme = createTheme({
 
     sliderMarkerDisabled: palette.tanDark,
     sliderMarkerEnabled: palette.brownLight,
-    sliderTrackSelected: palette.tanPrimary,
-    sliderTrackUnselected: palette.brownPrimary,
+    sliderTrackSelected: palette.brownPrimary,
+    sliderTrackUnselected: palette.tanPrimary,
   },
   spacing: {
     xs: 4,

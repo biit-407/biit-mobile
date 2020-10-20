@@ -10,7 +10,6 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import ThemedMultiSlider from "../themed/ThemedMultiSlider";
 
 type UserSettingsPageProps = {
@@ -52,6 +51,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 10,
   },
+  ageRange: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default function UserSettingsPage({}: UserSettingsPageProps) {
@@ -66,6 +71,8 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
+
+  const [ageRange, setAgeRange] = useState([18, 100]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -126,16 +133,12 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
         </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
-            <Text>Age Preference</Text>
+            <Text variant="subheader">Age Preference</Text>
           </Box>
-          <Box
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <Box style={styles.item}>
+            <Text>Current Preference: {`${ageRange[0]} - ${ageRange[1]}`}</Text>
+          </Box>
+          <Box style={styles.ageRange}>
             <Text marginEnd="md">18</Text>
             <ThemedMultiSlider
               values={[18, 100]}
@@ -145,7 +148,7 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               snapped
               onValuesChangeStart={() => setScrollable(false)}
               onValuesChangeFinish={(values) => {
-                console.log(values);
+                setAgeRange(values);
                 setScrollable(true);
               }}
             />
