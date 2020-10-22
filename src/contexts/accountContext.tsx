@@ -66,6 +66,7 @@ interface AccountAuthenticatedResponseJson
   lname: string;
   fname: string;
   email: string;
+  birthday?: string;
 }
 
 function mapAccountResponseJson(
@@ -75,6 +76,7 @@ function mapAccountResponseJson(
     fname: responseJson.fname,
     lname: responseJson.lname,
     email: responseJson.email,
+    birthday: responseJson.birthday
   };
 }
 
@@ -84,6 +86,7 @@ interface AccountAuthenticatedDataResponseJson
     lname: string;
     fname: string;
     email: string;
+    birthday?: string;
   };
 }
 
@@ -94,6 +97,7 @@ function mapAccountDataResponseJson(
     fname: responseJson.data.fname,
     lname: responseJson.data.lname,
     email: responseJson.data.email,
+    birthday: responseJson.data.birthday
   };
 }
 

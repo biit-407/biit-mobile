@@ -32,11 +32,13 @@ const styles = StyleSheet.create({
 type FormValues = {
   fname: string;
   lname: string;
+  birthday: string | undefined;
 };
 
 const formErrors = {
   fname: "First name cannot be empty",
   lname: "Last name cannot be empty",
+  birthday: 'Birthday cannot be empty',
 };
 
 // Set the bottomsheet options
@@ -92,11 +94,13 @@ export default function UpdateProfileForm({
     defaultValues: {
       fname: accountState.account.fname,
       lname: accountState.account.lname,
+      birthday: accountState.account.birthday
     },
   });
   useEffect(() => {
     register("fname", { required: true, minLength: 1 });
     register("lname", { required: true, minLength: 1 });
+    register("birthday", { required: true });
   }, [register]);
 
   // Setup profile field
@@ -173,15 +177,15 @@ export default function UpdateProfileForm({
     onFormSubmit();
   };
 
-  const [date, setDate] = useState<undefined|Date>(undefined);
+  const [date, setDate] = useState<undefined | Date>(accountState.account.birthday ? new Date(Date.parse(accountState.account.birthday)) : undefined);
   const [show, setShow] = useState(false);
   
   const onChange = (_event: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
     setShow(false);
     setDate(currentDate);
+    setValue('birthday', currentDate?.toISOString())
   };
-
 
   const showDatepicker = () => {
     setShow(true)
