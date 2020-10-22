@@ -17,7 +17,11 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
+import Text from '../themed/Text';
 import { useToken } from "../../contexts/tokenContext";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Button } from 'react-native-elements'
+import theme from "../../theme";
 
 const styles = StyleSheet.create({
   root: { flexGrow: 1, flex: 1, alignItems: "center" },
@@ -169,6 +173,20 @@ export default function UpdateProfileForm({
     onFormSubmit();
   };
 
+  const [date, setDate] = useState<undefined|Date>(undefined);
+  const [show, setShow] = useState(false);
+  
+  const onChange = (_event: any, selectedDate: Date | undefined) => {
+    const currentDate = selectedDate || date;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+
+  const showDatepicker = () => {
+    setShow(true)
+  };
+
   return (
     <Box style={styles.root}>
       <ScrollView
@@ -196,6 +214,25 @@ export default function UpdateProfileForm({
           }}
           errorMessage={errors.lname ? formErrors.lname : ""}
         />
+
+        <Box flexDirection='row' >
+          {date && <Text variant="body" mb="lg" textAlign="center" marginRight='md' marginTop='sm'>
+            Brithday: {date ? date.toLocaleDateString() : 'not set'}
+          </Text>}
+          <Button onPress={showDatepicker} title={date ? "Change" : "Set Birthday"} buttonStyle={{backgroundColor: theme.colors.buttonPrimaryBackground}}/>
+        </Box>
+
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date ? date : new Date()}
+            mode={'date'}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+          />
+        )}
+
         {profileImageURL !== "" && (
           <Box marginVertical="md">
             <ThemedAvatar size="xlarge" uri={profileImageURL} />
