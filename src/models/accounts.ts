@@ -8,6 +8,7 @@ export interface Account {
   // accessToken: string;
   // refreshToken: string;
   profileImage?: string;
+  birthday?: string;
 }
 
 export const BLANK_ACCOUNT: Account = {
