@@ -1,6 +1,7 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import {
   MeetupResponsePageRouteProp,
@@ -8,7 +9,6 @@ import {
 } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
-import ThemedButton from "../themed/ThemedButton";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedIcon from "../themed/ThemedIcon";
 
@@ -42,8 +42,15 @@ export default function MeetupReponsePage({
   const renderParticipant = ({ item }: { item: string }) => (
     <Text variant="body">{item}</Text>
   );
+  const renderLocations = ({
+    item,
+    index,
+  }: {
+    item: string;
+    index: number;
+  }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
   const meetupTime = "3:00 PM";
-  const meetupLocation = "Online";
+  const meetupDuration = 25;
   const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
 
   const [locations, setLocations] = useState(["Online", "Test", "Another"]);
@@ -53,9 +60,8 @@ export default function MeetupReponsePage({
       <Box flex={3} width="95%">
         <ThemedCard>
           <Text variant="header">Meetup Details</Text>
-          <Text variant="header">{meetupTime}</Text>
-
-          <Text variant="subheader">{meetupLocation}</Text>
+          <Text variant="subheader">Starts at {meetupTime}</Text>
+          <Text variant="subheader">Lasts {meetupDuration} minutes</Text>
         </ThemedCard>
         <ThemedCard>
           <Text variant="subheader">Participants</Text>
@@ -65,15 +71,23 @@ export default function MeetupReponsePage({
             renderItem={renderParticipant}
           />
         </ThemedCard>
-        <ThemedButton
-          title="Rank Locations"
-          onPress={() =>
-            navigation.push("LocationRanker", {
-              locations: locations,
-              setLocations: setLocations,
-            })
-          }
-        />
+        <ThemedCard>
+          <Text variant="subheader">Top Ranked Locations</Text>
+          <FlatList
+            data={locations.slice(0, Math.min(3, locations.length))}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderLocations}
+          />
+          <Box marginTop="sm">
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push("LocationRanker", { locations, setLocations })
+              }
+            >
+              <Text variant="link">Rank Locations</Text>
+            </TouchableOpacity>
+          </Box>
+        </ThemedCard>
       </Box>
 
       <Box

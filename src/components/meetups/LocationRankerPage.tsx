@@ -42,20 +42,22 @@ export default function LocationRankerPage({
         renderItem={({ item, index, drag }) => {
           return (
             <TouchableOpacity onLongPress={drag}>
-              <ThemedListItem title={`${index ?? 0 + 1}. ${item}`} />
+              <ThemedListItem title={`${(index ?? 0) + 1}. ${item}`} />
             </TouchableOpacity>
           );
         }}
         keyExtractor={(item) => item}
         onDragEnd={({ data }) => setLocationData(data)}
       />
-      <ThemedButton
-        title="Save Ranking"
-        onPress={() => {
-          route.params.setLocations(locationData);
-          navigation.goBack();
-        }}
-      />
+      <Box m="lg">
+        <ThemedButton
+          title="Update Rankings"
+          onPress={() => {
+            route.params.setLocations(locationData);
+            navigation.goBack();
+          }}
+        />
+      </Box>
     </Box>
   );
 }
