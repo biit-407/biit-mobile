@@ -71,7 +71,8 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
-
+  // TODO: Integrate to set these default values depending on whether is a prefrence or not
+  const [showAgePreference, setShowAgePreference] = useState(false);
   const [ageRange, setAgeRange] = useState([18, 100]);
 
   return (
@@ -133,27 +134,46 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
         </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
-            <Text variant="subheader">Age Preference</Text>
+            <Box style={styles.txt}>
+              <Text>Use age preference</Text>
+            </Box>
+            <Box style={styles.txt}>
+              <Switch
+                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
+                thumbColor={showAgePreference ? "#B88953" : "#D8AD6D"}
+                onValueChange={setShowAgePreference}
+                value={showAgePreference}
+              />
+            </Box>
           </Box>
-          <Box style={styles.item}>
-            <Text>Current Preference: {`${ageRange[0]} - ${ageRange[1]}`}</Text>
-          </Box>
-          <Box style={styles.ageRange}>
-            <Text marginEnd="md">18</Text>
-            <ThemedMultiSlider
-              values={[18, 100]}
-              min={18}
-              max={100}
-              enableLabel={!scrollable}
-              snapped
-              onValuesChangeStart={() => setScrollable(false)}
-              onValuesChangeFinish={(values) => {
-                setAgeRange(values);
-                setScrollable(true);
-              }}
-            />
-            <Text marginStart="md">100</Text>
-          </Box>
+          {showAgePreference && (
+            <Box>
+              <Box style={styles.item}>
+                <Text variant="subheader">Age Preference</Text>
+              </Box>
+              <Box style={styles.item}>
+                <Text>
+                  Current Preference: {`${ageRange[0]} - ${ageRange[1]}`}
+                </Text>
+              </Box>
+              <Box style={styles.ageRange}>
+                <Text marginEnd="md">18</Text>
+                <ThemedMultiSlider
+                  values={[18, 100]}
+                  min={18}
+                  max={100}
+                  enableLabel={!scrollable}
+                  snapped
+                  onValuesChangeStart={() => setScrollable(false)}
+                  onValuesChangeFinish={(values) => {
+                    setAgeRange(values);
+                    setScrollable(true);
+                  }}
+                />
+                <Text marginStart="md">100</Text>
+              </Box>
+            </Box>
+          )}
         </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
