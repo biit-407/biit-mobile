@@ -45,6 +45,9 @@ import { GlobalServiceProvider } from "./src/contexts";
 import CodeOfConductPage, {
   CodeOfConductPageOptions,
 } from "./src/components/communities/CodeOfConductPage";
+import MeetupDetailsPage, {
+  MeetupDetailsPageOptions,
+} from "./src/components/meetups/MeetupDetailsPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -134,6 +137,11 @@ export default function App() {
             name="LeaveCommunity"
             component={LeaveCommunityPage}
             options={LeaveCommunityPageOptions}
+          />
+          <Stack.Screen
+            name="MeetupDetails"
+            component={MeetupDetailsPage}
+            options={MeetupDetailsPageOptions}
           />
         </Stack.Navigator>
       </GlobalServiceProvider>

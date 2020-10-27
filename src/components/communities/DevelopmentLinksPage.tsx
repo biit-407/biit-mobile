@@ -124,6 +124,14 @@ export default function DevelopmentLinksPage({
           onPress={() => navigation.push("ViewProfile")}
         />
       </Box>
+      <Box style={styles.btnbox}>
+        <Button
+          title="Meetup Details"
+          onPress={() =>
+            navigation.push("MeetupDetails", { meetingID: "ABCDEFGH" })
+          }
+        />
+      </Box>
     </Box>
   );
 }

@@ -17,6 +17,7 @@ type RootStackParamList = {
   MemberList: { name: string };
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
+  MeetupDetails: { meetingID: string };
 };
 
 //TODO remove for release
@@ -167,6 +168,17 @@ export type UserSettingsPageRouteProp = RouteProp<
 >;
 
 export type UserSettingsPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "UserSettings"
+>;
+
+// Meetup Details Page Types
+export type MeetupDetailsPageRouteProp = RouteProp<
+  RootStackParamList,
+  "MeetupDetails"
+>;
+
+export type MeetupDetailsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "UserSettings"
 >;
