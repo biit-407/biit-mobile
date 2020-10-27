@@ -120,55 +120,6 @@ export default function MeetupReponsePage({
           <Text variant="body">Accept</Text>
         </Box>
       </Box>
-
-      {/* <Modal
-        animationType="slide"
-        visible={showLocationModal}
-        presentationStyle="fullScreen"
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-        }}
-      >
-        <DraggableFlatList
-          data={locations}
-          renderItem={({ item, index, drag, isActive }) => {
-            return (
-              <TouchableOpacity
-                style={{
-                  height: 100,
-                  backgroundColor: isActive ? "blue" : "red",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onLongPress={drag}
-              >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    color: "white",
-                    fontSize: 32,
-                  }}
-                >
-                  {item}
-                </Text>
-              </TouchableOpacity>
-            );
-          }}
-          keyExtractor={(item, index) => `draggable-item-${item}`}
-          onDragEnd={({ data }) => setLocations(data)}
-        />
-        <Box flexDirection="row" justifyContent="space-between">
-          <ThemedButton
-            title="Go Back"
-            onPress={() => setShowLocationModal(false)}
-          />
-          <Text>Rank Locations</Text>
-          <ThemedButton
-            title="Confirm"
-            onPress={() => setShowLocationModal(false)}
-          />
-        </Box>
-      </Modal> */}
     </Box>
   );
 }
