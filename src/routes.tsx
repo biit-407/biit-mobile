@@ -18,6 +18,10 @@ type RootStackParamList = {
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
   MeetupResponse: undefined;
+  LocationRanker: {
+    locations: string[];
+    setLocations: (locations: string[]) => void;
+  };
 };
 
 //TODO remove for release
@@ -181,4 +185,14 @@ export type MeetupResponsePageRouteProp = RouteProp<
 export type MeetupResponsePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "MeetupResponse"
+>;
+
+export type LocationRankerPageRouteProp = RouteProp<
+  RootStackParamList,
+  "LocationRanker"
+>;
+
+export type LocationRankerPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "LocationRanker"
 >;

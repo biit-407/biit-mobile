@@ -1,5 +1,5 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import {
@@ -11,7 +11,6 @@ import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedIcon from "../themed/ThemedIcon";
-import ThemedListItem from "../themed/ThemedListItem";
 
 type MeetupResponsePageProps = {
   route: MeetupResponsePageRouteProp;
@@ -47,6 +46,8 @@ export default function MeetupReponsePage({
   const meetupLocation = "Online";
   const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
 
+  const [locations, setLocations] = useState(["Online", "Test", "Another"]);
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
@@ -64,7 +65,17 @@ export default function MeetupReponsePage({
             renderItem={renderParticipant}
           />
         </ThemedCard>
+        <ThemedButton
+          title="Rank Locations"
+          onPress={() =>
+            navigation.push("LocationRanker", {
+              locations: locations,
+              setLocations: setLocations,
+            })
+          }
+        />
       </Box>
+
       <Box
         flex={1}
         flexDirection="row"
@@ -95,6 +106,55 @@ export default function MeetupReponsePage({
           <Text variant="body">Accept</Text>
         </Box>
       </Box>
+
+      {/* <Modal
+        animationType="slide"
+        visible={showLocationModal}
+        presentationStyle="fullScreen"
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <DraggableFlatList
+          data={locations}
+          renderItem={({ item, index, drag, isActive }) => {
+            return (
+              <TouchableOpacity
+                style={{
+                  height: 100,
+                  backgroundColor: isActive ? "blue" : "red",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onLongPress={drag}
+              >
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    color: "white",
+                    fontSize: 32,
+                  }}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+          keyExtractor={(item, index) => `draggable-item-${item}`}
+          onDragEnd={({ data }) => setLocations(data)}
+        />
+        <Box flexDirection="row" justifyContent="space-between">
+          <ThemedButton
+            title="Go Back"
+            onPress={() => setShowLocationModal(false)}
+          />
+          <Text>Rank Locations</Text>
+          <ThemedButton
+            title="Confirm"
+            onPress={() => setShowLocationModal(false)}
+          />
+        </Box>
+      </Modal> */}
     </Box>
   );
 }
