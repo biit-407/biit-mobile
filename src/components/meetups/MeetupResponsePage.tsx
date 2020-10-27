@@ -67,7 +67,7 @@ export default function MeetupReponsePage({
           <Text variant="subheader">Participants</Text>
           <FlatList
             data={meetupParticipants}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => item + index.toString()}
             renderItem={renderParticipant}
           />
         </ThemedCard>
@@ -75,7 +75,7 @@ export default function MeetupReponsePage({
           <Text variant="subheader">Top Ranked Locations</Text>
           <FlatList
             data={locations.slice(0, Math.min(3, locations.length))}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => item + index.toString()}
             renderItem={renderLocations}
           />
           <Box marginTop="sm">
