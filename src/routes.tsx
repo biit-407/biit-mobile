@@ -17,6 +17,7 @@ type RootStackParamList = {
   MemberList: { name: string };
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
+  MeetupDetails: { meetingID: string };
   MeetupResponse: undefined;
   LocationRanker: {
     locations: string[];
@@ -176,6 +177,15 @@ export type UserSettingsPageNavigationProp = StackNavigationProp<
   "UserSettings"
 >;
 
+// Meetup Details Page Types
+export type MeetupDetailsPageRouteProp = RouteProp<
+  RootStackParamList,
+  "MeetupDetails"
+>;
+
+export type MeetupDetailsPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "UserSettings"
 // Meetup Response Page Types
 export type MeetupResponsePageRouteProp = RouteProp<
   RootStackParamList,
