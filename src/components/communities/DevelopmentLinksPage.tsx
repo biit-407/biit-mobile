@@ -133,7 +133,7 @@ export default function DevelopmentLinksPage({
         />
       </Box>
       <Box style={styles.btnbox}>
-        <Button  
+        <Button
           title="Meetup Details"
           onPress={() =>
             navigation.push("MeetupDetails", { meetingID: "ABCDEFGH" })
@@ -144,7 +144,7 @@ export default function DevelopmentLinksPage({
         <Button
           title="Meetup Response"
           onPress={() => navigation.push("MeetupResponse")}
-           />
+        />
       </Box>
     </Box>
   );
