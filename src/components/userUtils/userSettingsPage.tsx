@@ -11,6 +11,8 @@ import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
 import ThemedMultiSlider from "../themed/ThemedMultiSlider";
+import { updateAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 
 type UserSettingsPageProps = {
   route: UserSettingsPageRouteProp;
@@ -72,8 +74,27 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
   // TODO: Integrate to set these default values depending on whether is a prefrence or not
-  const [showAgePreference, setShowAgePreference] = useState(false);
-  const [ageRange, setAgeRange] = useState([18, 100]);
+
+  const [accountState, accountDispatch] = useAccount();
+  const [{ refreshToken }, tokenDispatch] = useToken();
+
+  const [showAgePreference, setShowAgePreference] = useState(
+    accountState.account.agePref ? true : false
+  );
+  const [ageRange, setAgeRange] = useState(
+    accountState.account.agePref ?? [18, 100]
+  );
+
+  const setAgePreference = (preference: number[] | null) => {
+    console.log({ ...accountState.account, agePref: preference });
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      { ...accountState.account, agePref: preference }
+    );
+  };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -141,7 +162,15 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               <Switch
                 trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
                 thumbColor={showAgePreference ? "#B88953" : "#D8AD6D"}
-                onValueChange={setShowAgePreference}
+                onValueChange={(value) => {
+                  setShowAgePreference(value);
+                  if (value === false) {
+                    console.log("Need to remove age");
+                    setAgePreference(null);
+                  } else if (value === true) {
+                    setAgeRange(accountState.account.agePref ?? [18, 100]);
+                  }
+                }}
                 value={showAgePreference}
               />
             </Box>
@@ -149,17 +178,15 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
           {showAgePreference && (
             <Box>
               <Box style={styles.item}>
-                <Text variant="subheader">Age Preference</Text>
-              </Box>
-              <Box style={styles.item}>
                 <Text>
-                  Current Preference: {`${ageRange[0]} - ${ageRange[1]}`}
+                  Current Age Preference:
+                  {` ${ageRange[0]} to ${ageRange[1]} years old`}
                 </Text>
               </Box>
               <Box style={styles.ageRange}>
                 <Text marginEnd="md">18</Text>
                 <ThemedMultiSlider
-                  values={[18, 100]}
+                  values={ageRange}
                   min={18}
                   max={100}
                   enableLabel={!scrollable}
@@ -167,6 +194,7 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
                   onValuesChangeStart={() => setScrollable(false)}
                   onValuesChangeFinish={(values) => {
                     setAgeRange(values);
+                    setAgePreference(values);
                     setScrollable(true);
                   }}
                 />
