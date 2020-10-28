@@ -132,6 +132,20 @@ export default function DevelopmentLinksPage({
           }
         />
       </Box>
+      <Box style={styles.btnbox}>
+        <Button  
+          title="Meetup Details"
+          onPress={() =>
+            navigation.push("MeetupDetails", { meetingID: "ABCDEFGH" })
+          }
+        />
+      </Box>
+      <Box style={styles.btnbox}>
+        <Button
+          title="Meetup Response"
+          onPress={() => navigation.push("MeetupResponse")}
+           />
+      </Box>
     </Box>
   );
 }

@@ -48,6 +48,15 @@ import CodeOfConductPage, {
 import MeetupRatingPage, {
   MeetupRatingPageOptions,
 } from "./src/components/meetups/MeetupRatingPage";
+import MeetupDetailsPage, {
+  MeetupDetailsPageOptions,
+} from "./src/components/meetups/MeetupDetailsPage";
+import MeetupResponsePage, {
+  MeetupResponsePageOptions,
+} from "./src/components/meetups/MeetupResponsePage";
+import LocationRankerPage, {
+  LocationRankerPageOptions,
+} from "./src/components/meetups/LocationRankerPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -142,6 +151,21 @@ export default function App() {
             name="MeetupRating"
             component={MeetupRatingPage}
             options={MeetupRatingPageOptions}
+          />
+          <Stack.Screen
+            name="MeetupDetails"
+            component={MeetupDetailsPage}
+            options={MeetupDetailsPageOptions}
+          />
+          <Stack.Screen
+            name="MeetupResponse"
+            component={MeetupResponsePage}
+            options={MeetupResponsePageOptions}
+          />
+          <Stack.Screen
+            name="LocationRanker"
+            component={LocationRankerPage}
+            options={LocationRankerPageOptions}
           />
         </Stack.Navigator>
       </GlobalServiceProvider>
