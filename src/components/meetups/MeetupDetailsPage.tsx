@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
   // TODO: Load in real data of the passed in meeting
-  const { meetingID } = route.params;
+  const { meetupID } = route.params;
   const meetupTime = "3:00 PM";
   const meetupDuration = 25;
   const meetupLocation = "Online";
@@ -46,7 +46,7 @@ export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
         <Text variant="subheader">Starts at {meetupTime}</Text>
         <Text variant="subheader">Lasts {meetupDuration} minutes</Text>
         <Text variant="subheader">{meetupLocation}</Text>
-        <Text>{meetingID}</Text>
+        <Text>{meetupID}</Text>
       </ThemedCard>
       <ThemedCard>
         <Text variant="subheader">Participants</Text>

@@ -126,24 +126,8 @@ export default function DevelopmentLinksPage({
       </Box>
       <Box style={styles.btnbox}>
         <Button
-          title="Meetup Rating"
-          onPress={() =>
-            navigation.push("MeetupRating", { meetupID: "ABCDEFGH" })
-          }
-        />
-      </Box>
-      <Box style={styles.btnbox}>
-        <Button
-          title="Meetup Details"
-          onPress={() =>
-            navigation.push("MeetupDetails", { meetingID: "ABCDEFGH" })
-          }
-        />
-      </Box>
-      <Box style={styles.btnbox}>
-        <Button
-          title="Meetup Response"
-          onPress={() => navigation.push("MeetupResponse")}
+          title="Meetup List"
+          onPress={() => navigation.push("MeetupList")}
         />
       </Box>
     </Box>

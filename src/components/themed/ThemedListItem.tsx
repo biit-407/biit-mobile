@@ -11,6 +11,7 @@ type ThemedListItemProps = {
   title?: string;
   avatarUri?: string;
   rightContent?: React.ReactNode;
+  onPress?: () => void;
 };
 
 // A reusable themed button
@@ -18,12 +19,14 @@ export default function ThemedListItem({
   avatarUri,
   title,
   rightContent,
+  onPress,
 }: ThemedListItemProps) {
   const theme = useTheme<Theme>();
   return (
     <ListItem
       bottomDivider
       topDivider
+      onPress={onPress}
       containerStyle={{
         backgroundColor: theme.colors.cardBackground,
         borderColor: theme.colors.cardBorder,

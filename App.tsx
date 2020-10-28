@@ -57,6 +57,9 @@ import MeetupResponsePage, {
 import LocationRankerPage, {
   LocationRankerPageOptions,
 } from "./src/components/meetups/LocationRankerPage";
+import MeetupListPage, {
+  MeetupListPageOptions,
+} from "./src/components/meetups/MeetupListPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -152,20 +155,26 @@ export default function App() {
             component={MeetupRatingPage}
             options={MeetupRatingPageOptions}
           />
-          <Stack.Screen
-            name="MeetupDetails"
-            component={MeetupDetailsPage}
-            options={MeetupDetailsPageOptions}
-          />
+
           <Stack.Screen
             name="MeetupResponse"
             component={MeetupResponsePage}
             options={MeetupResponsePageOptions}
           />
           <Stack.Screen
+            name="MeetupDetails"
+            component={MeetupDetailsPage}
+            options={MeetupDetailsPageOptions}
+          />
+          <Stack.Screen
             name="LocationRanker"
             component={LocationRankerPage}
             options={LocationRankerPageOptions}
+          />
+          <Stack.Screen
+            name="MeetupList"
+            component={MeetupListPage}
+            options={MeetupListPageOptions}
           />
         </Stack.Navigator>
       </GlobalServiceProvider>

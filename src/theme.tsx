@@ -33,6 +33,8 @@ const theme = createTheme({
     sliderMarkerEnabled: palette.brownLight,
     sliderTrackSelected: palette.brownPrimary,
     sliderTrackUnselected: palette.tanPrimary,
+
+    sectionListHeader: palette.tanDark,
   },
   spacing: {
     xs: 4,
@@ -67,6 +69,11 @@ const theme = createTheme({
       color: "primaryText",
     },
     listHeader: { fontSize: 20 },
+    sectionListHeader: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "primaryText",
+    },
   },
 });
 
