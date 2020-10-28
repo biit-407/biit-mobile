@@ -186,7 +186,8 @@ export type MeetupRatingPageRouteProp = RouteProp<
 
 export type MeetupRatingPageNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "MeetupRating">;
+  "MeetupRating"
+>;
 // Meetup Details Page Types
 export type MeetupDetailsPageRouteProp = RouteProp<
   RootStackParamList,
@@ -196,6 +197,7 @@ export type MeetupDetailsPageRouteProp = RouteProp<
 export type MeetupDetailsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "UserSettings"
+>;
 // Meetup Response Page Types
 export type MeetupResponsePageRouteProp = RouteProp<
   RootStackParamList,
