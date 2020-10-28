@@ -2,7 +2,7 @@ import { StackNavigationOptions } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DraggableFlatList from "react-native-draggable-flatlist";
-import { StyleSheet } from "react-native";
+import { StyleSheet, YellowBox } from "react-native";
 
 import {
   LocationRankerPageNavigationProp,
@@ -28,6 +28,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 });
+
+// Ignore the serializer warning
+YellowBox.ignoreWarnings([
+  "Non-serializable values were found in the navigation state",
+]);
 
 export default function LocationRankerPage({
   navigation,
