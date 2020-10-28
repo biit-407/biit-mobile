@@ -45,6 +45,9 @@ import { GlobalServiceProvider } from "./src/contexts";
 import CodeOfConductPage, {
   CodeOfConductPageOptions,
 } from "./src/components/communities/CodeOfConductPage";
+import MeetupRatingPage, {
+  MeetupRatingPageOptions,
+} from "./src/components/meetups/MeetupRatingPage";
 import MeetupDetailsPage, {
   MeetupDetailsPageOptions,
 } from "./src/components/meetups/MeetupDetailsPage";
@@ -145,9 +148,16 @@ export default function App() {
             options={LeaveCommunityPageOptions}
           />
           <Stack.Screen
+            name="MeetupRating"
+            component={MeetupRatingPage}
+            options={MeetupRatingPageOptions}
+          />
+          <Stack.Screen
             name="MeetupDetails"
             component={MeetupDetailsPage}
             options={MeetupDetailsPageOptions}
+          />
+          <Stack.Screen
             name="MeetupResponse"
             component={MeetupResponsePage}
             options={MeetupResponsePageOptions}
