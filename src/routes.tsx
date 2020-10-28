@@ -17,6 +17,11 @@ type RootStackParamList = {
   MemberList: { name: string };
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
+  MeetupResponse: undefined;
+  LocationRanker: {
+    locations: string[];
+    setLocations: (locations: string[]) => void;
+  };
 };
 
 //TODO remove for release
@@ -169,4 +174,25 @@ export type UserSettingsPageRouteProp = RouteProp<
 export type UserSettingsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "UserSettings"
+>;
+
+// Meetup Response Page Types
+export type MeetupResponsePageRouteProp = RouteProp<
+  RootStackParamList,
+  "MeetupResponse"
+>;
+
+export type MeetupResponsePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "MeetupResponse"
+>;
+
+export type LocationRankerPageRouteProp = RouteProp<
+  RootStackParamList,
+  "LocationRanker"
+>;
+
+export type LocationRankerPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "LocationRanker"
 >;
