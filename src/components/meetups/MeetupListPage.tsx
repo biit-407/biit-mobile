@@ -51,7 +51,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   ]);
 
   const sectionIcons: Record<string, string> = {
-    "Pending Meetups": "clock",
+    "Pending Meetups": "add-to-list",
     "Upcoming Meetups": "calendar",
     "Unrated Meetups": "star",
   };
