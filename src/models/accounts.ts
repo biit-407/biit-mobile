@@ -9,6 +9,7 @@ export interface Account {
   // refreshToken: string;
   profileImage?: string;
   birthday?: string;
+  agePref?: number[];
 }
 
 export const BLANK_ACCOUNT: Account = {

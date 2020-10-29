@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
-import { Switch } from "react-native-gesture-handler";
 
 import {
   UserSettingsPageRouteProp,
@@ -10,7 +9,9 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
-import ThemedMultiSlider from "../themed/ThemedMultiSlider";
+import { ThemedMultiSlider, ThemedSwitch } from "../themed";
+import { updateAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 
 type UserSettingsPageProps = {
   route: UserSettingsPageRouteProp;
@@ -60,6 +61,11 @@ const styles = StyleSheet.create({
 });
 
 export default function UserSettingsPage({}: UserSettingsPageProps) {
+  // Get the user account and tokens
+  const [accountState, accountDispatch] = useAccount();
+  const [{ refreshToken }, tokenDispatch] = useToken();
+
+  // Dummy switch states
   const [sw1, setSw1] = useState(false);
   const toggleSw1 = () => setSw1((previousState) => !previousState);
   const [sw2, setSw2] = useState(false);
@@ -71,9 +77,52 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
-  // TODO: Integrate to set these default values depending on whether is a prefrence or not
-  const [showAgePreference, setShowAgePreference] = useState(false);
-  const [ageRange, setAgeRange] = useState([18, 100]);
+
+  // Check whether the user has an age preference
+  const hasAgePreference =
+    accountState.account.agePref && accountState.account.agePref?.length > 0;
+
+  // Store info about the user's age preference (toggle and range)
+  const [showAgePreference, setShowAgePreference] = useState(hasAgePreference);
+  const [ageRange, setAgeRange] = useState(
+    accountState.account.agePref && hasAgePreference
+      ? accountState.account.agePref
+      : [18, 100]
+  );
+
+  // Generic method to set the age preference on the backend
+  const setAgePreference = (preference: number[]) => {
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      { ...accountState.account, agePref: preference }
+    );
+  };
+
+  // Method to handle toggling on and off age preference
+  const onToggleAgePreference = (value: boolean) => {
+    // Toggle the switch state
+    setShowAgePreference(value);
+    if (value === false) {
+      // If toggled false, clear the user's age preference
+      setAgePreference([]);
+    } else if (value === true) {
+      // If toggled true, set the default age range and update the preference on the backend
+      setAgeRange([18, 100]);
+      setAgePreference([18, 100]);
+    }
+  };
+
+  // Method to handle updates from the range slider
+  const onSelectRangeValues = (values: number[]) => {
+    // Enable scrolling
+    setScrollable(true);
+    // Set the age range state and update the backend
+    setAgeRange(values);
+    setAgePreference(values);
+  };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -84,12 +133,7 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               <Text>Notifications</Text>
             </Box>
             <Box style={styles.txt}>
-              <Switch
-                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-                thumbColor={sw1 ? "#B88953" : "#D8AD6D"}
-                onValueChange={toggleSw1}
-                value={sw1}
-              />
+              <ThemedSwitch onValueChange={toggleSw1} value={sw1} />
             </Box>
           </Box>
           <Box style={styles.item}>
@@ -97,12 +141,7 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               <Text>Profile visible to others</Text>
             </Box>
             <Box style={styles.txt}>
-              <Switch
-                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-                thumbColor={sw2 ? "#B88953" : "#D8AD6D"}
-                onValueChange={toggleSw2}
-                value={sw2}
-              />
+              <ThemedSwitch onValueChange={toggleSw2} value={sw2} />
             </Box>
           </Box>
           <Box style={styles.item}>
@@ -110,12 +149,7 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               <Text>Hide community membership</Text>
             </Box>
             <Box style={styles.txt}>
-              <Switch
-                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-                thumbColor={sw3 ? "#B88953" : "#D8AD6D"}
-                onValueChange={toggleSw3}
-                value={sw3}
-              />
+              <ThemedSwitch onValueChange={toggleSw3} value={sw3} />
             </Box>
           </Box>
           <Box style={styles.item}>
@@ -123,12 +157,7 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               <Text>Hide LinkedIn</Text>
             </Box>
             <Box style={styles.txt}>
-              <Switch
-                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-                thumbColor={sw4 ? "#B88953" : "#D8AD6D"}
-                onValueChange={toggleSw4}
-                value={sw4}
-              />
+              <ThemedSwitch onValueChange={toggleSw4} value={sw4} />
             </Box>
           </Box>
         </Box>
@@ -138,10 +167,8 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
               <Text>Use age preference</Text>
             </Box>
             <Box style={styles.txt}>
-              <Switch
-                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-                thumbColor={showAgePreference ? "#B88953" : "#D8AD6D"}
-                onValueChange={setShowAgePreference}
+              <ThemedSwitch
+                onValueChange={onToggleAgePreference}
                 value={showAgePreference}
               />
             </Box>
@@ -149,26 +176,21 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
           {showAgePreference && (
             <Box>
               <Box style={styles.item}>
-                <Text variant="subheader">Age Preference</Text>
-              </Box>
-              <Box style={styles.item}>
                 <Text>
-                  Current Preference: {`${ageRange[0]} - ${ageRange[1]}`}
+                  Current Age Preference:
+                  {` ${ageRange[0]} to ${ageRange[1]} years old`}
                 </Text>
               </Box>
               <Box style={styles.ageRange}>
                 <Text marginEnd="md">18</Text>
                 <ThemedMultiSlider
-                  values={[18, 100]}
+                  values={ageRange}
                   min={18}
                   max={100}
+                  onValuesChangeStart={() => setScrollable(false)}
+                  onValuesChangeFinish={onSelectRangeValues}
                   enableLabel={!scrollable}
                   snapped
-                  onValuesChangeStart={() => setScrollable(false)}
-                  onValuesChangeFinish={(values) => {
-                    setAgeRange(values);
-                    setScrollable(true);
-                  }}
                 />
                 <Text marginStart="md">100</Text>
               </Box>
