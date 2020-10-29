@@ -12,6 +12,7 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
+import MeetupCard from "./MeetupCard";
 
 type MeetupRatingPageProps = {
   route: MeetupRatingPageRouteProp;
@@ -57,33 +58,27 @@ export default function MeetupRatingPage({
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <ThemedCard>
-        <Text variant="header">Meetup Details</Text>
-        <Text variant="subheader">Starts at {meetupTime}</Text>
-        <Text variant="subheader">Lasts {meetupDuration} minutes</Text>
-        <Text variant="subheader">{meetupLocation}</Text>
-        <Text>{meetupID}</Text>
-      </ThemedCard>
-      <ThemedCard>
-        <Text variant="subheader">Participants</Text>
-        <FlatList
-          data={meetupParticipants}
-          keyExtractor={(item, index) => item + index.toString()}
-          renderItem={renderParticipant}
-        />
-      </ThemedCard>
-      <ThemedCard>
-        <Text variant="body">How would you rate your experience?</Text>
-        <AirbnbRating /* @ts-ignore:disable-next-line */
-          reviewColor={theme.colors.iconPrimary}
-          defaultRating={rating}
-          selectedColor={theme.colors.iconPrimary}
-          onFinishRating={setRating}
-        />
-        <Box mt="md">
-          <ThemedButton title="Submit Rating" onPress={submitRating} />
-        </Box>
-      </ThemedCard>
+      <Box style={{ width: '100%' }}>
+
+        <MeetupCard />
+        <ThemedCard>
+          <Box style={{ width: '100%', alignItems: 'center' }}>
+
+            <Text variant="body">How would you rate your experience?</Text>
+            <AirbnbRating /* @ts-ignore:disable-next-line */
+              reviewColor={theme.colors.iconPrimary}
+              defaultRating={rating}
+              selectedColor={theme.colors.iconPrimary}
+              onFinishRating={setRating}
+            />
+            <Box mt="md">
+              <ThemedButton title="Submit Rating" onPress={submitRating} />
+            </Box>
+          </Box>
+
+        </ThemedCard>
+      </Box>
+
     </Box>
   );
 }
