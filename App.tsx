@@ -57,6 +57,7 @@ import MeetupResponsePage, {
 import LocationRankerPage, {
   LocationRankerPageOptions,
 } from "./src/components/meetups/LocationRankerPage";
+import PreviousMeetupsPage, { PreviousMeetupsPageOptions } from "./src/components/meetups/PreviousMeetupsPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -166,6 +167,11 @@ export default function App() {
             name="LocationRanker"
             component={LocationRankerPage}
             options={LocationRankerPageOptions}
+          />
+          <Stack.Screen
+            name="PreviousMeetups"
+            component={PreviousMeetupsPage}
+            options={PreviousMeetupsPageOptions}
           />
         </Stack.Navigator>
       </GlobalServiceProvider>
