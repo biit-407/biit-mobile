@@ -39,6 +39,7 @@ const theme = createTheme({
     sliderTrackSelected: palette.brownPrimary,
     sliderTrackUnselected: palette.tanPrimary,
 
+    sectionListHeader: palette.tanDark,
     switchTrackEnabled: palette.tanDark,
     switchTrackDisabled: palette.tanPrimary,
     switchThumbEnabled: palette.brownLight,
@@ -77,6 +78,11 @@ const theme = createTheme({
       color: "primaryText",
     },
     listHeader: { fontSize: 20 },
+    sectionListHeader: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "primaryText",
+    },
   },
 });
 

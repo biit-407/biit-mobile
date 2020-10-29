@@ -17,10 +17,11 @@ type RootStackParamList = {
   MemberList: { name: string };
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
+  MeetupList: undefined;
+  MeetupDetails: { meetupID: string };
+  MeetupResponse: { meetupID: string };
   MeetupRating: { meetupID: string };
-  MeetupDetails: { meetingID: string };
   PreviousMeetups: { pastMeetupIDs: string[] };
-  MeetupResponse: undefined;
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
@@ -179,16 +180,17 @@ export type UserSettingsPageNavigationProp = StackNavigationProp<
   "UserSettings"
 >;
 
-// User Settings Page Types
-export type MeetupRatingPageRouteProp = RouteProp<
+// Meetup List Page Types
+export type MeetupListPageRouteProp = RouteProp<
   RootStackParamList,
-  "MeetupRating"
+  "MeetupList"
 >;
 
-export type MeetupRatingPageNavigationProp = StackNavigationProp<
+export type MeetupListPageNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "MeetupRating"
+  "MeetupList"
 >;
+
 // Meetup Details Page Types
 export type MeetupDetailsPageRouteProp = RouteProp<
   RootStackParamList,
@@ -199,6 +201,7 @@ export type MeetupDetailsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "UserSettings"
 >;
+
 // Meetup Response Page Types
 export type MeetupResponsePageRouteProp = RouteProp<
   RootStackParamList,
@@ -210,6 +213,18 @@ export type MeetupResponsePageNavigationProp = StackNavigationProp<
   "MeetupResponse"
 >;
 
+// Meetup Rating Page Types
+export type MeetupRatingPageRouteProp = RouteProp<
+  RootStackParamList,
+  "MeetupRating"
+>;
+
+export type MeetupRatingPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "MeetupRating"
+>;
+
+// Location Ranker Page Types
 export type LocationRankerPageRouteProp = RouteProp<
   RootStackParamList,
   "LocationRanker"
