@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
-import { Switch } from "react-native-gesture-handler";
 
 import {
   UserSettingsPageRouteProp,
@@ -10,8 +9,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
-import ThemedMultiSlider from "../themed/ThemedMultiSlider";
-import ThemedSwitch from "../themed/ThemedSwitch";
+import { ThemedMultiSlider, ThemedSwitch } from "../themed";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 
