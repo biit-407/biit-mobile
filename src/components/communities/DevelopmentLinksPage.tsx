@@ -149,7 +149,11 @@ export default function DevelopmentLinksPage({
       <Box style={styles.btnbox}>
         <Button
           title="Past Meetups"
-          onPress={() => navigation.push("PreviousMeetups", { pastMeetupIDs: ['a meetup id', 'id', 'n', 'c', 'd'] } )}
+          onPress={() =>
+            navigation.push("PreviousMeetups", {
+              pastMeetupIDs: ["a meetup id", "id", "n", "c", "d"],
+            })
+          }
         />
       </Box>
     </Box>

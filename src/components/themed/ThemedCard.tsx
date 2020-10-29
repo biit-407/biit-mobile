@@ -23,11 +23,11 @@ export default function ThemedCard({ children }: ThemedButtonProps) {
         borderWidth: 2,
         borderRadius: 4,
         elevation: 16,
-        shadowColor: '#000000',
+        shadowColor: "#000000",
         shadowOpacity: 0.29,
         shadowOffset: {
           width: 8,
-          height: 8
+          height: 8,
         },
         shadowRadius: 16,
         marginBottom: 8,

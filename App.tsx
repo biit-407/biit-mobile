@@ -57,7 +57,9 @@ import MeetupResponsePage, {
 import LocationRankerPage, {
   LocationRankerPageOptions,
 } from "./src/components/meetups/LocationRankerPage";
-import PreviousMeetupsPage, { PreviousMeetupsPageOptions } from "./src/components/meetups/PreviousMeetupsPage";
+import PreviousMeetupsPage, {
+  PreviousMeetupsPageOptions,
+} from "./src/components/meetups/PreviousMeetupsPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),

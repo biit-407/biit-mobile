@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { AirbnbRating } from "react-native-elements";
 import { useTheme } from "@shopify/restyle";
 
@@ -12,6 +12,7 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
+
 import MeetupCard from "./MeetupCard";
 
 type MeetupRatingPageProps = {
@@ -37,15 +38,15 @@ export default function MeetupRatingPage({
 }: MeetupRatingPageProps) {
   // TODO: Load in real data of the passed in meetingMeetupRatingPageProps
   const { meetupID } = route.params;
-  const meetupTime = "3:00 PM";
-  const meetupDuration = 25;
-  const meetupLocation = "Online";
-  const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
+  // const meetupTime = "3:00 PM";
+  // const meetupDuration = 25;
+  // const meetupLocation = "Online";
+  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
 
   // TODO: Make this prettier
-  const renderParticipant = ({ item }: { item: string }) => (
-    <Text variant="body">{item}</Text>
-  );
+  // const renderParticipant = ({ item }: { item: string }) => (
+  //   <Text variant="body">{item}</Text>
+  // );
 
   const [rating, setRating] = useState(3);
   const submitRating = () => {
@@ -58,12 +59,10 @@ export default function MeetupRatingPage({
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <Box style={{ width: '100%' }}>
-
+      <Box style={{ width: "100%" }}>
         <MeetupCard />
         <ThemedCard>
-          <Box style={{ width: '100%', alignItems: 'center' }}>
-
+          <Box style={{ width: "100%", alignItems: "center" }}>
             <Text variant="body">How would you rate your experience?</Text>
             <AirbnbRating /* @ts-ignore:disable-next-line */
               reviewColor={theme.colors.iconPrimary}
@@ -75,10 +74,8 @@ export default function MeetupRatingPage({
               <ThemedButton title="Submit Rating" onPress={submitRating} />
             </Box>
           </Box>
-
         </ThemedCard>
       </Box>
-
     </Box>
   );
 }

@@ -12,6 +12,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedIcon from "../themed/ThemedIcon";
+
 import MeetupCard from "./MeetupCard";
 
 type MeetupResponsePageProps = {
@@ -49,15 +50,14 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  const meetupTime = "3:00 PM";
-  const meetupDuration = 25;
-  const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
+  // const meetupTime = "3:00 PM";
+  // const meetupDuration = 25;
+  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
   const [locations, setLocations] = useState(["Online", "Test", "Another"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
-
         <MeetupCard />
 
         <ThemedCard>
