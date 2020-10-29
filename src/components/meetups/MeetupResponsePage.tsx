@@ -7,10 +7,13 @@ import {
   MeetupResponsePageRouteProp,
   MeetupResponsePageNavigationProp,
 } from "../../routes";
+import theme from "../../theme";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedIcon from "../themed/ThemedIcon";
+
+import MeetupCard from "./MeetupCard";
 
 type MeetupResponsePageProps = {
   route: MeetupResponsePageRouteProp;
@@ -39,9 +42,7 @@ export default function MeetupReponsePage({
   const onDecline = () => {
     navigation.pop();
   };
-  const renderParticipant = ({ item }: { item: string }) => (
-    <Text variant="body">{item}</Text>
-  );
+
   const renderLocations = ({
     item,
     index,
@@ -49,30 +50,18 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  const meetupTime = "3:00 PM";
-  const meetupDuration = 25;
-  const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
-
+  // const meetupTime = "3:00 PM";
+  // const meetupDuration = 25;
+  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
   const [locations, setLocations] = useState(["Online", "Test", "Another"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
+        <MeetupCard />
+
         <ThemedCard>
-          <Text variant="header">Meetup Details</Text>
-          <Text variant="subheader">Starts at {meetupTime}</Text>
-          <Text variant="subheader">Lasts {meetupDuration} minutes</Text>
-        </ThemedCard>
-        <ThemedCard>
-          <Text variant="subheader">Participants</Text>
-          <FlatList
-            data={meetupParticipants}
-            keyExtractor={(item, index) => item + index.toString()}
-            renderItem={renderParticipant}
-          />
-        </ThemedCard>
-        <ThemedCard>
-          <Text variant="subheader">Top Ranked Locations</Text>
+          <Text variant="header">Top Ranked Locations</Text>
           <FlatList
             data={locations.slice(0, Math.min(3, locations.length))}
             keyExtractor={(item, index) => item + index.toString()}
@@ -104,6 +93,7 @@ export default function MeetupReponsePage({
             name="cross"
             type="entypo"
             onPress={onDecline}
+            color={theme.colors.iconSelectedRed}
           />
           <Text variant="body">Decline</Text>
         </Box>
@@ -116,6 +106,7 @@ export default function MeetupReponsePage({
             name="check"
             type="entypo"
             onPress={onAccept}
+            color={theme.colors.iconSelectedGreen}
           />
           <Text variant="body">Accept</Text>
         </Box>

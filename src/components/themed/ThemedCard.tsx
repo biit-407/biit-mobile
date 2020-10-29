@@ -17,18 +17,25 @@ export default function ThemedCard({ children }: ThemedButtonProps) {
   return (
     <Card
       containerStyle={{
-        width: "95%",
-        borderColor: theme.colors.cardBorder,
+        // width: "95%",
+        borderColor: theme.colors.cardBackground,
         backgroundColor: theme.colors.cardBackground,
         borderWidth: 2,
-        borderRadius: 16,
-        elevation: 4,
+        borderRadius: 4,
+        elevation: 16,
+        shadowColor: "#000000",
+        shadowOpacity: 0.29,
+        shadowOffset: {
+          width: 8,
+          height: 8,
+        },
+        shadowRadius: 16,
+        marginBottom: 8,
       }}
       wrapperStyle={{
         backgroundColor: theme.colors.cardBackground,
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        alignItems: "flex-start",
       }}
     >
       {children}

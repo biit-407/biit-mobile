@@ -21,6 +21,7 @@ type RootStackParamList = {
   MeetupDetails: { meetupID: string };
   MeetupResponse: { meetupID: string };
   MeetupRating: { meetupID: string };
+  PreviousMeetups: { pastMeetupIDs: string[] };
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
@@ -232,4 +233,15 @@ export type LocationRankerPageRouteProp = RouteProp<
 export type LocationRankerPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "LocationRanker"
+>;
+
+// Previous Meetup Page Types
+export type PreviousMeetupsPageRouteProp = RouteProp<
+  RootStackParamList,
+  "PreviousMeetups"
+>;
+
+export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "PreviousMeetups"
 >;

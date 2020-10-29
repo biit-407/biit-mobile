@@ -11,6 +11,9 @@ const palette = {
 
   black: "#000000",
   white: "#FFFFFF",
+
+  darkGreen: "#1e6928",
+  darkRed: "#ab2115",
 };
 
 const theme = createTheme({
@@ -28,6 +31,8 @@ const theme = createTheme({
     textInputDefault: palette.brownLight,
     secondaryText: palette.white,
     iconPrimary: palette.brownPrimary,
+    iconSelectedGreen: palette.darkGreen,
+    iconSelectedRed: palette.darkRed,
 
     sliderMarkerDisabled: palette.tanDark,
     sliderMarkerEnabled: palette.brownLight,
