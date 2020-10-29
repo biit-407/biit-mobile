@@ -78,14 +78,14 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
 
-  const [showAgePreference, setShowAgePreference] = useState(
-    accountState.account.agePref ? true : false
-  );
+  const hasAgePreference =
+    accountState.account.agePref && accountState.account.agePref?.length > 0;
+  const [showAgePreference, setShowAgePreference] = useState(hasAgePreference);
   const [ageRange, setAgeRange] = useState(
-    accountState.account.agePref ?? [18, 100]
+    hasAgePreference ? accountState.account.agePref : [18, 100]
   );
 
-  const setAgePreference = (preference: number[] | null) => {
+  const setAgePreference = (preference: number[]) => {
     console.log({ ...accountState.account, agePref: preference });
     updateAccount(
       accountDispatch,
@@ -165,10 +165,10 @@ export default function UserSettingsPage({}: UserSettingsPageProps) {
                 onValueChange={(value) => {
                   setShowAgePreference(value);
                   if (value === false) {
-                    console.log("Need to remove age");
-                    setAgePreference(null);
+                    setAgePreference([]);
                   } else if (value === true) {
-                    setAgeRange(accountState.account.agePref ?? [18, 100]);
+                    setAgeRange([18, 100]);
+                    setAgePreference([18, 100]);
                   }
                 }}
                 value={showAgePreference}
