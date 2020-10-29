@@ -31,24 +31,9 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  const [pendingMeetups, setPendingMeetups] = useState([
-    "ABC",
-    "DEF",
-    "ABC",
-    "DEF",
-  ]);
-  const [upcomingMeetups, setUpcomingMeetups] = useState([
-    "GHI",
-    "JKL",
-    "GHI",
-    "JKL",
-  ]);
-  const [unratedMeetups, setUnratedMeetups] = useState([
-    "MNO",
-    "PQR",
-    "MNO",
-    "PQR",
-  ]);
+  const [pendingMeetups] = useState(["ABC", "DEF", "ABC", "DEF"]);
+  const [upcomingMeetups] = useState(["GHI", "JKL", "GHI", "JKL"]);
+  const [unratedMeetups] = useState(["MNO", "PQR", "MNO", "PQR"]);
 
   const sectionIcons: Record<string, string> = {
     "Pending Meetups": "add-to-list",
