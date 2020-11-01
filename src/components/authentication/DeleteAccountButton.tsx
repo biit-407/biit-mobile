@@ -6,6 +6,8 @@ import ThemedButton from "../themed/ThemedButton";
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
+import { Button } from "react-native-elements";
+import theme from "../../theme";
 
 export default function DeleteAccountButton() {
   const navigation = useNavigation();
@@ -49,5 +51,5 @@ export default function DeleteAccountButton() {
     );
   };
 
-  return <ThemedButton title="Delete Account" onPress={showDeletionDialog} />;
+  return <Button title="Delete Account" onPress={showDeletionDialog} buttonStyle={{backgroundColor: theme.colors.iconSelectedRed}}/>;
 }
