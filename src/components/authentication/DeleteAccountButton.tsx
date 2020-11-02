@@ -14,16 +14,18 @@ export default function DeleteAccountButton() {
   const [tokenState, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();
 
-  useEffect(() => {
-    console.log(accountState.status);
-    if (accountState.status === "logged out") {
-      // Navigate back to the login page once account is logged out
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      });
-    }
-  }, [accountState.status, navigation]);
+  //! This should be done implicitly now
+  // useEffect(() => {
+  //   console.log(accountState.status);
+  //   if (accountState.status === "logged out") {
+  //     // Navigate back to the login page once account is logged out
+  //     // TODO fix this
+  //     // navigation.reset({
+  //     //   index: 0,
+  //     //   routes: [{ name: "Login" }],
+  //     // });
+  //   }
+  // }, [accountState.status, navigation]);
 
   const showDeletionDialog = () => {
     Alert.alert(

@@ -10,9 +10,13 @@ import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
-import { getProfilePicture, useAccount } from "../../contexts/accountContext";
+import { getAccount, getProfilePicture, useAccount } from "../../contexts/accountContext";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import theme from "../../theme";
+import { Icon } from "react-native-elements";
+import ThemedIcon from "../themed/ThemedIcon";
 
 // React Navigation Types and Page Options
 
@@ -22,7 +26,7 @@ type ViewProfilePageProps = {
 };
 
 export const ViewProfilePageOptions: StackNavigationOptions = {
-  title: "View Profile",
+  title: "View Profile"
 };
 
 // Page Styles
@@ -31,7 +35,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "flex-start",
     alignItems: "center",
   },
 });
@@ -43,6 +46,8 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   const [tokenState, tokenDispatch] = useToken();
   const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
 
+  console.log(accountState)
+
   useEffect(() => {
     getProfilePicture(
       accountDispatch,
@@ -50,7 +55,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
       tokenState.refreshToken,
       accountState.account
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setAvatar(
@@ -61,20 +66,25 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   }, [accountState.account.profileImage]);
 
   return (
-    <Box backgroundColor="mainBackground" style={styles.root}>
-      <ThemedCard>
-        <ThemedAvatar
-          uri={avatar}
-          size="xlarge"
-          edit={true}
-          onEdit={() => {
-            navigation.push("EditProfile");
-          }}
-        />
-        <Text marginBottom="md" variant="header">
-          {accountState.account.fname + " " + accountState.account.lname}
-        </Text>
-      </ThemedCard>
+    <Box backgroundColor="mainBackground" style={{ flexDirection: "row", height: '100%' }}>
+      <Box style={{ width: '100%', height: '100%' }}>
+
+        <ThemedCard wrapperStyle={{alignItems: 'center'}}>
+
+            <ThemedAvatar
+              uri={avatar}
+              size="xlarge"
+              edit={true}
+              onEdit={() => {
+                navigation.push("EditProfile");
+              }}
+            />
+            <Text marginBottom="md" variant="header">
+              {accountState.account.fname + " " + accountState.account.lname}
+            </Text>
+
+        </ThemedCard>
+      </Box>
     </Box>
   );
 }

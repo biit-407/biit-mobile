@@ -98,10 +98,11 @@ export default function BannedUsersPage({ route }: BannedUsersPageProps) {
     setIsRefreshing(false);
   };
 
-  useEffect(() => {
-    const loadedCommunity = getCommunity(communityState, route.params.name);
-    setBannedUsers(loadedCommunity.bans);
-  }, [communityState, route.params.name]);
+  // TODO fix later
+  // useEffect(() => {
+  //   const loadedCommunity = getCommunity(communityState, route.params.name);
+  //   setBannedUsers(loadedCommunity.bans);
+  // }, [communityState, route.params.name]);
 
   // Create effect to load banned user data initially
   useEffect(() => {

@@ -13,16 +13,18 @@ export default function LogoutButton() {
   const [, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();
 
-  // Listen for account state to be logged out
-  useEffect(() => {
-    if (accountState.status === "logged out") {
-      // Navigate back to the login page once account is logged out
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Login" }],
-      });
-    }
-  }, [accountState.status, navigation]);
+  //! This should be done implicitly 
+  // // Listen for account state to be logged out
+  // useEffect(() => {
+  //   if (accountState.status === "logged out") {
+  //     // Navigate back to the login page once account is logged out
+  //     // TODO fix this 
+  //     // navigation.reset({
+  //     //   index: 0,
+  //     //   routes: [{ name: "Login" }],
+  //     // });
+  //   }
+  // }, [accountState.status, navigation]);
 
   const showLogoutDialog = () => {
     Alert.alert("Logout?", "Are you sure you want to logout of your account?", [

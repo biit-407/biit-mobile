@@ -99,7 +99,7 @@ export default function UpdateProfileForm({
   useEffect(() => {
     register("fname", { required: true, minLength: 1 });
     register("lname", { required: true, minLength: 1 });
-    register("birthday", { required: true });
+    register("birthday", { required: false });
   }, [register]);
 
   // Setup profile field
@@ -158,6 +158,7 @@ export default function UpdateProfileForm({
   const [{ refreshToken }, tokenDispatch] = useToken();
 
   const submitProfile: SubmitHandler<FormValues> = (formData: FormValues) => {
+
     setProfilePicture(
       accountDispatch,
       tokenDispatch,
@@ -172,10 +173,8 @@ export default function UpdateProfileForm({
       accountState.account,
       { ...accountState.account, ...formData }
     );
-
     onFormSubmit();
   };
-
   const [date, setDate] = useState<undefined | Date>(
     accountState.account.birthday
       ? new Date(Date.parse(accountState.account.birthday))
@@ -275,7 +274,7 @@ export default function UpdateProfileForm({
       <Box marginVertical="md">
         <ThemedButton
           title="Save Profile"
-          onPress={handleSubmit(submitProfile)}
+          onPress={() =>handleSubmit(submitProfile)}
         />
       </Box>
       <BottomSheet

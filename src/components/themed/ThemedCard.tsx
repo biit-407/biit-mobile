@@ -12,12 +12,11 @@ type ThemedButtonProps = {
 };
 
 // A reusable themed button
-export default function ThemedCard({ children }: ThemedButtonProps) {
-  const theme = useTheme<Theme>();
+export default function ThemedCard({ children, wrapperStyle }: ThemedButtonProps) {
+  const theme = useTheme<Theme>(); 
   return (
     <Card
       containerStyle={{
-        // width: "95%",
         borderColor: theme.colors.cardBackground,
         backgroundColor: theme.colors.cardBackground,
         borderWidth: 2,
@@ -36,6 +35,7 @@ export default function ThemedCard({ children }: ThemedButtonProps) {
         backgroundColor: theme.colors.cardBackground,
         display: "flex",
         alignItems: "flex-start",
+        ...(wrapperStyle as ViewStyle)
       }}
     >
       {children}
