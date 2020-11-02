@@ -43,7 +43,7 @@ export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
           timestamp={meetupTime}
           userList={meetupParticipants}
           location={meetupLocation}
-          />
+        />
       </Box>
     </Box>
   );
