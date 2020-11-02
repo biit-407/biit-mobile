@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
+import { Button } from "react-native-elements";
 
 import {
   UserSettingsPageRouteProp,
@@ -12,7 +13,6 @@ import LogoutButton from "../authentication/LogoutButton";
 import { ThemedMultiSlider, ThemedSwitch } from "../themed";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
-import { Button } from "react-native-elements";
 import theme from "../../theme";
 
 type UserSettingsPageProps = {
@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function UserSettingsPage({ navigation }: UserSettingsPageProps) {
+export default function UserSettingsPage({
+  navigation,
+}: UserSettingsPageProps) {
   // Get the user account and tokens
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
@@ -206,12 +208,14 @@ export default function UserSettingsPage({ navigation }: UserSettingsPageProps) 
             </Box>
             <Box style={styles.btn}>
               <Button
-                title={'Update Time Preferences'}
+                title={"Update Time Preferences"}
                 onPress={() => {
-                  navigation.push('UserTimePreference', { currentUserPreferences: [{ start: 1, end: 2 }] })
+                  navigation.push("UserTimePreference", {
+                    currentUserPreferences: [{ start: 1, end: 2 }],
+                  });
                 }}
                 buttonStyle={{
-                  backgroundColor: theme.colors.buttonPrimaryBackground
+                  backgroundColor: theme.colors.buttonPrimaryBackground,
                 }}
               />
             </Box>

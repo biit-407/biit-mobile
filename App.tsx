@@ -63,7 +63,9 @@ import MeetupListPage, {
 import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "./src/components/meetups/PreviousMeetupsPage";
-import UserTimePreferencePage, { UserTimePreferencePageOptions } from "./src/components/userUtils/UserTimePreferencePage";
+import UserTimePreferencePage, {
+  UserTimePreferencePageOptions,
+} from "./src/components/userUtils/UserTimePreferencePage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),

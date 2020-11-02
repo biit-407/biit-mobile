@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-elements";
 
-import ThemedButton from "../themed/ThemedButton";
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
-import { Button } from "react-native-elements";
 import theme from "../../theme";
 
 export default function DeleteAccountButton() {
@@ -51,5 +50,11 @@ export default function DeleteAccountButton() {
     );
   };
 
-  return <Button title="Delete Account" onPress={showDeletionDialog} buttonStyle={{backgroundColor: theme.colors.iconSelectedRed}}/>;
+  return (
+    <Button
+      title="Delete Account"
+      onPress={showDeletionDialog}
+      buttonStyle={{ backgroundColor: theme.colors.iconSelectedRed }}
+    />
+  );
 }
