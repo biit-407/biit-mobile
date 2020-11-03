@@ -1,6 +1,7 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+// import { StyleSheet } from "react-native";
+import { Button } from "react-native-elements";
 
 import {
   ViewProfilePageNavigationProp,
@@ -13,9 +14,7 @@ import ThemedCard from "../themed/ThemedCard";
 import { getProfilePicture, useAccount } from "../../contexts/accountContext";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { useToken } from "../../contexts/tokenContext";
-import { Button } from "react-native-elements";
 import theme from "../../theme";
-import ThemedButton from "../themed/ThemedButton";
 
 // React Navigation Types and Page Options
 
@@ -25,18 +24,18 @@ type ViewProfilePageProps = {
 };
 
 export const ViewProfilePageOptions: StackNavigationOptions = {
-  title: "View Profile"
+  title: "View Profile",
 };
 
 // Page Styles
 
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   root: {
+//     flex: 1,
+//     flexDirection: "column",
+//     alignItems: "center",
+//   },
+// });
 
 // Page Definition
 
@@ -45,7 +44,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   const [tokenState, tokenDispatch] = useToken();
   const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
 
-  console.log(accountState)
+  console.log(accountState);
 
   useEffect(() => {
     getProfilePicture(
@@ -54,7 +53,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
       tokenState.refreshToken,
       accountState.account
     );
-  }, []);// eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setAvatar(
@@ -65,11 +64,12 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   }, [accountState.account.profileImage]);
 
   return (
-    <Box backgroundColor="mainBackground" style={{ flexDirection: "row", height: '100%' }}>
-      <Box style={{ width: '100%', height: '100%' }}>
-
-        <ThemedCard wrapperStyle={{ alignItems: 'center' }}>
-
+    <Box
+      backgroundColor="mainBackground"
+      style={{ flexDirection: "row", height: "100%" }}
+    >
+      <Box style={{ width: "100%", height: "100%" }}>
+        <ThemedCard wrapperStyle={{ alignItems: "center" }}>
           <ThemedAvatar
             uri={avatar}
             size="xlarge"
@@ -81,12 +81,13 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
           <Text marginBottom="md" variant="header">
             {accountState.account.fname + " " + accountState.account.lname}
           </Text>
-
         </ThemedCard>
 
         {/* TODO fix this hard coding */}
         <Button
-          onPress={() => navigation.navigate('PreviousMeetups', { pastMeetupIDs: ['an ID'] })}
+          onPress={() =>
+            navigation.navigate("PreviousMeetups", { pastMeetupIDs: ["an ID"] })
+          }
           title={"View Previous Meetups"}
           buttonStyle={{
             backgroundColor: theme.colors.buttonPrimaryBackground,

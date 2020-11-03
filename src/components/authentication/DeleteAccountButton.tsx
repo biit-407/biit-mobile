@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-elements";
 
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
@@ -9,7 +8,6 @@ import { useAzure } from "../../contexts/azureContext";
 import theme from "../../theme";
 
 export default function DeleteAccountButton() {
-  const navigation = useNavigation();
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();

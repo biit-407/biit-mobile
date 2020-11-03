@@ -55,7 +55,7 @@ export default function PreviousMeetupsPage({
         timestamp={item.timestamp}
         userList={item.user_list}
         location={item.location}
-        meetupType={'accepted'}
+        meetupType={"accepted"}
         isClickable={false}
         key={index.toString()}
       />

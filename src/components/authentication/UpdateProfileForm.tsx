@@ -158,7 +158,6 @@ export default function UpdateProfileForm({
   const [{ refreshToken }, tokenDispatch] = useToken();
 
   const submitProfile: SubmitHandler<FormValues> = (formData: FormValues) => {
-
     setProfilePicture(
       accountDispatch,
       tokenDispatch,
@@ -274,7 +273,7 @@ export default function UpdateProfileForm({
       <Box marginVertical="md">
         <ThemedButton
           title="Save Profile"
-          onPress={() =>handleSubmit(submitProfile)}
+          onPress={() => handleSubmit(submitProfile)}
         />
       </Box>
       <BottomSheet

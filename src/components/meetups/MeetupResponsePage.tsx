@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupReponsePage({
-  route, navigation,
+  route,
+  navigation,
 }: MeetupResponsePageProps) {
-
-  const { meetupID, timestamp, location, duration, userList } = route.params
+  const { meetupID, timestamp, location, duration, userList } = route.params;
 
   const onAccept = () => {
     navigation.pop();
@@ -63,7 +63,7 @@ export default function MeetupReponsePage({
           location={location}
           duration={duration}
           userList={userList}
-          meetupType={'tentative'}
+          meetupType={"tentative"}
           isClickable={false}
         />
 

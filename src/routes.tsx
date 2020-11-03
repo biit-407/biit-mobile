@@ -44,10 +44,10 @@ type RootStackParamList = {
   Home: {
     futureMeetupIDs: string[];
     tentativeMeetupIDs: string[];
-  }
+  };
   CommunityHome: {
     communityID: string;
-  }
+  };
 };
 
 //TODO remove for release
@@ -280,15 +280,12 @@ export type UserTimePreferencePageNavigationProp = StackNavigationProp<
 >;
 
 // Home Page Types
-export type HomePageRouteProp = RouteProp<
-  RootStackParamList,
-  "Home"
->;
+export type HomePageRouteProp = RouteProp<RootStackParamList, "Home">;
 
 export type HomePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Home"
-  >;
+>;
 
 // Community Home Page Types
 export type CommunityHomePageRouteProp = RouteProp<

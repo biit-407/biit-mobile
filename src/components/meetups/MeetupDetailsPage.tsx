@@ -43,7 +43,7 @@ export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
           timestamp={timestamp}
           userList={userList}
           location={location}
-          meetupType={'accepted'}
+          meetupType={"accepted"}
           isClickable={false}
         />
       </Box>

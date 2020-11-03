@@ -2,24 +2,31 @@ import React from "react";
 import { useTheme } from "@shopify/restyle";
 import { Card } from "react-native-elements";
 import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { Theme } from "../../theme";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 type ThemedButtonProps = {
   children?: React.ReactNode;
   wrapperStyle?: StyleProp<ViewStyle>;
   containerStyle?: StyleProp<ViewStyle>;
-  onPressFunction?: ((event: GestureResponderEvent) => void) | undefined
+  onPressFunction?: ((event: GestureResponderEvent) => void) | undefined;
 };
 
 // A reusable themed button
-export default function ThemedCard({ children, wrapperStyle, onPressFunction }: ThemedButtonProps) {
+export default function ThemedCard({
+  children,
+  wrapperStyle,
+  onPressFunction,
+}: ThemedButtonProps) {
   const theme = useTheme<Theme>();
   return (
     <>
-      {onPressFunction !== undefined ?
-        < TouchableOpacity onPress={onPressFunction} style={{ paddingBottom: 24 }}>
+      {onPressFunction !== undefined ? (
+        <TouchableOpacity
+          onPress={onPressFunction}
+          style={{ paddingBottom: 24 }}
+        >
           <Card
             containerStyle={{
               borderColor: theme.colors.cardBackground,
@@ -40,13 +47,13 @@ export default function ThemedCard({ children, wrapperStyle, onPressFunction }: 
               backgroundColor: theme.colors.cardBackground,
               display: "flex",
               alignItems: "flex-start",
-              ...(wrapperStyle as ViewStyle)
+              ...(wrapperStyle as ViewStyle),
             }}
           >
             {children}
           </Card>
         </TouchableOpacity>
-        :
+      ) : (
         <Card
           containerStyle={{
             borderColor: theme.colors.cardBackground,
@@ -67,12 +74,12 @@ export default function ThemedCard({ children, wrapperStyle, onPressFunction }: 
             backgroundColor: theme.colors.cardBackground,
             display: "flex",
             alignItems: "flex-start",
-            ...(wrapperStyle as ViewStyle)
+            ...(wrapperStyle as ViewStyle),
           }}
         >
           {children}
         </Card>
-      }
+      )}
     </>
   );
 }

@@ -18,4 +18,4 @@ export const BLANK_MEETUP: Meetup = {
   user_list: ["Katie", "Step Bro"], // eslint-disable-line camelcase
 };
 
-export type MeetupType = 'tentative' | 'accepted' | 'declined'
+export type MeetupType = "tentative" | "accepted" | "declined";

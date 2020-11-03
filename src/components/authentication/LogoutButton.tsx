@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Alert } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import ThemedButton from "../themed/ThemedButton";
 import { logoutAccount, useAccount } from "../../contexts/accountContext";
@@ -8,17 +7,16 @@ import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
 
 export default function LogoutButton() {
-  const navigation = useNavigation();
-  const [accountState, accountDispatch] = useAccount();
+  const [, accountDispatch] = useAccount();
   const [, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();
 
-  //! This should be done implicitly 
+  //! This should be done implicitly
   // // Listen for account state to be logged out
   // useEffect(() => {
   //   if (accountState.status === "logged out") {
   //     // Navigate back to the login page once account is logged out
-  //     // TODO fix this 
+  //     // TODO fix this
   //     // navigation.reset({
   //     //   index: 0,
   //     //   routes: [{ name: "Login" }],
