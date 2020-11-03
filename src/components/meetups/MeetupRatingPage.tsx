@@ -14,6 +14,7 @@ import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
 
 import MeetupCard from "./MeetupCard";
+import MeetupReportDialog from "./MeetupReportDialog";
 
 type MeetupRatingPageProps = {
   route: MeetupRatingPageRouteProp;
@@ -56,7 +57,7 @@ export default function MeetupRatingPage({
   };
 
   const theme = useTheme<Theme>();
-
+  const [showDialog, setShowDialog] = useState(false);
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ width: "100%" }}>
@@ -75,7 +76,21 @@ export default function MeetupRatingPage({
             </Box>
           </Box>
         </ThemedCard>
+        <ThemedCard>
+          <Box style={{ width: "100%", alignItems: "center" }}>
+            <Text variant="body">Report Meetup?</Text>
+            <ThemedButton
+              title="Report Meetup"
+              onPress={() => setShowDialog(true)}
+            />
+          </Box>
+        </ThemedCard>
       </Box>
+      <MeetupReportDialog
+        open={showDialog}
+        meetupID={meetupID}
+        closeDialog={() => setShowDialog(false)}
+      />
     </Box>
   );
 }
