@@ -13,6 +13,7 @@ interface MeetupCardProps {
   location: string;
   userList: string[];
   meetupType: MeetupType;
+  isClickable?: boolean;
   key?: string;
 }
 
@@ -27,6 +28,7 @@ const MeetupCard = ({
   location,
   userList,
   meetupType,
+  isClickable,
   key,
 }: MeetupCardProps) => {
 
@@ -40,6 +42,7 @@ const MeetupCard = ({
           location={location}
           userList={userList}
           meetupType={meetupType}
+          isClickable={isClickable}
           key={key}
         />
         :
@@ -50,6 +53,7 @@ const MeetupCard = ({
           location={location}
           userList={userList}
           meetupType={meetupType}
+          isClickable={isClickable}
           key={key}
         />
       }
@@ -63,12 +67,13 @@ const TentativeMeetupCard = ({
   duration,
   location,
   userList,
+  isClickable,
   key
 }: MeetupCardProps) => {
   const navigation = useNavigation()
 
   return (
-    <ThemedCard onPressFunction={() => {
+    <ThemedCard onPressFunction={isClickable ? () => {
       navigation.navigate('MeetupResponse', {
         meetupID: id,
         timestamp: timestamp,
@@ -76,7 +81,7 @@ const TentativeMeetupCard = ({
         location: location,
         userList: userList
       })
-    }}>
+    } : undefined}>
       <Box style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text variant="header" style={{ flex: 1 }}>
           Meetup
@@ -108,11 +113,20 @@ const AcceptedMeetupCard = ({
   duration,
   location,
   userList,
+  isClickable,
   key,
 }: MeetupCardProps) => {
   const navigation = useNavigation()
   return (
-    <ThemedCard onPressFunction={() => { navigation.navigate('MeetupDetails', { meetupID: id }) }}>
+    <ThemedCard onPressFunction={isClickable ? () => {
+      navigation.navigate('MeetupDetails', {
+        meetupID: id,
+        timestamp: timestamp,
+        duration: duration,
+        location: location,
+        userList: userList
+      })
+    } : undefined}>
       <Box style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text variant="header" style={{ flex: 1 }}>
           Meetup
@@ -124,8 +138,8 @@ const AcceptedMeetupCard = ({
           {id}
         </Text>
       </Box>
-      <Text variant="subheader">Started at {timestamp}</Text>
-      <Text variant="subheader">Lasted {duration} minutes</Text>
+      <Text variant="subheader">Starts at {timestamp}</Text>
+      <Text variant="subheader">Lasts {duration} minutes</Text>
       <Text variant="subheader">{location}</Text>
       <Text variant="header">Participants</Text>
       <FlatList
@@ -145,7 +159,8 @@ MeetupCard.defaultProps = {
   duration: BLANK_MEETUP.duration,
   location: BLANK_MEETUP.location,
   userList: BLANK_MEETUP.user_list,
-  meetupType: 'accepted'
+  meetupType: 'accepted',
+  isClickable: true
 };
 
 export default MeetupCard;

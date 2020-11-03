@@ -57,7 +57,15 @@ export default function MeetupReponsePage({
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
-        <MeetupCard id={meetupID} timestamp={timestamp} location={location} duration={duration} userList={userList} meetupType={'tentative'}/>
+        <MeetupCard
+          id={meetupID}
+          timestamp={timestamp}
+          location={location}
+          duration={duration}
+          userList={userList}
+          meetupType={'tentative'}
+          isClickable={false}
+        />
 
         <ThemedCard>
           <Text variant="header">Top Ranked Locations</Text>

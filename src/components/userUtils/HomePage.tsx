@@ -85,6 +85,7 @@ export default function HomePage({
                         userList={(item as MeetupItem).user_list}
                         location={(item as MeetupItem).location}
                         meetupType={(item as MeetupItem).meetupType}
+                        isClickable={true}
                     />
                 }
             </>

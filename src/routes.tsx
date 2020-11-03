@@ -19,7 +19,13 @@ type RootStackParamList = {
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
   MeetupList: undefined;
-  MeetupDetails: { meetupID: string };
+  MeetupDetails: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: string[];
+  };
   MeetupResponse: {
     meetupID: string;
     timestamp: string;
@@ -269,7 +275,7 @@ export type UserTimePreferencePageRouteProp = RouteProp<
 export type UserTimePreferencePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "UserTimePreference"
-  >;
+>;
 
 // Home Page Types
 export type HomePageRouteProp = RouteProp<

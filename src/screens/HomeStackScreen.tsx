@@ -8,6 +8,7 @@ import HomePage, { HomePageOptions } from "../components/userUtils/HomePage";
 import theme from "../theme";
 import { ThemedIcon } from "../components/themed";
 import MeetupResponsePage, { MeetupResponsePageOptions } from '../components/meetups/MeetupResponsePage';
+import MeetupDetailsPage, { MeetupDetailsPageOptions } from "../components/meetups/MeetupDetailsPage";
 
 const HomeStack = createStackNavigator();
 
@@ -38,13 +39,19 @@ const HomeStackScreen = ({ navigation }: any) => {
                         />
                     }
                 }}
-                initialParams={{futureMeetupIDs: ['test'], tentativeMeetupIDs: ['temp']}}
+                initialParams={{ futureMeetupIDs: ['test'], tentativeMeetupIDs: ['temp'] }}
             />
 
             <HomeStack.Screen
                 name="MeetupResponse"
                 component={MeetupResponsePage}
                 options={MeetupResponsePageOptions}
+            />
+
+            <HomeStack.Screen
+                name="MeetupDetails"
+                component={MeetupDetailsPage}
+                options={MeetupDetailsPageOptions}
             />
 
         </HomeStack.Navigator>
