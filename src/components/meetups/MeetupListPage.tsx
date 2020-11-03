@@ -9,6 +9,15 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedIcon from "../themed/ThemedIcon";
+import { useConstructor } from "../../hooks";
+import { useTokenState } from "../../contexts/tokenContext";
+import {
+  getPendingMeetupsList,
+  getUpcomingMeetupsList,
+  getUnratedMeetupsList,
+} from "../../contexts/meetupContext";
+import { useAccountState } from "../../contexts/accountContext";
+import { ThemedRefreshControl } from "../themed";
 
 type MeetupListPageProps = {
   route: MeetupListPageRouteProp;
@@ -31,9 +40,49 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  const [pendingMeetups] = useState(["ABC", "DEF", "ABC", "DEF"]);
-  const [upcomingMeetups] = useState(["GHI", "JKL", "GHI", "JKL"]);
-  const [unratedMeetups] = useState(["MNO", "PQR", "MNO", "PQR"]);
+  // Define the core sections of the list
+  const [pendingMeetups, setPendingMeetups] = useState<string[]>([]);
+  const [upcomingMeetups, setUpcomingMeetups] = useState<string[]>([]);
+  const [unratedMeetups, setUnratedMeetups] = useState<string[]>([
+    "MNO",
+    "PQR",
+    "MNO",
+    "PQR",
+  ]);
+
+  // Create state for loading indication
+  const [isLoading, setLoading] = useState(false);
+
+  // Retrieve account information
+  const { refreshToken } = useTokenState();
+  const {
+    account: { email },
+  } = useAccountState();
+
+  // Create function to load and set all data
+  const loadMeetupData = async () => {
+    setLoading(true);
+    const [pendingMeetupList] = await getPendingMeetupsList(
+      refreshToken,
+      email
+    );
+    const [upcomingMeetupList] = await getUpcomingMeetupsList(
+      refreshToken,
+      email
+    );
+    const [unratedMeetupList] = await getUnratedMeetupsList(
+      refreshToken,
+      email
+    );
+    setPendingMeetups(pendingMeetupList.map((meetup) => meetup.id));
+    setUpcomingMeetups(upcomingMeetupList.map((meetup) => meetup.id));
+    setUnratedMeetups(unratedMeetupList.map((meetup) => meetup.meetup_id));
+    setLoading(false);
+  };
+
+  useConstructor(() => {
+    loadMeetupData();
+  });
 
   const sectionIcons: Record<string, string> = {
     "Pending Meetups": "add-to-list",
@@ -96,6 +145,12 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
         }
         renderSectionHeader={({ section: { title } }) =>
           renderSectionHeader(title)
+        }
+        refreshControl={
+          <ThemedRefreshControl
+            onRefresh={loadMeetupData}
+            refreshing={isLoading}
+          />
         }
       />
     </Box>
