@@ -39,7 +39,7 @@ interface MeetupAuthenticatedResponseJson
     timestamp: string;
     duration: string;
     location: string;
-    meetttype: string;
+    meettype: string;
     user_list: Record<string, number>; // eslint-disable-line camelcase
   };
 }
@@ -51,7 +51,7 @@ interface MeetupListAuthenticatedResponseJson
     timestamp: string;
     duration: string;
     location: string;
-    meetttype: string;
+    meettype: string;
     user_list: Record<string, number>; // eslint-disable-line camelcase
   }[];
 }
@@ -78,7 +78,7 @@ function mapMeetupResponseJson(responseJson: MeetupAuthenticatedResponseJson) {
     timestamp: responseJson.data.timestamp,
     duration: responseJson.data.duration,
     location: responseJson.data.location,
-    meeting_type: responseJson.data.meetttype, // eslint-disable-line camelcase
+    meeting_type: responseJson.data.meettype, // eslint-disable-line camelcase
     user_list: responseJson.data.user_list, // eslint-disable-line camelcase
   } as Meetup;
 }
@@ -92,7 +92,7 @@ function mapMeetupListResponseJson(
       timestamp: item.timestamp,
       duration: item.duration,
       location: item.location,
-      meeting_type: item.meetttype, // eslint-disable-line camelcase
+      meeting_type: item.meettype, // eslint-disable-line camelcase
       user_list: item.user_list, // eslint-disable-line camelcase
     } as Meetup;
   });
@@ -263,7 +263,14 @@ async function setMeetupLocations(
   meetupID: string,
   venues: string[]
 ) {
-  const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/venue?email=${email}&token=${token}&venues=${venues}`;
+  let venuesAsString = "[";
+  for (let index = 0; index < venues.length; index++) {
+    venuesAsString += `"${venues[index]}",`;
+  }
+  venuesAsString = venuesAsString.substring(0, venuesAsString.length - 1);
+  venuesAsString += "]";
+  console.log(venuesAsString);
+  const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/venue?email=${email}&token=${token}&venues=${venuesAsString}`;
   return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
 }
 
