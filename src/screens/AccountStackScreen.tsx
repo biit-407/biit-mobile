@@ -9,6 +9,7 @@ import EditProfilePage, { EditProfilePageOptions } from "../components/authentic
 import ViewProfilePage, { ViewProfilePageOptions } from "../components/authentication/ViewProfilePage";
 import theme from "../theme";
 import { ThemedIcon } from "../components/themed";
+import PreviousMeetupsPage, { PreviousMeetupsPageOptions } from "../components/meetups/PreviousMeetupsPage";
 
 const AccountStack = createStackNavigator();
 
@@ -65,6 +66,11 @@ const AccountStackScreen = ({ navigation }: any) => {
                 options={{
                     ...EditProfilePageOptions,
                 }}
+            />
+            <AccountStack.Screen
+                name="PreviousMeetups"
+                component={PreviousMeetupsPage}
+                options={PreviousMeetupsPageOptions}
             />
         </AccountStack.Navigator>
     );
