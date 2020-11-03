@@ -28,6 +28,8 @@ const theme = createTheme({
     cardBorder: palette.brownDark,
     buttonPrimaryBackground: palette.tanDark,
     buttonPrimaryText: palette.white,
+    buttonSecondaryBackground: palette.brownLight,
+    buttonSecondaryText: palette.white,
     textInputDefault: palette.brownLight,
     secondaryText: palette.white,
     iconPrimary: palette.brownPrimary,
@@ -58,6 +60,11 @@ const theme = createTheme({
     tablet: 768,
   },
   textVariants: {
+    largeHeader: {
+      fontSize: 36,
+      fontWeight: "bold",
+      color: "primaryText",
+    },
     header: {
       fontSize: 24,
       fontWeight: "bold",

@@ -63,6 +63,9 @@ import MeetupListPage, {
 import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "./src/components/meetups/PreviousMeetupsPage";
+import UserTimePreferencePage, {
+  UserTimePreferencePageOptions,
+} from "./src/components/userUtils/UserTimePreferencePage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
@@ -183,6 +186,11 @@ export default function App() {
             name="PreviousMeetups"
             component={PreviousMeetupsPage}
             options={PreviousMeetupsPageOptions}
+          />
+          <Stack.Screen
+            name="UserTimePreference"
+            component={UserTimePreferencePage}
+            options={UserTimePreferencePageOptions}
           />
         </Stack.Navigator>
       </GlobalServiceProvider>

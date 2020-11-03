@@ -26,6 +26,9 @@ type RootStackParamList = {
     locations: string[];
     setLocations: (locations: string[]) => void;
   };
+  UserTimePreference: {
+    currentUserPreferences: { start: number; end: number }[];
+  };
 };
 
 //TODO remove for release
@@ -244,4 +247,15 @@ export type PreviousMeetupsPageRouteProp = RouteProp<
 export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "PreviousMeetups"
+>;
+
+// User Time Preferences Page Types
+export type UserTimePreferencePageRouteProp = RouteProp<
+  RootStackParamList,
+  "UserTimePreference"
+>;
+
+export type UserTimePreferencePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "UserTimePreference"
 >;
