@@ -77,8 +77,10 @@ export default function MeetupRatingPage({
           </Box>
         </ThemedCard>
         <ThemedCard>
-          <Box style={{ width: "100%", alignItems: "center" }}>
-            <Text variant="body">Report Meetup?</Text>
+          <Box alignItems="center" width="100%">
+            <Text variant="subheader" mb="md">
+              Meetup didn't go as planned?
+            </Text>
             <ThemedButton
               title="Report Meetup"
               onPress={() => setShowDialog(true)}
