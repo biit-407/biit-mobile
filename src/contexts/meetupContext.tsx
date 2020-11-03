@@ -257,6 +257,16 @@ async function declineMeetup(token: string, email: string, meetupID: string) {
   return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
 }
 
+async function setMeetupLocations(
+  token: string,
+  email: string,
+  meetupID: string,
+  venues: string[]
+) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/venue?email=${email}&token=${token}&venues=${venues}`;
+  return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+}
+
 // class MeetupClient {
 //   public static async create(
 //     token: string,
@@ -625,4 +635,5 @@ export {
   getUpcomingMeetupsList,
   getUnratedMeetupsList,
   setMeetupRating,
+  setMeetupLocations,
 };

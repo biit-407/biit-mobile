@@ -8,6 +8,7 @@ import {
   getMeetupDetails,
   acceptMeetup,
   declineMeetup,
+  setMeetupLocations,
 } from "../../contexts/meetupContext";
 import { useTokenState } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
@@ -73,12 +74,14 @@ export default function MeetupReponsePage({
   }
 
   const onAccept = async () => {
+    console.log(
+      await setMeetupLocations(refreshToken, email, meetupID, locations)
+    );
     console.log(await acceptMeetup(refreshToken, email, meetupID));
     navigation.pop();
   };
   const onDecline = async () => {
     console.log(await declineMeetup(refreshToken, email, meetupID));
-
     navigation.pop();
   };
 
@@ -89,7 +92,7 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  const [locations, setLocations] = useState(["Online", "Test", "Another"]);
+  const [locations, setLocations] = useState(["Online", "WALC", "LWSN"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
