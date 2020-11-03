@@ -21,6 +21,7 @@ const theme = createTheme({
     mainBackground: palette.tanLight,
     mainForeground: palette.tanDark,
     drawerBackground: palette.brownDark,
+    drawerPrimaryText: palette.tanLight,
     headerBackground: palette.tanDark,
     primaryText: palette.brownDark,
     borderPrimary: palette.brownLight,
