@@ -56,6 +56,14 @@ interface MeetupListAuthenticatedResponseJson
   }[];
 }
 
+interface RatingAuthenticatedResponseJson
+  extends AuthenticatedResponseJsonType {
+  data: {
+    meeting_id: string; // eslint-disable-line camelcase
+    rating_dict: Record<string, number>; // eslint-disable-line camelcase
+  };
+}
+
 interface RatingListAuthenticatedResponseJson
   extends AuthenticatedResponseJsonType {
   data: {
@@ -88,6 +96,13 @@ function mapMeetupListResponseJson(
       user_list: item.user_list, // eslint-disable-line camelcase
     } as Meetup;
   });
+}
+
+function mapRatingResponseJson(responseJson: RatingAuthenticatedResponseJson) {
+  return {
+    meetup_id: responseJson.data.meeting_id, // eslint-disable-line camelcase
+    rating_dict: responseJson.data.rating_dict, // eslint-disable-line camelcase
+  };
 }
 
 function mapRatingListResponseJson(
@@ -215,6 +230,20 @@ async function getUnratedMeetupsList(token: string, email: string) {
   return await AuthenticatedRequestHandler.get(
     endpoint,
     mapRatingListResponseJson
+  );
+}
+
+async function setMeetupRating(
+  token: string,
+  email: string,
+  meetupID: string,
+  rating: number
+) {
+  const endpoint = `${SERVER_ADDRESS}/rating`;
+  return await AuthenticatedRequestHandler.post(
+    endpoint,
+    mapRatingResponseJson,
+    { token, user: email, meeting_id: meetupID, rating } // eslint-disable-line camelcase
   );
 }
 
@@ -583,4 +612,5 @@ export {
   getPendingMeetupsList,
   getUpcomingMeetupsList,
   getUnratedMeetupsList,
+  setMeetupRating,
 };

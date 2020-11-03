@@ -12,12 +12,16 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
-
-import MeetupCard from "./MeetupCard";
 import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 import { useTokenState } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
-import { getMeetupDetails } from "../../contexts/meetupContext";
+import {
+  getMeetupDetails,
+  setMeetupRating,
+} from "../../contexts/meetupContext";
+
+import MeetupCard from "./MeetupCard";
+import { useAccountState } from "../../contexts/accountContext";
 
 type MeetupRatingPageProps = {
   route: MeetupRatingPageRouteProp;
@@ -46,6 +50,9 @@ export default function MeetupRatingPage({
 
   // Retrieve account information
   const { refreshToken } = useTokenState();
+  const {
+    account: { email },
+  } = useAccountState();
 
   // Load the meetup details
   useConstructor(async () => {
@@ -66,9 +73,8 @@ export default function MeetupRatingPage({
 
   const [rating, setRating] = useState(3);
 
-  const submitRating = () => {
-    //   TODO: Integrate rating with the backend
-    console.log(`Rated meetup ${meetupID} as ${rating}/5`);
+  const submitRating = async () => {
+    await setMeetupRating(refreshToken, email, meetupID, rating);
     navigation.goBack();
   };
 
