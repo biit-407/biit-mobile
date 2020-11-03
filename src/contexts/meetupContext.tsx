@@ -1,6 +1,6 @@
 import React from "react";
 
-import { OauthToken } from "../models/azure";
+// import { OauthToken } from "../models/azure";
 import { SERVER_ADDRESS } from "../models/constants";
 import { Meetup } from "../models/meetups";
 import {
@@ -8,7 +8,7 @@ import {
   AuthenticatedResponseJsonType,
 } from "../utils/requestHandler";
 
-import { Dispatch as TokenDispatch } from "./tokenContext";
+// import { Dispatch as TokenDispatch } from "./tokenContext";
 
 type MeetupStatus = "not loaded" | "loaded" | "updating" | "error";
 
@@ -72,7 +72,7 @@ function mapMeetupResponseJson(responseJson: MeetupAuthenticatedResponseJson) {
     location: responseJson.data.location,
     meeting_type: responseJson.data.meetttype, // eslint-disable-line camelcase
     user_list: responseJson.data.user_list, // eslint-disable-line camelcase
-  };
+  } as Meetup;
 }
 
 function mapMeetupListResponseJson(
@@ -86,14 +86,13 @@ function mapMeetupListResponseJson(
       location: item.location,
       meeting_type: item.meetttype, // eslint-disable-line camelcase
       user_list: item.user_list, // eslint-disable-line camelcase
-    };
+    } as Meetup;
   });
 }
 
 function mapRatingListResponseJson(
   responseJson: RatingListAuthenticatedResponseJson
 ) {
-  console.log(responseJson);
   return responseJson.data.map((item) => ({
     meetup_id: item.meeting_id, // eslint-disable-line camelcase
     rating_dict: item.rating_dict, // eslint-disable-line camelcase
@@ -180,6 +179,11 @@ function useMeetupDispatch(): Dispatch {
 
 function useMeetup(): [MeetupState, Dispatch] {
   return [useMeetupState(), useMeetupDispatch()];
+}
+
+async function getMeetupDetails(token: string, meetupID: string) {
+  const endpoint = `${SERVER_ADDRESS}/meeting?id=${meetupID}&token=${token}`;
+  return await AuthenticatedRequestHandler.get(endpoint, mapMeetupResponseJson);
 }
 
 async function getMeetupList(token: string, email: string) {
@@ -561,10 +565,10 @@ async function getUnratedMeetupsList(token: string, email: string) {
 // }
 
 export {
-  // CommunityProvider,
-  // useCommunity,
-  // useCommunityState,
-  // useCommunityDispatch,
+  MeetupProvider,
+  useMeetup,
+  useMeetupState,
+  useMeetupDispatch,
   // createCommunity,
   // loadCommunity,
   // updateCommunity,
@@ -574,6 +578,7 @@ export {
   // joinCommunity,
   // leaveCommunity,
   // getCommunity,
+  getMeetupDetails,
   getMeetupList,
   getPendingMeetupsList,
   getUpcomingMeetupsList,

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 
+import { getMeetupDetails } from "../../contexts/meetupContext";
+import { useTokenState } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 import {
   MeetupDetailsPageNavigationProp,
   MeetupDetailsPageRouteProp,
@@ -27,23 +31,32 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
-  // TODO: Load in real data of the passed in meeting
+  // Create state for the meetup to be loaded
   const { meetupID } = route.params;
-  const meetupTime = "3:00 PM";
-  const meetupDuration = "25";
-  const meetupLocation = "Online";
-  const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
+  const [meetup, setMeetup] = useState<Meetup>(BLANK_MEETUP);
+
+  // Retrieve account information
+  const { refreshToken } = useTokenState();
+
+  // Load the meetup details
+  useConstructor(async () => {
+    const [meetupDetails] = await getMeetupDetails(refreshToken, meetupID);
+    setMeetup(meetupDetails);
+  });
+
+  // TODO: Timestamp currently is just an integer, need to convert it to a time
+  const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ width: "100%" }}>
         <MeetupCard
-          id={meetupID}
-          duration={meetupDuration}
-          timestamp={meetupTime}
-          userList={meetupParticipants}
-          location={meetupLocation}
-          />
+          id={id}
+          duration={duration}
+          timestamp={timestamp}
+          userList={user_list} // eslint-disable-line camelcase
+          location={location}
+        />
       </Box>
     </Box>
   );

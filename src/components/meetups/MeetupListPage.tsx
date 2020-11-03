@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SectionList, SectionListData, StyleSheet } from "react-native";
 
 import {
@@ -9,7 +9,6 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedIcon from "../themed/ThemedIcon";
-import { useConstructor } from "../../hooks";
 import { useTokenState } from "../../contexts/tokenContext";
 import {
   getPendingMeetupsList,
@@ -43,12 +42,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   // Define the core sections of the list
   const [pendingMeetups, setPendingMeetups] = useState<string[]>([]);
   const [upcomingMeetups, setUpcomingMeetups] = useState<string[]>([]);
-  const [unratedMeetups, setUnratedMeetups] = useState<string[]>([
-    "MNO",
-    "PQR",
-    "MNO",
-    "PQR",
-  ]);
+  const [unratedMeetups, setUnratedMeetups] = useState<string[]>([]);
 
   // Create state for loading indication
   const [isLoading, setLoading] = useState(false);
@@ -62,6 +56,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   // Create function to load and set all data
   const loadMeetupData = async () => {
     setLoading(true);
+    // Load the required sections
     const [pendingMeetupList] = await getPendingMeetupsList(
       refreshToken,
       email
@@ -74,16 +69,24 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       refreshToken,
       email
     );
+    // Set the sections once loaded
     setPendingMeetups(pendingMeetupList.map((meetup) => meetup.id));
     setUpcomingMeetups(upcomingMeetupList.map((meetup) => meetup.id));
     setUnratedMeetups(unratedMeetupList.map((meetup) => meetup.meetup_id));
     setLoading(false);
   };
 
-  useConstructor(() => {
-    loadMeetupData();
-  });
+  // Allows automatic loading on the page when navigating to the page from a nested or parent screen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      loadMeetupData();
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [navigation]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Function to render each section's header
   const sectionIcons: Record<string, string> = {
     "Pending Meetups": "add-to-list",
     "Upcoming Meetups": "calendar",
@@ -99,6 +102,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
     </Box>
   );
 
+  // Function to render each list item
   const renderListItem = (item: string, onPress: () => void) => (
     <ThemedListItem
       title={item}
@@ -107,7 +111,8 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
     />
   );
 
-  const meetupData: SectionListData<string>[] = [
+  // Define the section list data from our loaded data
+  const sectionListData: SectionListData<string>[] = [
     {
       title: "Pending Meetups",
       data: pendingMeetups,
@@ -138,7 +143,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
     <Box backgroundColor="mainBackground" style={styles.root}>
       <SectionList
         style={styles.list}
-        sections={meetupData}
+        sections={sectionListData}
         keyExtractor={(item, index) => item + index}
         renderItem={(info) =>
           info.section.renderItem ? info.section.renderItem(info) : null
