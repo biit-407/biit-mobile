@@ -46,6 +46,13 @@ export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
 
   // TODO: Timestamp currently is just an integer, need to convert it to a time
   const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
+  // Convert users dict to a list of accepted users
+  const acceptedUsers = [];
+  for (const [key, value] of Object.entries(user_list)) {
+    if (value === 1) {
+      acceptedUsers.push(key);
+    }
+  }
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -54,7 +61,7 @@ export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
           id={id}
           duration={duration}
           timestamp={timestamp}
-          userList={user_list} // eslint-disable-line camelcase
+          userList={acceptedUsers}
           location={location}
         />
       </Box>

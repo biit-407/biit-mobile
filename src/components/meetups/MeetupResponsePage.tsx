@@ -2,6 +2,10 @@ import { StackNavigationOptions } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getMeetupDetails } from "../../contexts/meetupContext";
+import { useTokenState } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 
 import {
   MeetupResponsePageRouteProp,
@@ -35,7 +39,31 @@ const styles = StyleSheet.create({
 
 export default function MeetupReponsePage({
   navigation,
+  route,
 }: MeetupResponsePageProps) {
+  // Create state for the meetup to be loaded
+  const { meetupID } = route.params;
+  const [meetup, setMeetup] = useState<Meetup>(BLANK_MEETUP);
+
+  // Retrieve account information
+  const { refreshToken } = useTokenState();
+
+  // Load the meetup details
+  useConstructor(async () => {
+    const [meetupDetails] = await getMeetupDetails(refreshToken, meetupID);
+    setMeetup(meetupDetails);
+  });
+
+  // TODO: Timestamp currently is just an integer, need to convert it to a time
+  const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
+  // Convert users dict to a list of accepted users
+  const acceptedUsers = [];
+  for (const [key, value] of Object.entries(user_list)) {
+    if (value === 1) {
+      acceptedUsers.push(key);
+    }
+  }
+
   const onAccept = () => {
     navigation.pop();
   };
@@ -50,15 +78,18 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  // const meetupTime = "3:00 PM";
-  // const meetupDuration = 25;
-  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
   const [locations, setLocations] = useState(["Online", "Test", "Another"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
-        <MeetupCard />
+        <MeetupCard
+          id={id}
+          duration={duration}
+          timestamp={timestamp}
+          userList={acceptedUsers}
+          location={location}
+        />
 
         <ThemedCard>
           <Text variant="header">Top Ranked Locations</Text>

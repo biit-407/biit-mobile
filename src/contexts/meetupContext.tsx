@@ -40,7 +40,7 @@ interface MeetupAuthenticatedResponseJson
     duration: string;
     location: string;
     meetttype: string;
-    user_list: string[]; // eslint-disable-line camelcase
+    user_list: Record<string, number>; // eslint-disable-line camelcase
   };
 }
 
@@ -52,7 +52,7 @@ interface MeetupListAuthenticatedResponseJson
     duration: string;
     location: string;
     meetttype: string;
-    user_list: string[]; // eslint-disable-line camelcase
+    user_list: Record<string, number>; // eslint-disable-line camelcase
   }[];
 }
 
