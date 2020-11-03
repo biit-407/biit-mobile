@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { MeetupType } from "./models/meetups";
 
 // Add any parameters that are included with the page
 type RootStackParamList = {
@@ -19,7 +20,13 @@ type RootStackParamList = {
   CodeOfConduct: { name: string };
   MeetupList: undefined;
   MeetupDetails: { meetupID: string };
-  MeetupResponse: { meetupID: string };
+  MeetupResponse: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: string[];
+  };
   MeetupRating: { meetupID: string };
   PreviousMeetups: { pastMeetupIDs: string[] };
   LocationRanker: {
