@@ -1,6 +1,5 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { MeetupType } from "./models/meetups";
 
 // Add any parameters that are included with the page
 type RootStackParamList = {
@@ -45,6 +44,9 @@ type RootStackParamList = {
   Home: {
     futureMeetupIDs: string[];
     tentativeMeetupIDs: string[];
+  }
+  CommunityHome: {
+    communityID: string;
   }
 };
 
@@ -286,4 +288,15 @@ export type HomePageRouteProp = RouteProp<
 export type HomePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Home"
+  >;
+
+// Community Home Page Types
+export type CommunityHomePageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunityHome"
+>;
+
+export type CommunityHomePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunityHome"
 >;

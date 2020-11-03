@@ -13,13 +13,14 @@ import JoinCommunityPage, { JoinCommunityPageOptions } from "../components/commu
 import LeaveCommunityPage, { LeaveCommunityPageOptions } from "../components/communities/LeaveCommunityPage";
 import theme from "../theme";
 import { ThemedIcon } from "../components/themed";
+import CommunityHomePage, { CommunityHomePageOptions } from "../components/communities/CommunityHomePage";
 
 const CommunityStack = createStackNavigator();
 
 const CommunityStackScreen = ({ navigation }: any) => {
     return (
         <CommunityStack.Navigator
-            initialRouteName='MemberList'
+            initialRouteName='CommunityHome'
             screenOptions={{
                 headerStyle: {
                     backgroundColor: theme.colors.headerBackground,
@@ -27,6 +28,24 @@ const CommunityStackScreen = ({ navigation }: any) => {
                 headerTintColor: theme.colors.primaryText,
             }}
         >
+            <CommunityStack.Screen
+                name="CommunityHome"
+                component={CommunityHomePage}
+                options={{
+                    ...CommunityHomePageOptions,
+                    headerLeft: () => {
+                        return <ThemedIcon
+                            size={24}
+                            reverse
+                            name="menu"
+                            type="entypo"
+                            onPress={() => { navigation.openDrawer() }}
+                            color={theme.colors.headerBackground}
+                            iconStyle={{ color: theme.colors.primaryText }}
+                        />
+                    }
+                }}
+            />
             <CommunityStack.Screen
                 name="BannedUsers"
                 component={BannedUsersPage}
@@ -47,19 +66,8 @@ const CommunityStackScreen = ({ navigation }: any) => {
                 component={MemberListPage}
                 options={{
                     ...MemberListPageOptions,
-                    headerLeft: () => {
-                        return <ThemedIcon
-                            size={24}
-                            reverse
-                            name="menu"
-                            type="entypo"
-                            onPress={() => { navigation.openDrawer() }}
-                            color={theme.colors.headerBackground}
-                            iconStyle={{ color: theme.colors.primaryText }}
-                        />
-                    }
                 }}
-                initialParams={{ name: 'Johnsons'}}
+                initialParams={{ name: 'Johnsons' }}
             />
             <CommunityStack.Screen
                 name="CreateCommunity"

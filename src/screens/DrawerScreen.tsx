@@ -103,7 +103,32 @@ const DrawerComponent = ({ navigation }: any) => {
                     <FlatList
                         data={['Johnsons']}
                         keyExtractor={(_item: any, index: { toString: () => any; }) => index.toString()}
-                        renderItem={renderCommunity}
+                        renderItem={({ item }) => {
+                            return <DrawerItem
+                                label={item}
+                                onPress={() => {
+                                    navigation.navigate('Community', {
+                                        screen: 'CommunityHome',
+                                        initial: true,
+                                        params: {communityID: item }
+                                    })
+                                }}
+                                labelStyle={{ fontSize: 16, height: 48, color: theme.colors.drawerPrimaryText }}
+                                style={{ height: 64 }}
+                                icon={() => {
+                                    return (
+                                        <ThemedIcon
+                                            size={24}
+                                            reverse
+                                            name="briefcase"
+                                            type="feather"
+                                            color={theme.colors.drawerBackground}
+                                            iconStyle={{ color: theme.colors.drawerPrimaryText, height: 48 }}
+                                        />
+                                    )
+                                }}
+                            />
+                        }}
                         style={{ width: "100%" }}
                     />
                     :
@@ -115,31 +140,6 @@ const DrawerComponent = ({ navigation }: any) => {
     )
 }
 
-
-const renderCommunity = ({ item }: { item: string; index: number }) => {
-    return (
-        <>
-            <DrawerItem
-                label={item}
-                onPress={() => { }}
-                labelStyle={{fontSize: 16, height: 48, color: theme.colors.drawerPrimaryText }}
-                style={{ height: 64 }}
-                icon={() => {
-                    return (
-                        <ThemedIcon
-                            size={24}
-                            reverse
-                            name="briefcase"
-                            type="feather"
-                            color={theme.colors.drawerBackground}
-                            iconStyle={{ color: theme.colors.drawerPrimaryText, height: 48 }}
-                        />
-                    )
-                }}
-            />
-        </>
-    );
-};
 
 const CustomDrawerItem = ({ navigation, label, location, icon }: any) => {
     return (
