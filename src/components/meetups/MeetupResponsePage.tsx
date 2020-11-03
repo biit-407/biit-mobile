@@ -2,11 +2,16 @@ import { StackNavigationOptions } from "@react-navigation/stack";
 import React, { useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { getMeetupDetails } from "../../contexts/meetupContext";
+
+import { useAccountState } from "../../contexts/accountContext";
+import {
+  getMeetupDetails,
+  acceptMeetup,
+  declineMeetup,
+} from "../../contexts/meetupContext";
 import { useTokenState } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_MEETUP, Meetup } from "../../models/meetups";
-
 import {
   MeetupResponsePageRouteProp,
   MeetupResponsePageNavigationProp,
@@ -47,6 +52,9 @@ export default function MeetupReponsePage({
 
   // Retrieve account information
   const { refreshToken } = useTokenState();
+  const {
+    account: { email },
+  } = useAccountState();
 
   // Load the meetup details
   useConstructor(async () => {
@@ -64,10 +72,13 @@ export default function MeetupReponsePage({
     }
   }
 
-  const onAccept = () => {
+  const onAccept = async () => {
+    console.log(await acceptMeetup(refreshToken, email, meetupID));
     navigation.pop();
   };
-  const onDecline = () => {
+  const onDecline = async () => {
+    console.log(await declineMeetup(refreshToken, email, meetupID));
+
     navigation.pop();
   };
 

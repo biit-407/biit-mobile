@@ -247,6 +247,16 @@ async function setMeetupRating(
   );
 }
 
+async function acceptMeetup(token: string, email: string, meetupID: string) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/accept?email=${email}&token=${token}`;
+  return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+}
+
+async function declineMeetup(token: string, email: string, meetupID: string) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/decline?email=${email}&token=${token}`;
+  return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+}
+
 // class MeetupClient {
 //   public static async create(
 //     token: string,
@@ -607,6 +617,8 @@ export {
   // joinCommunity,
   // leaveCommunity,
   // getCommunity,
+  acceptMeetup,
+  declineMeetup,
   getMeetupDetails,
   getMeetupList,
   getPendingMeetupsList,

@@ -19,9 +19,9 @@ import {
   getMeetupDetails,
   setMeetupRating,
 } from "../../contexts/meetupContext";
+import { useAccountState } from "../../contexts/accountContext";
 
 import MeetupCard from "./MeetupCard";
-import { useAccountState } from "../../contexts/accountContext";
 
 type MeetupRatingPageProps = {
   route: MeetupRatingPageRouteProp;
