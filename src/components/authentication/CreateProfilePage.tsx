@@ -29,7 +29,7 @@ const SkipButton = () => {
         onPress={() => {
           navigation.reset({
             index: 0,
-            routes: [{ name: "DevelopmentLinks" }],
+            routes: [{ name: "UserSettings" }],
           });
         }}
       >
@@ -73,7 +73,7 @@ export default function CreateProfilePage({
         onFormSubmit={() => {
           navigation.reset({
             index: 0,
-            routes: [{ name: "DevelopmentLinks" }],
+            routes: [{ name: "Home" }],
           });
         }}
       />

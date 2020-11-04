@@ -9,6 +9,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedIcon from "../themed/ThemedIcon";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 
 type MeetupListPageProps = {
   route: MeetupListPageRouteProp;
@@ -31,9 +32,18 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  const [pendingMeetups] = useState(["ABC", "DEF", "ABC", "DEF"]);
-  const [upcomingMeetups] = useState(["GHI", "JKL", "GHI", "JKL"]);
-  const [unratedMeetups] = useState(["MNO", "PQR", "MNO", "PQR"]);
+  const [pendingMeetups] = useState([
+    { ...BLANK_MEETUP, id: "ABC" },
+    { ...BLANK_MEETUP, id: "DEF" },
+  ]);
+  const [upcomingMeetups] = useState([
+    { ...BLANK_MEETUP, id: "GHI" },
+    { ...BLANK_MEETUP, id: "JKL" },
+  ]);
+  const [unratedMeetups] = useState([
+    { ...BLANK_MEETUP, id: "MNO" },
+    { ...BLANK_MEETUP, id: "PQR" },
+  ]);
 
   const sectionIcons: Record<string, string> = {
     "Pending Meetups": "add-to-list",
@@ -50,21 +60,27 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
     </Box>
   );
 
-  const renderListItem = (item: string, onPress: () => void) => (
+  const renderListItem = (item: Meetup, onPress: () => void) => (
     <ThemedListItem
-      title={item}
+      title={item.id}
       onPress={onPress}
       rightContent={<ThemedIcon name="chevron-right" type="entypo" />}
     />
   );
 
-  const meetupData: SectionListData<string>[] = [
+  const meetupData: SectionListData<Meetup>[] = [
     {
       title: "Pending Meetups",
       data: pendingMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupResponse", { meetupID: item })
+          navigation.navigate("MeetupResponse", {
+            meetupID: item.id,
+            duration: item.duration,
+            location: item.location,
+            userList: item.user_list,
+            timestamp: item.timestamp,
+          })
         ),
     },
     {
@@ -72,7 +88,13 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       data: upcomingMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupDetails", { meetupID: item })
+          navigation.navigate("MeetupDetails", {
+            meetupID: item.id,
+            duration: item.duration,
+            location: item.location,
+            userList: item.user_list,
+            timestamp: item.timestamp,
+          })
         ),
     },
     {
@@ -80,7 +102,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       data: unratedMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupRating", { meetupID: item })
+          navigation.navigate("MeetupRating", { meetupID: item.id })
         ),
     },
   ];
@@ -90,7 +112,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       <SectionList
         style={styles.list}
         sections={meetupData}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => item.id + index}
         renderItem={(info) =>
           info.section.renderItem ? info.section.renderItem(info) : null
         }

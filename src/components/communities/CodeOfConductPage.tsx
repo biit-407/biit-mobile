@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
 // Page Definition
 
-export default function BannedUsersPage({ route }: CodeOfConductPageProps) {
+export default function CodeOfConductPage({ route }: CodeOfConductPageProps) {
   // Load Community Dependencies
   const [communityState, communityDispatch] = useCommunity();
   const [tokenState, tokenDispatch] = useToken();

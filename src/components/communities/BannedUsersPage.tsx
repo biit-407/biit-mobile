@@ -11,7 +11,7 @@ import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedRefreshControl from "../themed/ThemedRefreshControl";
 import {
-  getCommunity,
+  // getCommunity,
   loadCommunity,
   unbanUserFromCommunity,
   useCommunity,
@@ -68,10 +68,10 @@ const showUnbanDialog = (
 export default function BannedUsersPage({ route }: BannedUsersPageProps) {
   // Create state for refreshing data and list of banned users
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [bannedUsers, setBannedUsers] = useState<Ban[]>([]);
+  const [bannedUsers] = useState<Ban[]>([]);
   // Create function to unban a user on the backend
   // TODO: Integrate functionality with backend
-  const [communityState, communityDispatch] = useCommunity();
+  const [, communityDispatch] = useCommunity();
   const [tokenState, tokenDispatch] = useToken();
 
   const unbanUser = async (ban: Ban) => {
@@ -98,10 +98,11 @@ export default function BannedUsersPage({ route }: BannedUsersPageProps) {
     setIsRefreshing(false);
   };
 
-  useEffect(() => {
-    const loadedCommunity = getCommunity(communityState, route.params.name);
-    setBannedUsers(loadedCommunity.bans);
-  }, [communityState, route.params.name]);
+  // TODO fix later
+  // useEffect(() => {
+  //   const loadedCommunity = getCommunity(communityState, route.params.name);
+  //   setBannedUsers(loadedCommunity.bans);
+  // }, [communityState, route.params.name]);
 
   // Create effect to load banned user data initially
   useEffect(() => {

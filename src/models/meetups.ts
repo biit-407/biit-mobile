@@ -17,3 +17,5 @@ export const BLANK_MEETUP: Meetup = {
   meeting_type: "Online", // eslint-disable-line camelcase
   user_list: ["Katie", "Step Bro"], // eslint-disable-line camelcase
 };
+
+export type MeetupType = "tentative" | "accepted" | "declined";

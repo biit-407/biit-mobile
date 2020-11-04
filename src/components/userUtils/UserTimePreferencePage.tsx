@@ -26,7 +26,7 @@ type UserTimePreferencePageProps = {
 };
 
 export const UserTimePreferencePageOptions = {
-  title: "UserTimePreference",
+  title: "Time Preference",
 };
 
 const styles = StyleSheet.create({

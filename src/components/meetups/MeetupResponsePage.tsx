@@ -21,21 +21,23 @@ type MeetupResponsePageProps = {
 };
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
-  title: "",
+  title: "RSVP",
 };
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    // justifyContent: "flex-start",
     alignItems: "center",
   },
 });
 
 export default function MeetupReponsePage({
+  route,
   navigation,
 }: MeetupResponsePageProps) {
+  const { meetupID, timestamp, location, duration, userList } = route.params;
+
   const onAccept = () => {
     navigation.pop();
   };
@@ -50,15 +52,20 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  // const meetupTime = "3:00 PM";
-  // const meetupDuration = 25;
-  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
   const [locations, setLocations] = useState(["Online", "Test", "Another"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
-        <MeetupCard />
+        <MeetupCard
+          id={meetupID}
+          timestamp={timestamp}
+          location={location}
+          duration={duration}
+          userList={userList}
+          meetupType={"tentative"}
+          isClickable={false}
+        />
 
         <ThemedCard>
           <Text variant="header">Top Ranked Locations</Text>
