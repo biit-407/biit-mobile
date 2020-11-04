@@ -1,6 +1,8 @@
 import React from "react";
 import { Modal, StyleSheet } from "react-native";
 
+import { reportUser, useAccountState } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 import { Box, Text, ThemedButton, ThemedIcon, ThemedInput } from "../themed";
 
 type MeetupReportDialogProps = {
@@ -22,8 +24,14 @@ export default function MeetupReportDialog({
   closeDialog,
   meetupID,
 }: MeetupReportDialogProps) {
+  const [{ refreshToken }, tokenDispatch] = useToken();
+  const {
+    account: { email },
+  } = useAccountState();
+
   // TODO: Add call to submit the report
-  const submitReport = () => {
+  const submitReport = async () => {
+    await reportUser(tokenDispatch, refreshToken, email, meetupID, "Test");
     closeDialog();
   };
 
