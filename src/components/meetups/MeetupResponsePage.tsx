@@ -8,8 +8,9 @@ import {
   acceptMeetup,
   declineMeetup,
   setMeetupLocations,
+  useMeetup,
 } from "../../contexts/meetupContext";
-import { useTokenState } from "../../contexts/tokenContext";
+import { useToken, useTokenState } from "../../contexts/tokenContext";
 import {
   MeetupResponsePageRouteProp,
   MeetupResponsePageNavigationProp,
@@ -44,20 +45,20 @@ export default function MeetupReponsePage({
   navigation,
 }: MeetupResponsePageProps) {
   const { meetupID, timestamp, location, duration, userList } = route.params;
-  const { refreshToken } = useTokenState();
+  const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
   } = useAccountState();
 
+  const [meetupState, meetupDispatch] = useMeetup()
+
   const onAccept = async () => {
-    console.log(
-      await setMeetupLocations(refreshToken, email, meetupID, locations)
-    );
-    console.log(await acceptMeetup(refreshToken, email, meetupID));
+    await setMeetupLocations(meetupDispatch, tokenDispatch, tokenState.refreshToken, email, meetupID, locations)
+    await acceptMeetup(meetupDispatch, tokenDispatch, tokenState.refreshToken, email, meetupID)
     navigation.pop();
   };
   const onDecline = async () => {
-    console.log(await declineMeetup(refreshToken, email, meetupID));
+    await declineMeetup(meetupDispatch, tokenDispatch, tokenState.refreshToken, email, meetupID)
     navigation.pop();
   };
 

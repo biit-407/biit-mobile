@@ -9,11 +9,12 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedIcon from "../themed/ThemedIcon";
-import { useTokenState } from "../../contexts/tokenContext";
+import { useToken, useTokenState } from "../../contexts/tokenContext";
 import {
   getPendingMeetupsList,
   getUpcomingMeetupsList,
   getUnratedMeetupsList,
+  useMeetup,
 } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
@@ -40,52 +41,48 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  const [pendingMeetups, setPendingMeetups] = useState([
-    { ...BLANK_MEETUP, id: "ABC" },
-    { ...BLANK_MEETUP, id: "DEF" },
-  ]);
-  const [upcomingMeetups, setUpcomingMeetups] = useState([
-    { ...BLANK_MEETUP, id: "GHI" },
-    { ...BLANK_MEETUP, id: "JKL" },
-  ]);
-  const [unratedMeetups, setUnratedMeetups] = useState([
-    { ...BLANK_MEETUP, id: "MNO" },
-    { ...BLANK_MEETUP, id: "PQR" },
-  ]);
-
+  const [pendingMeetups, setPendingMeetups] = useState<Meetup[]>([]);
+  const [upcomingMeetups, setUpcomingMeetups] = useState<Meetup[]>([]);
+  const [unratedMeetups, setUnratedMeetups] = useState<Meetup[]>([]);
   const [isLoading, setLoading] = useState(false);
 
   // Retrieve account information
-  const { refreshToken } = useTokenState();
+  const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
   } = useAccountState();
+
+  // get meetup context information
+  const [meetupState, meetupDispatch] = useMeetup();
+
 
   // Create function to load and set all data
   const loadMeetupData = async () => {
     setLoading(true);
     // Load the required sections
-    const [pendingMeetupList] = await getPendingMeetupsList(
-      refreshToken,
+    const pendingMeetupList = await getPendingMeetupsList(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
       email
     );
-    const [upcomingMeetupList] = await getUpcomingMeetupsList(
-      refreshToken,
+    const upcomingMeetupList = await getUpcomingMeetupsList(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
       email
     );
-    const [unratedMeetupList] = await getUnratedMeetupsList(
-      refreshToken,
+    const unratedMeetupList = await getUnratedMeetupsList(
+      meetupDispatch,
+      tokenDispatch,
+      meetupState,
+      tokenState.refreshToken,
       email
     );
     // Set the sections once loaded
     setPendingMeetups(pendingMeetupList);
     setUpcomingMeetups(upcomingMeetupList);
-    setUnratedMeetups(
-      unratedMeetupList.map((meetup) => ({
-        ...BLANK_MEETUP,
-        id: meetup.meetup_id,
-      }))
-    );
+    setUnratedMeetups(unratedMeetupList);
     setLoading(false);
   };
 
