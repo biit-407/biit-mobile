@@ -18,8 +18,20 @@ type RootStackParamList = {
   DevelopmentLinks: undefined;
   CodeOfConduct: { name: string };
   MeetupList: undefined;
-  MeetupDetails: { meetupID: string };
-  MeetupResponse: { meetupID: string };
+  MeetupDetails: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: string[];
+  };
+  MeetupResponse: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: string[];
+  };
   MeetupRating: { meetupID: string };
   PreviousMeetups: { pastMeetupIDs: string[] };
   LocationRanker: {
@@ -28,6 +40,13 @@ type RootStackParamList = {
   };
   UserTimePreference: {
     currentUserPreferences: { start: number; end: number }[];
+  };
+  Home: {
+    futureMeetupIDs: string[];
+    tentativeMeetupIDs: string[];
+  };
+  CommunityHome: {
+    communityID: string;
   };
 };
 
@@ -258,4 +277,23 @@ export type UserTimePreferencePageRouteProp = RouteProp<
 export type UserTimePreferencePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "UserTimePreference"
+>;
+
+// Home Page Types
+export type HomePageRouteProp = RouteProp<RootStackParamList, "Home">;
+
+export type HomePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Home"
+>;
+
+// Community Home Page Types
+export type CommunityHomePageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunityHome"
+>;
+
+export type CommunityHomePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunityHome"
 >;

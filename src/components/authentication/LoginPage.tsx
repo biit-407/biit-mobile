@@ -113,14 +113,14 @@ export default function LoginPage({ navigation }: LoginPageProps) {
     tokenDispatch,
   ]);
 
-  useEffect(() => {
-    if (accountState.status === "logged in") {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "DevelopmentLinks" }],
-      });
-    }
-  }, [accountState.status, navigation]);
+  // useEffect(() => {
+  //   if (accountState.status === "logged in") {
+  //     navigation.reset({
+  //       index: 0,
+  //       routes: [{ name: "DevelopmentLinks" }],
+  //     });
+  //   }
+  // }, [accountState.status, navigation]);
 
   function onPress() {
     if (!azureState.grantToken) {

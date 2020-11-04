@@ -17,6 +17,7 @@ import {
 } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 
 type MeetupListPageProps = {
   route: MeetupListPageRouteProp;
@@ -39,13 +40,18 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  // Define the core sections of the list
-  const [pendingMeetups, setPendingMeetups] = useState<string[]>([]);
-  const [upcomingMeetups, setUpcomingMeetups] = useState<string[]>([]);
-  const [unratedMeetups, setUnratedMeetups] = useState<string[]>([]);
-
-  // Create state for loading indication
-  const [isLoading, setLoading] = useState(false);
+  const [pendingMeetups] = useState([
+    { ...BLANK_MEETUP, id: "ABC" },
+    { ...BLANK_MEETUP, id: "DEF" },
+  ]);
+  const [upcomingMeetups] = useState([
+    { ...BLANK_MEETUP, id: "GHI" },
+    { ...BLANK_MEETUP, id: "JKL" },
+  ]);
+  const [unratedMeetups] = useState([
+    { ...BLANK_MEETUP, id: "MNO" },
+    { ...BLANK_MEETUP, id: "PQR" },
+  ]);
 
   // Retrieve account information
   const { refreshToken } = useTokenState();
@@ -102,23 +108,27 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
     </Box>
   );
 
-  // Function to render each list item
-  const renderListItem = (item: string, onPress: () => void) => (
+  const renderListItem = (item: Meetup, onPress: () => void) => (
     <ThemedListItem
-      title={item}
+      title={item.id}
       onPress={onPress}
       rightContent={<ThemedIcon name="chevron-right" type="entypo" />}
     />
   );
 
-  // Define the section list data from our loaded data
-  const sectionListData: SectionListData<string>[] = [
+  const meetupData: SectionListData<Meetup>[] = [
     {
       title: "Pending Meetups",
       data: pendingMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupResponse", { meetupID: item })
+          navigation.navigate("MeetupResponse", {
+            meetupID: item.id,
+            duration: item.duration,
+            location: item.location,
+            userList: item.user_list,
+            timestamp: item.timestamp,
+          })
         ),
     },
     {
@@ -126,7 +136,13 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       data: upcomingMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupDetails", { meetupID: item })
+          navigation.navigate("MeetupDetails", {
+            meetupID: item.id,
+            duration: item.duration,
+            location: item.location,
+            userList: item.user_list,
+            timestamp: item.timestamp,
+          })
         ),
     },
     {
@@ -134,7 +150,7 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       data: unratedMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupRating", { meetupID: item })
+          navigation.navigate("MeetupRating", { meetupID: item.id })
         ),
     },
   ];
@@ -143,8 +159,8 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
     <Box backgroundColor="mainBackground" style={styles.root}>
       <SectionList
         style={styles.list}
-        sections={sectionListData}
-        keyExtractor={(item, index) => item + index}
+        sections={meetupData}
+        keyExtractor={(item, index) => item.id + index}
         renderItem={(info) =>
           info.section.renderItem ? info.section.renderItem(info) : null
         }

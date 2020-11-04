@@ -31,38 +31,24 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
-  // Create state for the meetup to be loaded
-  const { meetupID } = route.params;
-  const [meetup, setMeetup] = useState<Meetup>(BLANK_MEETUP);
-
-  // Retrieve account information
-  const { refreshToken } = useTokenState();
-
-  // Load the meetup details
-  useConstructor(async () => {
-    const [meetupDetails] = await getMeetupDetails(refreshToken, meetupID);
-    setMeetup(meetupDetails);
-  });
-
-  // TODO: Timestamp currently is just an integer, need to convert it to a time
-  const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
-  // Convert users dict to a list of accepted users
-  const acceptedUsers = [];
-  for (const [key, value] of Object.entries(user_list)) {
-    if (value === 1) {
-      acceptedUsers.push(key);
-    }
-  }
+  // TODO: Load in real data of the passed in meeting
+  const { meetupID, timestamp, location, duration, userList } = route.params;
+  // const meetupTime = "3:00 PM";
+  // const meetupDuration = "25";
+  // const meetupLocation = "Online";
+  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ width: "100%" }}>
         <MeetupCard
-          id={id}
+          id={meetupID}
           duration={duration}
           timestamp={timestamp}
-          userList={acceptedUsers}
+          userList={userList}
           location={location}
+          meetupType={"accepted"}
+          isClickable={false}
         />
       </Box>
     </Box>

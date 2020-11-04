@@ -38,7 +38,7 @@ export default function PreviousMeetupsPage({
     const ml = [];
     for (const meetupID in meetupIDs) {
       // TODO load meetup
-      ml.push({ ...BLANK_MEETUP, id: meetupID });
+      ml.push({ ...BLANK_MEETUP, id: meetupIDs[meetupID] });
     }
     setMeetups(ml);
   };
@@ -61,6 +61,8 @@ export default function PreviousMeetupsPage({
         timestamp={item.timestamp}
         userList={acceptedUsers}
         location={item.location}
+        meetupType={"accepted"}
+        isClickable={false}
         key={index.toString()}
       />
     );

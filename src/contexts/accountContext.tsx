@@ -526,6 +526,7 @@ async function getProfilePicture(
           await FileSystem.deleteAsync(account.profileImage);
         }
       }
+      // console.log(location, response[0])
       await FileSystem.writeAsStringAsync(location, response[0], {
         encoding: "base64",
       });

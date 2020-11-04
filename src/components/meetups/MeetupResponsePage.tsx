@@ -31,48 +31,23 @@ type MeetupResponsePageProps = {
 };
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
-  title: "",
+  title: "RSVP",
 };
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    // justifyContent: "flex-start",
     alignItems: "center",
   },
 });
 
 export default function MeetupReponsePage({
+  route,
   navigation,
   route,
 }: MeetupResponsePageProps) {
-  // Create state for the meetup to be loaded
-  const { meetupID } = route.params;
-  const [meetup, setMeetup] = useState<Meetup>(BLANK_MEETUP);
-
-  // Retrieve account information
-  const { refreshToken } = useTokenState();
-  const {
-    account: { email },
-  } = useAccountState();
-
-  // Load the meetup details
-  useConstructor(async () => {
-    const [meetupDetails] = await getMeetupDetails(refreshToken, meetupID);
-    setMeetup(meetupDetails);
-  });
-
-  // TODO: Timestamp currently is just an integer, need to convert it to a time
-  const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
-  // Convert users dict to a list of accepted users
-  const acceptedUsers = [];
-  for (const [key, value] of Object.entries(user_list)) {
-    if (value === 1) {
-      acceptedUsers.push(key);
-    }
-  }
-
+  const { meetupID, timestamp, location, duration, userList } = route.params;
   const onAccept = async () => {
     console.log(
       await setMeetupLocations(refreshToken, email, meetupID, locations)
@@ -98,11 +73,13 @@ export default function MeetupReponsePage({
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
         <MeetupCard
-          id={id}
-          duration={duration}
+          id={meetupID}
           timestamp={timestamp}
-          userList={acceptedUsers}
           location={location}
+          duration={duration}
+          userList={userList}
+          meetupType={"tentative"}
+          isClickable={false}
         />
 
         <ThemedCard>
