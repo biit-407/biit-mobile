@@ -293,7 +293,7 @@ class AccountClient {
   public static async getProfilePicture(
     token: string,
     email: string
-  ): Promise<[string, OauthToken]> {
+  ): Promise<[string | boolean, OauthToken]> {
     const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${email}`;
     return AuthenticatedRequestHandler.get<
       string,
@@ -512,7 +512,7 @@ async function getProfilePicture(
   token: string,
   account: Account
 ) {
-  await _accountHelper<string, [string, OauthToken]>(
+  await _accountHelper<string, [string | boolean, OauthToken]>(
     accountDispatch,
     token,
     account.email,
@@ -526,15 +526,23 @@ async function getProfilePicture(
           await FileSystem.deleteAsync(account.profileImage);
         }
       }
-      // console.log(location, response[0])
-      await FileSystem.writeAsStringAsync(location, response[0], {
-        encoding: "base64",
-      });
-      accountDispatch({
-        type: "finish update",
-        account: { ...account, profileImage: location },
-        error: "Successfully updated profile image",
-      });
+      if (typeof response[0] === "string") {
+        // picture successfully loaded
+        await FileSystem.writeAsStringAsync(location, response[0] as string, {
+          encoding: "base64",
+        });
+        accountDispatch({
+          type: "finish update",
+          account: { ...account, profileImage: location },
+          error: "Successfully updated profile image",
+        });
+      } else {
+        accountDispatch({
+          type: "finish update",
+          account: { ...account, profileImage: "" },
+          error: "Request succeeded, no profile image was found",
+        });
+      }
     }
   );
 }
