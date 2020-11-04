@@ -12,6 +12,14 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
+import { useTokenState } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import {
+  getMeetupDetails,
+  setMeetupRating,
+} from "../../contexts/meetupContext";
+import { useAccountState } from "../../contexts/accountContext";
 
 import MeetupCard from "./MeetupCard";
 
@@ -36,22 +44,37 @@ export default function MeetupRatingPage({
   navigation,
   route,
 }: MeetupRatingPageProps) {
-  // TODO: Load in real data of the passed in meetingMeetupRatingPageProps
+  // Create state for the meetup to be loaded
   const { meetupID } = route.params;
-  // const meetupTime = "3:00 PM";
-  // const meetupDuration = 25;
-  // const meetupLocation = "Online";
-  // const meetupParticipants = ["John Smith", "Bob Smith", "Alice Smith"];
+  const [meetup, setMeetup] = useState<Meetup>(BLANK_MEETUP);
 
-  // TODO: Make this prettier
-  // const renderParticipant = ({ item }: { item: string }) => (
-  //   <Text variant="body">{item}</Text>
-  // );
+  // Retrieve account information
+  const { refreshToken } = useTokenState();
+  const {
+    account: { email },
+  } = useAccountState();
+
+  // Load the meetup details
+  useConstructor(async () => {
+    const [meetupDetails] = await getMeetupDetails(refreshToken, meetupID);
+    setMeetup(meetupDetails);
+  });
+
+  // TODO: Timestamp currently is just an integer, need to convert it to a time
+  const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
+
+  // Convert users dict to a list of accepted users
+  const acceptedUsers = [];
+  for (const [key, value] of Object.entries(user_list)) {
+    if (value === 1) {
+      acceptedUsers.push(key);
+    }
+  }
 
   const [rating, setRating] = useState(3);
-  const submitRating = () => {
-    //   TODO: Integrate rating with the backend
-    console.log(`Rated meetup ${meetupID} as ${rating}/5`);
+
+  const submitRating = async () => {
+    await setMeetupRating(refreshToken, email, meetupID, rating);
     navigation.goBack();
   };
 
@@ -60,7 +83,13 @@ export default function MeetupRatingPage({
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ width: "100%" }}>
-        <MeetupCard />
+        <MeetupCard
+          id={id}
+          timestamp={timestamp}
+          duration={duration}
+          location={location}
+          userList={acceptedUsers}
+        />
         <ThemedCard>
           <Box style={{ width: "100%", alignItems: "center" }}>
             <Text variant="body">How would you rate your experience?</Text>

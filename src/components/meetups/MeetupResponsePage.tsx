@@ -3,6 +3,16 @@ import React, { useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import { useAccountState } from "../../contexts/accountContext";
+import {
+  getMeetupDetails,
+  acceptMeetup,
+  declineMeetup,
+  setMeetupLocations,
+} from "../../contexts/meetupContext";
+import { useTokenState } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 import {
   MeetupResponsePageRouteProp,
   MeetupResponsePageNavigationProp,
@@ -35,13 +45,18 @@ const styles = StyleSheet.create({
 export default function MeetupReponsePage({
   route,
   navigation,
+  route,
 }: MeetupResponsePageProps) {
   const { meetupID, timestamp, location, duration, userList } = route.params;
-
-  const onAccept = () => {
+  const onAccept = async () => {
+    console.log(
+      await setMeetupLocations(refreshToken, email, meetupID, locations)
+    );
+    console.log(await acceptMeetup(refreshToken, email, meetupID));
     navigation.pop();
   };
-  const onDecline = () => {
+  const onDecline = async () => {
+    console.log(await declineMeetup(refreshToken, email, meetupID));
     navigation.pop();
   };
 
@@ -52,7 +67,7 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  const [locations, setLocations] = useState(["Online", "Test", "Another"]);
+  const [locations, setLocations] = useState(["Online", "WALC", "LWSN"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
