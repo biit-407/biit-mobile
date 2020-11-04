@@ -23,16 +23,22 @@ type RootStackParamList = {
     timestamp: string;
     duration: string;
     location: string;
-    userList: string[];
+    userList: Record<string, number>;
   };
   MeetupResponse: {
     meetupID: string;
     timestamp: string;
     duration: string;
     location: string;
-    userList: string[];
+    userList: Record<string, number>;
   };
-  MeetupRating: { meetupID: string };
+  MeetupRating: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: Record<string, number>;
+  };
   PreviousMeetups: { pastMeetupIDs: string[] };
   LocationRanker: {
     locations: string[];
