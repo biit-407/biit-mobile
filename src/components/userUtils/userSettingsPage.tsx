@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
+import { Switch } from "react-native-gesture-handler";
+import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/Feather'
 
 import {
   UserSettingsPageRouteProp,
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
   txt: {
     width: "40%",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
     margin: 10,
   },
   ageRange: {
@@ -59,6 +62,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  switch: {
+    width: "40%",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    margin: 10,
   },
 });
 
@@ -78,6 +87,8 @@ export default function UserSettingsPage({
   const toggleSw3 = () => setSw3((previousState) => !previousState);
   const [sw4, setSw4] = useState(false);
   const toggleSw4 = () => setSw4((previousState) => !previousState);
+  const [sw5, setSw5] = useState(false);
+  const toggleSw5 = () => setSw5((previousState) => !previousState);
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
@@ -217,6 +228,33 @@ export default function UserSettingsPage({
                 buttonStyle={{
                   backgroundColor: theme.colors.buttonPrimaryBackground,
                 }}
+              />
+            </Box>
+          </Box>
+          <Box style={styles.item}>
+            <Box style={styles.txt}>
+              <Text>Actively search for meetups</Text>
+            </Box>
+            <Box style={styles.switch}>
+              <Switch
+                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
+                thumbColor={sw5 ? "#B88953" : "#D8AD6D"}
+                onValueChange={toggleSw5}
+                value={sw5}
+              />
+            </Box>
+          </Box>
+          <Box style={styles.item}>
+            <Box style={styles.txt}>
+              <Text>Meetup Preferences</Text>
+            </Box>
+            <Box>
+              <DropDownPicker 
+                items={[
+                  {label: "option 1", value: 'sample 1', icon: () => <Icon name="flag" size={18} color="#900" />},
+                  {label: "option 1", value: 'sample 2', icon: () => <Icon name="flag" size={18} color="#900" />},
+                  {label: "option 1", value: 'sample 3', icon: () => <Icon name="flag" size={18} color="#900" />},
+                ]}
               />
             </Box>
           </Box>

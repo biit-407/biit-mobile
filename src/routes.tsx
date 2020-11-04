@@ -48,6 +48,8 @@ type RootStackParamList = {
   CommunityHome: {
     communityID: string;
   };
+  Feedback: undefined;
+  BugReport: undefined;
 };
 
 //TODO remove for release
@@ -296,4 +298,25 @@ export type CommunityHomePageRouteProp = RouteProp<
 export type CommunityHomePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CommunityHome"
+>;
+
+// Feedback Page Types
+export type FeedbackPageRouteProp = RouteProp<
+  RootStackParamList,
+  "Feedback"
+>;
+
+export type FeedbackPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Feedback"
+>;
+// Bug Report Page Types
+export type BugReportPageRouteProp = RouteProp<
+  RootStackParamList,
+  "BugReport"
+>;
+
+export type BugReportPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "BugReport"
 >;

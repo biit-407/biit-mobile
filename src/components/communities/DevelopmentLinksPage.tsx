@@ -140,6 +140,18 @@ export default function DevelopmentLinksPage({
           }
         />
       </Box>
+      <Box>
+        <Button
+          title="Feedback Page"
+          onPress={() => navigation.push("Feedback")}
+        />
+      </Box>
+      <Box style={styles.btnbox}>
+        <Button
+          title="Bug Report Page"
+          onPress={() => navigation.push("BugReport")}
+        />
+      </Box>
     </Box>
   );
 }

@@ -67,6 +67,14 @@ import { GlobalServiceProvider } from "./src/contexts";
 //   UserTimePreferencePageOptions,
 // } from "./src/components/userUtils/UserTimePreferencePage";
 import NavigationComponent from "./src/screens/NavigationComponent";
+// import CodeOfConductPage, {
+//   CodeOfConductPageOptions,
+// } from "./src/components/communities/CodeOfConductPage";
+// import HomePage, {
+//   HomePageOptions,
+// } from "./src/components/authentication/HomePage";
+// import FeedbackPage, { FeedbackPageOptions } from "./src/components/userUtils/FeedbackPage";
+// import BugReportPage, { BugReportPageOptions } from "./src/components/userUtils/BugReportPage";
 
 const fonts = {
   "SFProDisplay-Bold": require("./assets/fonts/SF-Pro-Display-Bold.otf"),
