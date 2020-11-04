@@ -48,18 +48,12 @@ export default function PreviousMeetupsPage({
   });
 
   const renderMeetup = ({ item, index }: { item: Meetup; index: number }) => {
-    const acceptedUsers = [];
-    for (const [key, value] of Object.entries(item.user_list)) {
-      if (value === 1) {
-        acceptedUsers.push(key);
-      }
-    }
     return (
       <MeetupCard
         id={item.id}
         duration={item.duration}
         timestamp={item.timestamp}
-        userList={acceptedUsers}
+        userList={item.user_list}
         location={item.location}
         meetupType={"accepted"}
         isClickable={false}
