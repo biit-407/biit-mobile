@@ -19,6 +19,10 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { BLANK_COMMUNITY } from "../../models/community";
+import { useConstructor } from "../../hooks";
+import { ThemedIcon } from "../themed";
+import { useTheme } from "@shopify/restyle";
+import { Theme } from "../../theme";
 
 type CommunityAdministrationPageProps = {
   route: CommunityAdministrationPageRouteProp;
@@ -34,11 +38,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#FFE8C6",
-  },
-  header: {
-    paddingLeft: 10,
-    color: "#3d3400",
   },
   detailbox: {
     padding: 5,
@@ -56,10 +55,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#D8AD6D",
     padding: "3.5%",
   },
-  btnbox: {
-    margin: 5,
-    width: "30%",
-  },
 });
 
 type FormValues = {
@@ -70,6 +65,23 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
+function promptDiscardChanges(onConfirm: () => void) {
+  Alert.alert(
+    "Discard Changes?",
+    "Are you sure you want to discard these changes?",
+    [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: onConfirm,
+      },
+    ]
+  );
+}
+
 export default function CommunityAdministrationPage({
   navigation,
   route,
@@ -78,19 +90,23 @@ export default function CommunityAdministrationPage({
   const [communityState, communityDispatch] = useCommunity();
   const [community, setCommunity] = useState(BLANK_COMMUNITY);
 
-  useEffect(() => {
-    // automatically queue a data update
+  // Get account and token information
+  const [tokenState, tokenDispatch] = useToken();
+  const accountState = useAccountState();
+
+  // Get the community information
+  useConstructor(() => {
     loadCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       route.params.name
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  });
 
   useEffect(() => {
-    const tempCommunity = getCommunity(communityState, route.params.name);
-    setCommunity(tempCommunity);
+    const loadedCommunity = getCommunity(communityState, route.params.name);
+    setCommunity(loadedCommunity);
   }, [communityState, route.params.name]);
 
   // Setup initial form
@@ -106,9 +122,6 @@ export default function CommunityAdministrationPage({
   }, [register]);
 
   // Create a handler for submitting the form
-  const [tokenState, tokenDispatch] = useToken();
-  const accountState = useAccountState();
-
   const submitCommunity: SubmitHandler<FormValues> = (data) => {
     updateCommunity(
       communityDispatch,
@@ -131,86 +144,83 @@ export default function CommunityAdministrationPage({
   const toggleSw2 = () => setSw2((previousState) => !previousState);
   const [sw3, setSw3] = useState(false);
   const toggleSw3 = () => setSw3((previousState) => !previousState);
-
+  const theme = useTheme<Theme>();
   return (
-    <ScrollView style={styles.root}>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Code of Conduct
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder={community.codeofconduct}
-          label="Edit Code of Conduct"
-          onChangeText={(text) => {
-            setValue("codeOfConduct", text);
-          }}
-          errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
-          multiline={true}
-        />
-      </Box>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Options
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <Box style={styles.option}>
-          <Text variant="body">Option 1</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw1 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw1}
-            value={sw1}
-          />
+    <Box style={styles.root} backgroundColor="mainBackground">
+      <ScrollView>
+        <Box
+          padding="md"
+          backgroundColor="headerBackground"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <ThemedIcon type="entypo" name="open-book" />
+          <Text paddingLeft="sm" variant="sectionListHeader">
+            Code of Conduct
+          </Text>
         </Box>
-        <Box style={styles.option}>
-          <Text variant="body">Option 2</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw2 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw2}
-            value={sw2}
-          />
-        </Box>
-        <Box style={styles.option}>
-          <Text variant="body">Option 3</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw3 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw3}
-            value={sw3}
-          />
-        </Box>
-      </Box>
-      <Box style={styles.btncontainer}>
-        <Box style={styles.btnbox}>
-          <Button
-            title="Cancel"
-            color="#b6420c"
-            onPress={() => {
-              Alert.alert(
-                "Cancel Operation",
-                "Are you sure you want to discard these changes?",
-                [
-                  {
-                    text: "Yes",
-                    onPress: () => {
-                      navigation.goBack();
-                    },
-                  },
-                  {
-                    text: "No",
-                    style: "cancel",
-                  },
-                ]
-              );
+        <Box style={styles.detailbox}>
+          <ThemedInput
+            placeholder={community.codeofconduct}
+            label="Edit Code of Conduct"
+            onChangeText={(text) => {
+              setValue("codeOfConduct", text);
             }}
+            errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
+            multiline={true}
           />
         </Box>
+        <Box
+          padding="md"
+          backgroundColor="headerBackground"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <ThemedIcon type="feather" name="settings" />
+          <Text paddingLeft="sm" variant="sectionListHeader">
+            Options
+          </Text>
+        </Box>
+        <Box style={styles.detailbox}>
+          <Box style={styles.option}>
+            <Text variant="body">Option 1</Text>
+            <Switch
+              trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
+              thumbColor={sw1 ? "#B88953" : "#D8AD6D"}
+              onValueChange={toggleSw1}
+              value={sw1}
+            />
+          </Box>
+          <Box style={styles.option}>
+            <Text variant="body">Option 2</Text>
+            <Switch
+              trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
+              thumbColor={sw2 ? "#B88953" : "#D8AD6D"}
+              onValueChange={toggleSw2}
+              value={sw2}
+            />
+          </Box>
+          <Box style={styles.option}>
+            <Text variant="body">Option 3</Text>
+            <Switch
+              trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
+              thumbColor={sw3 ? "#B88953" : "#D8AD6D"}
+              onValueChange={toggleSw3}
+              value={sw3}
+            />
+          </Box>
+        </Box>
+        <Box style={styles.btncontainer} />
+      </ScrollView>
+      <Box flexDirection="row" justifyContent="space-evenly" m="md">
+        <ThemedButton
+          title="Cancel"
+          color={theme.colors.iconSelectedRed}
+          onPress={() => promptDiscardChanges(navigation.goBack)}
+        />
+
+        <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
       </Box>
-      <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
-    </ScrollView>
+    </Box>
   );
 }
