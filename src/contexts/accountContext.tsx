@@ -232,8 +232,9 @@ class AccountClient {
     token: string,
     { account, updates }: { account: Account; updates: Account }
   ): Promise<[Account, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/account?email=${account.email
-      }&token=${token}&updateFields=${JSON.stringify(updates)}`;
+    const endpoint = `${SERVER_ADDRESS}/account?email=${
+      account.email
+    }&token=${token}&updateFields=${JSON.stringify(updates)}`;
     return AuthenticatedRequestHandler.put<
       Account,
       AccountAuthenticatedResponseJson,
@@ -538,7 +539,7 @@ async function getProfilePicture(
       } else {
         accountDispatch({
           type: "finish update",
-          account: { ...account, profileImage: '' },
+          account: { ...account, profileImage: "" },
           error: "Request succeeded, no profile image was found",
         });
       }
