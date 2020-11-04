@@ -129,11 +129,11 @@ function meetupReducer(state: MeetupState, action: Action): MeetupState {
       return { ...state, status: "updating", error: action.error };
     }
     case "finish update item": {
-      let meetupList = state.meetups
+      let meetupList = state.meetups;
 
       meetupList = meetupList.filter((item, _index, _meetupList) => {
-        return item.id !== action.meetup[0].id
-      })
+        return item.id !== action.meetup[0].id;
+      });
 
       if (action.meetup[0] !== BLANK_MEETUP) {
         meetupList = [...meetupList, action.meetup[0]];
@@ -155,20 +155,20 @@ function meetupReducer(state: MeetupState, action: Action): MeetupState {
       };
     }
     case "finish update list partial": {
-      let meetupList = state.meetups
+      let meetupList = state.meetups;
 
       meetupList = meetupList.filter((item, _index, _meetupList) => {
         for (let i = 0; i < action.meetup.length; i++) {
           if (item.id === action.meetup[i].id) {
-            return false
+            return false;
           }
         }
-        return true
-      })
+        return true;
+      });
 
       for (let i = 0; i < action.meetup.length; i++) {
         if (action.meetup[i] !== BLANK_MEETUP) {
-          meetupList.push(action.meetup[i])
+          meetupList.push(action.meetup[i]);
         }
       }
 
@@ -228,125 +228,198 @@ function useMeetup(): [MeetupState, Dispatch] {
   return [useMeetupState(), useMeetupDispatch()];
 }
 
-async function getMeetupDetails(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, meetupID: string) {
+async function getMeetupDetails(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  meetupID: string
+) {
   const endpoint = `${SERVER_ADDRESS}/meeting?id=${meetupID}&token=${token}`;
-  meetupDispatch({ type: 'start update', meetup: [BLANK_MEETUP], error: 'Making meetup request to server' })
+  meetupDispatch({
+    type: "start update",
+    meetup: [BLANK_MEETUP],
+    error: "Making meetup request to server",
+  });
   try {
-    const response = await AuthenticatedRequestHandler.get(endpoint, mapMeetupResponseJson);
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetup from server' })
-    return response[1]
+    const response = await AuthenticatedRequestHandler.get(
+      endpoint,
+      mapMeetupResponseJson
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update item",
+      meetup: [response[0]],
+      error: "Successfully loaded meetup from server",
+    });
+    return response[1];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetup from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetup from server",
+    });
   }
-  return BLANK_MEETUP
+  return BLANK_MEETUP;
 }
 
-async function getMeetupList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string) {
+async function getMeetupList(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string
+) {
   const endpoint = `${SERVER_ADDRESS}/meeting/${email}?email=${email}&token=${token}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup List request to server'
-  })
+    error: "Making meetup List request to server",
+  });
   try {
     const response = await AuthenticatedRequestHandler.get(
       endpoint,
       mapMeetupListResponseJson
     );
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update list', meetup: response[0], error: 'Successfully loaded meetups from server' })
-    return response[0]
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update list",
+      meetup: response[0],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetups from server",
+    });
   }
-  return []
+  return [];
 }
 
-async function getPendingMeetupsList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string) {
+async function getPendingMeetupsList(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string
+) {
   const endpoint = `${SERVER_ADDRESS}/meeting/pending?email=${email}&token=${token}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup List request to server'
-  })
+    error: "Making meetup List request to server",
+  });
   try {
     const response = await AuthenticatedRequestHandler.get(
       endpoint,
       mapMeetupListResponseJson
     );
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update list partial', meetup: response[0], error: 'Successfully loaded meetups from server' })
-    return response[0]
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update list partial",
+      meetup: response[0],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetups from server",
+    });
   }
-  return []
+  return [];
 }
 
-async function getUpcomingMeetupsList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string) {
+async function getUpcomingMeetupsList(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string
+) {
   const endpoint = `${SERVER_ADDRESS}/meeting/upcoming?email=${email}&token=${token}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup List request to server'
-  })
+    error: "Making meetup List request to server",
+  });
   try {
     const response = await AuthenticatedRequestHandler.get(
       endpoint,
       mapMeetupListResponseJson
     );
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update list partial', meetup: response[0], error: 'Successfully loaded meetups from server' })
-    return response[0]
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update list partial",
+      meetup: response[0],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetups from server",
+    });
   }
-  return []
+  return [];
 }
 
-async function getUnratedMeetupsList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, meetupState: MeetupState, token: string, email: string) {
+async function getUnratedMeetupsList(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  meetupState: MeetupState,
+  token: string,
+  email: string
+) {
   const endpoint = `${SERVER_ADDRESS}/rating/pending?email=${email}&token=${token}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup List request to server'
-  })
+    error: "Making meetup List request to server",
+  });
   try {
     const response = await AuthenticatedRequestHandler.get(
       endpoint,
       mapRatingListResponseJson
     );
-    tokenDispatch({ type: 'set', ...response[1] })
+    tokenDispatch({ type: "set", ...response[1] });
 
     // get all unrated meetups
-    let meetupList = meetupState.meetups
+    let meetupList = meetupState.meetups;
     meetupList = meetupList.filter((item, _index, _meetupList) => {
       for (let i = 0; i < response[0].length; i++) {
         if (response[0][i].meetup_id === item.id) {
-          return true
+          return true;
         }
       }
-      return false
-    })
+      return false;
+    });
 
     // for each unrated meetup, update its user list
     for (let i = 0; i < meetupList.length; i++) {
       for (let j = 0; j < response[0].length; j++) {
         if (meetupList[i].id === response[0][j].meetup_id) {
-          meetupList[i].rating_dict = response[0][j].rating_dict
-          break
+          meetupList[i].rating_dict = response[0][j].rating_dict; // eslint-disable-line camelcase
+          break;
         }
       }
     }
 
     // update the state
-    meetupDispatch({ type: 'finish update list partial', meetup: meetupList, error: 'Successfully loaded meetups from server' })
-    return meetupList
+    meetupDispatch({
+      type: "finish update list partial",
+      meetup: meetupList,
+      error: "Successfully loaded meetups from server",
+    });
+    return meetupList;
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetups from server",
+    });
   }
-  return []
+  return [];
 }
 
 async function setMeetupRating(
@@ -360,10 +433,10 @@ async function setMeetupRating(
 ) {
   const endpoint = `${SERVER_ADDRESS}/rating`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup request to server'
-  })
+    error: "Making meetup request to server",
+  });
   try {
     const response = await AuthenticatedRequestHandler.post(
       endpoint,
@@ -372,24 +445,32 @@ async function setMeetupRating(
     );
 
     // get meetup that had rating set
-    let meetup = BLANK_MEETUP
+    let meetup = BLANK_MEETUP;
     for (let i = 0; i < meetupState.meetups.length; i++) {
       if (meetupState.meetups[i].id === response[0].meetup_id) {
-        meetup = meetupState.meetups[i]
-        break
+        meetup = meetupState.meetups[i];
+        break;
       }
     }
 
     // update meetup
-    meetup.rating_dict = response[0].rating_dict
+    meetup.rating_dict = response[0].rating_dict; // eslint-disable-line camelcase
 
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update item', meetup: [meetup], error: 'Successfully loaded meetups from server' })
-    return meetup
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update item",
+      meetup: [meetup],
+      error: "Successfully loaded meetups from server",
+    });
+    return meetup;
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetups from server",
+    });
   }
-  return BLANK_MEETUP
+  return BLANK_MEETUP;
 }
 
 async function acceptMeetup(
@@ -401,19 +482,30 @@ async function acceptMeetup(
 ) {
   const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/accept?email=${email}&token=${token}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup request to server'
-  })
+    error: "Making meetup request to server",
+  });
   try {
-    const response = await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetups from server' })
-    return response[0]
+    const response = await AuthenticatedRequestHandler.put(
+      endpoint,
+      mapMeetupResponseJson
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update item",
+      meetup: [response[0]],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to accept meetup from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to accept meetup from server",
+    });
   }
-  return BLANK_MEETUP
+  return BLANK_MEETUP;
 }
 
 async function declineMeetup(
@@ -425,19 +517,30 @@ async function declineMeetup(
 ) {
   const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/decline?email=${email}&token=${token}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup request to server'
-  })
+    error: "Making meetup request to server",
+  });
   try {
-    const response = await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetups from server' })
-    return response[0]
+    const response = await AuthenticatedRequestHandler.put(
+      endpoint,
+      mapMeetupResponseJson
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update item",
+      meetup: [response[0]],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to decline meetup from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to decline meetup from server",
+    });
   }
-  return BLANK_MEETUP
+  return BLANK_MEETUP;
 }
 
 async function setMeetupLocations(
@@ -456,28 +559,42 @@ async function setMeetupLocations(
   venuesAsString += "]";
   const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/venue?email=${email}&token=${token}&venues=${venuesAsString}`;
   meetupDispatch({
-    type: 'start update',
+    type: "start update",
     meetup: [BLANK_MEETUP],
-    error: 'Making meetup request to server'
-  })
+    error: "Making meetup request to server",
+  });
   try {
-    const response = await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
-    tokenDispatch({ type: 'set', ...response[1] })
-    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetups from server' })
-    return response[0]
+    const response = await AuthenticatedRequestHandler.put(
+      endpoint,
+      mapMeetupResponseJson
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update item",
+      meetup: [response[0]],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
   } catch (error) {
-    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to decline meetup from server' })
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to decline meetup from server",
+    });
   }
-  return BLANK_MEETUP
+  return BLANK_MEETUP;
 }
 
-function getLoadedMeetupById(meetupState: MeetupState, meetupID: string): Meetup {
+function getLoadedMeetupById(
+  meetupState: MeetupState,
+  meetupID: string
+): Meetup {
   for (let i = 0; i < meetupState.meetups.length; i++) {
     if (meetupState.meetups[i].id === meetupID) {
-      return meetupState.meetups[i]
+      return meetupState.meetups[i];
     }
   }
-  return BLANK_MEETUP
+  return BLANK_MEETUP;
 }
 
 export {
@@ -494,5 +611,5 @@ export {
   getUnratedMeetupsList,
   setMeetupRating,
   setMeetupLocations,
-  getLoadedMeetupById
+  getLoadedMeetupById,
 };

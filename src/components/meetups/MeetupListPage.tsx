@@ -9,7 +9,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedIcon from "../themed/ThemedIcon";
-import { useToken, useTokenState } from "../../contexts/tokenContext";
+import { useToken } from "../../contexts/tokenContext";
 import {
   getPendingMeetupsList,
   getUpcomingMeetupsList,
@@ -18,7 +18,7 @@ import {
 } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
-import { BLANK_MEETUP, Meetup } from "../../models/meetups";
+import { Meetup } from "../../models/meetups";
 
 type MeetupListPageProps = {
   route: MeetupListPageRouteProp;
@@ -54,7 +54,6 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
 
   // get meetup context information
   const [meetupState, meetupDispatch] = useMeetup();
-
 
   // Create function to load and set all data
   const loadMeetupData = async () => {

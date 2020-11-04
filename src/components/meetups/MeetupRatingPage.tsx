@@ -12,8 +12,8 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
-import { useTokenState } from "../../contexts/tokenContext";
-import { setMeetupRating } from "../../contexts/meetupContext";
+import { useToken } from "../../contexts/tokenContext";
+import { setMeetupRating, useMeetup } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 
 import MeetupCard from "./MeetupCard";
@@ -43,15 +43,24 @@ export default function MeetupRatingPage({
   const { meetupID, timestamp, duration, location, userList } = route.params;
 
   // Retrieve account information
-  const { refreshToken } = useTokenState();
+  const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
   } = useAccountState();
 
   const [rating, setRating] = useState(3);
+  const [meetupState, meetupDispatch] = useMeetup();
 
   const submitRating = async () => {
-    await setMeetupRating(refreshToken, email, meetupID, rating);
+    await setMeetupRating(
+      meetupDispatch,
+      tokenDispatch,
+      meetupState,
+      tokenState.refreshToken,
+      email,
+      meetupID,
+      rating
+    );
     navigation.goBack();
   };
 

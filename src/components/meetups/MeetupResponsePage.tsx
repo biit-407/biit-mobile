@@ -10,7 +10,7 @@ import {
   setMeetupLocations,
   useMeetup,
 } from "../../contexts/meetupContext";
-import { useToken, useTokenState } from "../../contexts/tokenContext";
+import { useToken } from "../../contexts/tokenContext";
 import {
   MeetupResponsePageRouteProp,
   MeetupResponsePageNavigationProp,
@@ -50,15 +50,34 @@ export default function MeetupReponsePage({
     account: { email },
   } = useAccountState();
 
-  const [meetupState, meetupDispatch] = useMeetup()
+  const [, meetupDispatch] = useMeetup();
 
   const onAccept = async () => {
-    await setMeetupLocations(meetupDispatch, tokenDispatch, tokenState.refreshToken, email, meetupID, locations)
-    await acceptMeetup(meetupDispatch, tokenDispatch, tokenState.refreshToken, email, meetupID)
+    await setMeetupLocations(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      email,
+      meetupID,
+      locations
+    );
+    await acceptMeetup(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      email,
+      meetupID
+    );
     navigation.pop();
   };
   const onDecline = async () => {
-    await declineMeetup(meetupDispatch, tokenDispatch, tokenState.refreshToken, email, meetupID)
+    await declineMeetup(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      email,
+      meetupID
+    );
     navigation.pop();
   };
 

@@ -18,9 +18,7 @@ export default function GlobalServiceProvider({
       <TokenProvider>
         <AccountProvider>
           <CommunityProvider>
-            <MeetupProvider>
-              {children}
-            </MeetupProvider>
+            <MeetupProvider>{children}</MeetupProvider>
           </CommunityProvider>
         </AccountProvider>
       </TokenProvider>
