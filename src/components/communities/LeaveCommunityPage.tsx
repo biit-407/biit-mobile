@@ -89,7 +89,7 @@ export default function LeaveCommunityPage({
             reverse
             onPress={() => {
               leave();
-              navigation.push("DevelopmentLinks");
+              navigation.pop();
             }}
           />
         </Box>
@@ -99,7 +99,7 @@ export default function LeaveCommunityPage({
             type="entypo"
             size={32}
             reverse
-            onPress={() => navigation.push("DevelopmentLinks")}
+            onPress={() => navigation.pop()}
           />
         </Box>
       </Box>

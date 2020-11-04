@@ -103,7 +103,12 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   };
 
   const renderSectionHeader = (title: string) => (
-    <Box padding="md" backgroundColor="sectionListHeader" flexDirection="row">
+    <Box
+      padding="md"
+      backgroundColor="sectionListHeader"
+      flexDirection="row"
+      alignItems="center"
+    >
       <ThemedIcon type="entypo" name={sectionIcons[title]} />
       <Text paddingLeft="sm" variant="sectionListHeader">
         {title}
