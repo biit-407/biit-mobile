@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal, StyleSheet } from "react-native";
 
+import { reportUser, useAccountState } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 import { Box, Text, ThemedButton, ThemedIcon, ThemedInput } from "../themed";
 
 type MeetupReportDialogProps = {
@@ -17,13 +20,46 @@ const styles = StyleSheet.create({
   },
 });
 
+type FormValues = {
+  report: string;
+};
+
+const formErrors = {
+  report: "Report cannot be empty",
+};
+
 export default function MeetupReportDialog({
   open,
   closeDialog,
   meetupID,
 }: MeetupReportDialogProps) {
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>({
+    defaultValues: {
+      report: "",
+    },
+  });
+
+  useEffect(() => {
+    register("report", { required: true, minLength: 1 });
+  }, [register]);
+
+  const [{ refreshToken }, tokenDispatch] = useToken();
+  const {
+    account: { email },
+  } = useAccountState();
+
   // TODO: Add call to submit the report
-  const submitReport = () => {
+
+  const submitReport: SubmitHandler<FormValues> = async (
+    formData: FormValues
+  ) => {
+    await reportUser(
+      tokenDispatch,
+      refreshToken,
+      email,
+      meetupID,
+      formData.report
+    );
     closeDialog();
   };
 
@@ -62,10 +98,17 @@ export default function MeetupReportDialog({
             multiline
             containerStyle={{ width: "85%" }}
             placeholder="Details about your report..."
+            onChangeText={(text) => {
+              setValue("report", text);
+            }}
+            errorMessage={errors.report ? formErrors.report : ""}
           />
         </Box>
         <Box m="lg">
-          <ThemedButton title="Submit Report" onPress={submitReport} />
+          <ThemedButton
+            title="Submit Report"
+            onPress={handleSubmit(submitReport)}
+          />
         </Box>
       </Box>
     </Modal>
