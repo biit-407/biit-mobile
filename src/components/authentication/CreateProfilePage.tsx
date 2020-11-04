@@ -73,7 +73,7 @@ export default function CreateProfilePage({
         onFormSubmit={() => {
           navigation.reset({
             index: 0,
-            routes: [{ name: "UserSettings" }],
+            routes: [{ name: "Home" }],
           });
         }}
       />
