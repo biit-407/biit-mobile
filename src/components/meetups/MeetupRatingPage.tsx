@@ -12,13 +12,8 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
-import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 import { useTokenState } from "../../contexts/tokenContext";
-import { useConstructor } from "../../hooks";
-import {
-  getMeetupDetails,
-  setMeetupRating,
-} from "../../contexts/meetupContext";
+import { setMeetupRating } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 
 import MeetupCard from "./MeetupCard";
@@ -45,31 +40,13 @@ export default function MeetupRatingPage({
   route,
 }: MeetupRatingPageProps) {
   // Create state for the meetup to be loaded
-  const { meetupID } = route.params;
-  const [meetup, setMeetup] = useState<Meetup>(BLANK_MEETUP);
+  const { meetupID, timestamp, duration, location, userList } = route.params;
 
   // Retrieve account information
   const { refreshToken } = useTokenState();
   const {
     account: { email },
   } = useAccountState();
-
-  // Load the meetup details
-  useConstructor(async () => {
-    const [meetupDetails] = await getMeetupDetails(refreshToken, meetupID);
-    setMeetup(meetupDetails);
-  });
-
-  // TODO: Timestamp currently is just an integer, need to convert it to a time
-  const { id, timestamp, duration, location, user_list } = meetup; // eslint-disable-line camelcase
-
-  // Convert users dict to a list of accepted users
-  const acceptedUsers = [];
-  for (const [key, value] of Object.entries(user_list)) {
-    if (value === 1) {
-      acceptedUsers.push(key);
-    }
-  }
 
   const [rating, setRating] = useState(3);
 
@@ -84,11 +61,11 @@ export default function MeetupRatingPage({
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ width: "100%" }}>
         <MeetupCard
-          id={id}
+          id={meetupID}
           timestamp={timestamp}
           duration={duration}
           location={location}
-          userList={acceptedUsers}
+          userList={userList}
         />
         <ThemedCard>
           <Box style={{ width: "100%", alignItems: "center" }}>

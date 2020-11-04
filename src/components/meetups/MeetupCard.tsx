@@ -11,7 +11,7 @@ interface MeetupCardProps {
   timestamp: string;
   duration: string;
   location: string;
-  userList: string[];
+  userList: Record<string, number>;
   meetupType: MeetupType;
   isClickable?: boolean;
   key?: string;
@@ -70,7 +70,12 @@ const TentativeMeetupCard = ({
   key,
 }: MeetupCardProps) => {
   const navigation = useNavigation();
-
+  const acceptedUsers = [];
+  for (const [email, value] of Object.entries(userList)) {
+    if (value === 1) {
+      acceptedUsers.push(email);
+    }
+  }
   return (
     <ThemedCard
       onPressFunction={
@@ -103,7 +108,7 @@ const TentativeMeetupCard = ({
       <Text variant="subheader">{location}</Text>
       <Text variant="header">Participants</Text>
       <FlatList
-        data={userList}
+        data={acceptedUsers}
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={renderParticipant}
         listKey={key}
@@ -122,6 +127,12 @@ const AcceptedMeetupCard = ({
   key,
 }: MeetupCardProps) => {
   const navigation = useNavigation();
+  const acceptedUsers = [];
+  for (const [email, value] of Object.entries(userList)) {
+    if (value === 1) {
+      acceptedUsers.push(email);
+    }
+  }
   return (
     <ThemedCard
       onPressFunction={
@@ -154,7 +165,7 @@ const AcceptedMeetupCard = ({
       <Text variant="subheader">{location}</Text>
       <Text variant="header">Participants</Text>
       <FlatList
-        data={userList}
+        data={acceptedUsers}
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={renderParticipant}
         listKey={key}

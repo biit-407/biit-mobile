@@ -40,18 +40,20 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  const [pendingMeetups] = useState([
+  const [pendingMeetups, setPendingMeetups] = useState([
     { ...BLANK_MEETUP, id: "ABC" },
     { ...BLANK_MEETUP, id: "DEF" },
   ]);
-  const [upcomingMeetups] = useState([
+  const [upcomingMeetups, setUpcomingMeetups] = useState([
     { ...BLANK_MEETUP, id: "GHI" },
     { ...BLANK_MEETUP, id: "JKL" },
   ]);
-  const [unratedMeetups] = useState([
+  const [unratedMeetups, setUnratedMeetups] = useState([
     { ...BLANK_MEETUP, id: "MNO" },
     { ...BLANK_MEETUP, id: "PQR" },
   ]);
+
+  const [isLoading, setLoading] = useState(false);
 
   // Retrieve account information
   const { refreshToken } = useTokenState();
@@ -76,9 +78,14 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       email
     );
     // Set the sections once loaded
-    setPendingMeetups(pendingMeetupList.map((meetup) => meetup.id));
-    setUpcomingMeetups(upcomingMeetupList.map((meetup) => meetup.id));
-    setUnratedMeetups(unratedMeetupList.map((meetup) => meetup.meetup_id));
+    setPendingMeetups(pendingMeetupList);
+    setUpcomingMeetups(upcomingMeetupList);
+    setUnratedMeetups(
+      unratedMeetupList.map((meetup) => ({
+        ...BLANK_MEETUP,
+        id: meetup.meetup_id,
+      }))
+    );
     setLoading(false);
   };
 
@@ -150,7 +157,13 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
       data: unratedMeetups,
       renderItem: ({ item }) =>
         renderListItem(item, () =>
-          navigation.navigate("MeetupRating", { meetupID: item.id })
+          navigation.navigate("MeetupRating", {
+            meetupID: item.id,
+            duration: item.duration,
+            location: item.location,
+            userList: item.user_list,
+            timestamp: item.timestamp,
+          })
         ),
     },
   ];
