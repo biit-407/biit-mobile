@@ -3,6 +3,7 @@ import React from "react";
 import { AccountProvider } from "./accountContext";
 import { AzureProvider } from "./azureContext";
 import { CommunityProvider } from "./communityContext";
+import { MeetupProvider } from "./meetupContext";
 import { TokenProvider } from "./tokenContext";
 
 type GlobalServiceProviderProps = {
@@ -16,7 +17,9 @@ export default function GlobalServiceProvider({
     <AzureProvider>
       <TokenProvider>
         <AccountProvider>
-          <CommunityProvider>{children}</CommunityProvider>
+          <CommunityProvider>
+            <MeetupProvider>{children}</MeetupProvider>
+          </CommunityProvider>
         </AccountProvider>
       </TokenProvider>
     </AzureProvider>
