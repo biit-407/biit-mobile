@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { ScrollView, Switch, StyleSheet, Alert, Button } from "react-native";
+import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useTheme } from "@shopify/restyle";
 
 import {
   CommunityAdministrationPageRouteProp,
@@ -21,7 +22,6 @@ import { useAccountState } from "../../contexts/accountContext";
 import { BLANK_COMMUNITY } from "../../models/community";
 import { useConstructor } from "../../hooks";
 import { ThemedIcon } from "../themed";
-import { useTheme } from "@shopify/restyle";
 import { Theme } from "../../theme";
 
 type CommunityAdministrationPageProps = {
