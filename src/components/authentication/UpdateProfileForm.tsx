@@ -96,6 +96,7 @@ export default function UpdateProfileForm({
       birthday: accountState.account.birthday,
     },
   });
+
   useEffect(() => {
     register("fname", { required: true, minLength: 1 });
     register("lname", { required: true, minLength: 1 });
@@ -273,7 +274,7 @@ export default function UpdateProfileForm({
       <Box marginVertical="md">
         <ThemedButton
           title="Save Profile"
-          onPress={() => handleSubmit(submitProfile)}
+          onPress={handleSubmit(submitProfile)}
         />
       </Box>
       <BottomSheet
