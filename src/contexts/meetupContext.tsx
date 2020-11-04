@@ -2,13 +2,13 @@ import React from "react";
 
 // import { OauthToken } from "../models/azure";
 import { SERVER_ADDRESS } from "../models/constants";
-import { Meetup } from "../models/meetups";
+import { BLANK_MEETUP, Meetup } from "../models/meetups";
 import {
   AuthenticatedRequestHandler,
   AuthenticatedResponseJsonType,
 } from "../utils/requestHandler";
 
-// import { Dispatch as TokenDispatch } from "./tokenContext";
+import { Dispatch as TokenDispatch } from "./tokenContext";
 
 type MeetupStatus = "not loaded" | "loaded" | "updating" | "error";
 
@@ -20,11 +20,13 @@ type MeetupState = {
 type ActionType =
   | "start update"
   | "fail update"
-  | "finish update"
+  | "finish update item"
+  | "finish update list"
+  | "finish update list partial"
   | "invalidate";
 type Action = {
   type: ActionType;
-  community: Meetup;
+  meetup: Meetup[];
   error: string;
 };
 type Dispatch = (action: Action) => void;
@@ -126,23 +128,53 @@ function meetupReducer(state: MeetupState, action: Action): MeetupState {
     case "start update": {
       return { ...state, status: "updating", error: action.error };
     }
-    case "finish update": {
-      //   let communityList = state.communities;
-      //   communityList = communityList.filter(
-      //     (community, _index, _communityList) => {
-      //       // only keep the commnities that were not updated
-      //       return community.name !== action.community.name;
-      //     }
-      //   );
+    case "finish update item": {
+      let meetupList = state.meetups
 
-      //   // allow for the deletion of communities
-      //   if (action.community !== BLANK_COMMUNITY) {
-      //     communityList = [...communityList, action.community];
-      //   }
-      //TODO: Add actual updating
+      meetupList = meetupList.filter((item, _index, _meetupList) => {
+        return item.id !== action.meetup[0].id
+      })
+
+      if (action.meetup[0] !== BLANK_MEETUP) {
+        meetupList = [...meetupList, action.meetup[0]];
+      }
+
       return {
         ...state,
-        meetups: state.meetups,
+        meetups: meetupList,
+        status: "loaded",
+        error: action.error,
+      };
+    }
+    case "finish update list": {
+      return {
+        ...state,
+        meetups: action.meetup,
+        status: "loaded",
+        error: action.error,
+      };
+    }
+    case "finish update list partial": {
+      let meetupList = state.meetups
+
+      meetupList = meetupList.filter((item, _index, _meetupList) => {
+        for (let i = 0; i < action.meetup.length; i++) {
+          if (item.id === action.meetup[i].id) {
+            return false
+          }
+        }
+        return true
+      })
+
+      for (let i = 0; i < action.meetup.length; i++) {
+        if (action.meetup[i] !== BLANK_MEETUP) {
+          meetupList.push(action.meetup[i])
+        }
+      }
+
+      return {
+        ...state,
+        meetups: meetupList,
         status: "loaded",
         error: action.error,
       };
@@ -196,68 +228,221 @@ function useMeetup(): [MeetupState, Dispatch] {
   return [useMeetupState(), useMeetupDispatch()];
 }
 
-async function getMeetupDetails(token: string, meetupID: string) {
+async function getMeetupDetails(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, meetupID: string) {
   const endpoint = `${SERVER_ADDRESS}/meeting?id=${meetupID}&token=${token}`;
-  return await AuthenticatedRequestHandler.get(endpoint, mapMeetupResponseJson);
+  meetupDispatch({ type: 'start update', meetup: [BLANK_MEETUP], error: 'Making meetup request to server' })
+  try {
+    const response = await AuthenticatedRequestHandler.get(endpoint, mapMeetupResponseJson);
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetup from server' })
+    return response[1]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetup from server' })
+  }
+  return BLANK_MEETUP
 }
 
-async function getMeetupList(token: string, email: string) {
+async function getMeetupList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string) {
   const endpoint = `${SERVER_ADDRESS}/meeting/${email}?email=${email}&token=${token}`;
-  return await AuthenticatedRequestHandler.get(
-    endpoint,
-    mapMeetupListResponseJson
-  );
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup List request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.get(
+      endpoint,
+      mapMeetupListResponseJson
+    );
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update list', meetup: response[0], error: 'Successfully loaded meetups from server' })
+    return response[0]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+  }
+  return []
 }
 
-async function getPendingMeetupsList(token: string, email: string) {
+async function getPendingMeetupsList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string) {
   const endpoint = `${SERVER_ADDRESS}/meeting/pending?email=${email}&token=${token}`;
-  return await AuthenticatedRequestHandler.get(
-    endpoint,
-    mapMeetupListResponseJson
-  );
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup List request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.get(
+      endpoint,
+      mapMeetupListResponseJson
+    );
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update list partial', meetup: response[0], error: 'Successfully loaded meetups from server' })
+    return response[0]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+  }
+  return []
 }
 
-async function getUpcomingMeetupsList(token: string, email: string) {
+async function getUpcomingMeetupsList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, token: string, email: string) {
   const endpoint = `${SERVER_ADDRESS}/meeting/upcoming?email=${email}&token=${token}`;
-  return await AuthenticatedRequestHandler.get(
-    endpoint,
-    mapMeetupListResponseJson
-  );
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup List request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.get(
+      endpoint,
+      mapMeetupListResponseJson
+    );
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update list partial', meetup: response[0], error: 'Successfully loaded meetups from server' })
+    return response[0]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+  }
+  return []
 }
 
-async function getUnratedMeetupsList(token: string, email: string) {
+async function getUnratedMeetupsList(meetupDispatch: Dispatch, tokenDispatch: TokenDispatch, meetupState: MeetupState, token: string, email: string) {
   const endpoint = `${SERVER_ADDRESS}/rating/pending?email=${email}&token=${token}`;
-  return await AuthenticatedRequestHandler.get(
-    endpoint,
-    mapRatingListResponseJson
-  );
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup List request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.get(
+      endpoint,
+      mapRatingListResponseJson
+    );
+    tokenDispatch({ type: 'set', ...response[1] })
+
+    // get all unrated meetups
+    let meetupList = meetupState.meetups
+    meetupList = meetupList.filter((item, _index, _meetupList) => {
+      for (let i = 0; i < response[0].length; i++) {
+        if (response[0][i].meetup_id === item.id) {
+          return true
+        }
+      }
+      return false
+    })
+
+    // for each unrated meetup, update its user list
+    for (let i = 0; i < meetupList.length; i++) {
+      for (let j = 0; j < response[0].length; j++) {
+        if (meetupList[i].id === response[0][j].meetup_id) {
+          meetupList[i].rating_dict = response[0][j].rating_dict
+          break
+        }
+      }
+    }
+
+    // update the state
+    meetupDispatch({ type: 'finish update list partial', meetup: meetupList, error: 'Successfully loaded meetups from server' })
+    return meetupList
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+  }
+  return []
 }
 
 async function setMeetupRating(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  meetupState: MeetupState,
   token: string,
   email: string,
   meetupID: string,
   rating: number
 ) {
   const endpoint = `${SERVER_ADDRESS}/rating`;
-  return await AuthenticatedRequestHandler.post(
-    endpoint,
-    mapRatingResponseJson,
-    { token, user: email, meeting_id: meetupID, rating } // eslint-disable-line camelcase
-  );
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.post(
+      endpoint,
+      mapRatingResponseJson,
+      { token, user: email, meeting_id: meetupID, rating } // eslint-disable-line camelcase
+    );
+
+    // get meetup that had rating set
+    let meetup = BLANK_MEETUP
+    for (let i = 0; i < meetupState.meetups.length; i++) {
+      if (meetupState.meetups[i].id === response[0].meetup_id) {
+        meetup = meetupState.meetups[i]
+        break
+      }
+    }
+
+    // update meetup
+    meetup.rating_dict = response[0].rating_dict
+
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update item', meetup: [meetup], error: 'Successfully loaded meetups from server' })
+    return meetup
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to load meetups from server' })
+  }
+  return BLANK_MEETUP
 }
 
-async function acceptMeetup(token: string, email: string, meetupID: string) {
+async function acceptMeetup(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  meetupID: string
+) {
   const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/accept?email=${email}&token=${token}`;
-  return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetups from server' })
+    return response[0]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to accept meetup from server' })
+  }
+  return BLANK_MEETUP
 }
 
-async function declineMeetup(token: string, email: string, meetupID: string) {
+async function declineMeetup(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  meetupID: string
+) {
   const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/decline?email=${email}&token=${token}`;
-  return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetups from server' })
+    return response[0]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to decline meetup from server' })
+  }
+  return BLANK_MEETUP
 }
 
 async function setMeetupLocations(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
   token: string,
   email: string,
   meetupID: string,
@@ -269,371 +454,37 @@ async function setMeetupLocations(
   }
   venuesAsString = venuesAsString.substring(0, venuesAsString.length - 1);
   venuesAsString += "]";
-  console.log(venuesAsString);
   const endpoint = `${SERVER_ADDRESS}/meeting/${meetupID}/venue?email=${email}&token=${token}&venues=${venuesAsString}`;
-  return await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+  meetupDispatch({
+    type: 'start update',
+    meetup: [BLANK_MEETUP],
+    error: 'Making meetup request to server'
+  })
+  try {
+    const response = await AuthenticatedRequestHandler.put(endpoint, mapMeetupResponseJson);
+    tokenDispatch({ type: 'set', ...response[1] })
+    meetupDispatch({ type: 'finish update item', meetup: [response[0]], error: 'Successfully loaded meetups from server' })
+    return response[0]
+  } catch (error) {
+    meetupDispatch({ type: 'fail update', meetup: [BLANK_MEETUP], error: 'Unable to decline meetup from server' })
+  }
+  return BLANK_MEETUP
 }
 
-// class MeetupClient {
-//   public static async create(
-//     token: string,
-//     meetup: Meetup
-//   ): Promise<[Meetup, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/community`;
-
-//     return AuthenticatedRequestHandler.post(endpoint, mapMeetupResponseJson, {
-//       ...meetup,
-//       token: token,
-//     });
-//   }
-
-//   public static async load(
-//     token: string,
-//     name: string
-//   ): Promise<[Community, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}`;
-
-//     return AuthenticatedRequestHandler.get(endpoint, mapCommunityResponseJson);
-//   }
-
-//   public static async update(
-//     token: string,
-//     {
-//       email,
-//       name,
-//       community,
-//     }: {
-//       email: string;
-//       name: string;
-//       community: Community;
-//     }
-//   ): Promise<[Community, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/community?updateFields=${JSON.stringify(
-//       community
-//     )}&name=${name}&token=${token}&email=${email}`;
-
-//     return AuthenticatedRequestHandler.put(endpoint, mapCommunityResponseJson);
-//   }
-
-//   public static async delete(
-//     token: string,
-//     name: string
-//   ): Promise<[boolean, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/community?name=${name}&token=${token}`;
-//     return AuthenticatedRequestHandler.delete(
-//       endpoint,
-//       (responseJson) => responseJson.status_code === 200
-//     );
-//   }
-
-//   public static async banUser(
-//     token: string,
-//     banner: string,
-//     bannee: string,
-//     community: string
-//   ): Promise<[boolean, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/ban`;
-
-//     return AuthenticatedRequestHandler.post(
-//       endpoint,
-//       (responseJson) => responseJson.status_code === 200,
-//       {
-//         token: token,
-//         banner: banner,
-//         bannee: bannee,
-//         community: community,
-//       }
-//     );
-//   }
-
-//   public static async unbanUser(
-//     token: string,
-//     banner: string,
-//     bannee: string,
-//     community: string
-//   ): Promise<[boolean, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/ban?banner=${banner}&bannee=${bannee}&token=${token}&community=${community}`;
-
-//     return AuthenticatedRequestHandler.put(
-//       endpoint,
-//       (responseJson) => responseJson.status_code === 200
-//     );
-//   }
-
-//   public static async join(
-//     token: string,
-//     {
-//       email,
-//       community,
-//     }: {
-//       email: string;
-//       community: string;
-//     }
-//   ): Promise<[Community, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/community/${community}/join`;
-
-//     return AuthenticatedRequestHandler.post(
-//       endpoint,
-//       mapCommunityResponseJson,
-//       { email: email, token: token }
-//     );
-//   }
-
-//   public static async leave(
-//     token: string,
-//     {
-//       email,
-//       community,
-//     }: {
-//       email: string;
-//       community: string;
-//     }
-//   ): Promise<[Community, OauthToken]> {
-//     const endpoint = `${SERVER_ADDRESS}/community/${community}/leave`;
-//     return AuthenticatedRequestHandler.post(
-//       endpoint,
-//       mapCommunityResponseJson,
-//       { email: email, token: token }
-//     );
-//   }
-// }
-
-// function _defaultUpdateHelper(
-//   tokenDispatch: TokenDispatch,
-//   communityDispatch: Dispatch,
-//   response: [Community, OauthToken]
-// ): void {
-//   tokenDispatch({
-//     ...response[1],
-//     type: "set",
-//   });
-//   communityDispatch({
-//     type: "finish update",
-//     community: response[0],
-//     error: "Successfully created new community",
-//   });
-// }
-
-// async function _communityHelper<T, R>(
-//   communityDispatch: Dispatch,
-//   token: string,
-//   data: T,
-//   requestFunc: (token: string, data: T) => Promise<R>,
-//   handleResponse: (response: R) => void
-// ) {
-//   communityDispatch({
-//     type: "start update",
-//     community: BLANK_COMMUNITY,
-//     error: "Failed to update community",
-//   });
-
-//   try {
-//     const response: R = await requestFunc(token, data);
-//     handleResponse(response);
-//   } catch (error) {
-//     communityDispatch({
-//       type: "fail update",
-//       community: BLANK_COMMUNITY,
-//       error: "Failed to update community",
-//     });
-//   }
-// }
-
-// async function createCommunity(
-//   communityDispatch: Dispatch,
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   community: Community
-// ) {
-//   await _communityHelper(
-//     communityDispatch,
-//     token,
-//     community,
-//     CommunityClient.create,
-//     (response) => {
-//       _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
-//     }
-//   );
-// }
-
-// async function loadCommunity(
-//   communityDispatch: Dispatch,
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   name: string
-// ) {
-//   await _communityHelper(
-//     communityDispatch,
-//     token,
-//     name,
-//     CommunityClient.load,
-//     (response) => {
-//       _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
-//     }
-//   );
-// }
-
-// async function updateCommunity(
-//   communityDispatch: Dispatch,
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   email: string,
-//   name: string,
-//   community: Community
-// ) {
-//   await _communityHelper(
-//     communityDispatch,
-//     token,
-//     { email: email, name: name, community: community },
-//     CommunityClient.update,
-//     (response) => {
-//       _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
-//     }
-//   );
-// }
-
-// async function deleteCommunity(
-//   communityDispatch: Dispatch,
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   name: string
-// ) {
-//   await _communityHelper(
-//     communityDispatch,
-//     token,
-//     name,
-//     CommunityClient.delete,
-//     (response) => {
-//       tokenDispatch({ ...response[1], type: "set" });
-//       if (response[0]) {
-//         communityDispatch({
-//           type: "finish update",
-//           community: BLANK_COMMUNITY,
-//           error: "Successfully deleted community",
-//         });
-//       } else {
-//         communityDispatch({
-//           type: "fail update",
-//           community: BLANK_COMMUNITY,
-//           error: "Failed to delete community",
-//         });
-//       }
-//     }
-//   );
-// }
-
-// async function banUserFromCommunity(
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   banner: string,
-//   bannee: string,
-//   community: string
-// ) {
-//   try {
-//     const [, newToken] = await CommunityClient.banUser(
-//       token,
-//       banner,
-//       bannee,
-//       community
-//     );
-//     tokenDispatch({ ...newToken, type: "set" });
-//   } catch (error) {
-//     //! no error handling here yet
-//   }
-// }
-
-// async function unbanUserFromCommunity(
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   banner: string,
-//   bannee: string,
-//   community: string
-// ) {
-//   try {
-//     const [, newToken] = await CommunityClient.unbanUser(
-//       token,
-//       banner,
-//       bannee,
-//       community
-//     );
-//     tokenDispatch({ ...newToken, type: "set" });
-//   } catch (error) {
-//     //! no error handling here yet
-//   }
-// }
-
-// async function joinCommunity(
-//   communityDispatch: Dispatch,
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   email: string,
-//   community: string
-// ) {
-//   await _communityHelper(
-//     communityDispatch,
-//     token,
-//     { email: email, community: community },
-//     CommunityClient.join,
-//     (response) => {
-//       _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
-//     }
-//   );
-// }
-
-// async function leaveCommunity(
-//   communityDispatch: Dispatch,
-//   tokenDispatch: TokenDispatch,
-//   token: string,
-//   email: string,
-//   community: string
-// ) {
-//   await _communityHelper(
-//     communityDispatch,
-//     token,
-//     { email: email, community: community },
-//     CommunityClient.leave,
-//     (response) => {
-//       _defaultUpdateHelper(tokenDispatch, communityDispatch, response);
-//     }
-//   );
-// }
-
-// function getCommunity(communityState: CommunityState, name: string) {
-//   for (let i = 0; i < communityState.communities.length; i++) {
-//     const element = communityState.communities[i];
-//     if (element.name.toLowerCase() === name.toLowerCase()) {
-//       return element;
-//     }
-//   }
-
-//   return BLANK_COMMUNITY;
-// }
-
-// function isCommunityLoaded(communityState: CommunityState, name: string) {
-//   for (let i = 0; i < communityState.communities.length; i++) {
-//     const element = communityState.communities[i];
-//     if (element.name.toLowerCase() === name.toLowerCase()) {
-//       return true;
-//     }
-//   }
-
-//   return false;
-// }
+function getLoadedMeetupById(meetupState: MeetupState, meetupID: string): Meetup {
+  for (let i = 0; i < meetupState.meetups.length; i++) {
+    if (meetupState.meetups[i].id === meetupID) {
+      return meetupState.meetups[i]
+    }
+  }
+  return BLANK_MEETUP
+}
 
 export {
   MeetupProvider,
   useMeetup,
   useMeetupState,
   useMeetupDispatch,
-  // createCommunity,
-  // loadCommunity,
-  // updateCommunity,
-  // deleteCommunity,
-  // banUserFromCommunity,
-  // unbanUserFromCommunity,
-  // joinCommunity,
-  // leaveCommunity,
-  // getCommunity,
   acceptMeetup,
   declineMeetup,
   getMeetupDetails,
@@ -643,4 +494,5 @@ export {
   getUnratedMeetupsList,
   setMeetupRating,
   setMeetupLocations,
+  getLoadedMeetupById
 };
