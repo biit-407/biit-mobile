@@ -210,9 +210,7 @@ export default function UserSettingsPage({
               <Button
                 title={"Update Time Preferences"}
                 onPress={() => {
-                  navigation.push("UserTimePreference", {
-                    currentUserPreferences: [{ start: 1, end: 2 }],
-                  });
+                  navigation.push("UserTimePreference");
                 }}
                 buttonStyle={{
                   backgroundColor: theme.colors.buttonPrimaryBackground,

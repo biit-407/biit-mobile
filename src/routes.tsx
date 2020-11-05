@@ -46,9 +46,7 @@ type RootStackParamList = {
     locations: string[];
     setLocations: (locations: string[]) => void;
   };
-  UserTimePreference: {
-    currentUserPreferences: { start: number; end: number }[];
-  };
+  UserTimePreference: undefined;
   Home: {
     futureMeetupIDs: string[];
     tentativeMeetupIDs: string[];

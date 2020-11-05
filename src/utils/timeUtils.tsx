@@ -40,7 +40,7 @@ export function getShortMonthName(date: Date) {
 }
 
 export function getDayAsString(date: Date) {
-    const day = date.getDay() + 1
+    const day = date.getDate()
     if (day == 1 || day == 21 || day == 31) {
         return `${day}st`
     }
@@ -64,4 +64,29 @@ export function getTimeAsString(date: Date) {
     return strTime;
 }
 
+export function getDayOfWeek(date: Date) {
+    const day = date.getDay()
+    if (day === 0) {
+        return "Monday";
+    }
+    if (day === 1) {
+        return "Tuesday";
+    }
+    if (day === 2) {
+        return "Wednesday";
+    }
+    if (day === 3) {
+        return "Thursday";
+    }
+    if (day === 4) {
+        return "Friday";
+    }
+    if (day === 5) {
+        return "Saturday";
+    }
+    if (day === 6) {
+        return "Sunday";
+    }
+    return "Monday";
+}
 

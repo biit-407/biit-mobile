@@ -68,6 +68,7 @@ interface AccountAuthenticatedResponseJson
   email: string;
   birthday?: string;
   agePref?: number[];
+  schedule?: string[][];
 }
 
 function mapAccountResponseJson(
@@ -79,6 +80,7 @@ function mapAccountResponseJson(
     email: responseJson.email,
     birthday: responseJson.birthday,
     agePref: responseJson.agePref,
+    schedule: responseJson.schedule
   };
 }
 
@@ -90,6 +92,7 @@ interface AccountAuthenticatedDataResponseJson
     email: string;
     birthday?: string;
     agePref?: number[];
+    schedule?: string[][];
   };
 }
 
@@ -102,6 +105,7 @@ function mapAccountDataResponseJson(
     email: responseJson.data.email,
     birthday: responseJson.data.birthday,
     agePref: responseJson.data.agePref,
+    schedule: responseJson.data.schedule
   };
 }
 
@@ -294,7 +298,7 @@ class AccountClient {
     token: string,
     email: string
   ): Promise<[string | boolean, OauthToken]> {
-    const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${email}`;
+    const endpoint = `${SERVER_ADDRESS}/profile?email=${email}&token=${token}&filename=${email}.jpg`;
     return AuthenticatedRequestHandler.get<
       string,
       AccountAuthenticatedProfileResponseJson,
