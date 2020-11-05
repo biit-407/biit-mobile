@@ -105,7 +105,7 @@ export default function UserSettingsPage({
         fname: accountState.account.fname,
         lname: accountState.account.lname,
         email: accountState.account.email,
-        agePref: preference
+        agePref: preference,
       }
     );
   };

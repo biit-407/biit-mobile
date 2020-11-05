@@ -487,26 +487,27 @@ async function startMatching(
     const response: [boolean, OauthToken] = await fetch(
       `${SERVER_ADDRESS}/matchup?email=${email}&token=${token}&community=${communityID}`,
       {
-        method: 'GET',
-        headers:
-        {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
       }
-    ).then(r => r.json()).then(responseJson => {
-      return [
-        responseJson.status_code === 200,
-        {
-          accessToken: responseJson.accessToken,
-          refreshToken: responseJson.refreshToken
-        }
-      ]
-    })
-    tokenDispatch({ type: 'set', ...response[1] })
-    return response[0]
+    )
+      .then((r) => r.json())
+      .then((responseJson) => {
+        return [
+          responseJson.status_code === 200,
+          {
+            accessToken: responseJson.accessToken,
+            refreshToken: responseJson.refreshToken,
+          },
+        ];
+      });
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0];
   } catch (error) {
-    return false
+    return false;
   }
 }
 

@@ -80,7 +80,7 @@ function mapAccountResponseJson(
     email: responseJson.email,
     birthday: responseJson.birthday,
     agePref: responseJson.agePref,
-    schedule: responseJson.schedule
+    schedule: responseJson.schedule,
   };
 }
 
@@ -105,7 +105,7 @@ function mapAccountDataResponseJson(
     email: responseJson.data.email,
     birthday: responseJson.data.birthday,
     agePref: responseJson.data.agePref,
-    schedule: responseJson.data.schedule
+    schedule: responseJson.data.schedule,
   };
 }
 

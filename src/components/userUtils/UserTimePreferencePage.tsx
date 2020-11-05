@@ -17,10 +17,10 @@ import {
   UserTimePreferencePageRouteProp,
 } from "../../routes";
 import Text from "../themed/Text";
-
-import UserTimePreferenceCard from "./UserTimePreferenceCard";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
+
+import UserTimePreferenceCard from "./UserTimePreferenceCard";
 
 type UserTimePreferencePageProps = {
   route: UserTimePreferencePageRouteProp;
@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function UserTimePreferencePage({
-}: UserTimePreferencePageProps) {
+export default function UserTimePreferencePage({}: UserTimePreferencePageProps) {
   const [preferences, setPreferences] = React.useState<
     { start: Date; end: Date }[]
   >([]);
@@ -53,8 +52,8 @@ export default function UserTimePreferencePage({
     day: 0,
   });
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [accountState, accountDispatch] = useAccount()
-  const [tokenState, tokenDispatch] = useToken()
+  const [accountState, accountDispatch] = useAccount();
+  const [tokenState, tokenDispatch] = useToken();
 
   const createTimeCard = (_event: GestureResponderEvent) => {
     setPreferences([...preferences, { start: new Date(), end: new Date() }]);
@@ -71,11 +70,11 @@ export default function UserTimePreferencePage({
     const offset = (new Date().getDay() + dateState.day - 1) % 7;
 
     const copy = preferences;
-    let startDate = new Date(dateState.start)
-    startDate.setDate(dateState.start.getDate() + offset)
+    const startDate = new Date(dateState.start);
+    startDate.setDate(dateState.start.getDate() + offset);
 
-    let endDate = new Date(dateState.end)
-    endDate.setDate(dateState.end.getDate() + offset)
+    const endDate = new Date(dateState.end);
+    endDate.setDate(dateState.end.getDate() + offset);
 
     copy[dateState.index] = {
       start: startDate,
@@ -92,11 +91,14 @@ export default function UserTimePreferencePage({
         lname: accountState.account.lname,
         email: accountState.account.email,
         schedule: copy.map((item, _index, _source) => {
-          return [(Math.round(item.start.getTime() / 1000)).toString(), (Math.round(item.end.getTime() / 1000)).toString()]
-        })
+          return [
+            Math.round(item.start.getTime() / 1000).toString(),
+            Math.round(item.end.getTime() / 1000).toString(),
+          ];
+        }),
       }
-    )
-  }
+    );
+  };
 
   const updateTimePreference = (index: number) => {
     const startTime = preferences[index].start;
@@ -148,14 +150,14 @@ export default function UserTimePreferencePage({
   };
 
   useConstructor(() => {
-    let schedule: { start: Date, end: Date }[] = []
-    console.log(accountState.account.schedule)
+    const schedule: { start: Date; end: Date }[] = [];
+    console.log(accountState.account.schedule);
     if (accountState.account.schedule !== undefined) {
       for (let i = 0; i < accountState.account.schedule?.length; i++) {
         schedule.push({
           start: new Date(accountState.account.schedule[i][0]),
-          end: new Date(accountState.account.schedule[i][1])
-        })
+          end: new Date(accountState.account.schedule[i][1]),
+        });
       }
     }
     setPreferences(schedule);
@@ -224,10 +226,7 @@ export default function UserTimePreferencePage({
             <Picker.Item label="Saturday" value={5} />
             <Picker.Item label="Sunday" value={6} />
           </Picker>
-          <Button
-            title={"Submit"}
-            onPress={submitPreferences}
-          />
+          <Button title={"Submit"} onPress={submitPreferences} />
         </Box>
       </Modal>
     </Box>

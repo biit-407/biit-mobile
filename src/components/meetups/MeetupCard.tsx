@@ -3,7 +3,11 @@ import React from "react";
 import { FlatList } from "react-native";
 
 import { BLANK_MEETUP, MeetupType } from "../../models/meetups";
-import { getDayAsString, getShortMonthName, getTimeAsString } from "../../utils/timeUtils";
+import {
+  getDayAsString,
+  getShortMonthName,
+  getTimeAsString,
+} from "../../utils/timeUtils";
 import { ThemedCard, Box } from "../themed";
 import Text from "../themed/Text";
 
@@ -24,10 +28,6 @@ function epochToJsDate(ts: number) {
   return new Date(ts * 1000);
 }
 
-function properDateString(date: Date) {
-  return date.getMonth().toLocaleString()
-}
-
 const renderParticipant = ({ item }: { item: string }) => (
   <Text variant="subheader">{item}</Text>
 );
@@ -41,7 +41,7 @@ const MeetupCard = ({
   meetupType,
   isClickable,
 }: // key,
-  MeetupCardProps) => {
+MeetupCardProps) => {
   return (
     <>
       {meetupType === "tentative" ? (
@@ -53,20 +53,20 @@ const MeetupCard = ({
           userList={userList}
           meetupType={meetupType}
           isClickable={isClickable}
-        // key={key}
+          // key={key}
         />
       ) : (
-          <AcceptedMeetupCard
-            id={id}
-            timestamp={timestamp}
-            duration={duration}
-            location={location}
-            userList={userList}
-            meetupType={meetupType}
-            isClickable={isClickable}
+        <AcceptedMeetupCard
+          id={id}
+          timestamp={timestamp}
+          duration={duration}
+          location={location}
+          userList={userList}
+          meetupType={meetupType}
+          isClickable={isClickable}
           // key={key}
-          />
-        )}
+        />
+      )}
     </>
   );
 };
@@ -87,21 +87,21 @@ const TentativeMeetupCard = ({
       acceptedUsers.push(email);
     }
   }
-  const date = epochToJsDate(parseInt(timestamp))
+  const date = epochToJsDate(parseInt(timestamp, 10));
 
   return (
     <ThemedCard
       onPressFunction={
         isClickable
           ? () => {
-            navigation.navigate("MeetupResponse", {
-              meetupID: id,
-              timestamp: timestamp,
-              duration: duration,
-              location: location,
-              userList: userList,
-            });
-          }
+              navigation.navigate("MeetupResponse", {
+                meetupID: id,
+                timestamp: timestamp,
+                duration: duration,
+                location: location,
+                userList: userList,
+              });
+            }
           : undefined
       }
     >
@@ -116,7 +116,10 @@ const TentativeMeetupCard = ({
           {id}
         </Text>
       </Box>
-      <Text variant="subheader">Starts on {getShortMonthName(date)} {getDayAsString(date)} at {getTimeAsString(date)}</Text>
+      <Text variant="subheader">
+        Starts on {getShortMonthName(date)} {getDayAsString(date)} at{" "}
+        {getTimeAsString(date)}
+      </Text>
       <Text variant="subheader">Lasts {duration} minutes</Text>
       <Text variant="subheader">{location}</Text>
       <Text variant="header">Participants</Text>
@@ -146,36 +149,50 @@ const AcceptedMeetupCard = ({
       acceptedUsers.push(email);
     }
   }
-  const date = epochToJsDate(parseInt(timestamp))
+  const date = epochToJsDate(parseInt(timestamp, 10));
 
   return (
     <ThemedCard
       onPressFunction={
         isClickable
           ? () => {
-            navigation.navigate("MeetupDetails", {
-              meetupID: id,
-              timestamp: timestamp,
-              duration: duration,
-              location: location,
-              userList: userList,
-            });
-          }
+              navigation.navigate("MeetupDetails", {
+                meetupID: id,
+                timestamp: timestamp,
+                duration: duration,
+                location: location,
+                userList: userList,
+              });
+            }
           : undefined
       }
     >
-      <Box style={{ flexDirection: "row", justifyContent: "space-between", paddingBottom: 8 }}>
+      <Box
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingBottom: 8,
+        }}
+      >
         <Text variant="header" style={{ flex: 1 }}>
           Meetup
         </Text>
         <Text
           variant="subheader"
-          style={{ flex: 1, textAlign: "right", paddingRight: 8, paddingTop: 6 }}
+          style={{
+            flex: 1,
+            textAlign: "right",
+            paddingRight: 8,
+            paddingTop: 6,
+          }}
         >
           {id.substring(0, 16)}
         </Text>
       </Box>
-      <Text variant="subheader">Starts on {getShortMonthName(date)} {getDayAsString(date)} at {getTimeAsString(date)}</Text>
+      <Text variant="subheader">
+        Starts on {getShortMonthName(date)} {getDayAsString(date)} at{" "}
+        {getTimeAsString(date)}
+      </Text>
       <Text variant="subheader">Lasts {duration} minutes</Text>
       <Text variant="subheader">{location}</Text>
       <Text variant="header">Participants</Text>

@@ -173,7 +173,7 @@ export default function UpdateProfileForm({
       accountState.account,
       {
         email: accountState.account.email,
-        ...formData
+        ...formData,
       }
     );
     onFormSubmit();

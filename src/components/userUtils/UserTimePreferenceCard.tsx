@@ -22,8 +22,8 @@ const UserTimePreferenceCard = ({
   updateCallback,
 }: UserTimePreferenceCardProps) => {
   const dayOfWeek = getDayOfWeek(startTime);
-  const startTimeString = getTimeAsString(startTime)
-  const endTimeString = getTimeAsString(endTime)
+  const startTimeString = getTimeAsString(startTime);
+  const endTimeString = getTimeAsString(endTime);
 
   const performUpdate = () => {
     updateCallback(index);
