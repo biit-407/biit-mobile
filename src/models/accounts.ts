@@ -10,6 +10,7 @@ export interface Account {
   profileImage?: string;
   birthday?: string;
   agePref?: number[];
+  schedule?: string[];
 }
 
 export const BLANK_ACCOUNT: Account = {

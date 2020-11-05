@@ -54,24 +54,7 @@ const SettingsStackScreen = (
       <SettingsStack.Screen
         name="UserTimePreference"
         component={UserTimePreferencePage}
-        options={{
-          ...UserTimePreferencePageOptions,
-          headerLeft: () => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="menu"
-                type="entypo"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-                color={theme.colors.headerBackground}
-                iconStyle={{ color: theme.colors.primaryText }}
-              />
-            );
-          },
-        }}
+        options={UserTimePreferencePageOptions}
       />
     </SettingsStack.Navigator>
   );
