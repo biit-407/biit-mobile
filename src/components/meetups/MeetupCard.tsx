@@ -29,8 +29,8 @@ const MeetupCard = ({
   userList,
   meetupType,
   isClickable,
-  key,
-}: MeetupCardProps) => {
+}: // key,
+MeetupCardProps) => {
   return (
     <>
       {meetupType === "tentative" ? (
@@ -42,7 +42,7 @@ const MeetupCard = ({
           userList={userList}
           meetupType={meetupType}
           isClickable={isClickable}
-          key={key}
+          // key={key}
         />
       ) : (
         <AcceptedMeetupCard
@@ -53,7 +53,7 @@ const MeetupCard = ({
           userList={userList}
           meetupType={meetupType}
           isClickable={isClickable}
-          key={key}
+          // key={key}
         />
       )}
     </>

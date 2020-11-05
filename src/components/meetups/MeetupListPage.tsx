@@ -15,6 +15,7 @@ import {
   getUpcomingMeetupsList,
   getUnratedMeetupsList,
   useMeetup,
+  getMeetupList,
 } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
@@ -58,6 +59,14 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   // Create function to load and set all data
   const loadMeetupData = async () => {
     setLoading(true);
+    // load all meetings because yay
+    await getMeetupList(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      email
+    );
+
     // Load the required sections
     const pendingMeetupList = await getPendingMeetupsList(
       meetupDispatch,

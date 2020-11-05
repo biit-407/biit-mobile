@@ -12,7 +12,7 @@ import { Dispatch as TokenDispatch } from "./tokenContext";
 
 type MeetupStatus = "not loaded" | "loaded" | "updating" | "error";
 
-type MeetupState = {
+export type MeetupState = {
   meetups: Meetup[];
   status: MeetupStatus;
   error: string;
@@ -364,6 +364,40 @@ async function getUpcomingMeetupsList(
   return [];
 }
 
+async function getPastMeetupsList(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string
+) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/past?email=${email}&token=${token}`;
+  meetupDispatch({
+    type: "start update",
+    meetup: [BLANK_MEETUP],
+    error: "Making meetup List request to server",
+  });
+  try {
+    const response = await AuthenticatedRequestHandler.get(
+      endpoint,
+      mapMeetupListResponseJson
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update list partial",
+      meetup: response[0],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
+  } catch (error) {
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to load meetups from server",
+    });
+  }
+  return [];
+}
+
 async function getUnratedMeetupsList(
   meetupDispatch: Dispatch,
   tokenDispatch: TokenDispatch,
@@ -385,21 +419,12 @@ async function getUnratedMeetupsList(
     tokenDispatch({ type: "set", ...response[1] });
 
     // get all unrated meetups
-    let meetupList = meetupState.meetups;
-    meetupList = meetupList.filter((item, _index, _meetupList) => {
+    const meetupList = [];
+    for (let j = 0; j < meetupState.meetups.length; j++) {
+      const item = meetupState.meetups[j];
       for (let i = 0; i < response[0].length; i++) {
         if (response[0][i].meetup_id === item.id) {
-          return true;
-        }
-      }
-      return false;
-    });
-
-    // for each unrated meetup, update its user list
-    for (let i = 0; i < meetupList.length; i++) {
-      for (let j = 0; j < response[0].length; j++) {
-        if (meetupList[i].id === response[0][j].meetup_id) {
-          meetupList[i].rating_dict = response[0][j].rating_dict; // eslint-disable-line camelcase
+          meetupList.push(item);
           break;
         }
       }
@@ -608,6 +633,7 @@ export {
   getMeetupList,
   getPendingMeetupsList,
   getUpcomingMeetupsList,
+  getPastMeetupsList,
   getUnratedMeetupsList,
   setMeetupRating,
   setMeetupLocations,

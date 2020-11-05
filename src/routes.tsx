@@ -1,6 +1,8 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
+import { Meetup } from "./models/meetups";
+
 // Add any parameters that are included with the page
 type RootStackParamList = {
   Login: undefined;
@@ -39,7 +41,7 @@ type RootStackParamList = {
     location: string;
     userList: Record<string, number>;
   };
-  PreviousMeetups: { pastMeetupIDs: string[] };
+  PreviousMeetups: { pastMeetups: Meetup[] };
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
