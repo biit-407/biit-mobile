@@ -1,6 +1,9 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
+import { useAccountState } from "../../contexts/accountContext";
+import { startMatching } from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
 
 import {
   CommunityHomePageRouteProp,
@@ -32,8 +35,13 @@ export default function CommunityHomePage({
   navigation,
 }: CommunityHomePageProps) {
   const { communityID } = route.params;
+  const [tokenState, tokenDispatch] = useToken();
+  const accountState = useAccountState()
 
-  // TODO Load community data
+  const startNewSession = async () => {
+    const result = await startMatching(tokenDispatch, tokenState.refreshToken, accountState.account.email, communityID)
+    Alert.alert(`${result}`)
+  }
 
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
@@ -60,6 +68,10 @@ export default function CommunityHomePage({
         onPress={() => {
           navigation.push("CommunityAdministration", { name: communityID });
         }}
+      />
+      <CommunityActionButton
+        title="Start New Session"
+        onPress={startNewSession}
       />
       <CommunityActionButton
         isRed={true}
