@@ -15,6 +15,7 @@ import {
   getUpcomingMeetupsList,
   getUnratedMeetupsList,
   useMeetup,
+  getMeetupList,
 } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
@@ -53,46 +54,49 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   } = useAccountState();
 
   // get meetup context information
-  const [meetupState, meetupDispatch] = useMeetup();
+  const [, meetupDispatch] = useMeetup();
 
   // Create function to load and set all data
   const loadMeetupData = async () => {
     setLoading(true);
-    // Load the required sections
-    const pendingMeetupList = await getPendingMeetupsList(
+    // load all meetings because yay
+    await getMeetupList(
       meetupDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       email
-    );
-    const upcomingMeetupList = await getUpcomingMeetupsList(
-      meetupDispatch,
-      tokenDispatch,
-      tokenState.refreshToken,
-      email
-    );
-    const unratedMeetupList = await getUnratedMeetupsList(
-      meetupDispatch,
-      tokenDispatch,
-      meetupState,
-      tokenState.refreshToken,
-      email
-    );
-    // Set the sections once loaded
-    setPendingMeetups(pendingMeetupList);
-    setUpcomingMeetups(upcomingMeetupList);
-    setUnratedMeetups(unratedMeetupList);
-    setLoading(false);
+    ).then(async (meetups) => {
+      // Load the required sections
+      const pendingMeetupList = await getPendingMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        email
+      );
+      const upcomingMeetupList = await getUpcomingMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        email
+      );
+      const unratedMeetupList = await getUnratedMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        meetups,
+        tokenState.refreshToken,
+        email
+      );
+      // Set the sections once loaded
+      setPendingMeetups(pendingMeetupList);
+      setUpcomingMeetups(upcomingMeetupList);
+      setUnratedMeetups(unratedMeetupList);
+      setLoading(false);
+    });
   };
 
   // Allows automatic loading on the page when navigating to the page from a nested or parent screen
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      loadMeetupData();
-    });
-    return () => {
-      unsubscribe();
-    };
+    loadMeetupData();
   }, [navigation]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Function to render each section's header
