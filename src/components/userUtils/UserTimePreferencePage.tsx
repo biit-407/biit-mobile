@@ -81,6 +81,14 @@ export default function UserTimePreferencePage({}: UserTimePreferencePageProps) 
       end: endDate,
     };
     setPreferences([...copy]);
+
+    const fullList = [];
+    for (let i = 0; i < copy.length; i++) {
+      const item = copy[i];
+      fullList.push(Math.round(item.start.getTime() / 1000).toString());
+      fullList.push(Math.round(item.end.getTime() / 1000).toString());
+    }
+
     await updateAccount(
       accountDispatch,
       tokenDispatch,
@@ -90,12 +98,7 @@ export default function UserTimePreferencePage({}: UserTimePreferencePageProps) 
         fname: accountState.account.fname,
         lname: accountState.account.lname,
         email: accountState.account.email,
-        schedule: copy.map((item, _index, _source) => {
-          return [
-            Math.round(item.start.getTime() / 1000).toString(),
-            Math.round(item.end.getTime() / 1000).toString(),
-          ];
-        }),
+        schedule: fullList,
       }
     );
   };
@@ -153,10 +156,10 @@ export default function UserTimePreferencePage({}: UserTimePreferencePageProps) 
     const schedule: { start: Date; end: Date }[] = [];
     console.log(accountState.account.schedule);
     if (accountState.account.schedule !== undefined) {
-      for (let i = 0; i < accountState.account.schedule?.length; i++) {
+      for (let i = 0; i < accountState.account.schedule?.length / 2; i++) {
         schedule.push({
-          start: new Date(accountState.account.schedule[i][0]),
-          end: new Date(accountState.account.schedule[i][1]),
+          start: new Date(accountState.account.schedule[i]),
+          end: new Date(accountState.account.schedule[i + 1]),
         });
       }
     }

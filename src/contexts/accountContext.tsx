@@ -68,7 +68,7 @@ interface AccountAuthenticatedResponseJson
   email: string;
   birthday?: string;
   agePref?: number[];
-  schedule?: string[][];
+  schedule?: string[];
 }
 
 function mapAccountResponseJson(
@@ -92,7 +92,7 @@ interface AccountAuthenticatedDataResponseJson
     email: string;
     birthday?: string;
     agePref?: number[];
-    schedule?: string[][];
+    schedule?: string[];
   };
 }
 
