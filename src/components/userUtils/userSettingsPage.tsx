@@ -101,7 +101,12 @@ export default function UserSettingsPage({
       tokenDispatch,
       refreshToken,
       accountState.account,
-      { ...accountState.account, agePref: preference }
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        agePref: preference
+      }
     );
   };
 
