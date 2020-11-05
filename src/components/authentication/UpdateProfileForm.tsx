@@ -171,7 +171,10 @@ export default function UpdateProfileForm({
       tokenDispatch,
       refreshToken,
       accountState.account,
-      { ...accountState.account, ...formData }
+      {
+        email: accountState.account.email,
+        ...formData
+      }
     );
     onFormSubmit();
   };
