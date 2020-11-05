@@ -2,39 +2,14 @@ import React from "react";
 import { Button } from "react-native-elements";
 
 import theme from "../../theme";
+import { getDayOfWeek, getTimeAsString } from "../../utils/timeUtils";
 import { ThemedCard, Box } from "../themed";
 import Text from "../themed/Text";
 
-function getDayOfWeek(time: number) {
-  const day = Math.floor(time / 24);
-  if (day === 0) {
-    return "Monday";
-  }
-  if (day === 1) {
-    return "Tuesday";
-  }
-  if (day === 2) {
-    return "Wednesday";
-  }
-  if (day === 3) {
-    return "Thursday";
-  }
-  if (day === 4) {
-    return "Friday";
-  }
-  if (day === 5) {
-    return "Saturday";
-  }
-  if (day === 6) {
-    return "Sunday";
-  }
-  return "Monday";
-}
-
 interface UserTimePreferenceCardProps {
   index: number;
-  startTime: number;
-  endTime: number;
+  startTime: Date;
+  endTime: Date;
   deleteCallback: (index: number) => void;
   updateCallback: (index: number) => void;
 }
@@ -47,12 +22,8 @@ const UserTimePreferenceCard = ({
   updateCallback,
 }: UserTimePreferenceCardProps) => {
   const dayOfWeek = getDayOfWeek(startTime);
-  const startTimeString = `${startTime % 12}:00 ${
-    startTime % 24 >= 12 ? "PM" : "AM"
-  }`;
-  const endTimeString = `${endTime % 12}:00 ${
-    endTime % 24 >= 12 ? "PM" : "AM"
-  }`;
+  const startTimeString = getTimeAsString(startTime);
+  const endTimeString = getTimeAsString(endTime);
 
   const performUpdate = () => {
     updateCallback(index);

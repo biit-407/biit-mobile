@@ -7,6 +7,7 @@ export interface Meetup {
   meeting_type: string; // eslint-disable-line camelcase
 
   user_list: Record<string, number>; // eslint-disable-line camelcase
+  rating_dict?: Record<string, number>; // eslint-disable-line camelcase
 }
 
 export const BLANK_MEETUP: Meetup = {
@@ -16,6 +17,7 @@ export const BLANK_MEETUP: Meetup = {
   location: "Zoom",
   meeting_type: "Online", // eslint-disable-line camelcase
   user_list: { Katie: 1, "Step Bro": 1 }, // eslint-disable-line camelcase
+  rating_dict: { Katie: 3 }, // eslint-disable-line camelcase
 };
 
 export type MeetupType = "tentative" | "accepted" | "declined";

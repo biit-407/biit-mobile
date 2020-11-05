@@ -41,9 +41,6 @@ const styles = StyleSheet.create({
   list: {
     width: "100%",
   },
-  header: {
-    paddingLeft: 5,
-  },
 });
 
 // const Item = ({ title }: { title: string }) => (
@@ -54,7 +51,9 @@ const styles = StyleSheet.create({
 
 export default function MemberListPage({ route }: MemberListPageProps) {
   const [communityState, communityDispatch] = useCommunity();
-  const [data, setData] = useState<{ title: string; data: string[] }[]>([]);
+  const [data, setData] = useState<
+    { title: string; icon: string; data: string[] }[]
+  >([]);
   const [community, setCommunity] = useState<Community>(BLANK_COMMUNITY);
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
@@ -72,8 +71,8 @@ export default function MemberListPage({ route }: MemberListPageProps) {
   useEffect(() => {
     const tempCommunity = getCommunity(communityState, route.params.name);
     setData([
-      { title: "Admins", data: tempCommunity.Admins },
-      { title: "Members", data: tempCommunity.Members },
+      { title: "Admins", data: tempCommunity.Admins, icon: "user" },
+      { title: "Members", data: tempCommunity.Members, icon: "users" },
     ]);
     setCommunity(tempCommunity);
   }, [communityState, route.params.name]);
@@ -145,9 +144,17 @@ export default function MemberListPage({ route }: MemberListPageProps) {
         sections={data}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => <Item title={item} />}
-        renderSectionHeader={({ section: { title } }) => (
-          <Box backgroundColor="headerBackground" style={styles.header}>
-            <Text>{title}</Text>
+        renderSectionHeader={({ section: { title, icon } }) => (
+          <Box
+            padding="md"
+            backgroundColor="headerBackground"
+            flexDirection="row"
+            alignItems="center"
+          >
+            <ThemedIcon type="font-awesome" name={icon} />
+            <Text paddingLeft="sm" variant="sectionListHeader">
+              {title}
+            </Text>
           </Box>
         )}
         ListEmptyComponent={() => <Text>No members exist</Text>}

@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, StyleSheet } from "react-native";
 
+import { BLANK_MEETUP } from "../../models/meetups";
 import {
   DevelopmentLinksPageRouteProp,
   DevelopmentLinksPageNavigationProp,
@@ -135,7 +136,7 @@ export default function DevelopmentLinksPage({
           title="Past Meetups"
           onPress={() =>
             navigation.push("PreviousMeetups", {
-              pastMeetupIDs: ["a meetup id", "id", "n", "c", "d"],
+              pastMeetups: [BLANK_MEETUP],
             })
           }
         />

@@ -11,6 +11,7 @@ import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedRefreshControl from "../themed/ThemedRefreshControl";
 import {
+  getCommunity,
   // getCommunity,
   loadCommunity,
   unbanUserFromCommunity,
@@ -68,11 +69,13 @@ const showUnbanDialog = (
 export default function BannedUsersPage({ route }: BannedUsersPageProps) {
   // Create state for refreshing data and list of banned users
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [bannedUsers] = useState<Ban[]>([]);
-  // Create function to unban a user on the backend
-  // TODO: Integrate functionality with backend
-  const [, communityDispatch] = useCommunity();
+  const [bannedUsers, setBannedUsers] = useState<Ban[]>([]);
+
+  // Get community specific information
+  const [communityState, communityDispatch] = useCommunity();
   const [tokenState, tokenDispatch] = useToken();
+
+  // Create function to unban a user on the backend
 
   const unbanUser = async (ban: Ban) => {
     await unbanUserFromCommunity(
@@ -84,11 +87,10 @@ export default function BannedUsersPage({ route }: BannedUsersPageProps) {
     );
     loadBannedUserData();
   };
+
   // Create function to load banned user data
-  // TODO: Inegrate functionality with backend
   const loadBannedUserData = async () => {
     setIsRefreshing(true);
-    // TODO: Fetch data from the backend to get updated users list
     await loadCommunity(
       communityDispatch,
       tokenDispatch,
@@ -98,11 +100,11 @@ export default function BannedUsersPage({ route }: BannedUsersPageProps) {
     setIsRefreshing(false);
   };
 
-  // TODO fix later
-  // useEffect(() => {
-  //   const loadedCommunity = getCommunity(communityState, route.params.name);
-  //   setBannedUsers(loadedCommunity.bans);
-  // }, [communityState, route.params.name]);
+  // When community state updates, retrieve the updated community's banned user list
+  useEffect(() => {
+    const loadedCommunity = getCommunity(communityState, route.params.name);
+    setBannedUsers(loadedCommunity.bans);
+  }, [communityState, route.params.name]);
 
   // Create effect to load banned user data initially
   useEffect(() => {

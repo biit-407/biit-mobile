@@ -12,11 +12,12 @@ import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
 import ThemedButton from "../themed/ThemedButton";
 import { Theme } from "../../theme";
-import { useTokenState } from "../../contexts/tokenContext";
-import { setMeetupRating } from "../../contexts/meetupContext";
+import { useToken } from "../../contexts/tokenContext";
+import { setMeetupRating, useMeetup } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 
 import MeetupCard from "./MeetupCard";
+import MeetupReportDialog from "./MeetupReportDialog";
 
 type MeetupRatingPageProps = {
   route: MeetupRatingPageRouteProp;
@@ -43,20 +44,29 @@ export default function MeetupRatingPage({
   const { meetupID, timestamp, duration, location, userList } = route.params;
 
   // Retrieve account information
-  const { refreshToken } = useTokenState();
+  const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
   } = useAccountState();
 
   const [rating, setRating] = useState(3);
+  const [meetupState, meetupDispatch] = useMeetup();
 
   const submitRating = async () => {
-    await setMeetupRating(refreshToken, email, meetupID, rating);
+    await setMeetupRating(
+      meetupDispatch,
+      tokenDispatch,
+      meetupState,
+      tokenState.refreshToken,
+      email,
+      meetupID,
+      rating
+    );
     navigation.goBack();
   };
 
   const theme = useTheme<Theme>();
-
+  const [showDialog, setShowDialog] = useState(false);
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ width: "100%" }}>
@@ -81,7 +91,23 @@ export default function MeetupRatingPage({
             </Box>
           </Box>
         </ThemedCard>
+        <ThemedCard>
+          <Box alignItems="center" width="100%">
+            <Text variant="subheader" mb="md">
+              Meetup didn't go as planned?
+            </Text>
+            <ThemedButton
+              title="Report Meetup"
+              onPress={() => setShowDialog(true)}
+            />
+          </Box>
+        </ThemedCard>
       </Box>
+      <MeetupReportDialog
+        open={showDialog}
+        meetupID={meetupID}
+        closeDialog={() => setShowDialog(false)}
+      />
     </Box>
   );
 }

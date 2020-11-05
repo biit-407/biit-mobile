@@ -6,7 +6,7 @@ import {
   PreviousMeetupsPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import { BLANK_MEETUP, Meetup } from "../../models/meetups";
+import { Meetup } from "../../models/meetups";
 import useConstructor from "../../hooks/useConstructor";
 
 import MeetupCard from "./MeetupCard";
@@ -31,23 +31,18 @@ const styles = StyleSheet.create({
 export default function PreviousMeetupsPage({
   route,
 }: PreviousMeetupsPageProps) {
-  const { pastMeetupIDs } = route.params;
+  const { pastMeetups } = route.params;
 
   const [meetups, setMeetups] = React.useState<Meetup[]>([]);
-  const load = (meetupIDs: string[]) => {
-    const ml = [];
-    for (const meetupID in meetupIDs) {
-      // TODO load meetup
-      ml.push({ ...BLANK_MEETUP, id: meetupIDs[meetupID] });
-    }
-    setMeetups(ml);
+  const load = (meetupsList: Meetup[]) => {
+    setMeetups(meetupsList);
   };
 
   useConstructor(() => {
-    load(pastMeetupIDs);
+    load(pastMeetups);
   });
 
-  const renderMeetup = ({ item, index }: { item: Meetup; index: number }) => {
+  const renderMeetup = ({ item }: { item: Meetup; index: number }) => {
     return (
       <MeetupCard
         id={item.id}
@@ -57,7 +52,7 @@ export default function PreviousMeetupsPage({
         location={item.location}
         meetupType={"accepted"}
         isClickable={false}
-        key={index.toString()}
+        // key={index.toString()}
       />
     );
   };

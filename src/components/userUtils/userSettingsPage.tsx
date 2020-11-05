@@ -112,7 +112,12 @@ export default function UserSettingsPage({
       tokenDispatch,
       refreshToken,
       accountState.account,
-      { ...accountState.account, agePref: preference }
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        agePref: preference,
+      }
     );
   };
 
@@ -221,9 +226,7 @@ export default function UserSettingsPage({
               <Button
                 title={"Update Time Preferences"}
                 onPress={() => {
-                  navigation.push("UserTimePreference", {
-                    currentUserPreferences: [{ start: 1, end: 2 }],
-                  });
+                  navigation.push("UserTimePreference");
                 }}
                 buttonStyle={{
                   backgroundColor: theme.colors.buttonPrimaryBackground,

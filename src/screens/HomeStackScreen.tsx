@@ -19,6 +19,9 @@ import MeetupListPage, {
 import MeetupRatingPage, {
   MeetupRatingPageOptions,
 } from "../components/meetups/MeetupRatingPage";
+import LocationRankerPage, {
+  LocationRankerPageOptions,
+} from "../components/meetups/LocationRankerPage";
 
 const HomeStack = createStackNavigator();
 
@@ -77,6 +80,12 @@ const HomeStackScreen = (
         name="MeetupRating"
         component={MeetupRatingPage}
         options={MeetupRatingPageOptions}
+      />
+
+      <HomeStack.Screen
+        name="LocationRanker"
+        component={LocationRankerPage}
+        options={LocationRankerPageOptions}
       />
     </HomeStack.Navigator>
   );

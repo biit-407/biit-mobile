@@ -4,7 +4,6 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import React, { useEffect, useState } from "react";
-import { FlatList } from "react-native";
 
 import ThemedAvatar from "../components/themed/ThemedAvatar";
 import Text from "../components/themed/Text";
@@ -45,6 +44,7 @@ const DrawerComponent = (
   const [tokenState, tokenDispatch] = useToken();
   const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
   const [showCommunities, setShowCommunities] = React.useState(false);
+  const communities = ["Johnsons"];
 
   useEffect(() => {
     getProfilePicture(
@@ -129,48 +129,42 @@ const DrawerComponent = (
           }}
         />
         {showCommunities ? (
-          <FlatList
-            data={["Johnsons"]}
-            keyExtractor={(_item: string, index: { toString: () => string }) =>
-              index.toString()
-            }
-            renderItem={({ item }) => {
-              return (
-                <DrawerItem
-                  label={item}
-                  onPress={() => {
-                    navigation.navigate("Community", {
-                      screen: "CommunityHome",
-                      initial: true,
-                      params: { communityID: item },
-                    });
-                  }}
-                  labelStyle={{
-                    fontSize: 16,
-                    height: 48,
-                    color: theme.colors.drawerPrimaryText,
-                  }}
-                  style={{ height: 64 }}
-                  icon={() => {
-                    return (
-                      <ThemedIcon
-                        size={24}
-                        reverse
-                        name="briefcase"
-                        type="feather"
-                        color={theme.colors.drawerBackground}
-                        iconStyle={{
-                          color: theme.colors.drawerPrimaryText,
-                          height: 48,
-                        }}
-                      />
-                    );
-                  }}
-                />
-              );
-            }}
-            style={{ width: "100%" }}
-          />
+          communities.map((item) => {
+            return (
+              <DrawerItem
+                key={item}
+                label={item}
+                onPress={() => {
+                  navigation.navigate("Community", {
+                    screen: "CommunityHome",
+                    initial: true,
+                    params: { communityID: item },
+                  });
+                }}
+                labelStyle={{
+                  fontSize: 16,
+                  height: 48,
+                  color: theme.colors.drawerPrimaryText,
+                }}
+                style={{ height: 64 }}
+                icon={() => {
+                  return (
+                    <ThemedIcon
+                      size={24}
+                      reverse
+                      name="briefcase"
+                      type="feather"
+                      color={theme.colors.drawerBackground}
+                      iconStyle={{
+                        color: theme.colors.drawerPrimaryText,
+                        height: 48,
+                      }}
+                    />
+                  );
+                }}
+              />
+            );
+          })
         ) : (
           <></>
         )}

@@ -15,6 +15,11 @@ import { getProfilePicture, useAccount } from "../../contexts/accountContext";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { useToken } from "../../contexts/tokenContext";
 import theme from "../../theme";
+import {
+  getPastMeetupsList,
+  useMeetupDispatch,
+} from "../../contexts/meetupContext";
+import { Meetup } from "../../models/meetups";
 
 // React Navigation Types and Page Options
 
@@ -43,10 +48,21 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
   const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
+  const meetupDispatch = useMeetupDispatch();
+  const [pastMeetups, setPastMeetups] = React.useState<Meetup[]>([]);
 
-  console.log(accountState);
+  const loadPastMeetups = async () => {
+    const meetups = await getPastMeetupsList(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account.email
+    );
+    setPastMeetups(meetups);
+  };
 
   useEffect(() => {
+    loadPastMeetups();
     getProfilePicture(
       accountDispatch,
       tokenDispatch,
@@ -86,7 +102,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
         {/* TODO fix this hard coding */}
         <Button
           onPress={() =>
-            navigation.navigate("PreviousMeetups", { pastMeetupIDs: ["an ID"] })
+            navigation.navigate("PreviousMeetups", { pastMeetups: pastMeetups })
           }
           title={"View Previous Meetups"}
           buttonStyle={{

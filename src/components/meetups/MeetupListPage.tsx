@@ -9,15 +9,17 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
 import ThemedIcon from "../themed/ThemedIcon";
-import { useTokenState } from "../../contexts/tokenContext";
+import { useToken } from "../../contexts/tokenContext";
 import {
   getPendingMeetupsList,
   getUpcomingMeetupsList,
   getUnratedMeetupsList,
+  useMeetup,
+  getMeetupList,
 } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
-import { BLANK_MEETUP, Meetup } from "../../models/meetups";
+import { Meetup } from "../../models/meetups";
 
 type MeetupListPageProps = {
   route: MeetupListPageRouteProp;
@@ -40,63 +42,61 @@ const styles = StyleSheet.create({
 });
 
 export default function MeetupListPage({ navigation }: MeetupListPageProps) {
-  const [pendingMeetups, setPendingMeetups] = useState([
-    { ...BLANK_MEETUP, id: "ABC" },
-    { ...BLANK_MEETUP, id: "DEF" },
-  ]);
-  const [upcomingMeetups, setUpcomingMeetups] = useState([
-    { ...BLANK_MEETUP, id: "GHI" },
-    { ...BLANK_MEETUP, id: "JKL" },
-  ]);
-  const [unratedMeetups, setUnratedMeetups] = useState([
-    { ...BLANK_MEETUP, id: "MNO" },
-    { ...BLANK_MEETUP, id: "PQR" },
-  ]);
-
+  const [pendingMeetups, setPendingMeetups] = useState<Meetup[]>([]);
+  const [upcomingMeetups, setUpcomingMeetups] = useState<Meetup[]>([]);
+  const [unratedMeetups, setUnratedMeetups] = useState<Meetup[]>([]);
   const [isLoading, setLoading] = useState(false);
 
   // Retrieve account information
-  const { refreshToken } = useTokenState();
+  const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
   } = useAccountState();
 
+  // get meetup context information
+  const [, meetupDispatch] = useMeetup();
+
   // Create function to load and set all data
   const loadMeetupData = async () => {
     setLoading(true);
-    // Load the required sections
-    const [pendingMeetupList] = await getPendingMeetupsList(
-      refreshToken,
+    // load all meetings because yay
+    await getMeetupList(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
       email
-    );
-    const [upcomingMeetupList] = await getUpcomingMeetupsList(
-      refreshToken,
-      email
-    );
-    const [unratedMeetupList] = await getUnratedMeetupsList(
-      refreshToken,
-      email
-    );
-    // Set the sections once loaded
-    setPendingMeetups(pendingMeetupList);
-    setUpcomingMeetups(upcomingMeetupList);
-    setUnratedMeetups(
-      unratedMeetupList.map((meetup) => ({
-        ...BLANK_MEETUP,
-        id: meetup.meetup_id,
-      }))
-    );
-    setLoading(false);
+    ).then(async (meetups) => {
+      // Load the required sections
+      const pendingMeetupList = await getPendingMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        email
+      );
+      const upcomingMeetupList = await getUpcomingMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        email
+      );
+      const unratedMeetupList = await getUnratedMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        meetups,
+        tokenState.refreshToken,
+        email
+      );
+      // Set the sections once loaded
+      setPendingMeetups(pendingMeetupList);
+      setUpcomingMeetups(upcomingMeetupList);
+      setUnratedMeetups(unratedMeetupList);
+      setLoading(false);
+    });
   };
 
   // Allows automatic loading on the page when navigating to the page from a nested or parent screen
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      loadMeetupData();
-    });
-    return () => {
-      unsubscribe();
-    };
+    loadMeetupData();
   }, [navigation]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Function to render each section's header
@@ -107,7 +107,12 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
   };
 
   const renderSectionHeader = (title: string) => (
-    <Box padding="md" backgroundColor="sectionListHeader" flexDirection="row">
+    <Box
+      padding="md"
+      backgroundColor="sectionListHeader"
+      flexDirection="row"
+      alignItems="center"
+    >
       <ThemedIcon type="entypo" name={sectionIcons[title]} />
       <Text paddingLeft="sm" variant="sectionListHeader">
         {title}
