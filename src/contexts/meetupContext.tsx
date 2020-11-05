@@ -401,7 +401,7 @@ async function getPastMeetupsList(
 async function getUnratedMeetupsList(
   meetupDispatch: Dispatch,
   tokenDispatch: TokenDispatch,
-  meetupState: MeetupState,
+  meetups: Meetup[],
   token: string,
   email: string
 ) {
@@ -420,8 +420,8 @@ async function getUnratedMeetupsList(
 
     // get all unrated meetups
     const meetupList = [];
-    for (let j = 0; j < meetupState.meetups.length; j++) {
-      const item = meetupState.meetups[j];
+    for (let j = 0; j < meetups.length; j++) {
+      const item = meetups[j];
       for (let i = 0; i < response[0].length; i++) {
         if (response[0][i].meetup_id === item.id) {
           meetupList.push(item);
