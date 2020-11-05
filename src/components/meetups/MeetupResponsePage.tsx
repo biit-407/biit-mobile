@@ -51,6 +51,7 @@ export default function MeetupReponsePage({
   } = useAccountState();
 
   const [, meetupDispatch] = useMeetup();
+  const [locations, setLocations] = useState(["Online", "WALC", "LWSN"]);
 
   const onAccept = async () => {
     await setMeetupLocations(
@@ -81,6 +82,19 @@ export default function MeetupReponsePage({
     navigation.pop();
   };
 
+  const theRealSetLocations = (l: string[]): void => {
+    setMeetupLocations(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      email,
+      meetupID,
+      l
+    );
+    setLocations(l);
+    return;
+  };
+
   const renderLocations = ({
     item,
     index,
@@ -88,7 +102,6 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-  const [locations, setLocations] = useState(["Online", "WALC", "LWSN"]);
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -113,7 +126,10 @@ export default function MeetupReponsePage({
           <Box marginTop="sm">
             <TouchableOpacity
               onPress={() =>
-                navigation.push("LocationRanker", { locations, setLocations })
+                navigation.push("LocationRanker", {
+                  locations,
+                  setLocations: theRealSetLocations,
+                })
               }
             >
               <Text variant="link">Rank Locations</Text>
