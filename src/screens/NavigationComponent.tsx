@@ -7,6 +7,7 @@ import UnauthenticatedStackScreen from "./UnauthenticatedStackScreen";
 
 const NavigationComponent = () => {
   const account = useAccountState();
+  console.log(account);
   return (
     <>
       {account.account.email === "" ? (

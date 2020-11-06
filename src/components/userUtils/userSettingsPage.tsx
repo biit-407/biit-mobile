@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
-import { Switch } from "react-native-gesture-handler";
-import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather'
+import {Picker} from '@react-native-community/picker';
 
 import {
   UserSettingsPageRouteProp,
@@ -87,8 +85,14 @@ export default function UserSettingsPage({
   const toggleSw3 = () => setSw3((previousState) => !previousState);
   const [sw4, setSw4] = useState(false);
   const toggleSw4 = () => setSw4((previousState) => !previousState);
-  const [sw5, setSw5] = useState(false);
-  const toggleSw5 = () => setSw5((previousState) => !previousState);
+
+  // Toggle Search for Meetups
+  const [searchForMeetups, setSearchForMeetups] = useState(false);
+  const toggleSearchForMeetups = () => setSearchForMeetups((previousState) => !previousState);
+
+  //  Preferences state
+  const [MeetupPref, setMeetupPref] = useState('Virtual');
+  const [COVIDPref, setCOVIDPref] = useState('None');
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
@@ -236,31 +240,54 @@ export default function UserSettingsPage({
           </Box>
           <Box style={styles.item}>
             <Box style={styles.txt}>
-              <Text>Actively search for meetups</Text>
+              <Text>Actively Search for meetups</Text>
             </Box>
-            <Box style={styles.switch}>
-              <Switch
-                trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-                thumbColor={sw5 ? "#B88953" : "#D8AD6D"}
-                onValueChange={toggleSw5}
-                value={sw5}
-              />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
             <Box style={styles.txt}>
-              <Text>Meetup Preferences</Text>
-            </Box>
-            <Box>
-              <DropDownPicker 
-                items={[
-                  {label: "option 1", value: 'sample 1', icon: () => <Icon name="flag" size={18} color="#900" />},
-                  {label: "option 1", value: 'sample 2', icon: () => <Icon name="flag" size={18} color="#900" />},
-                  {label: "option 1", value: 'sample 3', icon: () => <Icon name="flag" size={18} color="#900" />},
-                ]}
-              />
+              <ThemedSwitch 
+                onValueChange={toggleSearchForMeetups}
+                value={searchForMeetups} />
             </Box>
           </Box>
+          {searchForMeetups && (
+            <Box>
+              <Box style={styles.item}>
+                <Box style={styles.txt}>
+                  <Text>Meetup Preferences</Text>
+                </Box>
+                <Box>
+                  <Picker
+                    selectedValue={MeetupPref}
+                    style={{height: 50, width: 200}}
+                    onValueChange={(itemValue, itemIndex) => {
+                      setMeetupPref(itemValue.toString())
+                    }}
+                  >
+                    <Picker.Item label="Virtual" value="virtual"/>
+                    <Picker.Item label="In-Person" value="inPerson"/>
+                  </Picker>
+                </Box>
+              </Box>
+              <Box style={styles.item}>
+                <Box style={styles.txt}>
+                  <Text>COVID Preferences</Text>
+                </Box>
+                <Box>
+                  <Picker
+                    selectedValue={COVIDPref}
+                    style={{height: 50, width: 200}}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setCOVIDPref(itemValue.toString());
+                      }}
+                  >
+                    <Picker.Item label="None" value="none"/>
+                    <Picker.Item label="Mask" value="mask"/>
+                    <Picker.Item label="Gloves" value="gloves"/>
+                    <Picker.Item label="Social Distancing" value="socialDistancing"/>
+                  </Picker>
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>

@@ -9,6 +9,7 @@ import {
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
+import theme from "../../theme";
 
 type FeedbackPageProps = {
     route: FeedbackPageRouteProp;
@@ -79,7 +80,7 @@ export default function FeedbackPage({
     route,
     navigation,
 }: FeedbackPageProps) {
-    const [feedbackTxt, onChangeText] = React.useState('Add feedback...')
+    const [feedbackTxt, onChangeText] = React.useState('')
 
     return (
         <Box backgroundColor="mainBackground" style={styles.root}>
@@ -93,23 +94,25 @@ export default function FeedbackPage({
                         textAlignVertical="top"
                         multiline
                         onChangeText={text => onChangeText(text)}
+                        placeholder="Add feedback..."
+                        placeholderTextColor={theme.colors.primaryText}
                         value={feedbackTxt}
                     />
                 </Box>
             </Box>
             <Box style={styles.buttonsBox}>
-                <Button
+                <ThemedButton
                     title="Cancel"
                     onPress={() => {
-                        navigation.pop();
+                        navigation.goBack();
                     }}
                     color="red"
                 />
-                <Button
-                    color="green"
+                <ThemedButton
+                    color={theme.colors.buttonSecondaryBackground}
                     title="Submit"
                     onPress={() => {
-                        navigation.push("DevelopmentLinks");
+                        alert('todo')
                     }}
                 />
             </Box>

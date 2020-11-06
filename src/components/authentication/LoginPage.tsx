@@ -97,6 +97,7 @@ export default function LoginPage({ navigation }: LoginPageProps) {
       tokenState.refreshToken &&
       (accountState.status === "logged out" || accountState.status === "error")
     ) {
+      //console.log(azureState);
       getAccount(
         accountDispatch,
         tokenDispatch,
