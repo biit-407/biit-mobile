@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   FlatList,
   GestureResponderEvent,
@@ -10,7 +10,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-community/picker";
 
 import Box from "../themed/Box";
-import useConstructor from "../../hooks/useConstructor";
 import theme from "../../theme";
 import {
   UserTimePreferencePageNavigationProp,
@@ -59,10 +58,34 @@ export default function UserTimePreferencePage({}: UserTimePreferencePageProps) 
     setPreferences([...preferences, { start: new Date(), end: new Date() }]);
   };
 
+  const deleteTimePreferenceHelper = async (
+    copy: { start: Date; end: Date }[]
+  ) => {
+    const fullList = [];
+    for (let i = 0; i < copy.length; i++) {
+      const item = copy[i];
+      fullList.push(Math.round(item.start.getTime() / 1000).toString());
+      fullList.push(Math.round(item.end.getTime() / 1000).toString());
+    }
+    await updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        schedule: fullList,
+      }
+    );
+  };
+
   const deleteTimePreference = (index: number) => {
     const copy = preferences;
     copy.splice(index, 1);
     setPreferences([...copy]);
+    deleteTimePreferenceHelper(copy);
   };
 
   const submitPreferences = async () => {
@@ -152,19 +175,23 @@ export default function UserTimePreferencePage({}: UserTimePreferencePageProps) 
     );
   };
 
-  useConstructor(() => {
+  useEffect(() => {
     const schedule: { start: Date; end: Date }[] = [];
-    console.log(accountState.account.schedule);
     if (accountState.account.schedule !== undefined) {
-      for (let i = 0; i < accountState.account.schedule?.length / 2; i++) {
+      for (let i = 0; i < accountState.account.schedule?.length / 2; i += 1) {
         schedule.push({
-          start: new Date(accountState.account.schedule[i]),
-          end: new Date(accountState.account.schedule[i + 1]),
+          start: new Date(
+            parseInt(accountState.account.schedule[i * 2], 10) * 1000
+          ),
+          end: new Date(
+            parseInt(accountState.account.schedule[i * 2 + 1], 10) * 1000
+          ),
         });
       }
     }
+
     setPreferences(schedule);
-  });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>

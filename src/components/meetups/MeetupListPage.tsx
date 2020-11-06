@@ -96,7 +96,12 @@ export default function MeetupListPage({ navigation }: MeetupListPageProps) {
 
   // Allows automatic loading on the page when navigating to the page from a nested or parent screen
   useEffect(() => {
-    loadMeetupData();
+    const unsubscribe = navigation.addListener("focus", () => {
+      loadMeetupData();
+    });
+    return () => {
+      unsubscribe();
+    };
   }, [navigation]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Function to render each section's header
