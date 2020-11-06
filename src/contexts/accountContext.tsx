@@ -591,6 +591,86 @@ async function reportUser(
   return response[0];
 }
 
+async function reportBug(
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  title: string,
+  text: string
+) {
+  const response: [boolean, OauthToken] = await fetch(
+    `${SERVER_ADDRESS}/feedback`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        token: token,
+        feedback_type: 0, // eslint-disable-line camelcase
+        feedback_status: 1, // eslint-disable-line camelcase
+        title: title,
+        text: text,
+      }),
+    }
+  )
+    .then((r) => r.json())
+    .then((responseJson) => {
+      return [
+        responseJson.status_code === 200,
+        {
+          accessToken: responseJson.accessToken,
+          refreshToken: responseJson.refreshToken,
+        },
+      ];
+    });
+
+  tokenDispatch({ type: "set", ...response[1] });
+  return response[0];
+}
+
+async function reportSuggestion(
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  title: string,
+  text: string
+) {
+  const response: [boolean, OauthToken] = await fetch(
+    `${SERVER_ADDRESS}/feedback`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        token: token,
+        feedback_type: 1, // eslint-disable-line camelcase
+        feedback_status: 1, // eslint-disable-line camelcase
+        title: title,
+        text: text,
+      }),
+    }
+  )
+    .then((r) => r.json())
+    .then((responseJson) => {
+      return [
+        responseJson.status_code === 200,
+        {
+          accessToken: responseJson.accessToken,
+          refreshToken: responseJson.refreshToken,
+        },
+      ];
+    });
+
+  tokenDispatch({ type: "set", ...response[1] });
+  return response[0];
+}
+
 export {
   useAccount,
   AccountProvider,
@@ -604,4 +684,6 @@ export {
   setProfilePicture,
   getProfilePicture,
   reportUser,
+  reportBug,
+  reportSuggestion,
 };
