@@ -10,6 +10,9 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
 import theme from "../../theme";
+import { useToken } from "../../contexts/tokenContext";
+import { reportSuggestion, useAccountState } from "../../contexts/accountContext";
+import { SubmitHandler } from "react-hook-form";
 
 type FeedbackPageProps = {
     route: FeedbackPageRouteProp;
@@ -74,13 +77,33 @@ const styles = StyleSheet.create({
     }
 });
 
-//TODO add TextInput for getting user feedback
+type FeedbackFormValues = {
+    text: string;
+};
 
 export default function FeedbackPage({
     route,
     navigation,
 }: FeedbackPageProps) {
     const [feedbackTxt, onChangeText] = React.useState('')
+
+    const [{ refreshToken }, tokenDispatch] = useToken();
+    const {
+        account: { email },
+    } = useAccountState();
+
+    const submitFeedback: SubmitHandler<FeedbackFormValues> = async(
+        formData: FeedbackFormValues
+    ) => {
+        await reportSuggestion(
+            tokenDispatch,
+            refreshToken,
+            email,
+            "Feedback from " + email,
+            formData.text,
+        );
+        navigation.goBack();
+    };
 
     return (
         <Box backgroundColor="mainBackground" style={styles.root}>
@@ -112,7 +135,9 @@ export default function FeedbackPage({
                     color={theme.colors.buttonSecondaryBackground}
                     title="Submit"
                     onPress={() => {
-                        alert('todo')
+                        let feedback: FeedbackFormValues;
+                        feedback = {text: feedbackTxt}
+                        submitFeedback(feedback);
                     }}
                 />
             </Box>
