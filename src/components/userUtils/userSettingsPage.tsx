@@ -86,13 +86,38 @@ export default function UserSettingsPage({
   const [sw4, setSw4] = useState(false);
   const toggleSw4 = () => setSw4((previousState) => !previousState);
 
-  // Toggle Search for Meetups
-  const [searchForMeetups, setSearchForMeetups] = useState(false);
-  const toggleSearchForMeetups = () => setSearchForMeetups((previousState) => !previousState);
+  // Check whether the user has meetups enabled
+  const hasMeetupsEnabled = (accountState.account.optIn == 1) ? accountState.account.optIn : 0;
 
-  //  Preferences state
-  const [MeetupPref, setMeetupPref] = useState('Virtual');
-  const [COVIDPref, setCOVIDPref] = useState('None');
+  // Toggle Search for Meetups
+  const [searchForMeetups, setSearchForMeetups] = useState(hasMeetupsEnabled);
+  // const toggleSearchForMeetups = () => setSearchForMeetups((previousState) => ((previousState+1)%2))
+
+  // Store info about user's meetup and COVID preferences
+  const [meetupPref, setMeetupPref] = useState(
+    (accountState.account.meetType != undefined) ? accountState.account.meetType : "virtual"
+  );
+  const [COVIDPref, setCOVIDPref] = useState(
+   (accountState.account.covid != undefined) ? accountState.account.covid : "none"
+  );
+
+  // Generic method to update meetup prefs information on the backend
+  const updateMeetupPrefs = async(searchForMeetups: number, meetupPref: string, COVIDPref: string) => {
+    await updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        optIn: searchForMeetups,
+        meetType: meetupPref,
+        covid: COVIDPref,
+      }
+    );
+  };
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
@@ -244,11 +269,19 @@ export default function UserSettingsPage({
             </Box>
             <Box style={styles.txt}>
               <ThemedSwitch 
-                onValueChange={toggleSearchForMeetups}
-                value={searchForMeetups} />
+                onValueChange={() => {
+                  console.log("before " + searchForMeetups);
+                  // toggleSearchForMeetups();
+                  const newState = (searchForMeetups+1)%2;
+                  setSearchForMeetups(newState);
+                  console.log("after " + newState);
+                  updateMeetupPrefs(newState, meetupPref, COVIDPref);
+                  // console.log("after after " + searchForMeetups);
+                }}
+                value={(searchForMeetups == 1) ? true : false} />
             </Box>
           </Box>
-          {searchForMeetups && (
+          {(searchForMeetups == 1) && (
             <Box>
               <Box style={styles.item}>
                 <Box style={styles.txt}>
@@ -256,10 +289,12 @@ export default function UserSettingsPage({
                 </Box>
                 <Box>
                   <Picker
-                    selectedValue={MeetupPref}
+                    selectedValue={meetupPref}
                     style={{height: 50, width: 200}}
                     onValueChange={(itemValue, itemIndex) => {
-                      setMeetupPref(itemValue.toString())
+                      const newState=(itemValue.toString());
+                      setMeetupPref(newState);
+                      updateMeetupPrefs(searchForMeetups, newState, COVIDPref);
                     }}
                   >
                     <Picker.Item label="Virtual" value="virtual"/>
@@ -276,7 +311,9 @@ export default function UserSettingsPage({
                     selectedValue={COVIDPref}
                     style={{height: 50, width: 200}}
                       onValueChange={(itemValue, itemIndex) => {
-                        setCOVIDPref(itemValue.toString());
+                        const newState=(itemValue.toString());
+                        setCOVIDPref(newState);
+                        updateMeetupPrefs(searchForMeetups, meetupPref, newState);
                       }}
                   >
                     <Picker.Item label="None" value="none"/>

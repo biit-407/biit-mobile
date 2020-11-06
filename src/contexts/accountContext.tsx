@@ -69,6 +69,9 @@ interface AccountAuthenticatedResponseJson
   birthday?: string;
   agePref?: number[];
   schedule?: string[];
+  optIn?: number;
+  meetType?: string;
+  covid?: string;
 }
 
 function mapAccountResponseJson(
@@ -81,6 +84,9 @@ function mapAccountResponseJson(
     birthday: responseJson.birthday,
     agePref: responseJson.agePref,
     schedule: responseJson.schedule,
+    optIn: responseJson.optIn,
+    meetType: responseJson.meetType,
+    covid: responseJson.covid,
   };
 }
 
@@ -93,6 +99,9 @@ interface AccountAuthenticatedDataResponseJson
     birthday?: string;
     agePref?: number[];
     schedule?: string[];
+    optIn?: number;
+    meetType?: string;
+    covid?: string;
   };
 }
 
@@ -106,6 +115,9 @@ function mapAccountDataResponseJson(
     birthday: responseJson.data.birthday,
     agePref: responseJson.data.agePref,
     schedule: responseJson.data.schedule,
+    optIn: responseJson.data.optIn,
+    meetType: responseJson.data.meetType,
+    covid: responseJson.data.covid,
   };
 }
 
@@ -387,6 +399,8 @@ async function updateAccount(
   account: Account,
   updates: Account
 ) {
+  console.log("before update");
+  console.log(updates)
   await _accountHelper<
     { account: Account; updates: Account },
     [Account, OauthToken]

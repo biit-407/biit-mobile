@@ -11,6 +11,9 @@ export interface Account {
   birthday?: string;
   agePref?: number[];
   schedule?: string[];
+  optIn?: number;
+  meetType?: string;
+  covid?: string;
 }
 
 export const BLANK_ACCOUNT: Account = {

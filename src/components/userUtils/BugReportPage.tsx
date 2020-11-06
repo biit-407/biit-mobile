@@ -11,6 +11,9 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
 import theme from "../../theme";
+import { SubmitHandler } from "react-hook-form";
+import { reportBug, useAccountState } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 
 type BugReportPageProps = {
     route: BugReportPageRouteProp;
@@ -78,12 +81,34 @@ const styles = StyleSheet.create({
     }
 });
 
+type BugFormValues = {
+    location: string;
+    description: string;
+};
+
 export default function BugReportPage({
     route,
     navigation,
 }: BugReportPageProps) {
     const [bugLocation, setBugLocation] = useState('Home Page');
     const [bugText, setBugText] = useState('');
+
+    const [{ refreshToken }, tokenDispatch] = useToken();
+    const {
+        account: { email },
+    } = useAccountState();
+
+    const submitBugReport: SubmitHandler<BugFormValues> = async(
+        formData: BugFormValues
+    ) => {
+        await reportBug(
+            tokenDispatch,
+            refreshToken,
+            email,
+            formData.location,
+            formData.description,
+        );
+    };
 
     return (
         <Box backgroundColor="mainBackground" style={styles.root}>
@@ -94,11 +119,11 @@ export default function BugReportPage({
                 <Text style={styles.subtitle}>Where is the bug located?</Text>
                 <Picker
                     selectedValue={bugLocation}
-                    style={{height: 50, width: 200, alignSelf: "center"}}
+                    style={{height: 50, width: 300, alignSelf: "center"}}
                     onValueChange={(itemValue, itemIndex) => {
                       setBugLocation(itemValue.toString())
                     }}
-                  >
+                >
                     <Picker.Item label="Login Page" value="login"/>
                     <Picker.Item label="Create Account Page" value="createAccount"/>
                     <Picker.Item label="Create Profile Page" value="createProfile"/>
@@ -123,7 +148,6 @@ export default function BugReportPage({
                     <Picker.Item label="Community Home Page" value="communityHome"/>
                     <Picker.Item label="Feedback Page" value="feedback"/>
                     <Picker.Item label="Bug Report Page" value="bugReport"/>
-
                   </Picker>
             </Box>
             <Box>
@@ -152,7 +176,12 @@ export default function BugReportPage({
                     color={theme.colors.buttonSecondaryBackground}
                     title="Submit"
                     onPress={() => {
-                        alert('todo')
+                        let bugReport: BugFormValues;
+                        bugReport = {
+                            location: bugLocation,
+                            description: bugText
+                        }
+                        submitBugReport(bugReport);
                     }}
                 />
             </Box>
