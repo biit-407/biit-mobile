@@ -4,15 +4,17 @@
 
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import { ThemedIcon } from "../components/themed";
 import theme from "../theme";
-
-import FeedbackPage, { FeedbackPageOptions } from "../components/userUtils/FeedbackPage";
+import FeedbackPage, {
+  FeedbackPageOptions,
+} from "../components/userUtils/FeedbackPage";
 
 const FeedbackStack = createStackNavigator();
 
 const FeedbackStackScreen = (
-  {navigation}: any,
+  { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ) => {
   return (
     <FeedbackStack.Navigator

@@ -62,7 +62,7 @@ const theme = createTheme({
   },
   textVariants: {
     largeHeader: {
-      fontSize: 36,
+      fontSize: 28,
       fontWeight: "bold",
       color: "primaryText",
     },

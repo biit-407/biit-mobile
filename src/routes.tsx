@@ -307,20 +307,14 @@ export type CommunityHomePageNavigationProp = StackNavigationProp<
 >;
 
 // Feedback Page Types
-export type FeedbackPageRouteProp = RouteProp<
-  RootStackParamList,
-  "Feedback"
->;
+export type FeedbackPageRouteProp = RouteProp<RootStackParamList, "Feedback">;
 
 export type FeedbackPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Feedback"
 >;
 // Bug Report Page Types
-export type BugReportPageRouteProp = RouteProp<
-  RootStackParamList,
-  "BugReport"
->;
+export type BugReportPageRouteProp = RouteProp<RootStackParamList, "BugReport">;
 
 export type BugReportPageNavigationProp = StackNavigationProp<
   RootStackParamList,

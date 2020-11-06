@@ -400,7 +400,7 @@ async function updateAccount(
   updates: Account
 ) {
   console.log("before update");
-  console.log(updates)
+  console.log(updates);
   await _accountHelper<
     { account: Account; updates: Account },
     [Account, OauthToken]

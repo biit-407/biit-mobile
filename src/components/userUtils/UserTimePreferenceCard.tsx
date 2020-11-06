@@ -40,7 +40,7 @@ const UserTimePreferenceCard = ({
           {dayOfWeek}
         </Text>
         <Box>
-          <Text variant="header" style={{ alignSelf: "flex-end" }}>
+          <Text variant="subheader" style={{ alignSelf: "flex-end" }}>
             {startTimeString} - {endTimeString}
           </Text>
           <Box
