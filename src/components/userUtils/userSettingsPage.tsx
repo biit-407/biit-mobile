@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
+import {Picker} from '@react-native-community/picker';
 
 import {
   UserSettingsPageRouteProp,
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   txt: {
     width: "40%",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
     margin: 10,
   },
   ageRange: {
@@ -59,6 +60,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  switch: {
+    width: "40%",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    margin: 10,
   },
 });
 
@@ -78,6 +85,14 @@ export default function UserSettingsPage({
   const toggleSw3 = () => setSw3((previousState) => !previousState);
   const [sw4, setSw4] = useState(false);
   const toggleSw4 = () => setSw4((previousState) => !previousState);
+
+  // Toggle Search for Meetups
+  const [searchForMeetups, setSearchForMeetups] = useState(false);
+  const toggleSearchForMeetups = () => setSearchForMeetups((previousState) => !previousState);
+
+  //  Preferences state
+  const [MeetupPref, setMeetupPref] = useState('Virtual');
+  const [COVIDPref, setCOVIDPref] = useState('None');
 
   // Add scroll control due to slider constraints
   const [scrollable, setScrollable] = useState(true);
@@ -223,6 +238,56 @@ export default function UserSettingsPage({
               />
             </Box>
           </Box>
+          <Box style={styles.item}>
+            <Box style={styles.txt}>
+              <Text>Actively Search for meetups</Text>
+            </Box>
+            <Box style={styles.txt}>
+              <ThemedSwitch 
+                onValueChange={toggleSearchForMeetups}
+                value={searchForMeetups} />
+            </Box>
+          </Box>
+          {searchForMeetups && (
+            <Box>
+              <Box style={styles.item}>
+                <Box style={styles.txt}>
+                  <Text>Meetup Preferences</Text>
+                </Box>
+                <Box>
+                  <Picker
+                    selectedValue={MeetupPref}
+                    style={{height: 50, width: 200}}
+                    onValueChange={(itemValue, itemIndex) => {
+                      setMeetupPref(itemValue.toString())
+                    }}
+                  >
+                    <Picker.Item label="Virtual" value="virtual"/>
+                    <Picker.Item label="In-Person" value="inPerson"/>
+                  </Picker>
+                </Box>
+              </Box>
+              <Box style={styles.item}>
+                <Box style={styles.txt}>
+                  <Text>COVID Preferences</Text>
+                </Box>
+                <Box>
+                  <Picker
+                    selectedValue={COVIDPref}
+                    style={{height: 50, width: 200}}
+                      onValueChange={(itemValue, itemIndex) => {
+                        setCOVIDPref(itemValue.toString());
+                      }}
+                  >
+                    <Picker.Item label="None" value="none"/>
+                    <Picker.Item label="Mask" value="mask"/>
+                    <Picker.Item label="Gloves" value="gloves"/>
+                    <Picker.Item label="Social Distancing" value="socialDistancing"/>
+                  </Picker>
+                </Box>
+              </Box>
+            </Box>
+          )}
         </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
