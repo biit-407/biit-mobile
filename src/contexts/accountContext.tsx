@@ -595,8 +595,8 @@ async function reportUser(
       return [
         responseJson.status_code === 200,
         {
-          accessToken: responseJson.accessToken,
-          refreshToken: responseJson.refreshToken,
+          accessToken: responseJson.access_token,
+          refreshToken: responseJson.refresh_token,
         },
       ];
     });
@@ -635,8 +635,8 @@ async function reportBug(
       return [
         responseJson.status_code === 200,
         {
-          accessToken: responseJson.accessToken,
-          refreshToken: responseJson.refreshToken,
+          accessToken: responseJson.access_token,
+          refreshToken: responseJson.refresh_token,
         },
       ];
     });
@@ -675,8 +675,8 @@ async function reportSuggestion(
       return [
         responseJson.status_code === 200,
         {
-          accessToken: responseJson.accessToken,
-          refreshToken: responseJson.refreshToken,
+          accessToken: responseJson.access_token,
+          refreshToken: responseJson.refresh_token,
         },
       ];
     });

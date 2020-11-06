@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   inputLabelBox: {
     borderTopWidth: 2,
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
     padding: 5,
     width: "95%",
     marginBottom: 10,
-    marginTop: 20,
   },
   inputLabel: {
     color: "#3D2400",
@@ -49,7 +48,7 @@ const styles = StyleSheet.create({
   },
   textInputBound: {
     width: "95%",
-    height: "55%",
+    height: "45%",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -89,7 +88,7 @@ export default function BugReportPage({ navigation }: BugReportPageProps) {
   const [bugLocation, setBugLocation] = useState("Home Page");
   const [bugText, setBugText] = useState("");
 
-  const [{ refreshToken }, tokenDispatch] = useToken();
+  const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
   } = useAccountState();
@@ -99,7 +98,7 @@ export default function BugReportPage({ navigation }: BugReportPageProps) {
   ) => {
     await reportBug(
       tokenDispatch,
-      refreshToken,
+      tokenState.refreshToken,
       email,
       formData.location,
       formData.description
