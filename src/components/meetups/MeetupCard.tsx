@@ -113,7 +113,7 @@ const TentativeMeetupCard = ({
           variant="subheader"
           style={{ flex: 1, textAlign: "right", paddingRight: 8 }}
         >
-          {id}
+          {id.substring(0, 8)}
         </Text>
       </Box>
       <Text variant="subheader">
@@ -186,7 +186,7 @@ const AcceptedMeetupCard = ({
             paddingTop: 6,
           }}
         >
-          {id.substring(0, 16)}
+          {id.substring(0, 8)}
         </Text>
       </Box>
       <Text variant="subheader">
