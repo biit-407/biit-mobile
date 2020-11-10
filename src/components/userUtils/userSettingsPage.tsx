@@ -142,6 +142,7 @@ export default function UserSettingsPage({
       ? accountState.account.agePref
       : [18, 100]
   );
+  const [isAgeChanging, setAgeChanging] = useState(false);
 
   // Generic method to set the age preference on the backend
   const setAgePreference = (preference: number[]) => {
@@ -173,13 +174,43 @@ export default function UserSettingsPage({
     }
   };
 
+  const onStartAgeValues = () => {
+    setAgeChanging(true);
+    setScrollable(false);
+  };
+
   // Method to handle updates from the range slider
-  const onSelectRangeValues = (values: number[]) => {
+  const onSelectAgeValues = (values: number[]) => {
     // Enable scrolling
     setScrollable(true);
     // Set the age range state and update the backend
     setAgeRange(values);
     setAgePreference(values);
+    setAgeChanging(false);
+  };
+
+  // Store info about the user's age preference (toggle and range)
+  const [lengthRange, setLengthRange] = useState([15, 60]);
+  const [isLengthChanging, setLengthChanging] = useState(false);
+
+  // Generic method to set the age preference on the backend
+  const setLengthPreference = (preference: number[]) => {
+    console.log(preference);
+  };
+
+  const onStartLengthValues = () => {
+    setLengthChanging(true);
+    setScrollable(false);
+  };
+
+  // Method to handle updates from the range slider
+  const onSelectLengthValues = (values: number[]) => {
+    // Enable scrolling
+    setScrollable(true);
+    // Set the age range state and update the backend
+    setLengthRange(values);
+    setLengthPreference(values);
+    setLengthChanging(false);
   };
 
   return (
@@ -245,15 +276,38 @@ export default function UserSettingsPage({
                   values={ageRange}
                   min={18}
                   max={100}
-                  onValuesChangeStart={() => setScrollable(false)}
-                  onValuesChangeFinish={onSelectRangeValues}
-                  enableLabel={!scrollable}
+                  onValuesChangeStart={onStartAgeValues}
+                  onValuesChangeFinish={onSelectAgeValues}
+                  enableLabel={isAgeChanging}
                   snapped
                 />
                 <Text marginStart="md">100</Text>
               </Box>
             </Box>
           )}
+        </Box>
+        <Box style={styles.itemframe}>
+          <Box mt="md">
+            <Box style={styles.item}>
+              <Text>
+                Current Meetup Length Preference:
+                {` ${lengthRange[0]} to ${lengthRange[1]} minutes`}
+              </Text>
+            </Box>
+            <Box style={styles.ageRange}>
+              <Text marginEnd="md">15</Text>
+              <ThemedMultiSlider
+                values={lengthRange}
+                min={15}
+                max={60}
+                onValuesChangeStart={onStartLengthValues}
+                onValuesChangeFinish={onSelectLengthValues}
+                enableLabel={isLengthChanging}
+                snapped
+              />
+              <Text marginStart="md">60</Text>
+            </Box>
+          </Box>
         </Box>
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
