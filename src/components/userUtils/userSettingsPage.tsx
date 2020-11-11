@@ -221,7 +221,7 @@ export default function UserSettingsPage({
 
   // Create state for the user's preferred meetup length
   const [meetupLength, setMeetupLength] = useState(
-    accountState.account.meetupLength ?? defaultMeetupLengths[0]
+    accountState.account.meetLength ?? defaultMeetupLengths[0]
   );
 
   // Function to handle selecting a new meetup length
@@ -231,7 +231,18 @@ export default function UserSettingsPage({
     // Update the app state
     setMeetupLength(length);
     // Update the backend state
-    // TODO: Add integration (confirm schema with backend)
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        meetLength: length,
+      }
+    );
   };
 
   return (
