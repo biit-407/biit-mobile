@@ -1,29 +1,15 @@
 import React from "react";
 import { Alert } from "react-native";
-import { Button } from "react-native-elements";
 
 import { deleteAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
-import theme from "../../theme";
+import { ThemedListItem } from "../themed";
 
 export default function DeleteAccountButton() {
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();
-
-  //! This should be done implicitly now
-  // useEffect(() => {
-  //   console.log(accountState.status);
-  //   if (accountState.status === "logged out") {
-  //     // Navigate back to the login page once account is logged out
-  //     // TODO fix this
-  //     // navigation.reset({
-  //     //   index: 0,
-  //     //   routes: [{ name: "Login" }],
-  //     // });
-  //   }
-  // }, [accountState.status, navigation]);
 
   const showDeletionDialog = () => {
     Alert.alert(
@@ -51,10 +37,12 @@ export default function DeleteAccountButton() {
   };
 
   return (
-    <Button
+    <ThemedListItem
+      iconName="trash"
+      iconType="entypo"
       title="Delete Account"
+      subtitle="Delete your account and associated data"
       onPress={showDeletionDialog}
-      buttonStyle={{ backgroundColor: theme.colors.iconSelectedRed }}
     />
   );
 }

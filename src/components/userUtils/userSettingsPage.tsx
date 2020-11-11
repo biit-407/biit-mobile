@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
-import { Button } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 
 import {
@@ -11,10 +10,9 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
-import { ThemedMultiSlider, ThemedSwitch } from "../themed";
+import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from "../themed";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
-import theme from "../../theme";
 
 type UserSettingsPageProps = {
   route: UserSettingsPageRouteProp;
@@ -45,10 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-  btn: {
-    width: "50%",
-    margin: 10,
-  },
+
   txt: {
     width: "40%",
     justifyContent: "center",
@@ -79,12 +74,6 @@ export default function UserSettingsPage({
   // Dummy switch states
   const [sw1, setSw1] = useState(false);
   const toggleSw1 = () => setSw1((previousState) => !previousState);
-  const [sw2, setSw2] = useState(false);
-  const toggleSw2 = () => setSw2((previousState) => !previousState);
-  const [sw3, setSw3] = useState(false);
-  const toggleSw3 = () => setSw3((previousState) => !previousState);
-  const [sw4, setSw4] = useState(false);
-  const toggleSw4 = () => setSw4((previousState) => !previousState);
 
   // Check whether the user has meetups enabled
   const hasMeetupsEnabled =
@@ -226,27 +215,30 @@ export default function UserSettingsPage({
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Notifications</Text>
-            </Box>
-            <Box style={styles.txt}>
+          <ThemedListItem
+            iconName={sw1 ? "notifications" : "notifications-off"}
+            iconType="ionicons"
+            title="Allow Notifications"
+            subtitle="Toggle receiving notifications"
+            rightContent={
               <ThemedSwitch onValueChange={toggleSw1} value={sw1} />
-            </Box>
-          </Box>
+            }
+          />
         </Box>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Use age preference</Text>
-            </Box>
-            <Box style={styles.txt}>
+          <ThemedListItem
+            iconName="cake"
+            iconType="entypo"
+            title="Age Preference"
+            subtitle="Toggle and update your age preference"
+            rightContent={
               <ThemedSwitch
                 onValueChange={onToggleAgePreference}
                 value={showAgePreference}
               />
-            </Box>
-          </Box>
+            }
+          />
+
           {showAgePreference && (
             <Box>
               <Box style={styles.item}>
@@ -271,52 +263,26 @@ export default function UserSettingsPage({
             </Box>
           )}
         </Box>
+        <Box style={styles.itemframe}></Box>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Meetup Length</Text>
-            </Box>
-            <Box>
-              <Picker
-                selectedValue={meetupLength}
-                style={{ height: 50, width: 200 }}
-                onValueChange={onSelectMeetingLength}
-              >
-                {defaultMeetupLengths.map((length, index) => (
-                  <Picker.Item
-                    key={index}
-                    label={`${length} minutes`}
-                    value={length}
-                  />
-                ))}
-              </Picker>
-            </Box>
-          </Box>
-        </Box>
-        <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Time Preferences</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <Button
-                title={"Update Time Preferences"}
-                onPress={() => {
-                  navigation.push("UserTimePreference");
-                }}
-                buttonStyle={{
-                  backgroundColor: theme.colors.buttonPrimaryBackground,
-                }}
-              />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Actively Search for meetups</Text>
-            </Box>
-            <Box style={styles.txt}>
+          <ThemedListItem
+            iconName="schedule"
+            iconType="material"
+            title="Time Preference"
+            subtitle="View and update your time preference"
+            onPress={() => {
+              navigation.push("UserTimePreference");
+            }}
+          />
+          <ThemedListItem
+            iconName={"briefcase"}
+            iconType="entypo"
+            title="Search for Meetups"
+            subtitle="Toggle actively searching for meetups"
+            rightContent={
               <ThemedSwitch
                 onValueChange={() => {
+                  // TODO: Refactor this into a non-inline function
                   console.log("before " + searchForMeetups);
                   // toggleSearchForMeetups();
                   const newState = (searchForMeetups + 1) % 2;
@@ -325,15 +291,15 @@ export default function UserSettingsPage({
                   updateMeetupPrefs(newState, meetupPref, COVIDPref);
                   // console.log("after after " + searchForMeetups);
                 }}
-                value={searchForMeetups === 1 ? true : false}
+                value={searchForMeetups === 1}
               />
-            </Box>
-          </Box>
+            }
+          />
           {searchForMeetups === 1 && (
             <Box>
               <Box style={styles.item}>
                 <Box style={styles.txt}>
-                  <Text>Meetup Preferences</Text>
+                  <Text>Meetup Type</Text>
                 </Box>
                 <Box>
                   <Picker
@@ -352,7 +318,28 @@ export default function UserSettingsPage({
               </Box>
               <Box style={styles.item}>
                 <Box style={styles.txt}>
-                  <Text>COVID Preferences</Text>
+                  <Text>Meetup Length</Text>
+                </Box>
+                <Box>
+                  <Picker
+                    selectedValue={meetupLength}
+                    style={{ height: 50, width: 200 }}
+                    onValueChange={onSelectMeetingLength}
+                  >
+                    {defaultMeetupLengths.map((length, index) => (
+                      <Picker.Item
+                        key={index}
+                        label={`${length} minutes`}
+                        value={length}
+                      />
+                    ))}
+                  </Picker>
+                </Box>
+              </Box>
+
+              <Box style={styles.item}>
+                <Box style={styles.txt}>
+                  <Text>COVID Precautions</Text>
                 </Box>
                 <Box>
                   <Picker
@@ -378,22 +365,8 @@ export default function UserSettingsPage({
           )}
         </Box>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Logout</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <LogoutButton />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Delete Account</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <DeleteAccountButton />
-            </Box>
-          </Box>
+          <LogoutButton />
+          <DeleteAccountButton />
         </Box>
       </ScrollView>
     </Box>
