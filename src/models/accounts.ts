@@ -14,6 +14,7 @@ export interface Account {
   optIn?: number;
   meetType?: string;
   covid?: string;
+  meetupLength?: number;
 }
 
 export const BLANK_ACCOUNT: Account = {

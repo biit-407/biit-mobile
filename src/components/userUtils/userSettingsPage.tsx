@@ -128,24 +128,34 @@ export default function UserSettingsPage({
     );
   };
 
-  // Add scroll control due to slider constraints
-  const [scrollable, setScrollable] = useState(true);
+  /*
+   ========================
+   Age Preference
+   ========================
+  */
+  // Create a default age range
+  const defaultAgeRange = [18, 100];
 
   // Check whether the user has an age preference
   const hasAgePreference =
     accountState.account.agePref && accountState.account.agePref?.length > 0;
 
-  // Store info about the user's age preference (toggle and range)
+  // Create state for the user's preferred use of age range
   const [showAgePreference, setShowAgePreference] = useState(hasAgePreference);
+
+  // Create state for the user's preferred age range
   const [ageRange, setAgeRange] = useState(
     accountState.account.agePref && hasAgePreference
       ? accountState.account.agePref
-      : [18, 100]
+      : defaultAgeRange
   );
-  const [isAgeChanging, setAgeChanging] = useState(false);
 
-  // Generic method to set the age preference on the backend
+  // Create state to control page scrolling behaviour
+  const [scrollable, setScrollable] = useState(true);
+
+  // Function to handle selecting a new meetup length
   const setAgePreference = (preference: number[]) => {
+    // Update the backend state
     updateAccount(
       accountDispatch,
       tokenDispatch,
@@ -160,57 +170,54 @@ export default function UserSettingsPage({
     );
   };
 
-  // Method to handle toggling on and off age preference
+  // Function to handle toggling on and off age preference
   const onToggleAgePreference = (value: boolean) => {
-    // Toggle the switch state
+    // Update the switch's state
     setShowAgePreference(value);
-    if (value === false) {
-      // If toggled false, clear the user's age preference
-      setAgePreference([]);
-    } else if (value === true) {
-      // If toggled true, set the default age range and update the preference on the backend
-      setAgeRange([18, 100]);
-      setAgePreference([18, 100]);
-    }
+    // Choose the ageRange based on the switch's state
+    const selectedAgeRange = value ? defaultAgeRange : [];
+
+    // Update the user's age preference
+    setAgePreference(selectedAgeRange);
+    // Reset the app state
+    setAgeRange(defaultAgeRange);
   };
 
-  const onStartAgeValues = () => {
-    setAgeChanging(true);
+  // Function to handle a start drag on the slider
+  const onDragAgeRange = () => {
+    // Disable page scrolling
     setScrollable(false);
   };
 
-  // Method to handle updates from the range slider
-  const onSelectAgeValues = (values: number[]) => {
-    // Enable scrolling
+  // Function to handle a stop drag on the slider
+  const onSelectAgeRange = (selectedAgeRange: number[]) => {
+    // Enable page scrolling
     setScrollable(true);
-    // Set the age range state and update the backend
-    setAgeRange(values);
-    setAgePreference(values);
-    setAgeChanging(false);
+    // Update the app state
+    setAgeRange(selectedAgeRange);
+    // Update the user's age preference
+    setAgePreference(selectedAgeRange);
   };
 
-  // Store info about the user's age preference (toggle and range)
-  const [lengthRange, setLengthRange] = useState([15, 60]);
-  const [isLengthChanging, setLengthChanging] = useState(false);
+  /*
+   ========================
+   Meetup Length Preference
+   ========================
+  */
 
-  // Generic method to set the age preference on the backend
-  const setLengthPreference = (preference: number[]) => {
-    console.log(preference);
-  };
+  // Create state for the user's preferred meetup length
+  const [meetupLength, setMeetupLength] = useState(
+    accountState.account.meetupLength ?? 30
+  );
 
-  const onStartLengthValues = () => {
-    setLengthChanging(true);
-    setScrollable(false);
-  };
-
-  // Method to handle updates from the range slider
-  const onSelectLengthValues = (values: number[]) => {
-    // Enable scrolling
-    setScrollable(true);
-    // Set the age range state and update the backend
-    setLengthRange(values);
-    setLengthPreference(values);
-    setLengthChanging(false);
+  // Function to handle selecting a new meetup length
+  const onSelectMeetingLength = (value: number | string) => {
+    // Value should always be a number, based on the possible options
+    const length = value as number;
+    // Update the app state
+    setMeetupLength(length);
+    // Update the backend state
+    // TODO: Add integration
   };
 
   return (
@@ -271,41 +278,36 @@ export default function UserSettingsPage({
                 </Text>
               </Box>
               <Box style={styles.ageRange}>
-                <Text marginEnd="md">18</Text>
+                <Text marginEnd="md">{defaultAgeRange[0]}</Text>
                 <ThemedMultiSlider
                   values={ageRange}
-                  min={18}
-                  max={100}
-                  onValuesChangeStart={onStartAgeValues}
-                  onValuesChangeFinish={onSelectAgeValues}
-                  enableLabel={isAgeChanging}
+                  min={defaultAgeRange[0]}
+                  max={defaultAgeRange[1]}
+                  onValuesChangeStart={onDragAgeRange}
+                  onValuesChangeFinish={onSelectAgeRange}
+                  enableLabel={!scrollable}
                   snapped
                 />
-                <Text marginStart="md">100</Text>
+                <Text marginStart="md">{defaultAgeRange[1]}</Text>
               </Box>
             </Box>
           )}
         </Box>
         <Box style={styles.itemframe}>
-          <Box mt="md">
-            <Box style={styles.item}>
-              <Text>
-                Current Meetup Length Preference:
-                {` ${lengthRange[0]} to ${lengthRange[1]} minutes`}
-              </Text>
+          <Box style={styles.item}>
+            <Box style={styles.txt}>
+              <Text>Meetup Length Preference</Text>
             </Box>
-            <Box style={styles.ageRange}>
-              <Text marginEnd="md">15</Text>
-              <ThemedMultiSlider
-                values={lengthRange}
-                min={15}
-                max={60}
-                onValuesChangeStart={onStartLengthValues}
-                onValuesChangeFinish={onSelectLengthValues}
-                enableLabel={isLengthChanging}
-                snapped
-              />
-              <Text marginStart="md">60</Text>
+            <Box>
+              <Picker
+                selectedValue={meetupLength}
+                style={{ height: 50, width: 200 }}
+                onValueChange={onSelectMeetingLength}
+              >
+                <Picker.Item label="30 minutes" value={30} />
+                <Picker.Item label="45 minutes" value={45} />
+                <Picker.Item label="60 minutes" value={60} />
+              </Picker>
             </Box>
           </Box>
         </Box>
