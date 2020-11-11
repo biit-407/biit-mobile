@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Picker } from "@react-native-community/picker";
+import Collapsible from "react-native-collapsible";
 
 import {
   UserSettingsPageRouteProp,
@@ -238,8 +239,7 @@ export default function UserSettingsPage({
               />
             }
           />
-
-          {showAgePreference && (
+          <Collapsible collapsed={!showAgePreference}>
             <Box>
               <Box style={styles.item}>
                 <Text>
@@ -261,9 +261,8 @@ export default function UserSettingsPage({
                 <Text marginStart="md">{defaultAgeRange[1]}</Text>
               </Box>
             </Box>
-          )}
+          </Collapsible>
         </Box>
-        <Box style={styles.itemframe}></Box>
         <Box style={styles.itemframe}>
           <ThemedListItem
             iconName="schedule"
@@ -295,7 +294,7 @@ export default function UserSettingsPage({
               />
             }
           />
-          {searchForMeetups === 1 && (
+          <Collapsible collapsed={searchForMeetups !== 1}>
             <Box>
               <Box style={styles.item}>
                 <Box style={styles.txt}>
@@ -362,7 +361,7 @@ export default function UserSettingsPage({
                 </Box>
               </Box>
             </Box>
-          )}
+          </Collapsible>
         </Box>
         <Box style={styles.itemframe}>
           <LogoutButton />
