@@ -204,10 +204,12 @@ export default function UserSettingsPage({
    Meetup Length Preference
    ========================
   */
+  // Create a default meetup length array
+  const defaultMeetupLengths = [30, 45, 60];
 
   // Create state for the user's preferred meetup length
   const [meetupLength, setMeetupLength] = useState(
-    accountState.account.meetupLength ?? 30
+    accountState.account.meetupLength ?? defaultMeetupLengths[0]
   );
 
   // Function to handle selecting a new meetup length
@@ -217,7 +219,7 @@ export default function UserSettingsPage({
     // Update the app state
     setMeetupLength(length);
     // Update the backend state
-    // TODO: Add integration
+    // TODO: Add integration (confirm schema with backend)
   };
 
   return (
@@ -230,30 +232,6 @@ export default function UserSettingsPage({
             </Box>
             <Box style={styles.txt}>
               <ThemedSwitch onValueChange={toggleSw1} value={sw1} />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Profile visible to others</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw2} value={sw2} />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Hide community membership</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw3} value={sw3} />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Hide LinkedIn</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw4} value={sw4} />
             </Box>
           </Box>
         </Box>
@@ -296,7 +274,7 @@ export default function UserSettingsPage({
         <Box style={styles.itemframe}>
           <Box style={styles.item}>
             <Box style={styles.txt}>
-              <Text>Meetup Length Preference</Text>
+              <Text>Meetup Length</Text>
             </Box>
             <Box>
               <Picker
@@ -304,9 +282,13 @@ export default function UserSettingsPage({
                 style={{ height: 50, width: 200 }}
                 onValueChange={onSelectMeetingLength}
               >
-                <Picker.Item label="30 minutes" value={30} />
-                <Picker.Item label="45 minutes" value={45} />
-                <Picker.Item label="60 minutes" value={60} />
+                {defaultMeetupLengths.map((length, index) => (
+                  <Picker.Item
+                    key={index}
+                    label={`${length} minutes`}
+                    value={length}
+                  />
+                ))}
               </Picker>
             </Box>
           </Box>
