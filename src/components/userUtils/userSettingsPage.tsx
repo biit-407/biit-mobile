@@ -57,12 +57,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  // switch: {
-  //   width: "40%",
-  //   justifyContent: "center",
-  //   alignItems: "flex-end",
-  //   margin: 10,
-  // },
 });
 
 export default function UserSettingsPage({
@@ -72,9 +66,37 @@ export default function UserSettingsPage({
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
 
-  // Dummy switch states
-  const [sw1, setSw1] = useState(false);
-  const toggleSw1 = () => setSw1((previousState) => !previousState);
+  /*
+   ========================
+   Notification Preference
+   ========================
+  */
+
+  // Create state for the user's notification preference
+  const [allowNotifications, setNotifications] = useState(false);
+
+  // Function to handle toggling on and off allowing groups
+  const onToggleAllowNotifications = (value: boolean) => {
+    // Update the switch's state
+    setNotifications(value);
+    // TODO: Add integration (confirm schema with backend)
+  };
+
+  /*
+   ========================
+   Group Preference
+   ========================
+  */
+
+  // Create state for the user's group preference
+  const [allowGroups, setAllowGroups] = useState(false);
+
+  // Function to handle toggling on and off allowing groups
+  const onToggleAllowGroups = (value: boolean) => {
+    // Update the switch's state
+    setAllowGroups(value);
+    // TODO: Add integration (confirm schema with backend)
+  };
 
   // Check whether the user has meetups enabled
   const hasMeetupsEnabled =
@@ -217,12 +239,29 @@ export default function UserSettingsPage({
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
         <Box style={styles.itemframe}>
           <ThemedListItem
-            iconName={sw1 ? "notifications" : "notifications-off"}
+            iconName={
+              allowNotifications ? "notifications" : "notifications-off"
+            }
             iconType="ionicons"
             title="Allow Notifications"
             subtitle="Toggle receiving notifications"
             rightContent={
-              <ThemedSwitch onValueChange={toggleSw1} value={sw1} />
+              <ThemedSwitch
+                onValueChange={onToggleAllowNotifications}
+                value={allowNotifications}
+              />
+            }
+          />
+          <ThemedListItem
+            iconName="users"
+            iconType="entypo"
+            title="Allow Groups"
+            subtitle="Toggle allowing group meetups"
+            rightContent={
+              <ThemedSwitch
+                onValueChange={onToggleAllowGroups}
+                value={allowGroups}
+              />
             }
           />
         </Box>
