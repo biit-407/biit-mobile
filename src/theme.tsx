@@ -44,7 +44,7 @@ const theme = createTheme({
 
     sectionListHeader: palette.tanDark,
     switchTrackEnabled: palette.tanDark,
-    switchTrackDisabled: palette.tanPrimary,
+    switchTrackDisabled: palette.brownLight,
     switchThumbEnabled: palette.brownLight,
     switchThumbDisabled: palette.tanDark,
   },

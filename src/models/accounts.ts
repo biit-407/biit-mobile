@@ -13,6 +13,8 @@ export interface Account {
   schedule?: string[];
   optIn?: number;
   meetType?: string;
+  meetLength?: number;
+  meetGroup?: number;
   covid?: string;
 }
 

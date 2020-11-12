@@ -71,6 +71,8 @@ interface AccountAuthenticatedResponseJson
   schedule?: string[];
   optIn?: number;
   meetType?: string;
+  meetLength?: number;
+  meetGroup?: number;
   covid?: string;
 }
 
@@ -86,6 +88,8 @@ function mapAccountResponseJson(
     schedule: responseJson.schedule,
     optIn: responseJson.optIn,
     meetType: responseJson.meetType,
+    meetLength: responseJson.meetLength,
+    meetGroup: responseJson.meetGroup,
     covid: responseJson.covid,
   };
 }
@@ -101,6 +105,8 @@ interface AccountAuthenticatedDataResponseJson
     schedule?: string[];
     optIn?: number;
     meetType?: string;
+    meetLength?: number;
+    meetGroup?: number;
     covid?: string;
   };
 }
@@ -117,6 +123,8 @@ function mapAccountDataResponseJson(
     schedule: responseJson.data.schedule,
     optIn: responseJson.data.optIn,
     meetType: responseJson.data.meetType,
+    meetLength: responseJson.data.meetLength,
+    meetGroup: responseJson.data.meetGroup,
     covid: responseJson.data.covid,
   };
 }
