@@ -16,6 +16,7 @@ type ThemedListItemProps = {
   iconType?: string;
   rightContent?: React.ReactNode;
   onPress?: () => void;
+  slim?: boolean;
 };
 
 // A reusable themed button
@@ -27,6 +28,7 @@ export default function ThemedListItem({
   subtitle,
   rightContent,
   onPress,
+  slim,
 }: ThemedListItemProps) {
   const theme = useTheme<Theme>();
   return (
@@ -39,11 +41,13 @@ export default function ThemedListItem({
         borderColor: theme.colors.cardBorder,
       }}
     >
-      {iconName && iconType && <ThemedIcon name={iconName} type={iconType} />}
+      {iconName && iconType && (
+        <ThemedIcon name={iconName} type={iconType} size={slim ? 20 : 24} />
+      )}
       {avatarUri && <ThemedAvatar size="small" uri={avatarUri} />}
       <ListItem.Content>
         <ListItem.Title>
-          <Text variant="listHeader">{title}</Text>
+          <Text variant={slim ? "body" : "listHeader"}>{title}</Text>
         </ListItem.Title>
         {subtitle && (
           <ListItem.Subtitle>

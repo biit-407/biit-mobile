@@ -44,18 +44,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-
-  txt: {
-    width: "40%",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    margin: 10,
-  },
   ageRange: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
+  },
+  picker: {
+    height: 25,
+    width: 150,
   },
 });
 
@@ -112,33 +109,22 @@ export default function UserSettingsPage({
     );
   };
 
-  // Check whether the user has meetups enabled
-  const hasMeetupsEnabled =
-    accountState.account.optIn === 1 ? accountState.account.optIn : 0;
-
-  // Toggle Search for Meetups
-  const [searchForMeetups, setSearchForMeetups] = useState(hasMeetupsEnabled);
-  // const toggleSearchForMeetups = () => setSearchForMeetups((previousState) => ((previousState+1)%2))
-
-  // Store info about user's meetup and COVID preferences
-  const [meetupPref, setMeetupPref] = useState(
-    accountState.account.meetType !== undefined
-      ? accountState.account.meetType
-      : "virtual"
-  );
-  const [COVIDPref, setCOVIDPref] = useState(
-    accountState.account.covid !== undefined
-      ? accountState.account.covid
-      : "none"
+  /*
+   =============================
+   Search for Meetups Preference
+   =============================
+  */
+  // Create state for the user's preferred meetup search
+  const [searchForMeetups, setSearchForMeetups] = useState(
+    accountState.account.optIn === 1
   );
 
-  // Generic method to update meetup prefs information on the backend
-  const updateMeetupPrefs = async (
-    optIn: number,
-    meetupPreference: string,
-    covidPreference: string
-  ) => {
-    await updateAccount(
+  // Function to handle toggling on and off allowing meetup search
+  const onToggleMeetupSearch = (value: boolean) => {
+    // Update the app state
+    setSearchForMeetups(value);
+    // Update the backend state
+    updateAccount(
       accountDispatch,
       tokenDispatch,
       refreshToken,
@@ -147,9 +133,117 @@ export default function UserSettingsPage({
         fname: accountState.account.fname,
         lname: accountState.account.lname,
         email: accountState.account.email,
-        optIn: optIn,
-        meetType: meetupPreference,
-        covid: covidPreference,
+        optIn: value ? 1 : 0,
+      }
+    );
+  };
+
+  /*
+   ======================
+   Meetup Type Preference
+   ======================
+  */
+  // Create default Meetup Types
+  const defaultMeetupTypes = [
+    { label: "Virtual", value: "virtual" },
+    { label: "In-Person", value: "inPerson" },
+  ];
+
+  // Create state for the user's preferred meetup type
+  const [meetupType, setMeetupType] = useState(
+    accountState.account.meetType ?? defaultMeetupTypes[0].value
+  );
+
+  // Function to handle selecting a new meetup type
+  const onSelectMeetupType = (type: number | string) => {
+    // Convert the meetup type to a string
+    type = type.toString();
+    // Update the app state
+    setMeetupType(type);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        meetType: type,
+      }
+    );
+  };
+
+  /*
+   ========================
+   Meetup Length Preference
+   ========================
+  */
+  // Create a default meetup length array
+  const defaultMeetupLengths = [30, 45, 60];
+
+  // Create state for the user's preferred meetup length
+  const [meetupLength, setMeetupLength] = useState(
+    accountState.account.meetLength ?? defaultMeetupLengths[0]
+  );
+
+  // Function to handle selecting a new meetup length
+  const onSelectMeetupLength = (value: number | string) => {
+    // Value should always be a number, based on the possible options
+    const length = value as number;
+    // Update the app state
+    setMeetupLength(length);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        meetLength: length,
+      }
+    );
+  };
+
+  /*
+   ===========================
+   Covid Precaution Preference
+   ===========================
+  */
+  // Create default Covid Precautions
+  const defaultCovidPrecautions = [
+    { label: "None", value: "none" },
+    { label: "Mask", value: "mask" },
+    { label: "Gloves", value: "gloves" },
+    { label: "Social Distancing", value: "socialDistancing" },
+  ];
+
+  // Create state for the user's preferred meetup precaution
+  const [covidPrecaution, setCovidPrecaution] = useState(
+    accountState.account.covid ?? defaultCovidPrecautions[0].value
+  );
+
+  // Function to handle selecting a new meetup precaution
+  const onSelectCovidPrecaution = (precaution: number | string) => {
+    // Convert the meetup precaution to a string
+    precaution = precaution.toString();
+    // Update the app state
+    setCovidPrecaution(precaution);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        covid: precaution,
       }
     );
   };
@@ -225,40 +319,6 @@ export default function UserSettingsPage({
     setAgePreference(selectedAgeRange);
   };
 
-  /*
-   ========================
-   Meetup Length Preference
-   ========================
-  */
-  // Create a default meetup length array
-  const defaultMeetupLengths = [30, 45, 60];
-
-  // Create state for the user's preferred meetup length
-  const [meetupLength, setMeetupLength] = useState(
-    accountState.account.meetLength ?? defaultMeetupLengths[0]
-  );
-
-  // Function to handle selecting a new meetup length
-  const onSelectMeetingLength = (value: number | string) => {
-    // Value should always be a number, based on the possible options
-    const length = value as number;
-    // Update the app state
-    setMeetupLength(length);
-    // Update the backend state
-    updateAccount(
-      accountDispatch,
-      tokenDispatch,
-      refreshToken,
-      accountState.account,
-      {
-        fname: accountState.account.fname,
-        lname: accountState.account.lname,
-        email: accountState.account.email,
-        meetLength: length,
-      }
-    );
-  };
-
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
@@ -292,6 +352,83 @@ export default function UserSettingsPage({
         </Box>
         <Box style={styles.itemframe}>
           <ThemedListItem
+            iconName="briefcase"
+            iconType="entypo"
+            title="Search for Meetups"
+            subtitle="Toggle actively searching for meetups"
+            rightContent={
+              <ThemedSwitch
+                onValueChange={onToggleMeetupSearch}
+                value={searchForMeetups}
+              />
+            }
+          />
+          <Collapsible collapsed={!searchForMeetups}>
+            <ThemedListItem
+              title="Meetup Type"
+              slim
+              iconName="hand"
+              iconType="entypo"
+              rightContent={
+                <Picker
+                  selectedValue={meetupType}
+                  style={styles.picker}
+                  onValueChange={onSelectMeetupType}
+                >
+                  {defaultMeetupTypes.map((type, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={type.label}
+                      value={type.value}
+                    />
+                  ))}
+                </Picker>
+              }
+            />
+            <ThemedListItem
+              title="Meetup Length"
+              slim
+              iconName="schedule"
+              iconType="material"
+              rightContent={
+                <Picker
+                  selectedValue={meetupLength}
+                  style={styles.picker}
+                  onValueChange={onSelectMeetupLength}
+                >
+                  {defaultMeetupLengths.map((length, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={`${length} minutes`}
+                      value={length}
+                    />
+                  ))}
+                </Picker>
+              }
+            />
+            <ThemedListItem
+              title="COVID Precautions"
+              slim
+              iconName="shield"
+              iconType="entypo"
+              rightContent={
+                <Picker
+                  selectedValue={covidPrecaution}
+                  style={styles.picker}
+                  onValueChange={onSelectCovidPrecaution}
+                >
+                  {defaultCovidPrecautions.map((precaution, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={precaution.label}
+                      value={precaution.value}
+                    />
+                  ))}
+                </Picker>
+              }
+            />
+          </Collapsible>
+          <ThemedListItem
             iconName="cake"
             iconType="entypo"
             title="Age Preference"
@@ -304,7 +441,7 @@ export default function UserSettingsPage({
             }
           />
           <Collapsible collapsed={!showAgePreference}>
-            <Box>
+            <Box mt="sm">
               <Box style={styles.item}>
                 <Text>
                   Current Age Preference:
@@ -326,106 +463,16 @@ export default function UserSettingsPage({
               </Box>
             </Box>
           </Collapsible>
-        </Box>
-        <Box style={styles.itemframe}>
+
           <ThemedListItem
-            iconName="schedule"
-            iconType="material"
+            iconName="calendar"
+            iconType="entypo"
             title="Time Preference"
             subtitle="View and update your time preference"
             onPress={() => {
               navigation.push("UserTimePreference");
             }}
           />
-          <ThemedListItem
-            iconName={"briefcase"}
-            iconType="entypo"
-            title="Search for Meetups"
-            subtitle="Toggle actively searching for meetups"
-            rightContent={
-              <ThemedSwitch
-                onValueChange={() => {
-                  // TODO: Refactor this into a non-inline function
-                  console.log("before " + searchForMeetups);
-                  // toggleSearchForMeetups();
-                  const newState = (searchForMeetups + 1) % 2;
-                  setSearchForMeetups(newState);
-                  console.log("after " + newState);
-                  updateMeetupPrefs(newState, meetupPref, COVIDPref);
-                  // console.log("after after " + searchForMeetups);
-                }}
-                value={searchForMeetups === 1}
-              />
-            }
-          />
-          <Collapsible collapsed={searchForMeetups !== 1}>
-            <Box>
-              <Box style={styles.item}>
-                <Box style={styles.txt}>
-                  <Text>Meetup Type</Text>
-                </Box>
-                <Box>
-                  <Picker
-                    selectedValue={meetupPref}
-                    style={{ height: 50, width: 200 }}
-                    onValueChange={(itemValue, _itemIndex) => {
-                      const newState = itemValue.toString();
-                      setMeetupPref(newState);
-                      updateMeetupPrefs(searchForMeetups, newState, COVIDPref);
-                    }}
-                  >
-                    <Picker.Item label="Virtual" value="virtual" />
-                    <Picker.Item label="In-Person" value="inPerson" />
-                  </Picker>
-                </Box>
-              </Box>
-              <Box style={styles.item}>
-                <Box style={styles.txt}>
-                  <Text>Meetup Length</Text>
-                </Box>
-                <Box>
-                  <Picker
-                    selectedValue={meetupLength}
-                    style={{ height: 50, width: 200 }}
-                    onValueChange={onSelectMeetingLength}
-                  >
-                    {defaultMeetupLengths.map((length, index) => (
-                      <Picker.Item
-                        key={index}
-                        label={`${length} minutes`}
-                        value={length}
-                      />
-                    ))}
-                  </Picker>
-                </Box>
-              </Box>
-
-              <Box style={styles.item}>
-                <Box style={styles.txt}>
-                  <Text>COVID Precautions</Text>
-                </Box>
-                <Box>
-                  <Picker
-                    selectedValue={COVIDPref}
-                    style={{ height: 50, width: 200 }}
-                    onValueChange={(itemValue, _itemIndex) => {
-                      const newState = itemValue.toString();
-                      setCOVIDPref(newState);
-                      updateMeetupPrefs(searchForMeetups, meetupPref, newState);
-                    }}
-                  >
-                    <Picker.Item label="None" value="none" />
-                    <Picker.Item label="Mask" value="mask" />
-                    <Picker.Item label="Gloves" value="gloves" />
-                    <Picker.Item
-                      label="Social Distancing"
-                      value="socialDistancing"
-                    />
-                  </Picker>
-                </Box>
-              </Box>
-            </Box>
-          </Collapsible>
         </Box>
         <Box style={styles.itemframe}>
           <LogoutButton />
