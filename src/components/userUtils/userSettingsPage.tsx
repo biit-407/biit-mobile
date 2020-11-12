@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Button } from "react-native-elements";
-import {Picker} from '@react-native-community/picker';
+import { Picker } from "@react-native-community/picker";
 
 import {
   UserSettingsPageRouteProp,
@@ -61,12 +61,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  switch: {
-    width: "40%",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    margin: 10,
-  },
+  // switch: {
+  //   width: "40%",
+  //   justifyContent: "center",
+  //   alignItems: "flex-end",
+  //   margin: 10,
+  // },
 });
 
 export default function UserSettingsPage({
@@ -87,7 +87,8 @@ export default function UserSettingsPage({
   const toggleSw4 = () => setSw4((previousState) => !previousState);
 
   // Check whether the user has meetups enabled
-  const hasMeetupsEnabled = (accountState.account.optIn == 1) ? accountState.account.optIn : 0;
+  const hasMeetupsEnabled =
+    accountState.account.optIn === 1 ? accountState.account.optIn : 0;
 
   // Toggle Search for Meetups
   const [searchForMeetups, setSearchForMeetups] = useState(hasMeetupsEnabled);
@@ -95,14 +96,22 @@ export default function UserSettingsPage({
 
   // Store info about user's meetup and COVID preferences
   const [meetupPref, setMeetupPref] = useState(
-    (accountState.account.meetType != undefined) ? accountState.account.meetType : "virtual"
+    accountState.account.meetType !== undefined
+      ? accountState.account.meetType
+      : "virtual"
   );
   const [COVIDPref, setCOVIDPref] = useState(
-   (accountState.account.covid != undefined) ? accountState.account.covid : "none"
+    accountState.account.covid !== undefined
+      ? accountState.account.covid
+      : "none"
   );
 
   // Generic method to update meetup prefs information on the backend
-  const updateMeetupPrefs = async(searchForMeetups: number, meetupPref: string, COVIDPref: string) => {
+  const updateMeetupPrefs = async (
+    optIn: number,
+    meetupPreference: string,
+    covidPreference: string
+  ) => {
     await updateAccount(
       accountDispatch,
       tokenDispatch,
@@ -112,9 +121,9 @@ export default function UserSettingsPage({
         fname: accountState.account.fname,
         lname: accountState.account.lname,
         email: accountState.account.email,
-        optIn: searchForMeetups,
-        meetType: meetupPref,
-        covid: COVIDPref,
+        optIn: optIn,
+        meetType: meetupPreference,
+        covid: covidPreference,
       }
     );
   };
@@ -268,20 +277,21 @@ export default function UserSettingsPage({
               <Text>Actively Search for meetups</Text>
             </Box>
             <Box style={styles.txt}>
-              <ThemedSwitch 
+              <ThemedSwitch
                 onValueChange={() => {
                   console.log("before " + searchForMeetups);
                   // toggleSearchForMeetups();
-                  const newState = (searchForMeetups+1)%2;
+                  const newState = (searchForMeetups + 1) % 2;
                   setSearchForMeetups(newState);
                   console.log("after " + newState);
                   updateMeetupPrefs(newState, meetupPref, COVIDPref);
                   // console.log("after after " + searchForMeetups);
                 }}
-                value={(searchForMeetups == 1) ? true : false} />
+                value={searchForMeetups === 1 ? true : false}
+              />
             </Box>
           </Box>
-          {(searchForMeetups == 1) && (
+          {searchForMeetups === 1 && (
             <Box>
               <Box style={styles.item}>
                 <Box style={styles.txt}>
@@ -290,15 +300,15 @@ export default function UserSettingsPage({
                 <Box>
                   <Picker
                     selectedValue={meetupPref}
-                    style={{height: 50, width: 200}}
-                    onValueChange={(itemValue, itemIndex) => {
-                      const newState=(itemValue.toString());
+                    style={{ height: 50, width: 200 }}
+                    onValueChange={(itemValue, _itemIndex) => {
+                      const newState = itemValue.toString();
                       setMeetupPref(newState);
                       updateMeetupPrefs(searchForMeetups, newState, COVIDPref);
                     }}
                   >
-                    <Picker.Item label="Virtual" value="virtual"/>
-                    <Picker.Item label="In-Person" value="inPerson"/>
+                    <Picker.Item label="Virtual" value="virtual" />
+                    <Picker.Item label="In-Person" value="inPerson" />
                   </Picker>
                 </Box>
               </Box>
@@ -309,17 +319,20 @@ export default function UserSettingsPage({
                 <Box>
                   <Picker
                     selectedValue={COVIDPref}
-                    style={{height: 50, width: 200}}
-                      onValueChange={(itemValue, itemIndex) => {
-                        const newState=(itemValue.toString());
-                        setCOVIDPref(newState);
-                        updateMeetupPrefs(searchForMeetups, meetupPref, newState);
-                      }}
+                    style={{ height: 50, width: 200 }}
+                    onValueChange={(itemValue, _itemIndex) => {
+                      const newState = itemValue.toString();
+                      setCOVIDPref(newState);
+                      updateMeetupPrefs(searchForMeetups, meetupPref, newState);
+                    }}
                   >
-                    <Picker.Item label="None" value="none"/>
-                    <Picker.Item label="Mask" value="mask"/>
-                    <Picker.Item label="Gloves" value="gloves"/>
-                    <Picker.Item label="Social Distancing" value="socialDistancing"/>
+                    <Picker.Item label="None" value="none" />
+                    <Picker.Item label="Mask" value="mask" />
+                    <Picker.Item label="Gloves" value="gloves" />
+                    <Picker.Item
+                      label="Social Distancing"
+                      value="socialDistancing"
+                    />
                   </Picker>
                 </Box>
               </Box>
