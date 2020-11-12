@@ -89,13 +89,27 @@ export default function UserSettingsPage({
   */
 
   // Create state for the user's group preference
-  const [allowGroups, setAllowGroups] = useState(false);
+  const [allowGroups, setAllowGroups] = useState(
+    accountState.account.meetGroup === 1
+  );
 
   // Function to handle toggling on and off allowing groups
   const onToggleAllowGroups = (value: boolean) => {
     // Update the switch's state
     setAllowGroups(value);
-    // TODO: Add integration (confirm schema with backend)
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        meetGroup: value ? 1 : 0,
+      }
+    );
   };
 
   // Check whether the user has meetups enabled
