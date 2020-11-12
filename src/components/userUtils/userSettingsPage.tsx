@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
-import { Button } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
+import Collapsible from "react-native-collapsible";
 
 import {
   UserSettingsPageRouteProp,
@@ -11,10 +11,9 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
 import LogoutButton from "../authentication/LogoutButton";
-import { ThemedMultiSlider, ThemedSwitch } from "../themed";
+import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from "../themed";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
-import theme from "../../theme";
 
 type UserSettingsPageProps = {
   route: UserSettingsPageRouteProp;
@@ -45,28 +44,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
   },
-  btn: {
-    width: "50%",
-    margin: 10,
-  },
-  txt: {
-    width: "40%",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    margin: 10,
-  },
   ageRange: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
-  // switch: {
-  //   width: "40%",
-  //   justifyContent: "center",
-  //   alignItems: "flex-end",
-  //   margin: 10,
-  // },
+  picker: {
+    height: 25,
+    width: 150,
+  },
 });
 
 export default function UserSettingsPage({
@@ -76,43 +63,39 @@ export default function UserSettingsPage({
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
 
-  // Dummy switch states
-  const [sw1, setSw1] = useState(false);
-  const toggleSw1 = () => setSw1((previousState) => !previousState);
-  const [sw2, setSw2] = useState(false);
-  const toggleSw2 = () => setSw2((previousState) => !previousState);
-  const [sw3, setSw3] = useState(false);
-  const toggleSw3 = () => setSw3((previousState) => !previousState);
-  const [sw4, setSw4] = useState(false);
-  const toggleSw4 = () => setSw4((previousState) => !previousState);
+  /*
+   ========================
+   Notification Preference
+   ========================
+  */
 
-  // Check whether the user has meetups enabled
-  const hasMeetupsEnabled =
-    accountState.account.optIn === 1 ? accountState.account.optIn : 0;
+  // Create state for the user's notification preference
+  const [allowNotifications, setNotifications] = useState(false);
 
-  // Toggle Search for Meetups
-  const [searchForMeetups, setSearchForMeetups] = useState(hasMeetupsEnabled);
-  // const toggleSearchForMeetups = () => setSearchForMeetups((previousState) => ((previousState+1)%2))
+  // Function to handle toggling on and off allowing groups
+  const onToggleAllowNotifications = (value: boolean) => {
+    // Update the switch's state
+    setNotifications(value);
+    // TODO: Add integration (confirm schema with backend)
+  };
 
-  // Store info about user's meetup and COVID preferences
-  const [meetupPref, setMeetupPref] = useState(
-    accountState.account.meetType !== undefined
-      ? accountState.account.meetType
-      : "virtual"
-  );
-  const [COVIDPref, setCOVIDPref] = useState(
-    accountState.account.covid !== undefined
-      ? accountState.account.covid
-      : "none"
+  /*
+   ========================
+   Group Preference
+   ========================
+  */
+
+  // Create state for the user's group preference
+  const [allowGroups, setAllowGroups] = useState(
+    accountState.account.meetGroup === 1
   );
 
-  // Generic method to update meetup prefs information on the backend
-  const updateMeetupPrefs = async (
-    optIn: number,
-    meetupPreference: string,
-    covidPreference: string
-  ) => {
-    await updateAccount(
+  // Function to handle toggling on and off allowing groups
+  const onToggleAllowGroups = (value: boolean) => {
+    // Update the switch's state
+    setAllowGroups(value);
+    // Update the backend state
+    updateAccount(
       accountDispatch,
       tokenDispatch,
       refreshToken,
@@ -121,30 +104,178 @@ export default function UserSettingsPage({
         fname: accountState.account.fname,
         lname: accountState.account.lname,
         email: accountState.account.email,
-        optIn: optIn,
-        meetType: meetupPreference,
-        covid: covidPreference,
+        meetGroup: value ? 1 : 0,
       }
     );
   };
 
-  // Add scroll control due to slider constraints
-  const [scrollable, setScrollable] = useState(true);
+  /*
+   =============================
+   Search for Meetups Preference
+   =============================
+  */
+  // Create state for the user's preferred meetup search
+  const [searchForMeetups, setSearchForMeetups] = useState(
+    accountState.account.optIn === 1
+  );
+
+  // Function to handle toggling on and off allowing meetup search
+  const onToggleMeetupSearch = (value: boolean) => {
+    // Update the app state
+    setSearchForMeetups(value);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        optIn: value ? 1 : 0,
+      }
+    );
+  };
+
+  /*
+   ======================
+   Meetup Type Preference
+   ======================
+  */
+  // Create default Meetup Types
+  const defaultMeetupTypes = [
+    { label: "Virtual", value: "virtual" },
+    { label: "In-Person", value: "inPerson" },
+  ];
+
+  // Create state for the user's preferred meetup type
+  const [meetupType, setMeetupType] = useState(
+    accountState.account.meetType ?? defaultMeetupTypes[0].value
+  );
+
+  // Function to handle selecting a new meetup type
+  const onSelectMeetupType = (type: number | string) => {
+    // Convert the meetup type to a string
+    type = type.toString();
+    // Update the app state
+    setMeetupType(type);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        meetType: type,
+      }
+    );
+  };
+
+  /*
+   ========================
+   Meetup Length Preference
+   ========================
+  */
+  // Create a default meetup length array
+  const defaultMeetupLengths = [30, 45, 60];
+
+  // Create state for the user's preferred meetup length
+  const [meetupLength, setMeetupLength] = useState(
+    accountState.account.meetLength ?? defaultMeetupLengths[0]
+  );
+
+  // Function to handle selecting a new meetup length
+  const onSelectMeetupLength = (value: number | string) => {
+    // Value should always be a number, based on the possible options
+    const length = value as number;
+    // Update the app state
+    setMeetupLength(length);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        meetLength: length,
+      }
+    );
+  };
+
+  /*
+   ===========================
+   Covid Precaution Preference
+   ===========================
+  */
+  // Create default Covid Precautions
+  const defaultCovidPrecautions = [
+    { label: "None", value: "none" },
+    { label: "Mask", value: "mask" },
+    { label: "Gloves", value: "gloves" },
+    { label: "Social Distancing", value: "socialDistancing" },
+  ];
+
+  // Create state for the user's preferred meetup precaution
+  const [covidPrecaution, setCovidPrecaution] = useState(
+    accountState.account.covid ?? defaultCovidPrecautions[0].value
+  );
+
+  // Function to handle selecting a new meetup precaution
+  const onSelectCovidPrecaution = (precaution: number | string) => {
+    // Convert the meetup precaution to a string
+    precaution = precaution.toString();
+    // Update the app state
+    setCovidPrecaution(precaution);
+    // Update the backend state
+    updateAccount(
+      accountDispatch,
+      tokenDispatch,
+      refreshToken,
+      accountState.account,
+      {
+        fname: accountState.account.fname,
+        lname: accountState.account.lname,
+        email: accountState.account.email,
+        covid: precaution,
+      }
+    );
+  };
+
+  /*
+   ========================
+   Age Preference
+   ========================
+  */
+  // Create a default age range
+  const defaultAgeRange = [18, 100];
 
   // Check whether the user has an age preference
   const hasAgePreference =
     accountState.account.agePref && accountState.account.agePref?.length > 0;
 
-  // Store info about the user's age preference (toggle and range)
+  // Create state for the user's preferred use of age range
   const [showAgePreference, setShowAgePreference] = useState(hasAgePreference);
+
+  // Create state for the user's preferred age range
   const [ageRange, setAgeRange] = useState(
     accountState.account.agePref && hasAgePreference
       ? accountState.account.agePref
-      : [18, 100]
+      : defaultAgeRange
   );
 
-  // Generic method to set the age preference on the backend
+  // Create state to control page scrolling behaviour
+  const [scrollable, setScrollable] = useState(true);
+
+  // Function to handle selecting a new meetup length
   const setAgePreference = (preference: number[]) => {
+    // Update the backend state
     updateAccount(
       accountDispatch,
       tokenDispatch,
@@ -159,80 +290,158 @@ export default function UserSettingsPage({
     );
   };
 
-  // Method to handle toggling on and off age preference
+  // Function to handle toggling on and off age preference
   const onToggleAgePreference = (value: boolean) => {
-    // Toggle the switch state
+    // Update the switch's state
     setShowAgePreference(value);
-    if (value === false) {
-      // If toggled false, clear the user's age preference
-      setAgePreference([]);
-    } else if (value === true) {
-      // If toggled true, set the default age range and update the preference on the backend
-      setAgeRange([18, 100]);
-      setAgePreference([18, 100]);
-    }
+    // Choose the ageRange based on the switch's state
+    const selectedAgeRange = value ? defaultAgeRange : [];
+
+    // Update the user's age preference
+    setAgePreference(selectedAgeRange);
+    // Reset the app state
+    setAgeRange(defaultAgeRange);
   };
 
-  // Method to handle updates from the range slider
-  const onSelectRangeValues = (values: number[]) => {
-    // Enable scrolling
+  // Function to handle a start drag on the slider
+  const onDragAgeRange = () => {
+    // Disable page scrolling
+    setScrollable(false);
+  };
+
+  // Function to handle a stop drag on the slider
+  const onSelectAgeRange = (selectedAgeRange: number[]) => {
+    // Enable page scrolling
     setScrollable(true);
-    // Set the age range state and update the backend
-    setAgeRange(values);
-    setAgePreference(values);
+    // Update the app state
+    setAgeRange(selectedAgeRange);
+    // Update the user's age preference
+    setAgePreference(selectedAgeRange);
   };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Notifications</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw1} value={sw1} />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Profile visible to others</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw2} value={sw2} />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Hide community membership</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw3} value={sw3} />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Hide LinkedIn</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch onValueChange={toggleSw4} value={sw4} />
-            </Box>
-          </Box>
+          <ThemedListItem
+            iconName={
+              allowNotifications ? "notifications" : "notifications-off"
+            }
+            iconType="ionicons"
+            title="Allow Notifications"
+            subtitle="Toggle receiving notifications"
+            rightContent={
+              <ThemedSwitch
+                onValueChange={onToggleAllowNotifications}
+                value={allowNotifications}
+              />
+            }
+          />
+          <ThemedListItem
+            iconName="users"
+            iconType="entypo"
+            title="Allow Groups"
+            subtitle="Toggle allowing group meetups"
+            rightContent={
+              <ThemedSwitch
+                onValueChange={onToggleAllowGroups}
+                value={allowGroups}
+              />
+            }
+          />
         </Box>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Use age preference</Text>
-            </Box>
-            <Box style={styles.txt}>
+          <ThemedListItem
+            iconName="briefcase"
+            iconType="entypo"
+            title="Search for Meetups"
+            subtitle="Toggle actively searching for meetups"
+            rightContent={
+              <ThemedSwitch
+                onValueChange={onToggleMeetupSearch}
+                value={searchForMeetups}
+              />
+            }
+          />
+          <Collapsible collapsed={!searchForMeetups}>
+            <ThemedListItem
+              title="Meetup Type"
+              slim
+              iconName="hand"
+              iconType="entypo"
+              rightContent={
+                <Picker
+                  selectedValue={meetupType}
+                  style={styles.picker}
+                  onValueChange={onSelectMeetupType}
+                >
+                  {defaultMeetupTypes.map((type, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={type.label}
+                      value={type.value}
+                    />
+                  ))}
+                </Picker>
+              }
+            />
+            <ThemedListItem
+              title="Meetup Length"
+              slim
+              iconName="schedule"
+              iconType="material"
+              rightContent={
+                <Picker
+                  selectedValue={meetupLength}
+                  style={styles.picker}
+                  onValueChange={onSelectMeetupLength}
+                >
+                  {defaultMeetupLengths.map((length, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={`${length} minutes`}
+                      value={length}
+                    />
+                  ))}
+                </Picker>
+              }
+            />
+            <ThemedListItem
+              title="COVID Precautions"
+              slim
+              iconName="shield"
+              iconType="entypo"
+              rightContent={
+                <Picker
+                  selectedValue={covidPrecaution}
+                  style={styles.picker}
+                  onValueChange={onSelectCovidPrecaution}
+                >
+                  {defaultCovidPrecautions.map((precaution, index) => (
+                    <Picker.Item
+                      key={index}
+                      label={precaution.label}
+                      value={precaution.value}
+                    />
+                  ))}
+                </Picker>
+              }
+            />
+          </Collapsible>
+          <ThemedListItem
+            iconName="cake"
+            iconType="entypo"
+            title="Age Preference"
+            subtitle="Toggle and update your age preference"
+            rightContent={
               <ThemedSwitch
                 onValueChange={onToggleAgePreference}
                 value={showAgePreference}
               />
-            </Box>
-          </Box>
-          {showAgePreference && (
-            <Box>
+            }
+          />
+          <Collapsible collapsed={!showAgePreference}>
+            <Box mt="sm">
               <Box style={styles.item}>
                 <Text>
                   Current Age Preference:
@@ -240,122 +449,34 @@ export default function UserSettingsPage({
                 </Text>
               </Box>
               <Box style={styles.ageRange}>
-                <Text marginEnd="md">18</Text>
+                <Text marginEnd="md">{defaultAgeRange[0]}</Text>
                 <ThemedMultiSlider
                   values={ageRange}
-                  min={18}
-                  max={100}
-                  onValuesChangeStart={() => setScrollable(false)}
-                  onValuesChangeFinish={onSelectRangeValues}
+                  min={defaultAgeRange[0]}
+                  max={defaultAgeRange[1]}
+                  onValuesChangeStart={onDragAgeRange}
+                  onValuesChangeFinish={onSelectAgeRange}
                   enableLabel={!scrollable}
                   snapped
                 />
-                <Text marginStart="md">100</Text>
+                <Text marginStart="md">{defaultAgeRange[1]}</Text>
               </Box>
             </Box>
-          )}
+          </Collapsible>
+
+          <ThemedListItem
+            iconName="calendar"
+            iconType="entypo"
+            title="Time Preference"
+            subtitle="View and update your time preference"
+            onPress={() => {
+              navigation.push("UserTimePreference");
+            }}
+          />
         </Box>
         <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Time Preferences</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <Button
-                title={"Update Time Preferences"}
-                onPress={() => {
-                  navigation.push("UserTimePreference");
-                }}
-                buttonStyle={{
-                  backgroundColor: theme.colors.buttonPrimaryBackground,
-                }}
-              />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Actively Search for meetups</Text>
-            </Box>
-            <Box style={styles.txt}>
-              <ThemedSwitch
-                onValueChange={() => {
-                  console.log("before " + searchForMeetups);
-                  // toggleSearchForMeetups();
-                  const newState = (searchForMeetups + 1) % 2;
-                  setSearchForMeetups(newState);
-                  console.log("after " + newState);
-                  updateMeetupPrefs(newState, meetupPref, COVIDPref);
-                  // console.log("after after " + searchForMeetups);
-                }}
-                value={searchForMeetups === 1 ? true : false}
-              />
-            </Box>
-          </Box>
-          {searchForMeetups === 1 && (
-            <Box>
-              <Box style={styles.item}>
-                <Box style={styles.txt}>
-                  <Text>Meetup Preferences</Text>
-                </Box>
-                <Box>
-                  <Picker
-                    selectedValue={meetupPref}
-                    style={{ height: 50, width: 200 }}
-                    onValueChange={(itemValue, _itemIndex) => {
-                      const newState = itemValue.toString();
-                      setMeetupPref(newState);
-                      updateMeetupPrefs(searchForMeetups, newState, COVIDPref);
-                    }}
-                  >
-                    <Picker.Item label="Virtual" value="virtual" />
-                    <Picker.Item label="In-Person" value="inPerson" />
-                  </Picker>
-                </Box>
-              </Box>
-              <Box style={styles.item}>
-                <Box style={styles.txt}>
-                  <Text>COVID Preferences</Text>
-                </Box>
-                <Box>
-                  <Picker
-                    selectedValue={COVIDPref}
-                    style={{ height: 50, width: 200 }}
-                    onValueChange={(itemValue, _itemIndex) => {
-                      const newState = itemValue.toString();
-                      setCOVIDPref(newState);
-                      updateMeetupPrefs(searchForMeetups, meetupPref, newState);
-                    }}
-                  >
-                    <Picker.Item label="None" value="none" />
-                    <Picker.Item label="Mask" value="mask" />
-                    <Picker.Item label="Gloves" value="gloves" />
-                    <Picker.Item
-                      label="Social Distancing"
-                      value="socialDistancing"
-                    />
-                  </Picker>
-                </Box>
-              </Box>
-            </Box>
-          )}
-        </Box>
-        <Box style={styles.itemframe}>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Logout</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <LogoutButton />
-            </Box>
-          </Box>
-          <Box style={styles.item}>
-            <Box style={styles.txt}>
-              <Text>Delete Account</Text>
-            </Box>
-            <Box style={styles.btn}>
-              <DeleteAccountButton />
-            </Box>
-          </Box>
+          <LogoutButton />
+          <DeleteAccountButton />
         </Box>
       </ScrollView>
     </Box>

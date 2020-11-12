@@ -1,28 +1,15 @@
 import React from "react";
 import { Alert } from "react-native";
 
-import ThemedButton from "../themed/ThemedButton";
 import { logoutAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useAzure } from "../../contexts/azureContext";
+import { ThemedListItem } from "../themed";
 
 export default function LogoutButton() {
   const [, accountDispatch] = useAccount();
   const [, tokenDispatch] = useToken();
   const [, azureDispatch] = useAzure();
-
-  //! This should be done implicitly
-  // // Listen for account state to be logged out
-  // useEffect(() => {
-  //   if (accountState.status === "logged out") {
-  //     // Navigate back to the login page once account is logged out
-  //     // TODO fix this
-  //     // navigation.reset({
-  //     //   index: 0,
-  //     //   routes: [{ name: "Login" }],
-  //     // });
-  //   }
-  // }, [accountState.status, navigation]);
 
   const showLogoutDialog = () => {
     Alert.alert("Logout?", "Are you sure you want to logout of your account?", [
@@ -33,20 +20,19 @@ export default function LogoutButton() {
       {
         text: "Confirm",
         onPress: () => {
-          // Invalidate the current user account to log them out
-          // tokenDispatch({ ...BLANK_TOKEN, type: "clear" });
-          // azureDispatch({
-          //   type: "invalidate",
-          //   ...BLANK_TOKEN,
-          //   grantToken: "",
-          //   userInfo: BLANK_AZURE_USER_INFO,
-          // });
-          // accountDispatch({ type: "invalidate", ...accountState });
           logoutAccount(accountDispatch, tokenDispatch, azureDispatch);
         },
       },
     ]);
   };
 
-  return <ThemedButton title="Logout" onPress={showLogoutDialog} />;
+  return (
+    <ThemedListItem
+      iconName="log-out"
+      iconType="entypo"
+      title="Logout"
+      subtitle="Log out and remove local account data"
+      onPress={showLogoutDialog}
+    />
+  );
 }
