@@ -21,9 +21,12 @@ const theme = createTheme({
   colors: {
     mainBackground: palette.tanLight,
     mainForeground: palette.tanDark,
+
     drawerBackground: palette.brownDark,
     drawerPrimaryText: palette.tanLight,
+
     headerBackground: palette.tanDark,
+
     primaryText: palette.brownDark,
     borderPrimary: palette.brownLight,
     cardBackground: palette.tanPrimary,
@@ -51,6 +54,10 @@ const theme = createTheme({
 
     tabBarActiveText: palette.brownPrimary,
     tabBarInactiveText: palette.brownLight,
+
+    searchBarBackground: palette.tanDark,
+    searchBarInputBackground: palette.tanLight,
+    searchBarPlaceholderText: palette.brownLight,
   },
   spacing: {
     xs: 4,

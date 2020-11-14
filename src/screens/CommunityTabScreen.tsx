@@ -39,7 +39,7 @@ export default function CommunityTabScreen() {
       />
       {/* #TODO:  Include create community and search for new community pages */}
       <Tab.Screen
-        name="Search Communities"
+        name="Search for Communities"
         component={SettingsScreen}
         options={{
           tabBarIcon: ({ color }: { color: string }) => (

@@ -1,9 +1,8 @@
-import { BottomTabBarOptions } from "@react-navigation/bottom-tabs";
+import { useTheme } from "@shopify/restyle";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { useCommunity } from "../../contexts/communityContext";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
@@ -11,8 +10,10 @@ import {
   CommunityListPageNavigationProp,
   CommunityListPageRouteProp,
 } from "../../routes";
+import { Theme } from "../../theme";
 import { ThemedIcon, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
+import ThemedSearchBar from "../themed/ThemedSearchBar";
 
 type CommunityListPageProps = {
   route: CommunityListPageRouteProp;
@@ -65,17 +66,17 @@ export default function CommunityListPage({
   const renderListItem = ({ item }: { item: Community }) => (
     <ThemedListItem
       title={item.name}
-      chevron
       onPress={() => {
         navigation.push("CommunityHome", { communityID: item.name });
       }}
+      chevron
     />
   );
 
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
-      <SearchBar
-        placeholder="Type Here..."
+      <ThemedSearchBar
+        placeholder="Search your communities..."
         onChangeText={onSearch}
         value={search}
       />
