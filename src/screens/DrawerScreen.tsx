@@ -105,73 +105,12 @@ const DrawerComponent = (
           icon={"smile"}
         />
 
-        <DrawerItem
+        <CustomDrawerItem
+          navigation={navigation}
           label={"Communities"}
-          onPress={() => setShowCommunities(!showCommunities)}
-          labelStyle={{
-            fontWeight: "bold",
-            fontSize: 16,
-            height: 48,
-            color: theme.colors.drawerPrimaryText,
-          }}
-          style={{ height: 64 }}
-          icon={() => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="briefcase"
-                type="feather"
-                color={theme.colors.drawerBackground}
-                iconStyle={{
-                  color: theme.colors.drawerPrimaryText,
-                  fontWeight: "bold",
-                  height: 48,
-                }}
-              />
-            );
-          }}
+          location={"Community"}
+          icon={"briefcase"}
         />
-        {showCommunities ? (
-          communities.map((item) => {
-            return (
-              <DrawerItem
-                key={item}
-                label={item}
-                onPress={() => {
-                  navigation.navigate("Community", {
-                    screen: "CommunityHome",
-                    initial: true,
-                    params: { communityID: item },
-                  });
-                }}
-                labelStyle={{
-                  fontSize: 16,
-                  height: 48,
-                  color: theme.colors.drawerPrimaryText,
-                }}
-                style={{ height: 64 }}
-                icon={() => {
-                  return (
-                    <ThemedIcon
-                      size={24}
-                      reverse
-                      name="briefcase"
-                      type="feather"
-                      color={theme.colors.drawerBackground}
-                      iconStyle={{
-                        color: theme.colors.drawerPrimaryText,
-                        height: 48,
-                      }}
-                    />
-                  );
-                }}
-              />
-            );
-          })
-        ) : (
-          <></>
-        )}
         <CustomDrawerItem
           navigation={navigation}
           label={"Settings"}

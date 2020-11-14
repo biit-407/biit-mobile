@@ -4,6 +4,7 @@
 
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useTheme } from "@shopify/restyle";
 
 import BannedUsersPage, {
   BannedUsersPageOptions,
@@ -26,20 +27,22 @@ import JoinCommunityPage, {
 import LeaveCommunityPage, {
   LeaveCommunityPageOptions,
 } from "../components/communities/LeaveCommunityPage";
-import theme from "../theme";
 import { ThemedIcon } from "../components/themed";
 import CommunityHomePage, {
   CommunityHomePageOptions,
 } from "../components/communities/CommunityHomePage";
+import { Theme } from "../theme";
+
+import CommunityTabScreen from "./CommunityTabScreen";
 
 const CommunityStack = createStackNavigator();
 
 const CommunityStackScreen = (
   { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ) => {
+  const theme = useTheme<Theme>();
   return (
     <CommunityStack.Navigator
-      initialRouteName="CommunityHome"
       screenOptions={{
         headerStyle: {
           backgroundColor: theme.colors.headerBackground,
@@ -48,10 +51,9 @@ const CommunityStackScreen = (
       }}
     >
       <CommunityStack.Screen
-        name="CommunityHome"
-        component={CommunityHomePage}
+        name="Communities"
+        component={CommunityTabScreen}
         options={{
-          ...CommunityHomePageOptions,
           headerLeft: () => {
             return (
               <ThemedIcon
@@ -68,6 +70,11 @@ const CommunityStackScreen = (
             );
           },
         }}
+      />
+      <CommunityStack.Screen
+        name="CommunityHome"
+        component={CommunityHomePage}
+        options={CommunityHomePageOptions}
       />
       <CommunityStack.Screen
         name="BannedUsers"
@@ -87,9 +94,7 @@ const CommunityStackScreen = (
       <CommunityStack.Screen
         name="MemberList"
         component={MemberListPage}
-        options={{
-          ...MemberListPageOptions,
-        }}
+        options={MemberListPageOptions}
         initialParams={{ name: "Johnsons" }}
       />
       <CommunityStack.Screen

@@ -11,6 +11,7 @@ const palette = {
 
   black: "#000000",
   white: "#FFFFFF",
+  grey: "#888888",
 
   darkGreen: "#1e6928",
   darkRed: "#ab2115",
@@ -47,6 +48,9 @@ const theme = createTheme({
     switchTrackDisabled: palette.brownLight,
     switchThumbEnabled: palette.brownLight,
     switchThumbDisabled: palette.tanDark,
+
+    tabBarActiveText: palette.brownPrimary,
+    tabBarInactiveText: palette.brownLight,
   },
   spacing: {
     xs: 4,
