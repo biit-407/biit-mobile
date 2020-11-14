@@ -49,14 +49,21 @@ export default function CommunityListPage({
     { ...BLANK_COMMUNITY, name: "Johnsons" },
   ];
 
+  const [filteredCommunities, setFilteredCommunities] = useState(communities);
+
   const [search, setSearch] = useState("");
   const onSearch = (searchText: string) => {
     setSearch(searchText);
+    searchText = searchText.toLowerCase().replace(/\s/g, "");
+    const filtered = communities.filter(({ name }) => {
+      name = name.toLowerCase().replace(/\s/g, "");
+      return name.includes(searchText);
+    });
+    setFilteredCommunities(filtered);
   };
 
   const renderListItem = ({ item }: { item: Community }) => (
     <ThemedListItem
-      key={item.name}
       title={item.name}
       chevron
       onPress={() => {
@@ -73,7 +80,7 @@ export default function CommunityListPage({
         value={search}
       />
       <FlatList
-        data={communities}
+        data={filteredCommunities}
         renderItem={renderListItem}
         keyExtractor={(community) => community.name}
       />
