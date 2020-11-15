@@ -82,11 +82,6 @@ const CommunityStackScreen = (
         options={BannedUsersPageOptions}
       />
       <CommunityStack.Screen
-        name="CodeOfConduct"
-        component={CodeOfConductPage}
-        options={CodeOfConductPageOptions}
-      />
-      <CommunityStack.Screen
         name="CommunityAdministration"
         component={CommunityAdministrationPage}
         options={CommunityAdministrationPageOptions}

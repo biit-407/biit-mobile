@@ -115,12 +115,6 @@ export default function CommunityHomePage({
         }}
       >{`View all ${Members.length} members`}</Text>
       <CommunityActionButton
-        title="Code of Conduct"
-        onPress={() => {
-          navigation.push("CodeOfConduct", { name: communityID });
-        }}
-      />
-      <CommunityActionButton
         title="Banned Users"
         onPress={() => {
           navigation.push("BannedUsers", { name: communityID });
