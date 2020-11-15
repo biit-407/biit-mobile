@@ -9,9 +9,6 @@ import { useTheme } from "@shopify/restyle";
 import BannedUsersPage, {
   BannedUsersPageOptions,
 } from "../components/communities/BannedUsersPage";
-import CodeOfConductPage, {
-  CodeOfConductPageOptions,
-} from "../components/communities/CodeOfConductPage";
 import CommunityAdministrationPage, {
   CommunityAdministrationPageOptions,
 } from "../components/communities/CommunityAdministrationPage";

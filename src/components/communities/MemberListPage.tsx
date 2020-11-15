@@ -19,6 +19,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
+import { useConstructor } from "../../hooks";
 
 type MemberListPageProps = {
   route: MemberListPageRouteProp;
@@ -34,47 +35,44 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFE8C6",
-  },
-  list: {
-    width: "100%",
   },
 });
 
-// const Item = ({ title }: { title: string }) => (
-//   <Box style={styles.listitem}>
-//     <Text>{title}</Text>
-//   </Box>
-// );
+type MemberListSection = { title: string; icon: string; data: string[] };
 
 export default function MemberListPage({ route }: MemberListPageProps) {
-  const [communityState, communityDispatch] = useCommunity();
-  const [data, setData] = useState<
-    { title: string; icon: string; data: string[] }[]
-  >([]);
-  const [community, setCommunity] = useState<Community>(BLANK_COMMUNITY);
+  // Get app contexts
   const [tokenState, tokenDispatch] = useToken();
+  const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
 
-  useEffect(() => {
-    // automatically queue a data update
+  // Create state for page variables
+  const [memberData, setMemberData] = useState<MemberListSection[]>([]);
+  const [community, setCommunity] = useState<Community>(BLANK_COMMUNITY);
+
+  // Load the community data
+  useConstructor(() => {
     loadCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       route.params.name
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  });
 
+  // Upon loading the community, set the data of the section list
   useEffect(() => {
-    const tempCommunity = getCommunity(communityState, route.params.name);
-    setData([
-      { title: "Admins", data: tempCommunity.Admins, icon: "user" },
-      { title: "Members", data: tempCommunity.Members, icon: "users" },
+    const loadedCommunity = getCommunity(communityState, route.params.name);
+    const { Admins, Members } = loadedCommunity;
+    setMemberData([
+      { title: "Admins", data: Admins, icon: "user" },
+      {
+        title: "Members",
+        data: Members.filter((member) => !Admins.includes(member)),
+        icon: "users",
+      },
     ]);
-    setCommunity(tempCommunity);
+    setCommunity(loadedCommunity);
   }, [communityState, route.params.name]);
 
   const promptBanUser = (email: string, communityName: string) => {
@@ -120,8 +118,8 @@ export default function MemberListPage({ route }: MemberListPageProps) {
     return (
       <ThemedIcon
         size={24}
-        name="cross"
-        type="entypo"
+        name="ban"
+        type="fontisto"
         onPress={() => promptBanUser(memberEmail, communityInfo.name)}
       />
     );
@@ -135,13 +133,9 @@ export default function MemberListPage({ route }: MemberListPageProps) {
   );
 
   return (
-    <Box style={styles.root}>
-      <Box marginVertical="md">
-        <Text variant="header">{community.name}</Text>
-      </Box>
+    <Box style={styles.root} backgroundColor="mainBackground">
       <SectionList
-        style={styles.list}
-        sections={data}
+        sections={memberData}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => <Item title={item} />}
         renderSectionHeader={({ section: { title, icon } }) => (
