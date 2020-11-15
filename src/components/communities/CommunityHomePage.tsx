@@ -1,15 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
+import ReadMore from "react-native-read-more-text";
 
 import { useAccountState } from "../../contexts/accountContext";
-import { startMatching } from "../../contexts/communityContext";
+import {
+  getCommunity,
+  loadCommunity,
+  startMatching,
+  useCommunity,
+} from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY } from "../../models/community";
 import {
   CommunityHomePageRouteProp,
   CommunityHomePageNavigationProp,
 } from "../../routes";
 import theme from "../../theme";
+import { Text } from "../themed";
 import Box from "../themed/Box";
 
 type CommunityHomePageProps = {
@@ -25,7 +34,8 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    alignItems: "flex-start",
+    alignItems: "center",
+    justifyContent: "flex-start",
     padding: 16,
   },
 });
@@ -36,6 +46,7 @@ export default function CommunityHomePage({
 }: CommunityHomePageProps) {
   const { communityID } = route.params;
   const [tokenState, tokenDispatch] = useToken();
+  const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
 
   const startNewSession = async () => {
@@ -48,14 +59,61 @@ export default function CommunityHomePage({
     Alert.alert(`${result}`);
   };
 
+  // Utilize community data
+  const [community, setCommunity] = useState(BLANK_COMMUNITY);
+
+  useConstructor(() => {
+    // automatically queue a data update
+    loadCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      route.params.communityID
+    );
+  });
+
+  useEffect(() => {
+    const loadedCommunity = getCommunity(
+      communityState,
+      route.params.communityID
+    );
+    setCommunity(loadedCommunity);
+  }, [communityState, route.params.communityID]);
+
+  const { name, codeofconduct, Members } = community;
+
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
-      <CommunityActionButton
-        title="View Members"
+      <Text variant="header" textAlign="center">
+        {name}
+      </Text>
+      <ReadMore
+        numberOfLines={3}
+        renderRevealedFooter={(handlePress) => {
+          return (
+            <Text variant="link" onPress={handlePress} fontSize={14}>
+              Show Less
+            </Text>
+          );
+        }}
+        renderTruncatedFooter={(handlePress) => {
+          return (
+            <Text variant="link" onPress={handlePress} fontSize={14}>
+              Show More
+            </Text>
+          );
+        }}
+      >
+        <Text variant="body">{codeofconduct}</Text>
+      </ReadMore>
+      <Text
+        fontWeight="bold"
+        textDecorationLine="underline"
+        fontSize={16}
         onPress={() => {
           navigation.push("MemberList", { name: communityID });
         }}
-      />
+      >{`View all ${Members.length} members`}</Text>
       <CommunityActionButton
         title="Code of Conduct"
         onPress={() => {
