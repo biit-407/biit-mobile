@@ -61,6 +61,7 @@ export default function CommunityHomePage({
 
   // Utilize community data
   const [community, setCommunity] = useState(BLANK_COMMUNITY);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useConstructor(() => {
     // automatically queue a data update
@@ -78,7 +79,10 @@ export default function CommunityHomePage({
       route.params.communityID
     );
     setCommunity(loadedCommunity);
-  }, [communityState, route.params.communityID]);
+    if (loadedCommunity.Admins.includes(accountState.account.email)) {
+      setIsAdmin(true);
+    }
+  }, [communityState, route.params.communityID, accountState]);
 
   const { name, codeofconduct, Members } = community;
   const theme = useTheme<Theme>();
@@ -129,22 +133,36 @@ export default function CommunityHomePage({
         /> */}
       </Box>
       <Box flexDirection="row">
-        <ThemedIcon
-          name="edit"
-          type="feather"
-          reverse
-          onPress={() => {
-            navigation.push("CommunityAdministration", { name: communityID });
-          }}
-        />
-        <ThemedIcon
-          name="ban"
-          type="fontisto"
-          reverse
-          onPress={() => {
-            navigation.push("BannedUsers", { name: communityID });
-          }}
-        />
+        {isAdmin && (
+          <>
+            <ThemedIcon
+              name="edit"
+              type="feather"
+              reverse
+              onPress={() => {
+                navigation.push("CommunityAdministration", {
+                  name: communityID,
+                });
+              }}
+            />
+            <ThemedIcon
+              name="line-graph"
+              type="entypo"
+              reverse
+              onPress={() => {
+                console.log("Navigate to statistics");
+              }}
+            />
+            <ThemedIcon
+              name="ban"
+              type="fontisto"
+              reverse
+              onPress={() => {
+                navigation.push("BannedUsers", { name: communityID });
+              }}
+            />
+          </>
+        )}
         <ThemedIcon
           name="group"
           type="fontawesome"
@@ -153,6 +171,7 @@ export default function CommunityHomePage({
             navigation.push("MemberList", { name: communityID });
           }}
         />
+
         <ThemedIcon
           name="account-remove"
           type="material-community"
