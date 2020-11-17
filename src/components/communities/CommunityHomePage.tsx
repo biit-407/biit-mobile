@@ -1,6 +1,6 @@
 import { useTheme } from "@shopify/restyle";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import ReadMore from "react-native-read-more-text";
 
 import { useAccountState } from "../../contexts/accountContext";
@@ -17,9 +17,12 @@ import {
   CommunityHomePageRouteProp,
   CommunityHomePageNavigationProp,
 } from "../../routes";
-import { Text, ThemedIcon } from "../themed";
+import { Text, ThemedButton, ThemedIcon } from "../themed";
 import Box from "../themed/Box";
 import { Theme } from "../../theme";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { BLANK_MEETUP } from "../../models/meetups";
+import MeetupCard from "../meetups/MeetupCard";
 
 type CommunityHomePageProps = {
   route: CommunityHomePageRouteProp;
@@ -36,9 +39,18 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
-    padding: 16,
   },
 });
+
+const Divider = () => (
+  <View
+    style={{
+      flexGrow: 1,
+      borderBottomColor: "black",
+      borderBottomWidth: 2,
+    }}
+  />
+);
 
 export default function CommunityHomePage({
   route,
@@ -49,7 +61,7 @@ export default function CommunityHomePage({
   const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
 
-  const startNewSession = async () => {
+  const searchForMeetup = async () => {
     const result = await startMatching(
       tokenDispatch,
       tokenState.refreshToken,
@@ -86,101 +98,132 @@ export default function CommunityHomePage({
 
   const { name, codeofconduct, Members } = community;
   const theme = useTheme<Theme>();
+  const [readMoreReady, setReadMoreReady] = useState(false);
+
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
-      <Box flexGrow={1}>
-        <Text variant="header" textAlign="center">
-          {name}
+      <ScrollView>
+        <Box flexGrow={1} width="100%" padding="md" justifyContent="flex-start">
+          <Text variant="header" textAlign="center">
+            {name}
+          </Text>
+          <Box
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            marginVertical="sm"
+          >
+            <Divider />
+            <Text
+              fontWeight="bold"
+              fontSize={16}
+              marginHorizontal="sm"
+              onPress={() => {
+                navigation.push("MemberList", { name: communityID });
+              }}
+            >{`${Members.length} members`}</Text>
+            <Divider />
+          </Box>
+          <ReadMore
+            numberOfLines={3}
+            renderTruncatedFooter={(handlePress) =>
+              readMoreReady && (
+                <Text variant="link" onPress={handlePress} fontSize={14}>
+                  Show More
+                </Text>
+              )
+            }
+            renderRevealedFooter={(handlePress) =>
+              readMoreReady && (
+                <Text variant="link" onPress={handlePress} fontSize={14}>
+                  Show Less
+                </Text>
+              )
+            }
+            onReady={() => setReadMoreReady(true)}
+          >
+            <Text variant="body">{codeofconduct}</Text>
+          </ReadMore>
+          <Box flexDirection="row" marginVertical="md">
+            <Divider />
+          </Box>
+          <Text textAlign="center" variant="subheader" marginBottom="sm">
+            Want to find a new meetup for {name}?
+          </Text>
+          <ThemedButton title="Search for Meetup" onPress={searchForMeetup} />
+          <Text textAlign="center" variant="subheader" marginVertical="md">
+            Your meetups in {name}
+          </Text>
+        </Box>
+      </ScrollView>
+      <Box
+        width="100%"
+        marginBottom="sm"
+        borderTopColor="borderPrimary"
+        borderTopWidth={2}
+      >
+        <Text textAlign="center" margin="xs" variant="subheader">
+          Community Actions
         </Text>
-        <ReadMore
-          numberOfLines={3}
-          renderRevealedFooter={(handlePress) => {
-            return (
-              <Text variant="link" onPress={handlePress} fontSize={14}>
-                Show Less
-              </Text>
-            );
-          }}
-          renderTruncatedFooter={(handlePress) => {
-            return (
-              <Text variant="link" onPress={handlePress} fontSize={14}>
-                Show More
-              </Text>
-            );
-          }}
+        <Box
+          flexDirection="row"
+          justifyContent="space-evenly"
+          alignItems="center"
         >
-          <Text variant="body">{codeofconduct}</Text>
-        </ReadMore>
-        <Text
-          fontWeight="bold"
-          textDecorationLine="underline"
-          fontSize={16}
-          onPress={() => {
-            navigation.push("MemberList", { name: communityID });
-          }}
-        >{`View all ${Members.length} members`}</Text>
+          {isAdmin && (
+            <>
+              <ThemedIcon
+                size={20}
+                name="edit"
+                type="feather"
+                reverse
+                onPress={() => {
+                  navigation.push("CommunityAdministration", {
+                    name: communityID,
+                  });
+                }}
+              />
+              <ThemedIcon
+                size={20}
+                name="line-graph"
+                type="entypo"
+                reverse
+                onPress={() => {
+                  console.log("Navigate to statistics");
+                }}
+              />
+              <ThemedIcon
+                size={20}
+                name="ban"
+                type="fontisto"
+                reverse
+                onPress={() => {
+                  navigation.push("BannedUsers", { name: communityID });
+                }}
+              />
+            </>
+          )}
+          <ThemedIcon
+            size={20}
+            name="group"
+            type="fontawesome"
+            reverse
+            onPress={() => {
+              navigation.push("MemberList", { name: communityID });
+            }}
+          />
 
-        {/* <CommunityActionButton
-          title="Start New Session"
-          onPress={startNewSession}
-        />
-        <CommunityActionButton
-          isRed={true}
-          title="Leave Community"
-          onPress={() => {
-            navigation.push("LeaveCommunity", { name: communityID });
-          }}
-        /> */}
-      </Box>
-      <Box flexDirection="row">
-        {isAdmin && (
-          <>
-            <ThemedIcon
-              name="edit"
-              type="feather"
-              reverse
-              onPress={() => {
-                navigation.push("CommunityAdministration", {
-                  name: communityID,
-                });
-              }}
-            />
-            <ThemedIcon
-              name="line-graph"
-              type="entypo"
-              reverse
-              onPress={() => {
-                console.log("Navigate to statistics");
-              }}
-            />
-            <ThemedIcon
-              name="ban"
-              type="fontisto"
-              reverse
-              onPress={() => {
-                navigation.push("BannedUsers", { name: communityID });
-              }}
-            />
-          </>
-        )}
-        <ThemedIcon
-          name="group"
-          type="fontawesome"
-          reverse
-          onPress={() => {
-            navigation.push("MemberList", { name: communityID });
-          }}
-        />
-
-        <ThemedIcon
-          name="account-remove"
-          type="material-community"
-          color={theme.colors.iconSelectedRed}
-          reverse
-          onPress={() => {
-            navigation.push("LeaveCommunity", { name: communityID });
-          }}
-        />
+          <ThemedIcon
+            size={20}
+            name="account-remove"
+            type="material-community"
+            color={theme.colors.iconSelectedRed}
+            reverse
+            onPress={() => {
+              navigation.push("LeaveCommunity", { name: communityID });
+            }}
+          />
+        </Box>
       </Box>
     </Box>
   );

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-import { useCommunity } from "../../contexts/communityContext";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
 import {
   CommunityListPageNavigationProp,
