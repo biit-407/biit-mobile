@@ -88,6 +88,7 @@ const CommunityStackScreen = (
         component={MemberListPage}
         options={MemberListPageOptions}
         initialParams={{ name: "Johnsons" }}
+
       />
       <CommunityStack.Screen
         name="CreateCommunity"
