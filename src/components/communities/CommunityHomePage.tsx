@@ -2,7 +2,7 @@ import { useTheme } from "@shopify/restyle";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import ReadMore from "react-native-read-more-text";
-import { FlatList, ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 
 import { useAccountState } from "../../contexts/accountContext";
 import {
