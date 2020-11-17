@@ -1,5 +1,5 @@
 Arguments: 
-  E:\Libraries\NodeJS\node.exe C:\Users\Daniel\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/fawazahmed__react-native-read-more
+  E:\Libraries\NodeJS\node.exe C:\Users\Daniel\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/react-speed-dial
 
 PATH: 
   C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Razer\ChromaBroadcast\bin;C:\Program Files\Razer\ChromaBroadcast\bin;C:\Program Files (x86)\Razer Chroma SDK\bin;C:\Program Files\Razer Chroma SDK\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\Daniel\AppData\Local\Microsoft\WindowsApps;C:\Users\Daniel\AppData\Local\GitHubDesktop\bin;C:\Program Files\dotnet\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Users\Daniel\.dotnet\tools;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;E:\Applications\Git\cmd;E:\Applications\PuTTY\;E:\Libraries\Java\jdk-11.0.9\bin;E:\Libraries\Python\3.8.5\Scripts\;E:\Libraries\Python\3.8.5\;E:\Libraries\NodeJS\;E:\Libraries\Neo4J\bin;E:\Libraries\MongoDB\Server\4.4\bin;E:\Applications\Microsoft VS Code\bin;E:\Applications\Visual Studio Code\bin;E:\Libraries\Flutter\bin;E:\Libraries\Android-SDK\tools;E:\Libraries\Android-SDK\platform-tools;C:\Users\Daniel\AppData\Roaming\npm;E:\Libraries\Google\Cloud SDK\google-cloud-sdk\bin
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2ffawazahmed__react-native-read-more: Not found
+  Error: https://registry.yarnpkg.com/@types%2freact-speed-dial: Not found
       at Request.params.callback [as _callback] (C:\Users\Daniel\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
       at Request.self.callback (C:\Users\Daniel\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
       at Request.emit (events.js:315:20)
@@ -43,7 +43,6 @@ npm manifest:
       "build": "yarn tsc"
     },
     "dependencies": {
-      "@fawazahmed/react-native-read-more": "^1.0.9",
       "@ptomasroos/react-native-multi-slider": "^2.2.2",
       "@react-native-community/datetimepicker": "2.4.0",
       "@react-native-community/masked-view": "0.1.10",
@@ -74,11 +73,13 @@ npm manifest:
       "react-native-dropdown-picker": "^3.7.1",
       "react-native-elements": "^2.3.2",
       "react-native-gesture-handler": "~1.6.0",
+      "react-native-read-more-text": "^1.1.2",
       "react-native-reanimated": "~1.9.0",
       "react-native-safe-area-context": "~3.0.7",
       "react-native-screens": "~2.9.0",
       "react-native-vector-icons": "^7.1.0",
       "react-native-web": "~0.11.7",
+      "react-speed-dial": "^0.5.2",
       "rn-fetch-blob": "^0.12.0"
     },
     "devDependencies": {
@@ -1247,13 +1248,6 @@ Lockfile:
       noop-fn "^1.0.0"
       pouchdb-collections "^1.0.1"
       tiny-queue "^0.2.1"
-  
-  "@fawazahmed/react-native-read-more@^1.0.9":
-    version "1.0.9"
-    resolved "https://registry.yarnpkg.com/@fawazahmed/react-native-read-more/-/react-native-read-more-1.0.9.tgz#aa0145f9fa1212fd024b72e70820c7122fef5955"
-    integrity sha512-D7414UXg1HktawO0n1c/gV1lLKMeczSb4SIXuYY/Z1ixELw+Rdy26Ya+QdjCYi8436VOUY8Ep9xEZnAzikBQAA==
-    dependencies:
-      prop-types "^15.7.2"
   
   "@hapi/address@2.x.x":
     version "2.1.4"
@@ -7624,6 +7618,11 @@ Lockfile:
       lodash "^4.17.15"
       prop-types "^15.7.2"
   
+  react-native-read-more-text@^1.1.2:
+    version "1.1.2"
+    resolved "https://registry.yarnpkg.com/react-native-read-more-text/-/react-native-read-more-text-1.1.2.tgz#3f64aee61ec4d3109437f4125f10e49eccdee65a"
+    integrity sha512-FIQhOpvikUanwPRl9QVBYmx6Wx7IXxXH/jlzElOLcP+NSgFLw2fRzSekQUq0yicymZsi7cAWW5TtIj8FHWtNDw==
+  
   react-native-reanimated@~1.9.0:
     version "1.9.0"
     resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.9.0.tgz#38676c99dd585504fdc7331efb45e5f48ec7339a"
@@ -7715,6 +7714,11 @@ Lockfile:
     version "0.4.3"
     resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.4.3.tgz#966f1750c191672e76e16c2efa569150cc73ab53"
     integrity sha512-Hwln1VNuGl/6bVwnd0Xdn1e84gT/8T9aYNL+HAKDArLCS7LWjwr7StE30IEYbIkx0Vi3vs+coQxe+SQDbGbbpA==
+  
+  react-speed-dial@^0.5.2:
+    version "0.5.2"
+    resolved "https://registry.yarnpkg.com/react-speed-dial/-/react-speed-dial-0.5.2.tgz#bb0a7145337c1dcf80407dca1e5dfb7b861c5529"
+    integrity sha512-CoiXML7m4tSF3SYgFDUuiL3+zaZOu9bG4scYxHiEIOq5WPg6k0Nzv8FKRRoAG0yHJDGxAwFMBsXJGw0RHPvJdA==
   
   react-test-renderer@^16.13.1:
     version "16.13.1"
