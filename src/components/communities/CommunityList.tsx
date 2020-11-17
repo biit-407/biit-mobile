@@ -1,7 +1,5 @@
-import { useTheme } from "@shopify/restyle";
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { SearchBar } from "react-native-elements";
 import { FlatList } from "react-native-gesture-handler";
 
 import { useCommunity } from "../../contexts/communityContext";
@@ -10,7 +8,6 @@ import {
   CommunityListPageNavigationProp,
   CommunityListPageRouteProp,
 } from "../../routes";
-import { Theme } from "../../theme";
 import { ThemedIcon, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
@@ -42,9 +39,9 @@ const styles = StyleSheet.create({
 export default function CommunityListPage({
   navigation,
 }: CommunityListPageProps) {
-  const [communityState, communityDispatch] = useCommunity();
-
   // TODO: Actually use community state once the endpoint is created
+  // const [communityState, communityDispatch] = useCommunity();
+
   const communities: Community[] = [
     { ...BLANK_COMMUNITY, name: "biit" },
     { ...BLANK_COMMUNITY, name: "Johnsons" },
