@@ -48,7 +48,7 @@ const DrawerComponent = (
   const [tokenState, tokenDispatch] = useToken();
   const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
   const [showCommunities, setShowCommunities] = React.useState(false);
-  const communities = ["Johnsons"];
+  const communities = ["biit"];
 
   useEffect(() => {
     getProfilePicture(

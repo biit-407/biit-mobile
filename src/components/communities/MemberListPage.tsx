@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, SectionList, Alert } from "react-native";
+import { StyleSheet, SectionList, Alert, SectionListData } from "react-native";
 
 import {
   banUserFromCommunity,
@@ -8,7 +8,6 @@ import {
   useCommunity,
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
-import { Account } from "../../models/accounts";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
 import { useAccountState } from "../../contexts/accountContext";
 import {
@@ -19,6 +18,8 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
+import { ThemedRefreshControl } from "../themed";
+import { useConstructor } from "../../hooks";
 
 type MemberListPageProps = {
   route: MemberListPageRouteProp;
@@ -43,30 +44,32 @@ const styles = StyleSheet.create({
   },
 });
 
-// const Item = ({ title }: { title: string }) => (
-//   <Box style={styles.listitem}>
-//     <Text>{title}</Text>
-//   </Box>
-// );
-
 export default function MemberListPage({ route }: MemberListPageProps) {
   const [communityState, communityDispatch] = useCommunity();
   const [data, setData] = useState<
     { title: string; icon: string; data: string[] }[]
   >([]);
-  const [community, setCommunity] = useState<Community>(BLANK_COMMUNITY);
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
 
-  useEffect(() => {
-    // automatically queue a data update
-    loadCommunity(
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [community, setCommunity] = useState<Community>(BLANK_COMMUNITY);
+
+  const loadMemberData = async () => {
+    setIsRefreshing(true);
+    await loadCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       route.params.name
     );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    setIsRefreshing(false);
+  };
+
+  // Load in member data on render
+  useConstructor(() => {
+    loadMemberData();
+  });
 
   useEffect(() => {
     const tempCommunity = getCommunity(communityState, route.params.name);
@@ -108,54 +111,95 @@ export default function MemberListPage({ route }: MemberListPageProps) {
     );
   };
 
-  const renderBanHammer = (
-    account: Account,
-    communityInfo: Community,
-    memberEmail: string
-  ) => {
-    const admins = communityInfo.Admins;
-    if (!admins.includes(account.email) || admins.includes(memberEmail)) {
-      return null;
-    }
+  const promptPromoteUser = (email: string, communityName: string) => {
+    Alert.alert(
+      `Promote ${email}?`,
+      `Are you sure you want to promote ${email} to admin in ${communityName}?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            // TODO: Add in promotion method
+            loadCommunity(
+              communityDispatch,
+              tokenDispatch,
+              tokenState.refreshToken,
+              route.params.name
+            );
+          },
+        },
+      ]
+    );
+  };
+
+  const MemberListItem = ({ memberEmail }: { memberEmail: string }) => {
+    const { Admins, name } = community;
+    const showRightContent =
+      Admins.includes(accountState.account.email) &&
+      !Admins.includes(memberEmail);
+    const rightContent = (
+      <>
+        <ThemedIcon
+          size={24}
+          name="person-add"
+          type="material"
+          onPress={() => promptPromoteUser(memberEmail, name)}
+        />
+        <Box marginHorizontal="sm" />
+        <ThemedIcon
+          size={24}
+          name="cross"
+          type="entypo"
+          onPress={() => promptBanUser(memberEmail, name)}
+        />
+      </>
+    );
+
     return (
-      <ThemedIcon
-        size={24}
-        name="cross"
-        type="entypo"
-        onPress={() => promptBanUser(memberEmail, communityInfo.name)}
+      <ThemedListItem
+        title={memberEmail}
+        rightContent={showRightContent ? rightContent : null}
       />
     );
   };
 
-  const Item = ({ title }: { title: string }) => (
-    <ThemedListItem
-      title={title}
-      rightContent={renderBanHammer(accountState.account, community, title)}
-    />
+  const SectionListHeader = ({
+    section,
+  }: {
+    section: SectionListData<string>;
+  }) => (
+    <Box
+      padding="md"
+      backgroundColor="headerBackground"
+      flexDirection="row"
+      alignItems="center"
+    >
+      <ThemedIcon type="font-awesome" name={section.icon} />
+      <Text paddingLeft="sm" variant="sectionListHeader">
+        {section.title}
+      </Text>
+    </Box>
   );
 
   return (
     <Box style={styles.root}>
-      <Box marginVertical="md">
-        <Text variant="header">{community.name}</Text>
-      </Box>
       <SectionList
         style={styles.list}
+        refreshControl={
+          <ThemedRefreshControl
+            onRefresh={loadMemberData}
+            refreshing={isRefreshing}
+          />
+        }
         sections={data}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <Item title={item} />}
-        renderSectionHeader={({ section: { title, icon } }) => (
-          <Box
-            padding="md"
-            backgroundColor="headerBackground"
-            flexDirection="row"
-            alignItems="center"
-          >
-            <ThemedIcon type="font-awesome" name={icon} />
-            <Text paddingLeft="sm" variant="sectionListHeader">
-              {title}
-            </Text>
-          </Box>
+        renderItem={({ item }) => <MemberListItem memberEmail={item} />}
+        renderSectionHeader={({ section }) => (
+          <SectionListHeader section={section} />
         )}
         ListEmptyComponent={() => <Text>No members exist</Text>}
       />

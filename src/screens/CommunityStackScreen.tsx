@@ -90,7 +90,7 @@ const CommunityStackScreen = (
         options={{
           ...MemberListPageOptions,
         }}
-        initialParams={{ name: "Johnsons" }}
+        initialParams={{ name: "biit" }}
       />
       <CommunityStack.Screen
         name="CreateCommunity"
