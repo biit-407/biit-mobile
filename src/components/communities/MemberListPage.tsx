@@ -191,7 +191,6 @@ export default function MemberListPage({ route }: MemberListPageProps) {
   return (
     <Box style={styles.root}>
       <SectionList
-        style={styles.list}
         refreshControl={
           <ThemedRefreshControl
             onRefresh={loadMemberData}
