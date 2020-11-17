@@ -8,7 +8,6 @@ import {
   useCommunity,
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
-import { Account } from "../../models/accounts";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
 import { useAccountState } from "../../contexts/accountContext";
 import {
@@ -44,12 +43,6 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
-// const Item = ({ title }: { title: string }) => (
-//   <Box style={styles.listitem}>
-//     <Text>{title}</Text>
-//   </Box>
-// );
 
 export default function MemberListPage({ route }: MemberListPageProps) {
   const [communityState, communityDispatch] = useCommunity();
