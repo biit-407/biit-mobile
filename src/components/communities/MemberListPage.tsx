@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 type MemberListSection = { title: string; icon: string; data: string[] };
 
 export default function MemberListPage({ route }: MemberListPageProps) {
-
   const [tokenState, tokenDispatch] = useToken();
   const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
