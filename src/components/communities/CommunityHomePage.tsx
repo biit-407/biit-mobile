@@ -215,7 +215,10 @@ export default function CommunityHomePage({
                 label="Leave"
                 color={theme.colors.iconSelectedRed}
                 action={() =>
-                  navigation.push("LeaveCommunity", { name: communityID })
+                  navigation.push("LeaveCommunity", {
+                    name: communityID,
+                    numMembers: community.Members.length,
+                  })
                 }
               />
             </Box>

@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
 type MemberListSection = { title: string; icon: string; data: string[] };
 
 export default function MemberListPage({ route }: MemberListPageProps) {
-
   const [tokenState, tokenDispatch] = useToken();
   const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
@@ -189,7 +188,7 @@ export default function MemberListPage({ route }: MemberListPageProps) {
   );
 
   return (
-    <Box style={styles.root}>
+    <Box style={styles.root} backgroundColor="mainBackground">
       <SectionList
         refreshControl={
           <ThemedRefreshControl

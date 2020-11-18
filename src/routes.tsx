@@ -13,7 +13,7 @@ type RootStackParamList = {
   BannedUsers: { name: string };
   CreateCommunity: undefined;
   JoinCommunity: { name: string; codeOfConduct: string; numMembers: number };
-  LeaveCommunity: { name: string };
+  LeaveCommunity: { name: string; numMembers: number };
   CommunityAdministration: { name: string };
   UserSettings: undefined;
   MemberList: { name: string };
