@@ -10,21 +10,12 @@ import CommunityListPage, {
   CommunityListPageOptions,
 } from "../components/communities/CommunityListPage";
 import { Theme } from "../theme";
-import { ThemedIcon } from "../components/themed";
 import CreateCommunityPage, {
   CreateCommunityPageOptions,
 } from "../components/communities/CreateCommunityPage";
 import CommunitySearchPage, {
   CommunitySearchPageOptions,
 } from "../components/communities/CommunitySearchPage";
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
