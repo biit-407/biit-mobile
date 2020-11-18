@@ -11,7 +11,9 @@ import CommunityListPage, {
 } from "../components/communities/CommunityListPage";
 import { Theme } from "../theme";
 import { ThemedIcon } from "../components/themed";
-import CreateCommunityPage from "../components/communities/CreateCommunityPage";
+import CreateCommunityPage, {
+  CreateCommunityPageOptions,
+} from "../components/communities/CreateCommunityPage";
 import CommunitySearchPage, {
   CommunitySearchPageOptions,
 } from "../components/communities/CommunitySearchPage";
@@ -50,11 +52,7 @@ export default function CommunityTabScreen() {
       <Tab.Screen
         name="Create Community"
         component={CreateCommunityPage}
-        options={{
-          tabBarIcon: ({ color }: { color: string }) => (
-            <ThemedIcon name="create" type="material" color={color} />
-          ),
-        }}
+        options={CreateCommunityPageOptions}
       />
     </Tab.Navigator>
   );

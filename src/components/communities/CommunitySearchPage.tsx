@@ -7,7 +7,12 @@ import {
   CommunitySearchPageRouteProp,
   CommunitySearchPageNavigationProp,
 } from "../../routes";
-import { ThemedIcon, ThemedListItem, ThemedRefreshControl } from "../themed";
+import {
+  Text,
+  ThemedIcon,
+  ThemedListItem,
+  ThemedRefreshControl,
+} from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
 
@@ -17,8 +22,26 @@ type CommunitySearchPageProps = {
 };
 
 export const CommunitySearchPageOptions = {
-  tabBarIcon: ({ color }: { color: string }) => (
-    <ThemedIcon name="search" type="material" color={color} />
+  tabBarIcon: ({
+    color,
+    size,
+    focused,
+  }: {
+    color: string;
+    focused: boolean;
+    size: number;
+  }) => (
+    <ThemedIcon
+      name="search"
+      type="material"
+      size={focused ? 30 : size}
+      color={color}
+    />
+  ),
+  tabBarLabel: ({ color, focused }: { focused: boolean; color: string }) => (
+    <Text style={{ color: color }} fontSize={focused ? 12 : 10} mb="xs">
+      Search Communities
+    </Text>
   ),
 };
 

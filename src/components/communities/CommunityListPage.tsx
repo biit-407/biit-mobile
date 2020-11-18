@@ -7,7 +7,7 @@ import {
   CommunityListPageNavigationProp,
   CommunityListPageRouteProp,
 } from "../../routes";
-import { ThemedIcon, ThemedListItem } from "../themed";
+import { Text, ThemedIcon, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
 
@@ -17,8 +17,26 @@ type CommunityListPageProps = {
 };
 
 export const CommunityListPageOptions = {
-  tabBarIcon: ({ color }: { color: string }) => (
-    <ThemedIcon name="group" type="fontawesome" color={color} />
+  tabBarIcon: ({
+    color,
+    size,
+    focused,
+  }: {
+    color: string;
+    focused: boolean;
+    size: number;
+  }) => (
+    <ThemedIcon
+      name="group"
+      type="fontawesome"
+      size={focused ? 30 : size}
+      color={color}
+    />
+  ),
+  tabBarLabel: ({ color, focused }: { focused: boolean; color: string }) => (
+    <Text style={{ color: color }} fontSize={focused ? 12 : 10} mb="xs">
+      My Communities
+    </Text>
   ),
 };
 
