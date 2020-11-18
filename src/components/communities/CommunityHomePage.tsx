@@ -99,6 +99,7 @@ export default function CommunityHomePage({
       accountState.account.email,
       communityID
     );
+    // TODO: Make this dialog more descriptive, and reload the list of meetups
     Alert.alert(`${result}`);
   };
 

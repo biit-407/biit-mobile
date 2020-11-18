@@ -51,15 +51,22 @@ export default function CommunitySearchPage({
     console.log(searchText);
   };
 
-  const renderListItem = ({ item }: { item: Community }) => (
-    <ThemedListItem
-      title={item.name}
-      onPress={() => {
-        navigation.push("JoinCommunity", { name: item.name });
-      }}
-      chevron
-    />
-  );
+  const renderListItem = ({ item }: { item: Community }) => {
+    const { name, codeofconduct, Members } = item;
+    return (
+      <ThemedListItem
+        title={item.name}
+        onPress={() => {
+          navigation.push("JoinCommunity", {
+            name,
+            codeOfConduct: codeofconduct,
+            numMembers: Members.length,
+          });
+        }}
+        chevron
+      />
+    );
+  };
 
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
