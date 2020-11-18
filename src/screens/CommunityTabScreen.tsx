@@ -8,10 +8,13 @@ import { useTheme } from "@shopify/restyle";
 
 import CommunityListPage, {
   CommunityListPageOptions,
-} from "../components/communities/CommunityList";
+} from "../components/communities/CommunityListPage";
 import { Theme } from "../theme";
 import { ThemedIcon } from "../components/themed";
 import CreateCommunityPage from "../components/communities/CreateCommunityPage";
+import CommunitySearchPage, {
+  CommunitySearchPageOptions,
+} from "../components/communities/CommunitySearchPage";
 
 function SettingsScreen() {
   return (
@@ -38,16 +41,12 @@ export default function CommunityTabScreen() {
         component={CommunityListPage}
         options={CommunityListPageOptions}
       />
-      {/* #TODO:  Include create community and search for new community pages */}
       <Tab.Screen
-        name="Search for Communities"
-        component={SettingsScreen}
-        options={{
-          tabBarIcon: ({ color }: { color: string }) => (
-            <ThemedIcon name="search" type="material" color={color} />
-          ),
-        }}
+        name="Search Communities"
+        component={CommunitySearchPage}
+        options={CommunitySearchPageOptions}
       />
+      {/* #TODO:  Include create community and search for new community pages */}
       <Tab.Screen
         name="Create Community"
         component={CreateCommunityPage}
