@@ -18,7 +18,6 @@ type RootStackParamList = {
   UserSettings: undefined;
   MemberList: { name: string };
   DevelopmentLinks: undefined;
-  CodeOfConduct: { name: string };
   MeetupList: undefined;
   MeetupDetails: {
     meetupID: string;
@@ -51,6 +50,7 @@ type RootStackParamList = {
     futureMeetupIDs: string[];
     tentativeMeetupIDs: string[];
   };
+  CommunityList: undefined;
   CommunityHome: {
     communityID: string;
   };
@@ -175,17 +175,6 @@ export type MemberListPageRouteProp = RouteProp<
 export type MemberListPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "MemberList"
->;
-
-// Code of Conduct Page Types
-export type CodeOfConductPageRouteProp = RouteProp<
-  RootStackParamList,
-  "CodeOfConduct"
->;
-
-export type CodeOfConductPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "CodeOfConduct"
 >;
 
 // Community Administration Page Types
@@ -319,4 +308,15 @@ export type BugReportPageRouteProp = RouteProp<RootStackParamList, "BugReport">;
 export type BugReportPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "BugReport"
+>;
+
+// Community List Page Types
+export type CommunityListPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunityList"
+>;
+
+export type CommunityListPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunityList"
 >;

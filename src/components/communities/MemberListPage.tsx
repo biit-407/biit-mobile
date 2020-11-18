@@ -35,22 +35,19 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFE8C6",
-  },
-  list: {
-    width: "100%",
   },
 });
 
+type MemberListSection = { title: string; icon: string; data: string[] };
+
 export default function MemberListPage({ route }: MemberListPageProps) {
-  const [communityState, communityDispatch] = useCommunity();
-  const [data, setData] = useState<
-    { title: string; icon: string; data: string[] }[]
-  >([]);
+
   const [tokenState, tokenDispatch] = useToken();
+  const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
+
+  // Create state for page variables
+  const [memberData, setMemberData] = useState<MemberListSection[]>([]);
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [community, setCommunity] = useState<Community>(BLANK_COMMUNITY);
@@ -71,13 +68,19 @@ export default function MemberListPage({ route }: MemberListPageProps) {
     loadMemberData();
   });
 
+  // Upon loading the community, set the data of the section list
   useEffect(() => {
-    const tempCommunity = getCommunity(communityState, route.params.name);
-    setData([
-      { title: "Admins", data: tempCommunity.Admins, icon: "user" },
-      { title: "Members", data: tempCommunity.Members, icon: "users" },
+    const loadedCommunity = getCommunity(communityState, route.params.name);
+    const { Admins, Members } = loadedCommunity;
+    setMemberData([
+      { title: "Admins", data: Admins, icon: "user" },
+      {
+        title: "Members",
+        data: Members.filter((member) => !Admins.includes(member)),
+        icon: "users",
+      },
     ]);
-    setCommunity(tempCommunity);
+    setCommunity(loadedCommunity);
   }, [communityState, route.params.name]);
 
   const promptBanUser = (email: string, communityName: string) => {
@@ -188,14 +191,13 @@ export default function MemberListPage({ route }: MemberListPageProps) {
   return (
     <Box style={styles.root}>
       <SectionList
-        style={styles.list}
         refreshControl={
           <ThemedRefreshControl
             onRefresh={loadMemberData}
             refreshing={isRefreshing}
           />
         }
-        sections={data}
+        sections={memberData}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => <MemberListItem memberEmail={item} />}
         renderSectionHeader={({ section }) => (

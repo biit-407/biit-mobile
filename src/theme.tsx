@@ -11,6 +11,7 @@ const palette = {
 
   black: "#000000",
   white: "#FFFFFF",
+  grey: "#888888",
 
   darkGreen: "#1e6928",
   darkRed: "#ab2115",
@@ -20,9 +21,12 @@ const theme = createTheme({
   colors: {
     mainBackground: palette.tanLight,
     mainForeground: palette.tanDark,
+
     drawerBackground: palette.brownDark,
     drawerPrimaryText: palette.tanLight,
+
     headerBackground: palette.tanDark,
+
     primaryText: palette.brownDark,
     borderPrimary: palette.brownLight,
     cardBackground: palette.tanPrimary,
@@ -47,6 +51,13 @@ const theme = createTheme({
     switchTrackDisabled: palette.brownLight,
     switchThumbEnabled: palette.brownLight,
     switchThumbDisabled: palette.tanDark,
+
+    tabBarActiveText: palette.brownPrimary,
+    tabBarInactiveText: palette.brownLight,
+
+    searchBarBackground: palette.tanDark,
+    searchBarInputBackground: palette.tanLight,
+    searchBarPlaceholderText: palette.brownLight,
   },
   spacing: {
     xs: 4,

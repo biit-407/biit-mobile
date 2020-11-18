@@ -11,9 +11,9 @@ export default function ThemedIcon(props: ThemedIconProps) {
   const theme = useTheme<Theme>();
   return (
     <Icon
-      color={theme.colors.iconPrimary}
       reverseColor={theme.colors.buttonPrimaryBackground}
       {...props}
+      color={props.color ?? theme.colors.iconPrimary}
     />
   );
 }
