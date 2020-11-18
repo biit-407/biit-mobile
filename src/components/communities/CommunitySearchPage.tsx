@@ -7,7 +7,7 @@ import {
   CommunitySearchPageRouteProp,
   CommunitySearchPageNavigationProp,
 } from "../../routes";
-import { ThemedIcon, ThemedListItem } from "../themed";
+import { ThemedIcon, ThemedListItem, ThemedRefreshControl } from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
 
@@ -34,21 +34,35 @@ export default function CommunitySearchPage({
 }: CommunitySearchPageProps) {
   // TODO: Actually use community state once the endpoint is created
   // const [communityState, communityDispatch] = useCommunity();
+  const [isLoading, setIsLoading] = useState(false);
 
   const communities: Community[] = [
     { ...BLANK_COMMUNITY, name: "oasd" },
-    { ...BLANK_COMMUNITY, name: "Johnsons" },
+    { ...BLANK_COMMUNITY, name: "oooga" },
+    { ...BLANK_COMMUNITY, name: "oasa" },
   ];
 
   const [foundCommunities, setFoundCommunities] = useState(communities);
 
   const [searchText, setSearchText] = useState("");
   const onSearch = () => {
-    console.log(searchText);
+    // Don't perform a search on empty search string???
+    if (searchText.length === 0) {
+      setFoundCommunities([]);
+      return;
+    }
+    // Indicate loading
+    setIsLoading(true);
+    // TODO: Integrate to search for communities matching the given search text
+    setTimeout(() => {
+      setFoundCommunities(communities);
+      setIsLoading(false);
+    }, 1000);
   };
 
   const onClear = () => {
-    console.log(searchText);
+    // Clear found communities
+    setFoundCommunities([]);
   };
 
   const renderListItem = ({ item }: { item: Community }) => {
@@ -57,6 +71,8 @@ export default function CommunitySearchPage({
       <ThemedListItem
         title={item.name}
         onPress={() => {
+          setFoundCommunities([]);
+          setSearchText("");
           navigation.push("JoinCommunity", {
             name,
             codeOfConduct: codeofconduct,
@@ -81,6 +97,9 @@ export default function CommunitySearchPage({
         data={foundCommunities}
         renderItem={renderListItem}
         keyExtractor={(community) => community.name}
+        refreshControl={
+          <ThemedRefreshControl refreshing={isLoading} onRefresh={onSearch} />
+        }
       />
     </Box>
   );
