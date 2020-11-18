@@ -17,6 +17,7 @@ type ThemedListItemProps = {
   rightContent?: React.ReactNode;
   onPress?: () => void;
   slim?: boolean;
+  chevron?: boolean;
 };
 
 // A reusable themed button
@@ -29,6 +30,7 @@ export default function ThemedListItem({
   rightContent,
   onPress,
   slim,
+  chevron,
 }: ThemedListItemProps) {
   const theme = useTheme<Theme>();
   return (
@@ -56,6 +58,9 @@ export default function ThemedListItem({
         )}
       </ListItem.Content>
       {rightContent}
+      {chevron && !rightContent && (
+        <ListItem.Chevron color={theme.colors.iconPrimary} />
+      )}
     </ListItem>
   );
 }
