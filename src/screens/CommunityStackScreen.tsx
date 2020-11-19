@@ -15,9 +15,6 @@ import CommunityAdministrationPage, {
 import MemberListPage, {
   MemberListPageOptions,
 } from "../components/communities/MemberListPage";
-import CreateCommunityPage, {
-  CreateCommunityPageOptions,
-} from "../components/communities/CreateCommunityPage";
 import JoinCommunityPage, {
   JoinCommunityPageOptions,
 } from "../components/communities/JoinCommunityPage";
@@ -88,12 +85,6 @@ const CommunityStackScreen = (
         component={MemberListPage}
         options={MemberListPageOptions}
         initialParams={{ name: "Johnsons" }}
-
-      />
-      <CommunityStack.Screen
-        name="CreateCommunity"
-        component={CreateCommunityPage}
-        options={CreateCommunityPageOptions}
       />
       <CommunityStack.Screen
         name="JoinCommunity"

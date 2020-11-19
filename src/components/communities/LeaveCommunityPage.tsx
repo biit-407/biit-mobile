@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 import {
   LeaveCommunityPageRouteProp,
@@ -32,68 +33,77 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  txtbox: {
-    width: "100%",
-    height: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  ynbox: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  ybtn: {
-    marginLeft: "10%",
-    marginRight: "20%",
-  },
-  nbtn: {
-    marginLeft: "20%",
-    marginRight: "10%",
-  },
 });
+
+const Divider = () => (
+  <View
+    style={{
+      flexGrow: 1,
+      borderBottomColor: "black",
+      borderBottomWidth: 2,
+    }}
+  />
+);
 
 export default function LeaveCommunityPage({
   route,
   navigation,
 }: LeaveCommunityPageProps) {
+  // Get context variables
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
 
-  function leave() {
-    leaveCommunity(
+  // Extract info about the community to join
+  const { name, numMembers } = route.params;
+
+  // Create a function to leave the specified community
+  const leave = async () => {
+    await leaveCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       accountState.account.email,
       route.params.name
     );
-  }
+    navigation.reset({ index: 0, routes: [{ name: "Community" }] });
+  };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <Box style={styles.txtbox}>
-        <Text variant="header" style={{ textAlign: "center" }}>
-          Leaving "{route.params.name}"
-        </Text>
-        <Text variant="body">
-          Are you sure you want to leave this community?
-        </Text>
+      <Box flex={3} padding="md">
+        <ScrollView>
+          <Text variant="header" textAlign="center" marginBottom="md">
+            Leave "{name}"?
+          </Text>
+          <Box
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            marginVertical="sm"
+          >
+            <Divider />
+            <Text
+              fontWeight="bold"
+              fontSize={16}
+              marginHorizontal="sm"
+            >{`${numMembers} members`}</Text>
+            <Divider />
+          </Box>
+          <Text variant="subheader">
+            By leaving {name} you will no longer be able to participate in
+            meetups for this community. Are you sure leave?
+          </Text>
+        </ScrollView>
       </Box>
-      <Box style={styles.ynbox}>
-        <Box style={styles.ybtn}>
-          <ThemedIcon
-            name="check"
-            type="entypo"
-            size={32}
-            reverse
-            onPress={() => {
-              leave();
-              navigation.pop();
-            }}
-          />
-        </Box>
-        <Box style={styles.nbtn}>
+      <Box
+        flex={1}
+        flexDirection="row"
+        justifyContent="space-around"
+        paddingTop="md"
+        width="100%"
+      >
+        <Box alignItems="center">
           <ThemedIcon
             name="cross"
             type="entypo"
@@ -101,6 +111,17 @@ export default function LeaveCommunityPage({
             reverse
             onPress={() => navigation.pop()}
           />
+          <Text variant="body">Decline</Text>
+        </Box>
+        <Box alignItems="center">
+          <ThemedIcon
+            name="check"
+            type="entypo"
+            size={32}
+            reverse
+            onPress={() => leave()}
+          />
+          <Text variant="body">Accept</Text>
         </Box>
       </Box>
     </Box>
