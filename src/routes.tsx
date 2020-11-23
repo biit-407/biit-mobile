@@ -41,6 +41,7 @@ type RootStackParamList = {
     userList: Record<string, number>;
   };
   PreviousMeetups: { pastMeetups: Meetup[] };
+  PreviousPeople: undefined;
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
@@ -264,6 +265,17 @@ export type PreviousMeetupsPageRouteProp = RouteProp<
 export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "PreviousMeetups"
+>;
+
+// Previous People Page Types
+export type PreviousPeoplePageRouteProp = RouteProp<
+  RootStackParamList,
+  "PreviousPeople"
+>;
+
+export type PreviousPeoplePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "PreviousPeople"
 >;
 
 // User Time Preferences Page Types

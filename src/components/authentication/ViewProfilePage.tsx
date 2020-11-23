@@ -17,7 +17,7 @@ import {
   useMeetupDispatch,
 } from "../../contexts/meetupContext";
 import { Meetup } from "../../models/meetups";
-import { ProfileCard } from "../themed";
+import { ProfileCard, ThemedButton } from "../themed";
 
 // React Navigation Types and Page Options
 
@@ -109,6 +109,11 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
             shadowRadius: 16,
             marginBottom: 32,
           }}
+        />
+
+        <ThemedButton
+          title="View Previous People"
+          onPress={() => navigation.push("PreviousPeople")}
         />
       </Box>
     </Box>
