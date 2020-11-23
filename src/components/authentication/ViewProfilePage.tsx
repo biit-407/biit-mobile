@@ -8,9 +8,6 @@ import {
   ViewProfilePageRouteProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedAvatar from "../themed/ThemedAvatar";
-import Text from "../themed/Text";
-import ThemedCard from "../themed/ThemedCard";
 import { getProfilePicture, useAccount } from "../../contexts/accountContext";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { useToken } from "../../contexts/tokenContext";
@@ -20,6 +17,7 @@ import {
   useMeetupDispatch,
 } from "../../contexts/meetupContext";
 import { Meetup } from "../../models/meetups";
+import { ProfileCard } from "../themed";
 
 // React Navigation Types and Page Options
 
@@ -85,19 +83,11 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
       style={{ flexDirection: "row", height: "100%" }}
     >
       <Box style={{ width: "100%", height: "100%" }}>
-        <ThemedCard wrapperStyle={{ alignItems: "center" }}>
-          <ThemedAvatar
-            uri={avatar}
-            size="xlarge"
-            edit={true}
-            onEdit={() => {
-              navigation.push("EditProfile");
-            }}
-          />
-          <Text marginBottom="md" variant="header">
-            {accountState.account.fname + " " + accountState.account.lname}
-          </Text>
-        </ThemedCard>
+        <ProfileCard
+          avatarURI={avatar}
+          name={accountState.account.fname + " " + accountState.account.lname}
+          onEdit={() => navigation.push("EditProfile")}
+        />
 
         {/* TODO fix this hard coding */}
         <Button
