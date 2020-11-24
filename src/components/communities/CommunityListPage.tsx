@@ -3,18 +3,10 @@ import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { BLANK_COMMUNITY, Community } from "../../models/community";
-import {
-  CommunityListPageNavigationProp,
-  CommunityListPageRouteProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import { Text, ThemedIcon, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
-
-type CommunityListPageProps = {
-  route: CommunityListPageRouteProp;
-  navigation: CommunityListPageNavigationProp;
-};
 
 export const CommunityListPageOptions = {
   tabBarIcon: ({
@@ -55,7 +47,7 @@ const styles = StyleSheet.create({
 
 export default function CommunityListPage({
   navigation,
-}: CommunityListPageProps) {
+}: StackNavigationProps<CommunityRoutes, "CommunityList">) {
   // TODO: Actually use community state once the endpoint is created
   // const [communityState, communityDispatch] = useCommunity();
 

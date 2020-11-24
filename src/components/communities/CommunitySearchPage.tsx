@@ -3,10 +3,7 @@ import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { BLANK_COMMUNITY, Community } from "../../models/community";
-import {
-  CommunitySearchPageRouteProp,
-  CommunitySearchPageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import {
   Text,
   ThemedIcon,
@@ -15,11 +12,6 @@ import {
 } from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
-
-type CommunitySearchPageProps = {
-  route: CommunitySearchPageRouteProp;
-  navigation: CommunitySearchPageNavigationProp;
-};
 
 export const CommunitySearchPageOptions = {
   tabBarIcon: ({
@@ -54,7 +46,7 @@ const styles = StyleSheet.create({
 
 export default function CommunitySearchPage({
   navigation,
-}: CommunitySearchPageProps) {
+}: StackNavigationProps<CommunityRoutes, "CommunitySearch">) {
   // TODO: Actually use community state once the endpoint is created
   // const [communityState, communityDispatch] = useCommunity();
   const [isLoading, setIsLoading] = useState(false);

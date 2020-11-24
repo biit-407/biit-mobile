@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import {
-  CreateCommunityPageRouteProp,
-  CreateCommunityPageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
@@ -18,11 +15,6 @@ import { useToken } from "../../contexts/tokenContext";
 import { BLANK_COMMUNITY } from "../../models/community";
 import { useAccountState } from "../../contexts/accountContext";
 import { ThemedIcon } from "../themed";
-
-type CreateCommunityPageProps = {
-  route: CreateCommunityPageRouteProp;
-  navigation: CreateCommunityPageNavigationProp;
-};
 
 export const CreateCommunityPageOptions = {
   tabBarIcon: ({
@@ -79,7 +71,10 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CreateCommunityPage({}: CreateCommunityPageProps) {
+export default function CreateCommunityPage({}: StackNavigationProps<
+  CommunityRoutes,
+  "CreateCommunity"
+>) {
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
 
   useEffect(() => {

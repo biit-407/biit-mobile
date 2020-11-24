@@ -3,10 +3,7 @@ import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTheme } from "@shopify/restyle";
 
-import {
-  CommunityAdministrationPageRouteProp,
-  CommunityAdministrationPageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import ThemedInput from "../themed/ThemedInput";
 import ThemedButton from "../themed/ThemedButton";
@@ -23,11 +20,6 @@ import { BLANK_COMMUNITY } from "../../models/community";
 import { useConstructor } from "../../hooks";
 import { ThemedIcon } from "../themed";
 import { Theme } from "../../theme";
-
-type CommunityAdministrationPageProps = {
-  route: CommunityAdministrationPageRouteProp;
-  navigation: CommunityAdministrationPageNavigationProp;
-};
 
 export const CommunityAdministrationPageOptions = {
   title: "Community Administration",
@@ -85,7 +77,7 @@ function promptDiscardChanges(onConfirm: () => void) {
 export default function CommunityAdministrationPage({
   navigation,
   route,
-}: CommunityAdministrationPageProps) {
+}: StackNavigationProps<CommunityRoutes, "CommunityAdministration">) {
   // TODO: Refactor using Stephen's hook (Stephen has a hook in the yet to be merged PR)
   const [communityState, communityDispatch] = useCommunity();
   const [community, setCommunity] = useState(BLANK_COMMUNITY);

@@ -2,10 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import {
-  LeaveCommunityPageRouteProp,
-  LeaveCommunityPageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import {
@@ -15,11 +12,6 @@ import {
 import { useAccountState } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 import ThemedIcon from "../themed/ThemedIcon";
-
-type LeaveCommunityPageProps = {
-  route: LeaveCommunityPageRouteProp;
-  navigation: LeaveCommunityPageNavigationProp;
-};
 
 export const LeaveCommunityPageOptions = {
   title: "Leave Community",
@@ -48,7 +40,7 @@ const Divider = () => (
 export default function LeaveCommunityPage({
   route,
   navigation,
-}: LeaveCommunityPageProps) {
+}: StackNavigationProps<CommunityRoutes, "LeaveCommunity">) {
   // Get context variables
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
