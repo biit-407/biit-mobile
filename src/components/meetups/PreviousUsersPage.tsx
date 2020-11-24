@@ -42,7 +42,11 @@ export default function PreviousUsersPage({
       fname: "Daniel",
       lname: "Kambich",
       email: "test@gmail.com",
-      commonMeetups: [{ ...BLANK_MEETUP }],
+      commonMeetups: [
+        { ...BLANK_MEETUP },
+        { ...BLANK_MEETUP },
+        { ...BLANK_MEETUP },
+      ],
     },
   ];
   useConstructor(() => {

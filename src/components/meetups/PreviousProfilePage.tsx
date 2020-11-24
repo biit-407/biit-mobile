@@ -35,13 +35,15 @@ export default function PreviousProfilePage({
     previousUser: { fname, lname, commonMeetups },
   } = route.params;
 
+  const reconnect = () => true;
+
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
       <Box width="100%">
         <ProfileCard name={`${fname} ${lname}`} />
         <ThemedButton
           title={`Reconnect with ${fname} ${lname}`}
-          onPress={() => true}
+          onPress={reconnect}
         />
         <FlatList
           data={commonMeetups}

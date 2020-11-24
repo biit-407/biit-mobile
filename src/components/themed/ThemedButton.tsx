@@ -44,6 +44,7 @@ export default function ThemedButton({
       <TouchableHighlight
         onPress={onPress}
         underlayColor={theme.colors.buttonHighlight}
+        style={{ borderRadius: theme.borderRadii.xs }}
       >
         <Text
           textAlign="center"
