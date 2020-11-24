@@ -22,6 +22,9 @@ import PreviousMeetupsPage, {
 import PreviousPeoplePage, {
   PreviousPeoplePageOptions,
 } from "../components/meetups/PreviousPeoplePage";
+import PreviousProfilePage, {
+  PreviousProfilePageOptions,
+} from "../components/meetups/PreviousProfilePage";
 
 const AccountStack = createStackNavigator();
 
@@ -98,6 +101,11 @@ const AccountStackScreen = (
         name="PreviousPeople"
         component={PreviousPeoplePage}
         options={PreviousPeoplePageOptions}
+      />
+      <AccountStack.Screen
+        name="PreviousProfile"
+        component={PreviousProfilePage}
+        options={PreviousProfilePageOptions}
       />
     </AccountStack.Navigator>
   );
