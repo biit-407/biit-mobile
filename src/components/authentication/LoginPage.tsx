@@ -14,17 +14,12 @@ import {
   CompletedAzureAuthResponse,
   UseAzureAuthReturnType,
 } from "../../hooks/useAzureAuth";
-import { LoginPageNavigationProp, LoginPageRouteProp } from "../../routes";
+import { AuthRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";
 import Text from "../themed/Text";
 
-// React Navigation Types and Page Options
-
-type LoginPageProps = {
-  navigation: LoginPageNavigationProp;
-  route: LoginPageRouteProp;
-};
+// Page Options
 
 export const LoginPageOptions = {
   title: "",
@@ -44,7 +39,9 @@ const styles = StyleSheet.create({
 
 // Page Definition
 
-export default function LoginPage({ navigation }: LoginPageProps) {
+export default function LoginPage({
+  navigation,
+}: StackNavigationProps<AuthRoutes, "Login">) {
   const [, response, promptAsync]: UseAzureAuthReturnType = useAzureAuth();
   const [azureState, azureDispatch] = useAzure();
   const [tokenState, tokenDispatch] = useToken();

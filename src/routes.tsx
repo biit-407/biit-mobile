@@ -1,13 +1,10 @@
-import { RouteProp } from "@react-navigation/native";
+import { ParamListBase, RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { Meetup } from "./models/meetups";
 
 // Add any parameters that are included with the page
 type RootStackParamList = {
-  Login: undefined;
-  CreateAccount: undefined;
-  CreateProfile: undefined;
   ViewProfile: undefined;
   EditProfile: undefined;
   BannedUsers: { name: string };
@@ -59,6 +56,20 @@ type RootStackParamList = {
   BugReport: undefined;
 };
 
+export type AuthRoutes = {
+  Login: undefined;
+  CreateAccount: undefined;
+  CreateProfile: undefined;
+};
+
+export interface StackNavigationProps<
+  ParamList extends ParamListBase,
+  RouteName extends keyof ParamList = string
+> {
+  navigation: StackNavigationProp<ParamList, RouteName>;
+  route: RouteProp<ParamList, RouteName>;
+}
+
 //TODO remove for release
 // Development Links Page Types
 export type DevelopmentLinksPageRouteProp = RouteProp<
@@ -69,36 +80,6 @@ export type DevelopmentLinksPageRouteProp = RouteProp<
 export type DevelopmentLinksPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "DevelopmentLinks"
->;
-
-// Login Page Types
-export type LoginPageRouteProp = RouteProp<RootStackParamList, "Login">;
-
-export type LoginPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Login"
->;
-
-// Create Account Page Types
-export type CreateAccountPageRouteProp = RouteProp<
-  RootStackParamList,
-  "CreateAccount"
->;
-
-export type CreateAccountPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "CreateAccount"
->;
-
-// Create Profile Page Types
-export type CreateProfilePageRouteProp = RouteProp<
-  RootStackParamList,
-  "CreateAccount"
->;
-
-export type CreateProfilePageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "CreateAccount"
 >;
 
 // View Profile Page Types
