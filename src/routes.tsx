@@ -12,7 +12,6 @@ type RootStackParamList = {
   JoinCommunity: { name: string; codeOfConduct: string; numMembers: number };
   LeaveCommunity: { name: string; numMembers: number };
   CommunityAdministration: { name: string };
-  UserSettings: undefined;
   MemberList: { name: string };
   DevelopmentLinks: undefined;
   MeetupList: undefined;
@@ -42,7 +41,6 @@ type RootStackParamList = {
     locations: string[];
     setLocations: (locations: string[]) => void;
   };
-  UserTimePreference: undefined;
   Home: {
     futureMeetupIDs: string[];
     tentativeMeetupIDs: string[];
@@ -52,14 +50,19 @@ type RootStackParamList = {
     communityID: string;
   };
   CommunitySearch: undefined;
-  Feedback: undefined;
-  BugReport: undefined;
 };
 
 export type AuthRoutes = {
   Login: undefined;
   CreateAccount: undefined;
   CreateProfile: undefined;
+};
+
+export type SettingsRoutes = {
+  UserSettings: undefined;
+  UserTimePreference: undefined;
+  UserFeedback: undefined;
+  UserBugReport: undefined;
 };
 
 export interface StackNavigationProps<
@@ -170,17 +173,6 @@ export type CommunityAdministrationPageNavigationProp = StackNavigationProp<
   "CommunityAdministration"
 >;
 
-// User Settings Page Types
-export type UserSettingsPageRouteProp = RouteProp<
-  RootStackParamList,
-  "UserSettings"
->;
-
-export type UserSettingsPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "UserSettings"
->;
-
 // Meetup List Page Types
 export type MeetupListPageRouteProp = RouteProp<
   RootStackParamList,
@@ -200,7 +192,7 @@ export type MeetupDetailsPageRouteProp = RouteProp<
 
 export type MeetupDetailsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "UserSettings"
+  "MeetupDetails"
 >;
 
 // Meetup Response Page Types
@@ -247,17 +239,6 @@ export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
   "PreviousMeetups"
 >;
 
-// User Time Preferences Page Types
-export type UserTimePreferencePageRouteProp = RouteProp<
-  RootStackParamList,
-  "UserTimePreference"
->;
-
-export type UserTimePreferencePageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "UserTimePreference"
->;
-
 // Home Page Types
 export type HomePageRouteProp = RouteProp<RootStackParamList, "Home">;
 
@@ -275,21 +256,6 @@ export type CommunityHomePageRouteProp = RouteProp<
 export type CommunityHomePageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CommunityHome"
->;
-
-// Feedback Page Types
-export type FeedbackPageRouteProp = RouteProp<RootStackParamList, "Feedback">;
-
-export type FeedbackPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Feedback"
->;
-// Bug Report Page Types
-export type BugReportPageRouteProp = RouteProp<RootStackParamList, "BugReport">;
-
-export type BugReportPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "BugReport"
 >;
 
 // Community List Page Types

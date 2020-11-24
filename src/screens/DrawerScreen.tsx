@@ -19,8 +19,6 @@ import MeetupStackScreen from "./MeetupStackScreen";
 import HomeStackScreen from "./HomeStackScreen";
 import CommunityStackScreen from "./CommunityStackScreen";
 import AccountStackScreen from "./AccountStackScreen";
-import FeedbackStackScreen from "./FeedbackStackScreen";
-import BugReportStackScreen from "./BugReportStackScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -35,8 +33,6 @@ const DrawerScreen = () => {
       <Drawer.Screen name="Community" component={CommunityStackScreen} />
       <Drawer.Screen name="Meetup" component={MeetupStackScreen} />
       <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-      <Drawer.Screen name="Feedback" component={FeedbackStackScreen} />
-      <Drawer.Screen name="BugReport" component={BugReportStackScreen} />
     </Drawer.Navigator>
   );
 };
@@ -114,18 +110,6 @@ const DrawerComponent = (
           label={"Settings"}
           location={"Settings"}
           icon={"settings"}
-        />
-        <CustomDrawerItem
-          navigation={navigation}
-          label={"Feedback"}
-          location={"Feedback"}
-          icon={"message-square"}
-        />
-        <CustomDrawerItem
-          navigation={navigation}
-          label={"Report a Bug"}
-          location={"BugReport"}
-          icon={"terminal"}
         />
       </DrawerContentScrollView>
     </>

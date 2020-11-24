@@ -5,14 +5,20 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import UserSettingsPage, {
-  UserSettingsPageOptions,
-} from "../components/userUtils/userSettingsPage";
 import UserTimePreferencePage, {
   UserTimePreferencePageOptions,
 } from "../components/userUtils/UserTimePreferencePage";
 import theme from "../theme";
 import { ThemedIcon } from "../components/themed";
+import UserSettingsPage, {
+  UserSettingsPageOptions,
+} from "../components/userUtils/UserSettingsPage";
+import UserBugReportPage, {
+  UserBugReportPageOptions,
+} from "../components/userUtils/UserBugReportPage";
+import UserFeedbackPage, {
+  UserFeedbackPageOptions,
+} from "../components/userUtils/UserFeedbackPage";
 
 const SettingsStack = createStackNavigator();
 
@@ -55,6 +61,16 @@ const SettingsStackScreen = (
         name="UserTimePreference"
         component={UserTimePreferencePage}
         options={UserTimePreferencePageOptions}
+      />
+      <SettingsStack.Screen
+        name="UserBugReport"
+        component={UserBugReportPage}
+        options={UserBugReportPageOptions}
+      />
+      <SettingsStack.Screen
+        name="UserFeedback"
+        component={UserFeedbackPage}
+        options={UserFeedbackPageOptions}
       />
     </SettingsStack.Navigator>
   );

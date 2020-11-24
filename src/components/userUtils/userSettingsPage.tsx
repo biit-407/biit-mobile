@@ -3,10 +3,7 @@ import { StyleSheet, ScrollView } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import Collapsible from "react-native-collapsible";
 
-import {
-  UserSettingsPageRouteProp,
-  UserSettingsPageNavigationProp,
-} from "../../routes";
+import { StackNavigationProps, SettingsRoutes } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import DeleteAccountButton from "../authentication/DeleteAccountButton";
@@ -14,11 +11,6 @@ import LogoutButton from "../authentication/LogoutButton";
 import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from "../themed";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
-
-type UserSettingsPageProps = {
-  route: UserSettingsPageRouteProp;
-  navigation: UserSettingsPageNavigationProp;
-};
 
 export const UserSettingsPageOptions = {
   title: "Settings",
@@ -58,7 +50,7 @@ const styles = StyleSheet.create({
 
 export default function UserSettingsPage({
   navigation,
-}: UserSettingsPageProps) {
+}: StackNavigationProps<SettingsRoutes, "UserSettings">) {
   // Get the user account and tokens
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
@@ -469,9 +461,26 @@ export default function UserSettingsPage({
             iconType="entypo"
             title="Time Preference"
             subtitle="View and update your time preference"
-            onPress={() => {
-              navigation.push("UserTimePreference");
-            }}
+            chevron
+            onPress={() => navigation.push("UserTimePreference")}
+          />
+        </Box>
+        <Box style={styles.itemframe}>
+          <ThemedListItem
+            title="Submit Bug Report"
+            subtitle="Submit a bug report about biit"
+            iconName="bug-report"
+            iconType="material"
+            chevron
+            onPress={() => navigation.push("UserBugReport")}
+          />
+          <ThemedListItem
+            title="Submit Feedback"
+            subtitle="Submit feedback for the developers of biit"
+            iconName="feedback"
+            iconType="material"
+            chevron
+            onPress={() => navigation.push("UserFeedback")}
           />
         </Box>
         <Box style={styles.itemframe}>
