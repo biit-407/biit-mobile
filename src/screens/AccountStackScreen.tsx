@@ -19,9 +19,9 @@ import { ThemedIcon } from "../components/themed";
 import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "../components/meetups/PreviousMeetupsPage";
-import PreviousPeoplePage, {
-  PreviousPeoplePageOptions,
-} from "../components/meetups/PreviousPeoplePage";
+import PreviousUsersPage, {
+  PreviousUsersPageOptions,
+} from "../components/meetups/PreviousUsersPage";
 import PreviousProfilePage, {
   PreviousProfilePageOptions,
 } from "../components/meetups/PreviousProfilePage";
@@ -99,8 +99,8 @@ const AccountStackScreen = (
       />
       <AccountStack.Screen
         name="PreviousPeople"
-        component={PreviousPeoplePage}
-        options={PreviousPeoplePageOptions}
+        component={PreviousUsersPage}
+        options={PreviousUsersPageOptions}
       />
       <AccountStack.Screen
         name="PreviousProfile"

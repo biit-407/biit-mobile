@@ -2,20 +2,21 @@ import React from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
 
 import {
-  PreviousPeoplePageRouteProp,
-  PreviousPeoplePageNavigationProp,
+  PreviousUsersPageRouteProp,
+  PreviousUsersPageNavigationProp,
 } from "../../routes";
 import Box from "../themed/Box";
 import useConstructor from "../../hooks/useConstructor";
 import { ThemedListItem } from "../themed";
+import { PreviousUser } from "../../models/accounts";
 
-type PreviousPeoplePageProps = {
-  route: PreviousPeoplePageRouteProp;
-  navigation: PreviousPeoplePageNavigationProp;
+type PreviousUsersPageProps = {
+  route: PreviousUsersPageRouteProp;
+  navigation: PreviousUsersPageNavigationProp;
 };
 
-export const PreviousPeoplePageOptions = {
-  title: "Previous People",
+export const PreviousUsersPageOptions = {
+  title: "Previous Users",
 };
 
 const styles = StyleSheet.create({
@@ -26,34 +27,40 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function PreviousPeoplePage({
+export default function PreviousUsersPage({
   navigation,
-}: PreviousPeoplePageProps) {
+}: PreviousUsersPageProps) {
   //   const [meetups, setMeetups] = React.useState<Meetup[]>([]);
   //   const load = (meetupsList: Meetup[]) => {
   //     setMeetups(meetupsList);
   //   };
 
-  const data = ["Daniel"];
+  const previousUsers: PreviousUser[] = [
+    {
+      fname: "Daniel",
+      lname: "Kambich",
+      email: "test@gmail.com",
+      commonMeetups: [],
+    },
+  ];
   useConstructor(() => {
     // TODO: Load in previous people objects
     // load(pastMeetups);
   });
 
-  const renderPerson = ({ item }: ListRenderItemInfo<string>) => (
+  const renderPerson = ({ item }: ListRenderItemInfo<PreviousUser>) => (
     <ThemedListItem
-      title={item}
-      onPress={() => navigation.push("PreviousProfile")}
+      title={`${item.fname} ${item.lname}`}
+      onPress={() => navigation.push("PreviousProfile", { previousUser: item })}
     />
   );
 
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
       <FlatList
-        data={data}
-        keyExtractor={(item) => item}
+        data={previousUsers}
+        keyExtractor={(user) => user.email}
         renderItem={renderPerson}
-        ListFooterComponent={<Box style={{ opacity: 1, height: 32 }} />}
       />
     </Box>
   );

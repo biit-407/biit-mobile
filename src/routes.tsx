@@ -1,5 +1,6 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { PreviousUser } from "./models/accounts";
 
 import { Meetup } from "./models/meetups";
 
@@ -41,8 +42,8 @@ type RootStackParamList = {
     userList: Record<string, number>;
   };
   PreviousMeetups: { pastMeetups: Meetup[] };
-  PreviousPeople: undefined;
-  PreviousProfile: undefined;
+  PreviousUsers: undefined;
+  PreviousProfile: { previousUser: PreviousUser };
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
@@ -269,14 +270,14 @@ export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
 >;
 
 // Previous People Page Types
-export type PreviousPeoplePageRouteProp = RouteProp<
+export type PreviousUsersPageRouteProp = RouteProp<
   RootStackParamList,
-  "PreviousPeople"
+  "PreviousUsers"
 >;
 
-export type PreviousPeoplePageNavigationProp = StackNavigationProp<
+export type PreviousUsersPageNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "PreviousPeople"
+  "PreviousUsers"
 >;
 
 // Previous Profile Page Types
