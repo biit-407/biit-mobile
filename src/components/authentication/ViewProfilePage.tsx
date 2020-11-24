@@ -1,6 +1,6 @@
-import { StackNavigationOptions } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
+import { StackNavigationOptions } from "@react-navigation/stack";
 
 import {
   ViewProfilePageNavigationProp,
