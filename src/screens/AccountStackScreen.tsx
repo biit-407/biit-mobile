@@ -98,7 +98,7 @@ const AccountStackScreen = (
         options={PreviousMeetupsPageOptions}
       />
       <AccountStack.Screen
-        name="PreviousPeople"
+        name="PreviousUsers"
         component={PreviousUsersPage}
         options={PreviousUsersPageOptions}
       />

@@ -9,6 +9,7 @@ import Box from "../themed/Box";
 import useConstructor from "../../hooks/useConstructor";
 import { ThemedListItem } from "../themed";
 import { PreviousUser } from "../../models/accounts";
+import { EMPTY_PROFILE_PIC } from "../../models/constants";
 
 type PreviousUsersPageProps = {
   route: PreviousUsersPageRouteProp;
@@ -50,6 +51,7 @@ export default function PreviousUsersPage({
 
   const renderPerson = ({ item }: ListRenderItemInfo<PreviousUser>) => (
     <ThemedListItem
+      avatarUri={item.profileImage ?? EMPTY_PROFILE_PIC}
       title={`${item.fname} ${item.lname}`}
       onPress={() => navigation.push("PreviousProfile", { previousUser: item })}
     />

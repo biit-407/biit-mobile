@@ -113,7 +113,7 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
 
         <ThemedButton
           title="View Previous People"
-          onPress={() => navigation.push("PreviousPeople")}
+          onPress={() => navigation.push("PreviousUsers")}
         />
       </Box>
     </Box>

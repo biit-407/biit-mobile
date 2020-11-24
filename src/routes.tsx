@@ -1,7 +1,7 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { PreviousUser } from "./models/accounts";
 
+import { PreviousUser } from "./models/accounts";
 import { Meetup } from "./models/meetups";
 
 // Add any parameters that are included with the page

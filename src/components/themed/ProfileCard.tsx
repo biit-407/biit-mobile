@@ -1,4 +1,5 @@
 import React from "react";
+import { EMPTY_PROFILE_PIC } from "../../models/constants";
 
 import Text from "./Text";
 import ThemedAvatar from "./ThemedAvatar";
@@ -18,7 +19,7 @@ export default function ProfileCard({
   return (
     <ThemedCard wrapperStyle={{ alignItems: "center" }}>
       <ThemedAvatar
-        uri={avatarURI}
+        uri={avatarURI ?? EMPTY_PROFILE_PIC}
         size="xlarge"
         edit={onEdit ? true : false}
         onEdit={onEdit}
