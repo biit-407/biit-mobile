@@ -1,7 +1,6 @@
 import { StackNavigationOptions } from "@react-navigation/stack";
 import React, { useEffect, useState } from "react";
 // import { StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
 
 import {
   ViewProfilePageNavigationProp,
@@ -11,7 +10,6 @@ import Box from "../themed/Box";
 import { getProfilePicture, useAccount } from "../../contexts/accountContext";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { useToken } from "../../contexts/tokenContext";
-import theme from "../../theme";
 import {
   getPastMeetupsList,
   useMeetupDispatch,

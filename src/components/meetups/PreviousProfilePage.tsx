@@ -42,7 +42,6 @@ export default function PreviousProfilePage({
         <ThemedButton
           title={`Reconnect with ${fname} ${lname}`}
           onPress={() => true}
-          width="25%"
         />
         <FlatList
           data={commonMeetups}
