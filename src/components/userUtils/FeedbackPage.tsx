@@ -131,10 +131,10 @@ export default function FeedbackPage({ navigation }: FeedbackPageProps) {
           onPress={() => {
             navigation.goBack();
           }}
-          color="red"
+          color="buttonDanger"
         />
         <ThemedButton
-          color={theme.colors.buttonSecondaryBackground}
+          color="buttonSecondaryBackground"
           title="Submit"
           onPress={() => {
             const feedback: FeedbackFormValues = { text: feedbackTxt };

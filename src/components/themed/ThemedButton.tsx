@@ -1,31 +1,58 @@
 import React from "react";
-import { useTheme } from "@shopify/restyle";
-import { Button } from "react-native-elements";
+import {
+  layout,
+  LayoutProps,
+  spacing,
+  SpacingProps,
+  useRestyle,
+  useTheme,
+} from "@shopify/restyle";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 import { Theme } from "../../theme";
 
-type ThemedButtonProps = {
-  title: string;
-  onPress: () => void;
-  color?: string;
-};
+import Text from "./Text";
+import Box from "./Box";
+
+const restyleFunctions = [spacing, layout];
+type ThemedButtonProps = SpacingProps<Theme> &
+  LayoutProps<Theme> & {
+    color?: keyof Theme["colors"];
+    onPress?: () => void;
+    title?: string;
+    slim?: boolean;
+  };
 
 // A reusable themed button
 export default function ThemedButton({
+  color,
   onPress,
   title,
-  color,
+  slim,
+  ...rest
 }: ThemedButtonProps) {
   const theme = useTheme<Theme>();
+  const props = useRestyle(restyleFunctions, rest);
   return (
-    <Button
-      title={title}
-      onPress={onPress}
-      buttonStyle={{
-        backgroundColor: color ?? theme.colors.buttonPrimaryBackground,
-      }}
-      titleStyle={{ color: theme.colors.buttonPrimaryText }}
-      raised
-    />
+    <Box
+      backgroundColor={color ?? "buttonPrimaryBackground"}
+      margin="md"
+      borderRadius="xs"
+      elevation={5}
+      {...props}
+    >
+      <TouchableHighlight
+        onPress={onPress}
+        underlayColor={theme.colors.buttonHighlight}
+      >
+        <Text
+          textAlign="center"
+          padding={slim ? "sm" : "md"}
+          variant="buttonLabel"
+        >
+          {title}
+        </Text>
+      </TouchableHighlight>
+    </Box>
   );
 }

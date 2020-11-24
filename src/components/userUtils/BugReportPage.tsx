@@ -170,10 +170,10 @@ export default function BugReportPage({ navigation }: BugReportPageProps) {
           onPress={() => {
             navigation.goBack();
           }}
-          color="red"
+          color="buttonDanger"
         />
         <ThemedButton
-          color={theme.colors.buttonSecondaryBackground}
+          color="buttonSecondaryBackground"
           title="Submit"
           onPress={() => {
             const bugReport: BugFormValues = {

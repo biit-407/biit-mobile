@@ -10,6 +10,7 @@ import useConstructor from "../../hooks/useConstructor";
 import { ThemedListItem } from "../themed";
 import { PreviousUser } from "../../models/accounts";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
+import { BLANK_MEETUP } from "../../models/meetups";
 
 type PreviousUsersPageProps = {
   route: PreviousUsersPageRouteProp;
@@ -41,7 +42,7 @@ export default function PreviousUsersPage({
       fname: "Daniel",
       lname: "Kambich",
       email: "test@gmail.com",
-      commonMeetups: [],
+      commonMeetups: [{ ...BLANK_MEETUP }],
     },
   ];
   useConstructor(() => {

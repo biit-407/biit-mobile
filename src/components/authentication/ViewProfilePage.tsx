@@ -90,25 +90,11 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
         />
 
         {/* TODO fix this hard coding */}
-        <Button
+        <ThemedButton
+          title="View Previous Meetups"
           onPress={() =>
             navigation.navigate("PreviousMeetups", { pastMeetups: pastMeetups })
           }
-          title={"View Previous Meetups"}
-          buttonStyle={{
-            backgroundColor: theme.colors.buttonPrimaryBackground,
-            padding: theme.spacing.md,
-            margin: theme.spacing.md,
-            elevation: 16,
-            shadowColor: "#000000",
-            shadowOpacity: 0.29,
-            shadowOffset: {
-              width: 8,
-              height: 8,
-            },
-            shadowRadius: 16,
-            marginBottom: 32,
-          }}
         />
 
         <ThemedButton
