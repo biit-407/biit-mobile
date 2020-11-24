@@ -3,10 +3,7 @@ import { StyleSheet } from "react-native";
 import { AirbnbRating } from "react-native-elements";
 import { useTheme } from "@shopify/restyle";
 
-import {
-  MeetupRatingPageNavigationProp,
-  MeetupRatingPageRouteProp,
-} from "../../routes";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedCard from "../themed/ThemedCard";
@@ -18,11 +15,6 @@ import { useAccountState } from "../../contexts/accountContext";
 
 import MeetupCard from "./MeetupCard";
 import MeetupReportDialog from "./MeetupReportDialog";
-
-type MeetupRatingPageProps = {
-  route: MeetupRatingPageRouteProp;
-  navigation: MeetupRatingPageNavigationProp;
-};
 
 export const MeetupRatingPageOptions = {
   title: "Meetup Rating",
@@ -39,7 +31,7 @@ const styles = StyleSheet.create({
 export default function MeetupRatingPage({
   navigation,
   route,
-}: MeetupRatingPageProps) {
+}: StackNavigationProps<HomeRoutes, "MeetupRating">) {
   // Create state for the meetup to be loaded
   const { meetupID, timestamp, duration, location, userList } = route.params;
 

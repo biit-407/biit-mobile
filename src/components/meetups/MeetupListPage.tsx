@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SectionList, SectionListData, StyleSheet } from "react-native";
 
-import {
-  MeetupListPageNavigationProp,
-  MeetupListPageRouteProp,
-} from "../../routes";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedListItem from "../themed/ThemedListItem";
@@ -21,11 +18,6 @@ import { useAccountState } from "../../contexts/accountContext";
 import { ThemedRefreshControl } from "../themed";
 import { Meetup } from "../../models/meetups";
 
-type MeetupListPageProps = {
-  route: MeetupListPageRouteProp;
-  navigation: MeetupListPageNavigationProp;
-};
-
 export const MeetupListPageOptions = {
   title: "Meetup List",
 };
@@ -41,7 +33,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MeetupListPage({ navigation }: MeetupListPageProps) {
+export default function MeetupListPage({
+  navigation,
+}: StackNavigationProps<HomeRoutes, "MeetupList">) {
   const [pendingMeetups, setPendingMeetups] = useState<Meetup[]>([]);
   const [upcomingMeetups, setUpcomingMeetups] = useState<Meetup[]>([]);
   const [unratedMeetups, setUnratedMeetups] = useState<Meetup[]>([]);

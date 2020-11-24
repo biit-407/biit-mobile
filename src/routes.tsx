@@ -12,36 +12,7 @@ type RootStackParamList = {
   CommunityAdministration: { name: string };
   MemberList: { name: string };
   DevelopmentLinks: undefined;
-  MeetupList: undefined;
-  MeetupDetails: {
-    meetupID: string;
-    timestamp: string;
-    duration: string;
-    location: string;
-    userList: Record<string, number>;
-  };
-  MeetupResponse: {
-    meetupID: string;
-    timestamp: string;
-    duration: string;
-    location: string;
-    userList: Record<string, number>;
-  };
-  MeetupRating: {
-    meetupID: string;
-    timestamp: string;
-    duration: string;
-    location: string;
-    userList: Record<string, number>;
-  };
-  LocationRanker: {
-    locations: string[];
-    setLocations: (locations: string[]) => void;
-  };
-  Home: {
-    futureMeetupIDs: string[];
-    tentativeMeetupIDs: string[];
-  };
+
   CommunityList: undefined;
   CommunityHome: {
     communityID: string;
@@ -59,6 +30,39 @@ export type AccountRoutes = {
   ViewProfile: undefined;
   EditProfile: undefined;
   PreviousMeetups: { pastMeetups: Meetup[] };
+};
+
+export type HomeRoutes = {
+  Home: {
+    futureMeetupIDs: string[];
+    tentativeMeetupIDs: string[];
+  };
+  MeetupList: undefined;
+  MeetupRating: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: Record<string, number>;
+  };
+  LocationRanker: {
+    locations: string[];
+    setLocations: (locations: string[]) => void;
+  };
+  MeetupDetails: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: Record<string, number>;
+  };
+  MeetupResponse: {
+    meetupID: string;
+    timestamp: string;
+    duration: string;
+    location: string;
+    userList: Record<string, number>;
+  };
 };
 
 export type SettingsRoutes = {
@@ -152,69 +156,6 @@ export type CommunityAdministrationPageRouteProp = RouteProp<
 export type CommunityAdministrationPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CommunityAdministration"
->;
-
-// Meetup List Page Types
-export type MeetupListPageRouteProp = RouteProp<
-  RootStackParamList,
-  "MeetupList"
->;
-
-export type MeetupListPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "MeetupList"
->;
-
-// Meetup Details Page Types
-export type MeetupDetailsPageRouteProp = RouteProp<
-  RootStackParamList,
-  "MeetupDetails"
->;
-
-export type MeetupDetailsPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "MeetupDetails"
->;
-
-// Meetup Response Page Types
-export type MeetupResponsePageRouteProp = RouteProp<
-  RootStackParamList,
-  "MeetupResponse"
->;
-
-export type MeetupResponsePageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "MeetupResponse"
->;
-
-// Meetup Rating Page Types
-export type MeetupRatingPageRouteProp = RouteProp<
-  RootStackParamList,
-  "MeetupRating"
->;
-
-export type MeetupRatingPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "MeetupRating"
->;
-
-// Location Ranker Page Types
-export type LocationRankerPageRouteProp = RouteProp<
-  RootStackParamList,
-  "LocationRanker"
->;
-
-export type LocationRankerPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "LocationRanker"
->;
-
-// Home Page Types
-export type HomePageRouteProp = RouteProp<RootStackParamList, "Home">;
-
-export type HomePageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "Home"
 >;
 
 // Community Home Page Types
