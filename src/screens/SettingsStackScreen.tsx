@@ -7,17 +7,17 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import UserTimePreferencePage, {
   UserTimePreferencePageOptions,
-} from "../components/userUtils/UserTimePreferencePage";
+} from "../components/settings/UserTimePreferencePage";
 import theme from "../theme";
 import UserSettingsPage, {
   UserSettingsPageOptions,
-} from "../components/userUtils/UserSettingsPage";
+} from "../components/settings/UserSettingsPage";
 import UserBugReportPage, {
   UserBugReportPageOptions,
-} from "../components/userUtils/UserBugReportPage";
+} from "../components/settings/UserBugReportPage";
 import UserFeedbackPage, {
   UserFeedbackPageOptions,
-} from "../components/userUtils/UserFeedbackPage";
+} from "../components/settings/UserFeedbackPage";
 
 import { DrawerIcon } from "./DrawerIcon";
 

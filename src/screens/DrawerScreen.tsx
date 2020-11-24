@@ -16,7 +16,6 @@ import { ThemedIcon } from "../components/themed";
 import { Theme } from "../theme";
 
 import SettingsStackScreen from "./SettingsStackScreen";
-import MeetupStackScreen from "./MeetupStackScreen";
 import HomeStackScreen from "./HomeStackScreen";
 import CommunityStackScreen from "./CommunityStackScreen";
 import AccountStackScreen from "./AccountStackScreen";
@@ -33,7 +32,6 @@ const DrawerScreen = () => {
       <Drawer.Screen name="Home" component={HomeStackScreen} />
       <Drawer.Screen name="Profile" component={AccountStackScreen} />
       <Drawer.Screen name="Community" component={CommunityStackScreen} />
-      <Drawer.Screen name="Meetup" component={MeetupStackScreen} />
       <Drawer.Screen name="Settings" component={SettingsStackScreen} />
     </Drawer.Navigator>
   );
