@@ -1,25 +1,21 @@
+import React from "react";
+import { StyleSheet } from "react-native";
 import { StackNavigationOptions } from "@react-navigation/stack";
-import React, { useEffect, useState } from "react";
-// import { StyleSheet } from "react-native";
-import { Button } from "react-native-elements";
 
 import {
   ViewProfilePageNavigationProp,
   ViewProfilePageRouteProp,
 } from "../../routes";
 import Box from "../themed/Box";
-import ThemedAvatar from "../themed/ThemedAvatar";
-import Text from "../themed/Text";
-import ThemedCard from "../themed/ThemedCard";
-import { getProfilePicture, useAccount } from "../../contexts/accountContext";
-import { EMPTY_PROFILE_PIC } from "../../models/constants";
+import { useAccountState } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
-import theme from "../../theme";
 import {
   getPastMeetupsList,
   useMeetupDispatch,
 } from "../../contexts/meetupContext";
 import { Meetup } from "../../models/meetups";
+import { ProfileCard, ThemedButton } from "../themed";
+import { useConstructor } from "../../hooks";
 
 // React Navigation Types and Page Options
 
@@ -34,20 +30,23 @@ export const ViewProfilePageOptions: StackNavigationOptions = {
 
 // Page Styles
 
-// const styles = StyleSheet.create({
-//   root: {
-//     flex: 1,
-//     flexDirection: "column",
-//     alignItems: "center",
-//   },
-// });
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    flexDirection: "column",
+  },
+});
 
 // Page Definition
 
 export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
-  const [accountState, accountDispatch] = useAccount();
+  // Get account info
   const [tokenState, tokenDispatch] = useToken();
-  const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);
+  const accountState = useAccountState();
+  const { fname, lname, profileImage, email } = accountState.account;
+  const fullname = `${fname} ${lname}`;
+
+  // Get meetup context and create list of meetings
   const meetupDispatch = useMeetupDispatch();
   const [pastMeetups, setPastMeetups] = React.useState<Meetup[]>([]);
 
@@ -56,71 +55,31 @@ export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
       meetupDispatch,
       tokenDispatch,
       tokenState.refreshToken,
-      accountState.account.email
+      email
     );
     setPastMeetups(meetups);
   };
 
-  useEffect(() => {
-    loadPastMeetups();
-    getProfilePicture(
-      accountDispatch,
-      tokenDispatch,
-      tokenState.refreshToken,
-      accountState.account
-    );
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    setAvatar(
-      accountState.account.profileImage
-        ? accountState.account.profileImage
-        : EMPTY_PROFILE_PIC
-    );
-  }, [accountState.account.profileImage]);
+  // Load past meetups upon navigating
+  useConstructor(() => loadPastMeetups());
 
   return (
-    <Box
-      backgroundColor="mainBackground"
-      style={{ flexDirection: "row", height: "100%" }}
-    >
-      <Box style={{ width: "100%", height: "100%" }}>
-        <ThemedCard wrapperStyle={{ alignItems: "center" }}>
-          <ThemedAvatar
-            uri={avatar}
-            size="xlarge"
-            edit={true}
-            onEdit={() => {
-              navigation.push("EditProfile");
-            }}
-          />
-          <Text marginBottom="md" variant="header">
-            {accountState.account.fname + " " + accountState.account.lname}
-          </Text>
-        </ThemedCard>
+    <Box backgroundColor="mainBackground" style={styles.root}>
+      <ProfileCard
+        avatarURI={profileImage}
+        name={fullname}
+        onEdit={() => navigation.push("EditProfile")}
+      />
 
-        {/* TODO fix this hard coding */}
-        <Button
-          onPress={() =>
-            navigation.navigate("PreviousMeetups", { pastMeetups: pastMeetups })
-          }
-          title={"View Previous Meetups"}
-          buttonStyle={{
-            backgroundColor: theme.colors.buttonPrimaryBackground,
-            padding: theme.spacing.md,
-            margin: theme.spacing.md,
-            elevation: 16,
-            shadowColor: "#000000",
-            shadowOpacity: 0.29,
-            shadowOffset: {
-              width: 8,
-              height: 8,
-            },
-            shadowRadius: 16,
-            marginBottom: 32,
-          }}
-        />
-      </Box>
+      <ThemedButton
+        title="View Previous Meetups"
+        onPress={() => navigation.navigate("PreviousMeetups", { pastMeetups })}
+      />
+
+      <ThemedButton
+        title="View Previous Users"
+        onPress={() => navigation.push("PreviousUsers")}
+      />
     </Box>
   );
 }
