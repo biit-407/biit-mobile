@@ -19,7 +19,7 @@ import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "../components/meetups/PreviousMeetupsPage";
 
-import { DrawerIcon } from "./DrawerScreen";
+import { DrawerIcon } from "./DrawerIcon";
 
 const AccountStack = createStackNavigator();
 

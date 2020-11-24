@@ -5,8 +5,6 @@ import { Meetup } from "./models/meetups";
 
 // Add any parameters that are included with the page
 type RootStackParamList = {
-  ViewProfile: undefined;
-  EditProfile: undefined;
   BannedUsers: { name: string };
   CreateCommunity: undefined;
   JoinCommunity: { name: string; codeOfConduct: string; numMembers: number };
@@ -36,7 +34,6 @@ type RootStackParamList = {
     location: string;
     userList: Record<string, number>;
   };
-  PreviousMeetups: { pastMeetups: Meetup[] };
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
@@ -55,7 +52,13 @@ type RootStackParamList = {
 export type AuthRoutes = {
   Login: undefined;
   CreateAccount: undefined;
+};
+
+export type AccountRoutes = {
   CreateProfile: undefined;
+  ViewProfile: undefined;
+  EditProfile: undefined;
+  PreviousMeetups: { pastMeetups: Meetup[] };
 };
 
 export type SettingsRoutes = {
@@ -83,28 +86,6 @@ export type DevelopmentLinksPageRouteProp = RouteProp<
 export type DevelopmentLinksPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "DevelopmentLinks"
->;
-
-// View Profile Page Types
-export type ViewProfilePageRouteProp = RouteProp<
-  RootStackParamList,
-  "ViewProfile"
->;
-
-export type ViewProfilePageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "ViewProfile"
->;
-
-// View Profile Page Types
-export type EditProfilePageRouteProp = RouteProp<
-  RootStackParamList,
-  "EditProfile"
->;
-
-export type EditProfilePageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "EditProfile"
 >;
 
 // Banned Users Page Types
@@ -226,17 +207,6 @@ export type LocationRankerPageRouteProp = RouteProp<
 export type LocationRankerPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "LocationRanker"
->;
-
-// Previous Meetup Page Types
-export type PreviousMeetupsPageRouteProp = RouteProp<
-  RootStackParamList,
-  "PreviousMeetups"
->;
-
-export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "PreviousMeetups"
 >;
 
 // Home Page Types

@@ -27,7 +27,7 @@ import CommunityHomePage, {
 import { Theme } from "../theme";
 
 import CommunityTabScreen from "./CommunityTabScreen";
-import { DrawerIcon } from "./DrawerScreen";
+import { DrawerIcon } from "./DrawerIcon";
 
 const CommunityStack = createStackNavigator();
 

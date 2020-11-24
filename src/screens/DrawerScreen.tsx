@@ -5,7 +5,6 @@ import {
 } from "@react-navigation/drawer";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@shopify/restyle";
-import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 import ThemedAvatar from "../components/themed/ThemedAvatar";
 import Text from "../components/themed/Text";
@@ -150,22 +149,6 @@ const CustomDrawerItem = (
           />
         );
       }}
-    />
-  );
-};
-
-export const DrawerIcon = () => {
-  const navigation = useNavigation();
-  const theme = useTheme<Theme>();
-  return (
-    <ThemedIcon
-      size={24}
-      reverse
-      name="menu"
-      type="entypo"
-      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
-      color={theme.colors.headerBackground}
-      iconStyle={{ color: theme.colors.primaryText }}
     />
   );
 };

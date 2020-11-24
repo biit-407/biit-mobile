@@ -3,10 +3,6 @@ import React, { useEffect, useState } from "react";
 // import { StyleSheet } from "react-native";
 import { Button } from "react-native-elements";
 
-import {
-  ViewProfilePageNavigationProp,
-  ViewProfilePageRouteProp,
-} from "../../routes";
 import Box from "../themed/Box";
 import ThemedAvatar from "../themed/ThemedAvatar";
 import Text from "../themed/Text";
@@ -20,13 +16,9 @@ import {
   useMeetupDispatch,
 } from "../../contexts/meetupContext";
 import { Meetup } from "../../models/meetups";
+import { AccountRoutes, StackNavigationProps } from "../../routes";
 
-// React Navigation Types and Page Options
-
-type ViewProfilePageProps = {
-  navigation: ViewProfilePageNavigationProp;
-  route: ViewProfilePageRouteProp;
-};
+//  Page Options
 
 export const ViewProfilePageOptions: StackNavigationOptions = {
   title: "View Profile",
@@ -44,7 +36,9 @@ export const ViewProfilePageOptions: StackNavigationOptions = {
 
 // Page Definition
 
-export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
+export default function ViewProfilePage({
+  navigation,
+}: StackNavigationProps<AccountRoutes, "ViewProfile">) {
   const [accountState, accountDispatch] = useAccount();
   const [tokenState, tokenDispatch] = useToken();
   const [avatar, setAvatar] = useState(EMPTY_PROFILE_PIC);

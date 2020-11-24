@@ -21,8 +21,7 @@ import MeetupRatingPage, {
 import LocationRankerPage, {
   LocationRankerPageOptions,
 } from "../components/meetups/LocationRankerPage";
-
-import { DrawerIcon } from "./DrawerScreen";
+import { DrawerIcon } from "./DrawerIcon";
 
 const HomeStack = createStackNavigator();
 

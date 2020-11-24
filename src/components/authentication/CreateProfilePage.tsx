@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
-import { StackNavigationProps, AuthRoutes } from "../../routes";
+import { StackNavigationProps, AccountRoutes } from "../../routes";
 import Text from "../themed/Text";
 import Box from "../themed/Box";
 
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 
 export default function CreateProfilePage({
   navigation,
-}: StackNavigationProps<AuthRoutes, "CreateProfile">) {
+}: StackNavigationProps<AccountRoutes, "CreateProfile">) {
   return (
     <Box
       backgroundColor="mainBackground"

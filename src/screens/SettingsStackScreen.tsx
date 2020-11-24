@@ -19,7 +19,7 @@ import UserFeedbackPage, {
   UserFeedbackPageOptions,
 } from "../components/userUtils/UserFeedbackPage";
 
-import { DrawerIcon } from "./DrawerScreen";
+import { DrawerIcon } from "./DrawerIcon";
 
 const SettingsStack = createStackNavigator();
 
