@@ -37,6 +37,13 @@ export interface PreviousUser {
   commonMeetups: Meetup[];
 }
 
+export const BLANK_PREVIOUS_USER: PreviousUser = {
+  fname: "",
+  lname: "",
+  email: "",
+  commonMeetups: [],
+};
+
 /**
  * @description model used to send data to the Account
  * POST endpoint. for more information see the documentation
