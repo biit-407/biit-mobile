@@ -17,6 +17,7 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { BLANK_COMMUNITY } from "../../models/community";
 import { useAccountState } from "../../contexts/accountContext";
+import { ThemedIcon } from "../themed";
 
 type CreateCommunityPageProps = {
   route: CreateCommunityPageRouteProp;
@@ -24,8 +25,27 @@ type CreateCommunityPageProps = {
 };
 
 export const CreateCommunityPageOptions = {
-  title: "Create Community",
-  headerTransparent: false,
+  tabBarIcon: ({
+    color,
+    size,
+    focused,
+  }: {
+    color: string;
+    focused: boolean;
+    size: number;
+  }) => (
+    <ThemedIcon
+      name="create"
+      type="material"
+      size={focused ? 30 : size}
+      color={color}
+    />
+  ),
+  tabBarLabel: ({ color, focused }: { focused: boolean; color: string }) => (
+    <Text style={{ color: color }} fontSize={focused ? 12 : 10} mb="xs">
+      Create Community
+    </Text>
+  ),
 };
 
 const styles = StyleSheet.create({

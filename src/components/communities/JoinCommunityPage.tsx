@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import {
   JoinCommunityPageRouteProp,
@@ -14,6 +14,7 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { useAccountState } from "../../contexts/accountContext";
 import ThemedIcon from "../themed/ThemedIcon";
+import { ScrollView } from "react-native-gesture-handler";
 
 type JoinCommunityPageProps = {
   route: JoinCommunityPageRouteProp;
@@ -32,75 +33,113 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  txtbox: {
-    width: "100%",
-    height: "50%",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  ynbox: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  ybtn: {
-    marginLeft: "10%",
-    marginRight: "20%",
-  },
-  nbtn: {
-    marginLeft: "20%",
-    marginRight: "10%",
-  },
 });
+
+const Divider = () => (
+  <View
+    style={{
+      flexGrow: 1,
+      borderBottomColor: "black",
+      borderBottomWidth: 2,
+    }}
+  />
+);
 
 export default function JoinCommunityPage({
   route,
   navigation,
 }: JoinCommunityPageProps) {
+  // Get context variables
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
 
-  function join() {
-    joinCommunity(
+  // Extract info about the community to join
+  const { name, codeOfConduct, numMembers } = route.params;
+
+  // Create a function to join the specified community
+  const join = async () => {
+    await joinCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       accountState.account.email,
       route.params.name
     );
-  }
+    navigation.pop();
+  };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <Box style={styles.txtbox}>
-        <Text variant="header" style={{ textAlign: "center" }}>
-          Joining "{route.params.name}"
-        </Text>
-        <Text variant="body">
-          Are you sure you want to join this community?
-        </Text>
+      <Box flex={3} padding="md">
+        <ScrollView>
+          <Text variant="header" textAlign="center" marginBottom="md">
+            Join "{name}"?
+          </Text>
+          <Box
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            marginVertical="sm"
+          >
+            <Divider />
+            <Text
+              fontWeight="bold"
+              fontSize={16}
+              marginHorizontal="sm"
+            >{`${numMembers} members`}</Text>
+            <Divider />
+          </Box>
+          <Text variant="subheader">
+            By joining {name} you agree to adhere to the following code of
+            conduct
+          </Text>
+          <Text variant="body">{codeOfConduct}</Text>
+          {/* TODO: Remove dummy text once actual info is passed into for code of conduct */}
+          <Text variant="body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
+            auctor risus sit amet ante imperdiet semper. Fusce metus augue,
+            egestas ut quam at, faucibus finibus tellus. Donec mauris dolor,
+            luctus eu velit quis, venenatis congue est. Nunc fringilla imperdiet
+            erat, quis consectetur mi tempor quis. Quisque sodales porta ante,
+            sit amet euismod massa eleifend ac. Cras consequat lectus a lacus
+            rhoncus, non luctus elit eleifend. Sed eget scelerisque elit. Class
+            aptent taciti sociosqu ad litora torquent per conubia nostra, per
+            inceptos himenaeos. Suspendisse at dapibus libero. Aenean in blandit
+            urna. Nunc neque turpis, pellentesque quis purus vitae, molestie
+            congue nisi. Class aptent taciti sociosqu ad litora torquent per
+            conubia nostra, per inceptos himenaeos. Fusce scelerisque, neque
+            eget dignissim aliquet, enim orci convallis erat, eget pretium elit
+            tortor eget lectus.
+          </Text>
+        </ScrollView>
       </Box>
-      <Box style={styles.ynbox}>
-        <Box style={styles.ybtn}>
-          <ThemedIcon
-            name="check"
-            type="entypo"
-            size={32}
-            reverse
-            onPress={() => {
-              join();
-              navigation.push("DevelopmentLinks");
-            }}
-          />
-        </Box>
-        <Box style={styles.nbtn}>
+      <Box
+        flex={1}
+        flexDirection="row"
+        justifyContent="space-around"
+        paddingTop="md"
+        width="100%"
+      >
+        <Box alignItems="center">
           <ThemedIcon
             name="cross"
             type="entypo"
             size={32}
             reverse
-            onPress={() => navigation.push("DevelopmentLinks")}
+            onPress={() => navigation.pop()}
           />
+          <Text variant="body">Decline</Text>
+        </Box>
+        <Box alignItems="center">
+          <ThemedIcon
+            name="check"
+            type="entypo"
+            size={32}
+            reverse
+            onPress={() => join()}
+          />
+          <Text variant="body">Accept</Text>
         </Box>
       </Box>
     </Box>

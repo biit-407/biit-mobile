@@ -12,8 +12,8 @@ type RootStackParamList = {
   EditProfile: undefined;
   BannedUsers: { name: string };
   CreateCommunity: undefined;
-  JoinCommunity: { name: string };
-  LeaveCommunity: { name: string };
+  JoinCommunity: { name: string; codeOfConduct: string; numMembers: number };
+  LeaveCommunity: { name: string; numMembers: number };
   CommunityAdministration: { name: string };
   UserSettings: undefined;
   MemberList: { name: string };
@@ -54,6 +54,7 @@ type RootStackParamList = {
   CommunityHome: {
     communityID: string;
   };
+  CommunitySearch: undefined;
   Feedback: undefined;
   BugReport: undefined;
 };
@@ -319,4 +320,15 @@ export type CommunityListPageRouteProp = RouteProp<
 export type CommunityListPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CommunityList"
+>;
+
+// Community List Page Types
+export type CommunitySearchPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunitySearch"
+>;
+
+export type CommunitySearchPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunitySearch"
 >;
