@@ -11,20 +11,12 @@ import { Picker } from "@react-native-community/picker";
 
 import Box from "../themed/Box";
 import theme from "../../theme";
-import {
-  UserTimePreferencePageNavigationProp,
-  UserTimePreferencePageRouteProp,
-} from "../../routes";
+import { SettingsRoutes, StackNavigationProps } from "../../routes";
 import Text from "../themed/Text";
 import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 
 import UserTimePreferenceCard from "./UserTimePreferenceCard";
-
-type UserTimePreferencePageProps = {
-  route: UserTimePreferencePageRouteProp;
-  navigation: UserTimePreferencePageNavigationProp;
-};
 
 export const UserTimePreferencePageOptions = {
   title: "Time Preference",
@@ -38,7 +30,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function UserTimePreferencePage({}: UserTimePreferencePageProps) {
+export default function UserTimePreferencePage({}: StackNavigationProps<
+  SettingsRoutes,
+  "UserTimePreference"
+>) {
   const [preferences, setPreferences] = React.useState<
     { start: Date; end: Date }[]
   >([]);
