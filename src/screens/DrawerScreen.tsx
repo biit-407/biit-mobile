@@ -4,6 +4,8 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import React, { useEffect, useState } from "react";
+import { useTheme } from "@shopify/restyle";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 import ThemedAvatar from "../components/themed/ThemedAvatar";
 import Text from "../components/themed/Text";
@@ -12,7 +14,7 @@ import { EMPTY_PROFILE_PIC } from "../models/constants";
 import { useToken } from "../contexts/tokenContext";
 import Box from "../components/themed/Box";
 import { ThemedIcon } from "../components/themed";
-import theme from "../theme";
+import { Theme } from "../theme";
 
 import SettingsStackScreen from "./SettingsStackScreen";
 import MeetupStackScreen from "./MeetupStackScreen";
@@ -23,6 +25,7 @@ import AccountStackScreen from "./AccountStackScreen";
 const Drawer = createDrawerNavigator();
 
 const DrawerScreen = () => {
+  const theme = useTheme<Theme>();
   return (
     <Drawer.Navigator
       drawerContent={(props) => <DrawerComponent {...props} />}
@@ -60,7 +63,7 @@ const DrawerComponent = (
         : EMPTY_PROFILE_PIC
     );
   }, [accountState.account.profileImage]);
-
+  const theme = useTheme<Theme>();
   return (
     <>
       <DrawerContentScrollView>
@@ -119,6 +122,7 @@ const DrawerComponent = (
 const CustomDrawerItem = (
   { navigation, label, location, icon }: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ) => {
+  const theme = useTheme<Theme>();
   return (
     <DrawerItem
       label={label}
@@ -146,6 +150,22 @@ const CustomDrawerItem = (
           />
         );
       }}
+    />
+  );
+};
+
+export const DrawerIcon = () => {
+  const navigation = useNavigation();
+  const theme = useTheme<Theme>();
+  return (
+    <ThemedIcon
+      size={24}
+      reverse
+      name="menu"
+      type="entypo"
+      onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
+      color={theme.colors.headerBackground}
+      iconStyle={{ color: theme.colors.primaryText }}
     />
   );
 };

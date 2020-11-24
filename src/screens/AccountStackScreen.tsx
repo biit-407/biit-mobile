@@ -15,16 +15,15 @@ import ViewProfilePage, {
   ViewProfilePageOptions,
 } from "../components/authentication/ViewProfilePage";
 import theme from "../theme";
-import { ThemedIcon } from "../components/themed";
 import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "../components/meetups/PreviousMeetupsPage";
 
+import { DrawerIcon } from "./DrawerScreen";
+
 const AccountStack = createStackNavigator();
 
-const AccountStackScreen = (
-  { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
-) => {
+const AccountStackScreen = ({}) => {
   return (
     <AccountStack.Navigator
       initialRouteName="ViewProfile"
@@ -40,21 +39,7 @@ const AccountStackScreen = (
         component={CreateProfilePage}
         options={{
           ...CreateProfilePageOptions,
-          headerLeft: () => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="menu"
-                type="entypo"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-                color={theme.colors.headerBackground}
-                iconStyle={{ color: theme.colors.primaryText }}
-              />
-            );
-          },
+          headerLeft: () => <DrawerIcon />,
         }}
       />
       <AccountStack.Screen
@@ -62,21 +47,7 @@ const AccountStackScreen = (
         component={ViewProfilePage}
         options={{
           ...ViewProfilePageOptions,
-          headerLeft: () => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="menu"
-                type="entypo"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-                color={theme.colors.headerBackground}
-                iconStyle={{ color: theme.colors.primaryText }}
-              />
-            );
-          },
+          headerLeft: () => <DrawerIcon />,
         }}
       />
       <AccountStack.Screen

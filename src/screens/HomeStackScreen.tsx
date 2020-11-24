@@ -6,7 +6,6 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import theme from "../theme";
-import { ThemedIcon } from "../components/themed";
 import MeetupResponsePage, {
   MeetupResponsePageOptions,
 } from "../components/meetups/MeetupResponsePage";
@@ -23,11 +22,11 @@ import LocationRankerPage, {
   LocationRankerPageOptions,
 } from "../components/meetups/LocationRankerPage";
 
+import { DrawerIcon } from "./DrawerScreen";
+
 const HomeStack = createStackNavigator();
 
-const HomeStackScreen = (
-  { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
-) => {
+const HomeStackScreen = ({}) => {
   return (
     <HomeStack.Navigator
       screenOptions={{
@@ -42,25 +41,7 @@ const HomeStackScreen = (
         component={MeetupListPage}
         options={{
           ...MeetupListPageOptions,
-          headerLeft: () => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="menu"
-                type="entypo"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-                color={theme.colors.headerBackground}
-                iconStyle={{ color: theme.colors.primaryText }}
-              />
-            );
-          },
-        }}
-        initialParams={{
-          futureMeetupIDs: ["test"],
-          tentativeMeetupIDs: ["temp"],
+          headerLeft: () => <DrawerIcon />,
         }}
       />
 
