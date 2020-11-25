@@ -19,6 +19,12 @@ import { ThemedIcon } from "../components/themed";
 import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "../components/meetups/PreviousMeetupsPage";
+import PreviousUsersPage, {
+  PreviousUsersPageOptions,
+} from "../components/meetups/PreviousUsersPage";
+import PreviousProfilePage, {
+  PreviousProfilePageOptions,
+} from "../components/meetups/PreviousProfilePage";
 
 const AccountStack = createStackNavigator();
 
@@ -90,6 +96,16 @@ const AccountStackScreen = (
         name="PreviousMeetups"
         component={PreviousMeetupsPage}
         options={PreviousMeetupsPageOptions}
+      />
+      <AccountStack.Screen
+        name="PreviousUsers"
+        component={PreviousUsersPage}
+        options={PreviousUsersPageOptions}
+      />
+      <AccountStack.Screen
+        name="PreviousProfile"
+        component={PreviousProfilePage}
+        options={PreviousProfilePageOptions}
       />
     </AccountStack.Navigator>
   );

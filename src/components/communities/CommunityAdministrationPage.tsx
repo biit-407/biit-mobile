@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useTheme } from "@shopify/restyle";
 
 import {
   CommunityAdministrationPageRouteProp,
@@ -22,7 +21,6 @@ import { useAccountState } from "../../contexts/accountContext";
 import { BLANK_COMMUNITY } from "../../models/community";
 import { useConstructor } from "../../hooks";
 import { ThemedIcon } from "../themed";
-import { Theme } from "../../theme";
 
 type CommunityAdministrationPageProps = {
   route: CommunityAdministrationPageRouteProp;
@@ -144,7 +142,6 @@ export default function CommunityAdministrationPage({
   const toggleSw2 = () => setSw2((previousState) => !previousState);
   const [sw3, setSw3] = useState(false);
   const toggleSw3 = () => setSw3((previousState) => !previousState);
-  const theme = useTheme<Theme>();
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
       <ScrollView>
@@ -215,7 +212,7 @@ export default function CommunityAdministrationPage({
       <Box flexDirection="row" justifyContent="space-evenly" m="md">
         <ThemedButton
           title="Cancel"
-          color={theme.colors.iconSelectedRed}
+          color="buttonDanger"
           onPress={() => promptDiscardChanges(navigation.goBack)}
         />
 
