@@ -12,3 +12,5 @@ export { default as ThemedListItem } from "./ThemedListItem";
 export { default as ThemedMultiSlider } from "./ThemedMultiSlider";
 export { default as ThemedRefreshControl } from "./ThemedRefreshControl";
 export { default as ThemedSwitch } from "./ThemedSwitch";
+
+export { default as ProfileCard } from "./ProfileCard";

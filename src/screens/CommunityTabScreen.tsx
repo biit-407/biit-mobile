@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Text, View } from "react-native";
 import {
   BottomTabBarOptions,
   createBottomTabNavigator,
@@ -8,18 +7,14 @@ import { useTheme } from "@shopify/restyle";
 
 import CommunityListPage, {
   CommunityListPageOptions,
-} from "../components/communities/CommunityList";
+} from "../components/communities/CommunityListPage";
 import { Theme } from "../theme";
-import { ThemedIcon } from "../components/themed";
-import CreateCommunityPage from "../components/communities/CreateCommunityPage";
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import CreateCommunityPage, {
+  CreateCommunityPageOptions,
+} from "../components/communities/CreateCommunityPage";
+import CommunitySearchPage, {
+  CommunitySearchPageOptions,
+} from "../components/communities/CommunitySearchPage";
 
 const Tab = createBottomTabNavigator();
 
@@ -38,24 +33,16 @@ export default function CommunityTabScreen() {
         component={CommunityListPage}
         options={CommunityListPageOptions}
       />
-      {/* #TODO:  Include create community and search for new community pages */}
       <Tab.Screen
-        name="Search for Communities"
-        component={SettingsScreen}
-        options={{
-          tabBarIcon: ({ color }: { color: string }) => (
-            <ThemedIcon name="search" type="material" color={color} />
-          ),
-        }}
+        name="Search Communities"
+        component={CommunitySearchPage}
+        options={CommunitySearchPageOptions}
       />
+      {/* #TODO:  Include create community and search for new community pages */}
       <Tab.Screen
         name="Create Community"
         component={CreateCommunityPage}
-        options={{
-          tabBarIcon: ({ color }: { color: string }) => (
-            <ThemedIcon name="create" type="material" color={color} />
-          ),
-        }}
+        options={CreateCommunityPageOptions}
       />
     </Tab.Navigator>
   );

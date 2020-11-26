@@ -15,9 +15,6 @@ import CommunityAdministrationPage, {
 import MemberListPage, {
   MemberListPageOptions,
 } from "../components/communities/MemberListPage";
-import CreateCommunityPage, {
-  CreateCommunityPageOptions,
-} from "../components/communities/CreateCommunityPage";
 import JoinCommunityPage, {
   JoinCommunityPageOptions,
 } from "../components/communities/JoinCommunityPage";

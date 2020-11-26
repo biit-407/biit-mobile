@@ -99,6 +99,7 @@ export default function CommunityHomePage({
       accountState.account.email,
       communityID
     );
+    // TODO: Make this dialog more descriptive, and reload the list of meetups
     Alert.alert(`${result}`);
   };
 
@@ -218,7 +219,10 @@ export default function CommunityHomePage({
                 label="Leave"
                 color={theme.colors.iconSelectedRed}
                 action={() =>
-                  navigation.push("LeaveCommunity", { name: communityID })
+                  navigation.push("LeaveCommunity", {
+                    name: communityID,
+                    numMembers: community.Members.length,
+                  })
                 }
               />
             </Box>

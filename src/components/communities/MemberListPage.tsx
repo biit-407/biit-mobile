@@ -188,7 +188,7 @@ export default function MemberListPage({ route }: MemberListPageProps) {
   );
 
   return (
-    <Box style={styles.root}>
+    <Box style={styles.root} backgroundColor="mainBackground">
       <SectionList
         refreshControl={
           <ThemedRefreshControl

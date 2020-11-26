@@ -11,6 +11,7 @@ const palette = {
 
   black: "#000000",
   white: "#FFFFFF",
+  semiWhite: "#FFFFFF66",
   grey: "#888888",
 
   darkGreen: "#1e6928",
@@ -31,10 +32,15 @@ const theme = createTheme({
     borderPrimary: palette.brownLight,
     cardBackground: palette.tanPrimary,
     cardBorder: palette.brownDark,
+
     buttonPrimaryBackground: palette.tanDark,
     buttonPrimaryText: palette.white,
     buttonSecondaryBackground: palette.brownLight,
     buttonSecondaryText: palette.white,
+    buttonDanger: palette.darkRed,
+    buttonConfirm: palette.darkGreen,
+    buttonHighlight: palette.semiWhite,
+
     textInputDefault: palette.brownLight,
     secondaryText: palette.white,
     iconPrimary: palette.brownPrimary,
@@ -60,6 +66,14 @@ const theme = createTheme({
     searchBarPlaceholderText: palette.brownLight,
   },
   spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+    xxl: 40,
+  },
+  borderRadii: {
     xs: 4,
     sm: 8,
     md: 16,
@@ -101,6 +115,11 @@ const theme = createTheme({
       fontSize: 20,
       fontWeight: "bold",
       color: "primaryText",
+    },
+    buttonLabel: {
+      fontSize: 16,
+      fontWeight: "bold",
+      color: "buttonPrimaryText",
     },
   },
 });

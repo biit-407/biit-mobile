@@ -1,6 +1,7 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 
+import { PreviousUser } from "./models/accounts";
 import { Meetup } from "./models/meetups";
 
 // Add any parameters that are included with the page
@@ -12,8 +13,8 @@ type RootStackParamList = {
   EditProfile: undefined;
   BannedUsers: { name: string };
   CreateCommunity: undefined;
-  JoinCommunity: { name: string };
-  LeaveCommunity: { name: string };
+  JoinCommunity: { name: string; codeOfConduct: string; numMembers: number };
+  LeaveCommunity: { name: string; numMembers: number };
   CommunityAdministration: { name: string };
   UserSettings: undefined;
   MemberList: { name: string };
@@ -41,6 +42,8 @@ type RootStackParamList = {
     userList: Record<string, number>;
   };
   PreviousMeetups: { pastMeetups: Meetup[] };
+  PreviousUsers: undefined;
+  PreviousProfile: { previousUser: PreviousUser };
   LocationRanker: {
     locations: string[];
     setLocations: (locations: string[]) => void;
@@ -54,6 +57,7 @@ type RootStackParamList = {
   CommunityHome: {
     communityID: string;
   };
+  CommunitySearch: undefined;
   Feedback: undefined;
   BugReport: undefined;
   CommunityStats: {
@@ -268,6 +272,28 @@ export type PreviousMeetupsPageNavigationProp = StackNavigationProp<
   "PreviousMeetups"
 >;
 
+// Previous People Page Types
+export type PreviousUsersPageRouteProp = RouteProp<
+  RootStackParamList,
+  "PreviousUsers"
+>;
+
+export type PreviousUsersPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "PreviousUsers"
+>;
+
+// Previous Profile Page Types
+export type PreviousProfilePageRouteProp = RouteProp<
+  RootStackParamList,
+  "PreviousProfile"
+>;
+
+export type PreviousProfilePageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "PreviousProfile"
+>;
+
 // User Time Preferences Page Types
 export type UserTimePreferencePageRouteProp = RouteProp<
   RootStackParamList,
@@ -324,6 +350,7 @@ export type CommunityListPageNavigationProp = StackNavigationProp<
   "CommunityList"
 >;
 
+
 export type CommunityStatsPageRouteProp = RouteProp<
   RootStackParamList,
   "CommunityStats"
@@ -332,4 +359,15 @@ export type CommunityStatsPageRouteProp = RouteProp<
 export type CommunityStatsPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CommunityStats"
+
+// Community List Page Types
+export type CommunitySearchPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunitySearch"
+>;
+
+export type CommunitySearchPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunitySearch"
+
 >;
