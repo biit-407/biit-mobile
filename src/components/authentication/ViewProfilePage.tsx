@@ -10,12 +10,9 @@ import {
   useMeetupDispatch,
 } from "../../contexts/meetupContext";
 import { Meetup } from "../../models/meetups";
-<<<<<<< HEAD
 import { AccountRoutes, StackNavigationProps } from "../../routes";
-=======
 import { ProfileCard, ThemedButton } from "../themed";
 import { useConstructor } from "../../hooks";
->>>>>>> master
 
 //  Page Options
 
@@ -34,15 +31,10 @@ const styles = StyleSheet.create({
 
 // Page Definition
 
-<<<<<<< HEAD
 export default function ViewProfilePage({
   navigation,
 }: StackNavigationProps<AccountRoutes, "ViewProfile">) {
-  const [accountState, accountDispatch] = useAccount();
-=======
-export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
   // Get account info
->>>>>>> master
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
   const { fname, lname, profileImage, email } = accountState.account;

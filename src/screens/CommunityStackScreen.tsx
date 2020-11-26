@@ -28,10 +28,10 @@ import { Theme } from "../theme";
 import CommunityStatsPage, {
   CommunityStatsPageOptions,
 } from "../components/communities/CommunityStatsPage";
+import CreateCommunityPage from "../components/communities/CreateCommunityPage"; // CreateCommunityPageOptions,
 
 import CommunityTabScreen from "./CommunityTabScreen";
 import { DrawerIcon } from "./DrawerIcon";
-import CreateCommunityPage, { CreateCommunityPageOptions } from "../components/communities/CreateCommunityPage";
 
 const CommunityStack = createStackNavigator();
 

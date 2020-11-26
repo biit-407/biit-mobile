@@ -43,6 +43,7 @@ export type AccountRoutes = {
   ViewProfile: undefined;
   EditProfile: undefined;
   PreviousMeetups: { pastMeetups: Meetup[] };
+  PreviousUsers: undefined;
 };
 
 export type CommunityRoutes = {
@@ -83,28 +84,18 @@ export type SettingsRoutes = {
 export interface StackNavigationProps<
   ParamList extends ParamListBase,
   RouteName extends keyof ParamList = string
-  > {
+> {
   navigation: StackNavigationProp<ParamList, RouteName>;
   route: RouteProp<ParamList, RouteName>;
 }
-Feedback: undefined;
-BugReport: undefined;
-
-
 
 // Login Page Types
 export type LoginPageRouteProp = RouteProp<AuthRoutes, "Login">;
 
-export type LoginPageNavigationProp = StackNavigationProp<
-  AuthRoutes,
-  "Login"
->;
+export type LoginPageNavigationProp = StackNavigationProp<AuthRoutes, "Login">;
 
 // Create Account Page Types
-export type CreateAccountPageRouteProp = RouteProp<
-  AuthRoutes,
-  "CreateAccount"
->;
+export type CreateAccountPageRouteProp = RouteProp<AuthRoutes, "CreateAccount">;
 
 export type CreateAccountPageNavigationProp = StackNavigationProp<
   AuthRoutes,
@@ -123,10 +114,7 @@ export type CreateProfilePageNavigationProp = StackNavigationProp<
 >;
 
 // View Profile Page Types
-export type ViewProfilePageRouteProp = RouteProp<
-  AccountRoutes,
-  "ViewProfile"
->;
+export type ViewProfilePageRouteProp = RouteProp<AccountRoutes, "ViewProfile">;
 
 export type ViewProfilePageNavigationProp = StackNavigationProp<
   AccountRoutes,
@@ -134,10 +122,7 @@ export type ViewProfilePageNavigationProp = StackNavigationProp<
 >;
 
 // View Profile Page Types
-export type EditProfilePageRouteProp = RouteProp<
-  AccountRoutes,
-  "EditProfile"
->;
+export type EditProfilePageRouteProp = RouteProp<AccountRoutes, "EditProfile">;
 
 export type EditProfilePageNavigationProp = StackNavigationProp<
   AccountRoutes,
@@ -189,10 +174,7 @@ export type LeaveCommunityPageNavigationProp = StackNavigationProp<
 >;
 
 // Member List Page Types
-export type MemberListPageRouteProp = RouteProp<
-  CommunityRoutes,
-  "MemberList"
->;
+export type MemberListPageRouteProp = RouteProp<CommunityRoutes, "MemberList">;
 
 export type MemberListPageNavigationProp = StackNavigationProp<
   CommunityRoutes,
@@ -222,10 +204,7 @@ export type UserSettingsPageNavigationProp = StackNavigationProp<
 >;
 
 // Meetup List Page Types
-export type MeetupListPageRouteProp = RouteProp<
-  HomeRoutes,
-  "MeetupList"
->;
+export type MeetupListPageRouteProp = RouteProp<HomeRoutes, "MeetupList">;
 
 export type MeetupListPageNavigationProp = StackNavigationProp<
   HomeRoutes,
@@ -233,10 +212,7 @@ export type MeetupListPageNavigationProp = StackNavigationProp<
 >;
 
 // Meetup Details Page Types
-export type MeetupDetailsPageRouteProp = RouteProp<
-  HomeRoutes,
-  "MeetupDetails"
->;
+export type MeetupDetailsPageRouteProp = RouteProp<HomeRoutes, "MeetupDetails">;
 
 export type MeetupDetailsPageNavigationProp = StackNavigationProp<
   SettingsRoutes,
@@ -255,10 +231,7 @@ export type MeetupResponsePageNavigationProp = StackNavigationProp<
 >;
 
 // Meetup Rating Page Types
-export type MeetupRatingPageRouteProp = RouteProp<
-  HomeRoutes,
-  "MeetupRating"
->;
+export type MeetupRatingPageRouteProp = RouteProp<HomeRoutes, "MeetupRating">;
 
 export type MeetupRatingPageNavigationProp = StackNavigationProp<
   HomeRoutes,
@@ -365,7 +338,6 @@ export type CommunityListPageNavigationProp = StackNavigationProp<
   "CommunityList"
 >;
 
-
 export type CommunityStatsPageRouteProp = RouteProp<
   CommunityRoutes,
   "CommunityStats"
@@ -385,5 +357,4 @@ export type CommunitySearchPageRouteProp = RouteProp<
 export type CommunitySearchPageNavigationProp = StackNavigationProp<
   CommunityRoutes,
   "CommunitySearch"
-
 >;
