@@ -100,6 +100,7 @@ export default function CommunityHomePage({
           snackbarVisible: true,
           snackbarMessage: "Successfully Created Matchups",
           queue: [],
+          snackbarType: "success",
         },
         dispatch: snackbarDispatch,
       });
@@ -110,6 +111,7 @@ export default function CommunityHomePage({
           snackbarVisible: true,
           snackbarMessage: "Failed to Create Matchups",
           queue: [],
+          snackbarType: "error",
         },
         dispatch: snackbarDispatch,
       });

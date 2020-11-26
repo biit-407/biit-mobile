@@ -3,21 +3,23 @@ import SnackBar from "react-native-snackbar-component";
 import { YellowBox } from "react-native";
 
 import { useAccountState } from "../contexts/accountContext";
-import { useSnackbarState } from "../contexts/snackbarContext";
+import {
+  getSnackbarStyle,
+  useSnackbarState,
+} from "../contexts/snackbarContext";
 
 import DrawerScreen from "./DrawerScreen";
 import UnauthenticatedStackScreen from "./UnauthenticatedStackScreen";
 
 // I hate having to add this but its the only way to not get spammed by warnings
 YellowBox.ignoreWarnings([
-  "Animated: `useNativeDriver` was not specified. " +
-    "This is a required option and must be explicitly set to`true` or`false`",
+  "Animated: `useNativeDriver` was not specified. This is a required option and must be explicitly set to `true` or `false`", // eslint-disable-line max-len
 ]);
 
 const NavigationComponent = () => {
   const account = useAccountState();
-  const { snackbarVisible, snackbarMessage } = useSnackbarState();
-
+  const { snackbarVisible, snackbarMessage, snackbarType } = useSnackbarState();
+  const style = getSnackbarStyle(snackbarType);
   return (
     <>
       {account.account.email === "" ? (
@@ -29,6 +31,8 @@ const NavigationComponent = () => {
         visible={snackbarVisible}
         textMessage={snackbarMessage}
         actionText={"Dismiss"}
+        backgroundColor={style.backgroundColor}
+        messageColor={style.messageColor}
       />
     </>
   );

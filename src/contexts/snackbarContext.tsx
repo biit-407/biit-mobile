@@ -1,8 +1,13 @@
 import React from "react";
 
+import { NOTIFICATION_LENGTH } from "../models/constants";
+
+type SnackbarType = "default" | "error" | "success";
+
 type SnackbarState = {
   snackbarVisible: boolean;
   snackbarMessage: string;
+  snackbarType: SnackbarType;
   queue: SnackbarState[];
 };
 
@@ -36,6 +41,7 @@ function snackbarReducer(
       const newState = {
         snackbarVisible: snackbarState.snackbarVisible,
         snackbarMessage: snackbarState.snackbarMessage,
+        snackbarType: snackbarState.snackbarType,
         queue: [action.state, ...snackbarState.queue],
       };
 
@@ -43,27 +49,30 @@ function snackbarReducer(
         const next = newState.queue.pop() as SnackbarState;
         newState.snackbarVisible = next.snackbarVisible;
         newState.snackbarMessage = next.snackbarMessage;
+        newState.snackbarType = next.snackbarType;
         setTimeout(() => {
           action.dispatch({
             type: "pop",
             state: newState,
             dispatch: action.dispatch,
           });
-        }, 2000);
+        }, NOTIFICATION_LENGTH);
       }
 
       return newState;
     }
     case "pop": {
-      const newState = {
+      const newState: SnackbarState = {
         snackbarVisible: false,
         snackbarMessage: "",
+        snackbarType: snackbarState.snackbarType,
         queue: snackbarState.queue,
       };
       if (newState.queue.length > 0) {
         const next = newState.queue.pop() as SnackbarState;
         newState.snackbarVisible = true;
         newState.snackbarMessage = next.snackbarMessage;
+        newState.snackbarType = next.snackbarType;
 
         setTimeout(() => {
           action.dispatch({
@@ -71,7 +80,7 @@ function snackbarReducer(
             state: newState,
             dispatch: action.dispatch,
           });
-        }, 2000);
+        }, NOTIFICATION_LENGTH);
       }
       return newState;
     }
@@ -82,6 +91,7 @@ function SnackbarProvider({ children }: SnackbarProviderProps) {
   const [state, dispatch] = React.useReducer(snackbarReducer, {
     snackbarVisible: false,
     snackbarMessage: "",
+    snackbarType: "default",
     queue: [],
   });
   return (
@@ -117,4 +127,21 @@ function useSnackbar(): [SnackbarState, Dispatch] {
   return [useSnackbarState(), useSnackbarDispatch()];
 }
 
-export { SnackbarProvider, useSnackbarState, useSnackbarDispatch, useSnackbar };
+function getSnackbarStyle(snackbarType: SnackbarType) {
+  switch (snackbarType) {
+    case "default":
+      return { backgroundColor: "#484848", messageColor: "#FFFFFF" };
+    case "error":
+      return { backgroundColor: "#ab2115", messageColor: "#FFFFFF" };
+    case "success":
+      return { backgroundColor: "#1e6928", messageColor: "#FFFFFF" };
+  }
+}
+
+export {
+  SnackbarProvider,
+  useSnackbarState,
+  useSnackbarDispatch,
+  useSnackbar,
+  getSnackbarStyle,
+};

@@ -10,7 +10,9 @@ import {
   setMeetupLocations,
   useMeetup,
 } from "../../contexts/meetupContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
+import { BLANK_MEETUP } from "../../models/meetups";
 import { HomeRoutes, StackNavigationProps } from "../../routes";
 import theme from "../../theme";
 import Box from "../themed/Box";
@@ -44,6 +46,7 @@ export default function MeetupReponsePage({
 
   const [, meetupDispatch] = useMeetup();
   const [locations, setLocations] = useState(["Online", "WALC", "LWSN"]);
+  const snackbarDispatch = useSnackbarDispatch();
 
   const onAccept = async () => {
     await setMeetupLocations(
@@ -54,24 +57,74 @@ export default function MeetupReponsePage({
       meetupID,
       locations
     );
-    await acceptMeetup(
+    const response = await acceptMeetup(
       meetupDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       email,
       meetupID
     );
-    navigation.pop();
+
+    if (response === BLANK_MEETUP) {
+      // Failure
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: "Failed to accept meetup",
+          snackbarVisible: true,
+          snackbarType: "error",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: "Successfully accepted meetup",
+          snackbarVisible: true,
+          snackbarType: "success",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.pop();
+    }
   };
   const onDecline = async () => {
-    await declineMeetup(
+    const response = await declineMeetup(
       meetupDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       email,
       meetupID
     );
-    navigation.pop();
+
+    if (response === BLANK_MEETUP) {
+      // Failure
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: "Failed to decline meetup",
+          snackbarVisible: true,
+          snackbarType: "error",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: "Successfully declined meetup",
+          snackbarVisible: true,
+          snackbarType: "success",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.pop();
+    }
   };
 
   const theRealSetLocations = (l: string[]): void => {
