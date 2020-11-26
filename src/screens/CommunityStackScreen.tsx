@@ -26,6 +26,9 @@ import CommunityHomePage, {
   CommunityHomePageOptions,
 } from "../components/communities/CommunityHomePage";
 import { Theme } from "../theme";
+import CommunityStatsPage, {
+  CommunityStatsPageOptions,
+} from "../components/communities/CommunityStatsPage";
 
 import CommunityTabScreen from "./CommunityTabScreen";
 
@@ -87,6 +90,11 @@ const CommunityStackScreen = (
         initialParams={{ name: "Johnsons" }}
       />
       <CommunityStack.Screen
+        name="CreateCommunity"
+        component={CreateCommunityPage}
+        options={CreateCommunityPageOptions}
+      />
+      <CommunityStack.Screen
         name="JoinCommunity"
         component={JoinCommunityPage}
         options={JoinCommunityPageOptions}
@@ -95,6 +103,11 @@ const CommunityStackScreen = (
         name="LeaveCommunity"
         component={LeaveCommunityPage}
         options={LeaveCommunityPageOptions}
+      />
+      <CommunityStack.Screen
+        name="CommunityStats"
+        component={CommunityStatsPage}
+        options={CommunityStatsPageOptions}
       />
     </CommunityStack.Navigator>
   );

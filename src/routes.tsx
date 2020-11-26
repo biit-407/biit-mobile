@@ -60,6 +60,9 @@ type RootStackParamList = {
   CommunitySearch: undefined;
   Feedback: undefined;
   BugReport: undefined;
+  CommunityStats: {
+    communityID: string;
+  };
 };
 
 //TODO remove for release
@@ -347,6 +350,16 @@ export type CommunityListPageNavigationProp = StackNavigationProp<
   "CommunityList"
 >;
 
+
+export type CommunityStatsPageRouteProp = RouteProp<
+  RootStackParamList,
+  "CommunityStats"
+>;
+
+export type CommunityStatsPageNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CommunityStats"
+
 // Community List Page Types
 export type CommunitySearchPageRouteProp = RouteProp<
   RootStackParamList,
@@ -356,4 +369,5 @@ export type CommunitySearchPageRouteProp = RouteProp<
 export type CommunitySearchPageNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CommunitySearch"
+
 >;
