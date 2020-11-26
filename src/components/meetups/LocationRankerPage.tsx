@@ -4,18 +4,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import { StyleSheet, YellowBox } from "react-native";
 
-import {
-  LocationRankerPageNavigationProp,
-  LocationRankerPageRouteProp,
-} from "../../routes";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
 import ThemedListItem from "../themed/ThemedListItem";
 import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
-
-type LocationRankerPageProps = {
-  route: LocationRankerPageRouteProp;
-  navigation: LocationRankerPageNavigationProp;
-};
 
 export const LocationRankerPageOptions: StackNavigationOptions = {
   title: "Rank Locations",
@@ -37,7 +29,7 @@ YellowBox.ignoreWarnings([
 export default function LocationRankerPage({
   navigation,
   route,
-}: LocationRankerPageProps) {
+}: StackNavigationProps<HomeRoutes, "LocationRanker">) {
   const [locationData, setLocationData] = useState(route.params.locations);
 
   return (

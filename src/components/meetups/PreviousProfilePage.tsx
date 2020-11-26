@@ -1,20 +1,11 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import React from 'react';
+import { StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
-import {
-  PreviousProfilePageRouteProp,
-  PreviousProfilePageNavigationProp,
-} from "../../routes";
-import { ProfileCard, Text, ThemedButton } from "../themed";
-import Box from "../themed/Box";
-
-import MeetupCard from "./MeetupCard";
-
-type PreviousProfilePageProps = {
-  route: PreviousProfilePageRouteProp;
-  navigation: PreviousProfilePageNavigationProp;
-};
+import { AccountRoutes, StackNavigationProps } from '../../routes';
+import { ProfileCard, Text, ThemedButton } from '../themed';
+import Box from '../themed/Box';
+import MeetupCard from './MeetupCard';
 
 export const PreviousProfilePageOptions = {
   title: "Previous Profile",
@@ -29,7 +20,7 @@ const styles = StyleSheet.create({
 
 export default function PreviousProfilePage({
   route,
-}: PreviousProfilePageProps) {
+}: StackNavigationProps<AccountRoutes, "PreviousProfile">) {
   const {
     previousUser: { fname, lname, commonMeetups },
   } = route.params;

@@ -11,10 +11,7 @@ import {
   useMeetup,
 } from "../../contexts/meetupContext";
 import { useToken } from "../../contexts/tokenContext";
-import {
-  MeetupResponsePageRouteProp,
-  MeetupResponsePageNavigationProp,
-} from "../../routes";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
 import theme from "../../theme";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
@@ -22,11 +19,6 @@ import ThemedCard from "../themed/ThemedCard";
 import ThemedIcon from "../themed/ThemedIcon";
 
 import MeetupCard from "./MeetupCard";
-
-type MeetupResponsePageProps = {
-  route: MeetupResponsePageRouteProp;
-  navigation: MeetupResponsePageNavigationProp;
-};
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
   title: "RSVP",
@@ -43,7 +35,7 @@ const styles = StyleSheet.create({
 export default function MeetupReponsePage({
   route,
   navigation,
-}: MeetupResponsePageProps) {
+}: StackNavigationProps<HomeRoutes, "MeetupResponse">) {
   const { meetupID, timestamp, location, duration, userList } = route.params;
   const [tokenState, tokenDispatch] = useToken();
   const {

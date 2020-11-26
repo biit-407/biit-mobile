@@ -4,6 +4,7 @@ import {
   DrawerItem,
 } from "@react-navigation/drawer";
 import React, { useEffect, useState } from "react";
+import { useTheme } from "@shopify/restyle";
 
 import ThemedAvatar from "../components/themed/ThemedAvatar";
 import Text from "../components/themed/Text";
@@ -12,19 +13,17 @@ import { EMPTY_PROFILE_PIC } from "../models/constants";
 import { useToken } from "../contexts/tokenContext";
 import Box from "../components/themed/Box";
 import { ThemedIcon } from "../components/themed";
-import theme from "../theme";
+import { Theme } from "../theme";
 
 import SettingsStackScreen from "./SettingsStackScreen";
-import MeetupStackScreen from "./MeetupStackScreen";
 import HomeStackScreen from "./HomeStackScreen";
 import CommunityStackScreen from "./CommunityStackScreen";
 import AccountStackScreen from "./AccountStackScreen";
-import FeedbackStackScreen from "./FeedbackStackScreen";
-import BugReportStackScreen from "./BugReportStackScreen";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerScreen = () => {
+  const theme = useTheme<Theme>();
   return (
     <Drawer.Navigator
       drawerContent={(props) => <DrawerComponent {...props} />}
@@ -33,10 +32,7 @@ const DrawerScreen = () => {
       <Drawer.Screen name="Home" component={HomeStackScreen} />
       <Drawer.Screen name="Profile" component={AccountStackScreen} />
       <Drawer.Screen name="Community" component={CommunityStackScreen} />
-      <Drawer.Screen name="Meetup" component={MeetupStackScreen} />
       <Drawer.Screen name="Settings" component={SettingsStackScreen} />
-      <Drawer.Screen name="Feedback" component={FeedbackStackScreen} />
-      <Drawer.Screen name="BugReport" component={BugReportStackScreen} />
     </Drawer.Navigator>
   );
 };
@@ -64,7 +60,7 @@ const DrawerComponent = (
         : EMPTY_PROFILE_PIC
     );
   }, [accountState.account.profileImage]);
-
+  const theme = useTheme<Theme>();
   return (
     <>
       <DrawerContentScrollView>
@@ -115,18 +111,6 @@ const DrawerComponent = (
           location={"Settings"}
           icon={"settings"}
         />
-        <CustomDrawerItem
-          navigation={navigation}
-          label={"Feedback"}
-          location={"Feedback"}
-          icon={"message-square"}
-        />
-        <CustomDrawerItem
-          navigation={navigation}
-          label={"Report a Bug"}
-          location={"BugReport"}
-          icon={"terminal"}
-        />
       </DrawerContentScrollView>
     </>
   );
@@ -135,6 +119,7 @@ const DrawerComponent = (
 const CustomDrawerItem = (
   { navigation, label, location, icon }: any // eslint-disable-line @typescript-eslint/no-explicit-any
 ) => {
+  const theme = useTheme<Theme>();
   return (
     <DrawerItem
       label={label}

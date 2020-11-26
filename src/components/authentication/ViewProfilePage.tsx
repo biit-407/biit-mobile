@@ -2,10 +2,6 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { StackNavigationOptions } from "@react-navigation/stack";
 
-import {
-  ViewProfilePageNavigationProp,
-  ViewProfilePageRouteProp,
-} from "../../routes";
 import Box from "../themed/Box";
 import { useAccountState } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
@@ -14,15 +10,11 @@ import {
   useMeetupDispatch,
 } from "../../contexts/meetupContext";
 import { Meetup } from "../../models/meetups";
+import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { ProfileCard, ThemedButton } from "../themed";
 import { useConstructor } from "../../hooks";
 
-// React Navigation Types and Page Options
-
-type ViewProfilePageProps = {
-  navigation: ViewProfilePageNavigationProp;
-  route: ViewProfilePageRouteProp;
-};
+//  Page Options
 
 export const ViewProfilePageOptions: StackNavigationOptions = {
   title: "View Profile",
@@ -39,7 +31,9 @@ const styles = StyleSheet.create({
 
 // Page Definition
 
-export default function ViewProfilePage({ navigation }: ViewProfilePageProps) {
+export default function ViewProfilePage({
+  navigation,
+}: StackNavigationProps<AccountRoutes, "ViewProfile">) {
   // Get account info
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();

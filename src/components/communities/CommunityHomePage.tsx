@@ -14,20 +14,12 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_COMMUNITY } from "../../models/community";
-import {
-  CommunityHomePageRouteProp,
-  CommunityHomePageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import { Text, ThemedButton, ThemedIcon } from "../themed";
 import Box from "../themed/Box";
 import { Theme } from "../../theme";
 import { BLANK_MEETUP } from "../../models/meetups";
 import MeetupCard from "../meetups/MeetupCard";
-
-type CommunityHomePageProps = {
-  route: CommunityHomePageRouteProp;
-  navigation: CommunityHomePageNavigationProp;
-};
 
 export const CommunityHomePageOptions = {
   title: "",
@@ -86,7 +78,7 @@ const CommunityAction = ({
 export default function CommunityHomePage({
   route,
   navigation,
-}: CommunityHomePageProps) {
+}: StackNavigationProps<CommunityRoutes, "CommunityHome">) {
   const { communityID } = route.params;
   const [tokenState, tokenDispatch] = useToken();
   const [communityState, communityDispatch] = useCommunity();

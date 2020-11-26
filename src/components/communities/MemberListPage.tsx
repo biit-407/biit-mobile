@@ -10,21 +10,13 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
 import { useAccountState } from "../../contexts/accountContext";
-import {
-  MemberListPageRouteProp,
-  MemberListPageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
 import { ThemedRefreshControl } from "../themed";
 import { useConstructor } from "../../hooks";
-
-type MemberListPageProps = {
-  route: MemberListPageRouteProp;
-  navigation: MemberListPageNavigationProp;
-};
 
 export const MemberListPageOptions = {
   title: "Member List",
@@ -40,7 +32,9 @@ const styles = StyleSheet.create({
 
 type MemberListSection = { title: string; icon: string; data: string[] };
 
-export default function MemberListPage({ route }: MemberListPageProps) {
+export default function MemberListPage({
+  route,
+}: StackNavigationProps<CommunityRoutes, "MemberList">) {
   const [tokenState, tokenDispatch] = useToken();
   const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();

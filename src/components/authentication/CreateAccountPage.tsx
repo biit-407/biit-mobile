@@ -6,10 +6,7 @@ import {
   CompletedAzureAuthResponse,
   UseAzureAuthReturnType,
 } from "../../hooks/useAzureAuth";
-import {
-  CreateAccountPageNavigationProp,
-  CreateAccountPageRouteProp,
-} from "../../routes";
+import { AuthRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import MicrosoftButton from "../themed/MicrosoftButton";
 import Text from "../themed/Text";
@@ -23,11 +20,6 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 
 // React Navigation Types and Page Options
-
-type CreateAccountPageProps = {
-  navigation: CreateAccountPageNavigationProp;
-  route: CreateAccountPageRouteProp;
-};
 
 export const CreateAccountPageOptions = {
   title: "",
@@ -49,7 +41,7 @@ const styles = StyleSheet.create({
 
 export default function CreateAccountPage({
   navigation,
-}: CreateAccountPageProps) {
+}: StackNavigationProps<AuthRoutes, "CreateAccount">) {
   const [, response, promptAsync]: UseAzureAuthReturnType = useAzureAuth();
 
   const [tokenState, tokenDispatch] = useToken();

@@ -2,10 +2,6 @@ import React from "react";
 import { StyleSheet, TextInput } from "react-native";
 import { SubmitHandler } from "react-hook-form";
 
-import {
-  FeedbackPageRouteProp,
-  FeedbackPageNavigationProp,
-} from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
@@ -15,13 +11,9 @@ import {
   reportSuggestion,
   useAccountState,
 } from "../../contexts/accountContext";
+import { SettingsRoutes, StackNavigationProps } from "../../routes";
 
-type FeedbackPageProps = {
-  route: FeedbackPageRouteProp;
-  navigation: FeedbackPageNavigationProp;
-};
-
-export const FeedbackPageOptions = {
+export const UserFeedbackPageOptions = {
   title: "User Feedback",
   headerTransparent: false,
 };
@@ -83,7 +75,9 @@ type FeedbackFormValues = {
   text: string;
 };
 
-export default function FeedbackPage({ navigation }: FeedbackPageProps) {
+export default function UserFeedbackPage({
+  navigation,
+}: StackNavigationProps<SettingsRoutes, "UserFeedback">) {
   const [feedbackTxt, onChangeText] = React.useState("");
 
   const [{ refreshToken }, tokenDispatch] = useToken();

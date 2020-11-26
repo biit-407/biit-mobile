@@ -7,21 +7,13 @@ import {
   StackNavigationOptions,
 } from "@react-navigation/stack";
 
-import {
-  EditProfilePageNavigationProp,
-  EditProfilePageRouteProp,
-} from "../../routes";
+import { AccountRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 
 import UpdateProfileForm from "./UpdateProfileForm";
 
-// React Navigation Types and Page Options
-
-type EditProfilePageProps = {
-  navigation: EditProfilePageNavigationProp;
-  route: EditProfilePageRouteProp;
-};
+// Page Options
 
 export const EditProfilePageOptions: StackNavigationOptions = {
   title: "Edit Profile",
@@ -63,7 +55,9 @@ const styles = StyleSheet.create({
 
 // Page Definition
 
-export default function EditProfilePage({ navigation }: EditProfilePageProps) {
+export default function EditProfilePage({
+  navigation,
+}: StackNavigationProps<AccountRoutes, "EditProfile">) {
   return (
     <Box backgroundColor="mainBackground" pt="md" style={styles.root}>
       <Text variant="body" mb="lg" textAlign="center">

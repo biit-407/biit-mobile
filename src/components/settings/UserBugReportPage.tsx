@@ -3,23 +3,15 @@ import { StyleSheet, TextInput } from "react-native";
 import { Picker } from "@react-native-community/picker";
 import { SubmitHandler } from "react-hook-form";
 
-import {
-  BugReportPageRouteProp,
-  BugReportPageNavigationProp,
-} from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
 import theme from "../../theme";
 import { reportBug, useAccountState } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
+import { SettingsRoutes, StackNavigationProps } from "../../routes";
 
-type BugReportPageProps = {
-  route: BugReportPageRouteProp;
-  navigation: BugReportPageNavigationProp;
-};
-
-export const BugReportPageOptions = {
+export const UserBugReportPageOptions = {
   title: "Bug Report",
   headerTransparent: false,
 };
@@ -84,7 +76,9 @@ type BugFormValues = {
   description: string;
 };
 
-export default function BugReportPage({ navigation }: BugReportPageProps) {
+export default function UserBugReportPage({
+  navigation,
+}: StackNavigationProps<SettingsRoutes, "UserBugReport">) {
   const [bugLocation, setBugLocation] = useState("Home Page");
   const [bugText, setBugText] = useState("");
 

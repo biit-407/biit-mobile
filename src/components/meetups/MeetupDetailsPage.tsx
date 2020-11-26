@@ -1,18 +1,10 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 
-import {
-  MeetupDetailsPageNavigationProp,
-  MeetupDetailsPageRouteProp,
-} from "../../routes";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 
 import MeetupCard from "./MeetupCard";
-
-type MeetupDetailsPageProps = {
-  route: MeetupDetailsPageRouteProp;
-  navigation: MeetupDetailsPageNavigationProp;
-};
 
 export const MeetupDetailsPageOptions = {
   title: "Meetup Details",
@@ -26,7 +18,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function MeetupDetailsPage({ route }: MeetupDetailsPageProps) {
+export default function MeetupDetailsPage({
+  route,
+}: StackNavigationProps<HomeRoutes, "MeetupDetails">) {
   // TODO: Load in real data of the passed in meeting
   const { meetupID, timestamp, location, duration, userList } = route.params;
 

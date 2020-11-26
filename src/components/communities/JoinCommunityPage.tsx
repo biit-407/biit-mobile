@@ -1,10 +1,8 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import {
-  JoinCommunityPageRouteProp,
-  JoinCommunityPageNavigationProp,
-} from "../../routes";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import {
@@ -14,12 +12,6 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { useAccountState } from "../../contexts/accountContext";
 import ThemedIcon from "../themed/ThemedIcon";
-import { ScrollView } from "react-native-gesture-handler";
-
-type JoinCommunityPageProps = {
-  route: JoinCommunityPageRouteProp;
-  navigation: JoinCommunityPageNavigationProp;
-};
 
 export const JoinCommunityPageOptions = {
   title: "Join Community",
@@ -48,7 +40,7 @@ const Divider = () => (
 export default function JoinCommunityPage({
   route,
   navigation,
-}: JoinCommunityPageProps) {
+}: StackNavigationProps<CommunityRoutes, "JoinCommunity">) {
   // Get context variables
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
