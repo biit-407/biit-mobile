@@ -199,7 +199,11 @@ export default function CommunityHomePage({
                 iconName="line-graph"
                 iconType="entypo"
                 label="Statistics"
-                action={() => console.log("Navigate to statistics")}
+                action={() =>
+                  navigation.push("CommunityStats", {
+                    communityID: communityID,
+                  })
+                }
               />
               <CommunityAction
                 iconName="account-remove"

@@ -1,3 +1,5 @@
+import { Meetup } from "./meetups";
+
 /**
  * @description model used to describe a biit account
  */
@@ -22,6 +24,24 @@ export const BLANK_ACCOUNT: Account = {
   fname: "",
   lname: "",
   email: "",
+};
+
+/**
+ * @description model used to describe a biit account
+ */
+export interface PreviousUser {
+  fname: string;
+  lname: string;
+  email: string;
+  profileImage?: string;
+  commonMeetups: Meetup[];
+}
+
+export const BLANK_PREVIOUS_USER: PreviousUser = {
+  fname: "",
+  lname: "",
+  email: "",
+  commonMeetups: [],
 };
 
 /**

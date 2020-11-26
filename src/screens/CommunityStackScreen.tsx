@@ -25,9 +25,13 @@ import CommunityHomePage, {
   CommunityHomePageOptions,
 } from "../components/communities/CommunityHomePage";
 import { Theme } from "../theme";
+import CommunityStatsPage, {
+  CommunityStatsPageOptions,
+} from "../components/communities/CommunityStatsPage";
 
 import CommunityTabScreen from "./CommunityTabScreen";
 import { DrawerIcon } from "./DrawerIcon";
+import CreateCommunityPage, { CreateCommunityPageOptions } from "../components/communities/CreateCommunityPage";
 
 const CommunityStack = createStackNavigator();
 
@@ -71,6 +75,12 @@ const CommunityStackScreen = ({}) => {
         initialParams={{ name: "Johnsons" }}
       />
       <CommunityStack.Screen
+        name="CreateCommunity"
+        component={CreateCommunityPage}
+        // TODO this isnt working dunno why, just want to get the merge done
+        // options={CreateCommunityPageOptions}
+      />
+      <CommunityStack.Screen
         name="JoinCommunity"
         component={JoinCommunityPage}
         options={JoinCommunityPageOptions}
@@ -79,6 +89,11 @@ const CommunityStackScreen = ({}) => {
         name="LeaveCommunity"
         component={LeaveCommunityPage}
         options={LeaveCommunityPageOptions}
+      />
+      <CommunityStack.Screen
+        name="CommunityStats"
+        component={CommunityStatsPage}
+        options={CommunityStatsPageOptions}
       />
     </CommunityStack.Navigator>
   );
