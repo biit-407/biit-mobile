@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
+import { getCommunityStats } from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY_STATS, CommunityStats } from "../../models/community";
 import {
   CommunityStatsPageNavigationProp,
   CommunityStatsPageRouteProp,
@@ -29,32 +32,41 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function CommunityStatsPage({}: // TODO uncomment once backend is updated
-// route,
+export default function CommunityStatsPage({
+  route,
+}: // TODO uncomment once backend is updated
 CommunityStatsPageProps) {
-  // TODO uncomment once backend is updated
-  // const { communityID } = route.params;
-  // const [tokenState, tokenDispatch] = useToken();
-  // const [, communityDispatch] = useCommunity();
-  // const [stats, setStats] = useState([]);
+  const [tokenState, tokenDispatch] = useToken();
+  const [stats, setStats] = useState<CommunityStats>(BLANK_COMMUNITY_STATS);
 
-  useConstructor(() => {
+  useConstructor(async () => {
     // automatically queue a data update
-    // TODO uncomment once backend is updated
-    // setStats(getCommunityStats(
-    //     tokenDispatch,
-    //     tokenState.refreshToken,
-    //     route.params.communityID
-    // ));
+    const data = await getCommunityStats(
+      tokenDispatch,
+      tokenState.refreshToken,
+      route.params.communityID
+    );
+    if (data !== null) {
+      setStats(data);
+    }
   });
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ height: 16 }} />
-      <Statline statName="Total Sessions" statValue="12" />
-      <Statline statName="Total Meetups" statValue="50" />
-      <Statline statName="Total Accepted" statValue="100" />
-      <Statline statName="Average Rating" statValue="4.5/5" />
+      <Statline
+        statName="Total Sessions"
+        statValue={stats.totalSessions.toString()}
+      />
+      <Statline
+        statName="Total Meetups"
+        statValue={stats.totalMeetups.toString()}
+      />
+      <Statline
+        statName="Total Accepted"
+        statValue={stats.totalAccepted.toString()}
+      />
+      <Statline statName="Average Rating" statValue="NOT IMPLEMENTED" />
     </Box>
   );
 }

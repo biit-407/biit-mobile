@@ -1,7 +1,12 @@
 import React from "react";
 
 import { OauthToken } from "../models/azure";
-import { Ban, BLANK_COMMUNITY, Community } from "../models/community";
+import {
+  Ban,
+  BLANK_COMMUNITY,
+  Community,
+  CommunityStats,
+} from "../models/community";
 import { SERVER_ADDRESS } from "../models/constants";
 import {
   AuthenticatedRequestHandler,
@@ -517,7 +522,7 @@ async function getCommunityStats(
   communityID: string
 ) {
   try {
-    const response: [boolean, OauthToken] = await fetch(
+    const response: [CommunityStats, OauthToken] = await fetch(
       `${SERVER_ADDRESS}/community/${communityID}/stats?&token=${token}`,
       {
         method: "GET",
@@ -538,7 +543,7 @@ async function getCommunityStats(
         ];
       });
     tokenDispatch({ type: "set", ...response[1] });
-    return response[0];
+    return response[0] as CommunityStats;
   } catch (error) {
     return null;
   }
