@@ -2062,6 +2062,14 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native-snackbar-component@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-snackbar-component/-/react-native-snackbar-component-1.1.0.tgz#382a80427f7c549685b6e0ab3a8728a41a9b00f2"
+  integrity sha512-Ab8efW5C1pEk8c5gwbRBzkmJCNWHbp6Ck/BIoNCrXDZqxlYYvXqUtX7IgcSyUsEJqb3CUfp51RNIcuKjMN+vzA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-vector-icons@^6.4.5":
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.5.tgz#74cbfc564bd8435e43ad6728572a0e5b49c335d1"
@@ -2084,10 +2092,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@~16.9.41":
+"@types/react@*":
   version "16.9.49"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.49.tgz#09db021cf8089aba0cdb12a49f8021a69cce4872"
   integrity sha512-DtLFjSj0OYAdVLBbyjhuV9CdGVHCkHn2R+xr3XkBvK2rS1Y1tkc14XSGjYgm5Fjjr90AxH9tiSzc1pCFMGO06g==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.0.tgz#5af3eb7fad2807092f0046a1302b7823e27919b8"
+  integrity sha512-aj/L7RIMsRlWML3YB6KZiXB3fV2t41+5RBGYF8z+tAKU43Px8C3cYUZsDvf1/+Bm4FK21QWBrDutu8ZJ/70qOw==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -7532,6 +7548,13 @@ react-native-screens@~2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
   integrity sha512-5MaiUD6HA3nzY3JbVI8l3V7pKedtxQF3d8qktTVI0WmWXTI4QzqOU8r8fPVvfKo3MhOXwhWBjr+kQ7DZaIQQeg==
+
+react-native-snackbar-component@^1.1.11:
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/react-native-snackbar-component/-/react-native-snackbar-component-1.1.11.tgz#58df1c49f6cf01c5197db1bbf527746cdd1216e0"
+  integrity sha512-DtSg1Bh2FO3B48CIKd2hMsAk3rO8M6bStf76+KY/KW4By+E+/lPO5Mv6zbX7WS/miohtl+yg3OKYne9U4aqKMg==
+  dependencies:
+    prop-types "^15.6.0"
 
 react-native-status-bar-height@^2.5.0:
   version "2.5.0"

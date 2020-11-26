@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { Dimensions, StyleSheet } from "react-native";
 
-import { getCommunityStats } from '../../contexts/communityContext';
-import { useToken } from '../../contexts/tokenContext';
-import { useConstructor } from '../../hooks';
-import { BLANK_COMMUNITY_STATS, CommunityStats } from '../../models/community';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import theme from '../../theme';
-import { Text } from '../themed';
-import Box from '../themed/Box';
+import { getCommunityStats } from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY_STATS, CommunityStats } from "../../models/community";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import theme from "../../theme";
+import { Text } from "../themed";
+import Box from "../themed/Box";
 
 export const CommunityStatsPageOptions = {
   title: "Statistics",

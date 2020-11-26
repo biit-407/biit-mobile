@@ -1,8 +1,8 @@
-import { ParamListBase, RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { ParamListBase, RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-import { PreviousUser } from './models/accounts';
-import { Meetup } from './models/meetups';
+import { PreviousUser } from "./models/accounts";
+import { Meetup } from "./models/meetups";
 
 export type AuthRoutes = {
   Login: undefined;
