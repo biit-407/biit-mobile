@@ -98,6 +98,7 @@ export default function LeaveCommunityPage({
             type="feather"
             size={64}
             onPress={() => navigation.pop()}
+            buttonColor="buttonDanger"
           />
           <Text variant="body">Decline</Text>
         </Box>
@@ -107,6 +108,7 @@ export default function LeaveCommunityPage({
             type="feather"
             size={64}
             onPress={() => leave()}
+            buttonColor="buttonConfirm"
           />
           <Text variant="body">Accept</Text>
         </Box>
