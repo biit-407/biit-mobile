@@ -115,13 +115,32 @@ export default function MeetupListPage({
     </Box>
   );
 
-  const renderListItem = (item: Meetup, onPress: () => void) => (
-    <ThemedListItem
-      title={item.id}
-      onPress={onPress}
-      rightContent={<ThemedIcon name="chevron-right" type="entypo" />}
-    />
-  );
+  const formatDateStr = (date: Date) => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    let minuteStr = minutes < 10 ? "0" + minutes : minutes;
+    return `${hours}:${minuteStr} ${ampm} on ${month}/${day}/${year}`;
+  };
+
+  const renderListItem = (item: Meetup, onPress: () => void) => {
+    const date = new Date(parseInt(item.timestamp, 10) * 1000);
+    const title = `${item.community}: ${item.duration} minutes`;
+    const subtitle = formatDateStr(date);
+    return (
+      <ThemedListItem
+        title={title}
+        subtitle={subtitle}
+        onPress={onPress}
+        chevron
+      />
+    );
+  };
 
   const meetupData: SectionListData<Meetup>[] = [
     {
