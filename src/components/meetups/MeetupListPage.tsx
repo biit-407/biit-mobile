@@ -96,7 +96,7 @@ export default function MeetupListPage({
 
   // Function to render each section's header
   const sectionIcons: Record<string, string> = {
-    "Pending Meetups": "list",
+    "Pending Meetups": "coffee",
     "Upcoming Meetups": "calendar",
     "Unrated Meetups": "star",
   };

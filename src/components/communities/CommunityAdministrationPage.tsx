@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React, { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Alert, ScrollView, StyleSheet, Switch } from 'react-native';
 
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import ThemedInput from "../themed/ThemedInput";
-import ThemedButton from "../themed/ThemedButton";
-import Text from "../themed/Text";
+import { useAccountState } from '../../contexts/accountContext';
 import {
-  getCommunity,
-  loadCommunity,
-  updateCommunity,
-  useCommunity,
-} from "../../contexts/communityContext";
-import { useToken } from "../../contexts/tokenContext";
-import { useAccountState } from "../../contexts/accountContext";
-import { BLANK_COMMUNITY } from "../../models/community";
-import { useConstructor } from "../../hooks";
-import { ThemedIcon } from "../themed";
+    getCommunity, loadCommunity, updateCommunity, useCommunity
+} from '../../contexts/communityContext';
+import { useToken } from '../../contexts/tokenContext';
+import { useConstructor } from '../../hooks';
+import { BLANK_COMMUNITY } from '../../models/community';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import { ThemedIcon } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedButton from '../themed/ThemedButton';
+import ThemedInput from '../themed/ThemedInput';
 
 export const CommunityAdministrationPageOptions = {
   title: "Community Administration",
@@ -143,7 +140,7 @@ export default function CommunityAdministrationPage({
           flexDirection="row"
           alignItems="center"
         >
-          <ThemedIcon type="entypo" name="open-book" />
+          <ThemedIcon type="feather" name="book-open" />
           <Text paddingLeft="sm" variant="sectionListHeader">
             Code of Conduct
           </Text>

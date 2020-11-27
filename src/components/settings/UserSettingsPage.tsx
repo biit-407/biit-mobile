@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import { StyleSheet, ScrollView } from "react-native";
-import { Picker } from "@react-native-community/picker";
-import Collapsible from "react-native-collapsible";
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import Collapsible from 'react-native-collapsible';
 
-import { StackNavigationProps, SettingsRoutes } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import DeleteAccountButton from "../authentication/DeleteAccountButton";
-import LogoutButton from "../authentication/LogoutButton";
-import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from "../themed";
-import { updateAccount, useAccount } from "../../contexts/accountContext";
-import { useToken } from "../../contexts/tokenContext";
+import { Picker } from '@react-native-community/picker';
+
+import { updateAccount, useAccount } from '../../contexts/accountContext';
+import { useToken } from '../../contexts/tokenContext';
+import { SettingsRoutes, StackNavigationProps } from '../../routes';
+import DeleteAccountButton from '../authentication/DeleteAccountButton';
+import LogoutButton from '../authentication/LogoutButton';
+import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
 
 export const UserSettingsPageOptions = {
   title: "Settings",
@@ -317,9 +318,9 @@ export default function UserSettingsPage({
         <Box style={styles.itemframe}>
           <ThemedListItem
             iconName={
-              allowNotifications ? "notifications" : "notifications-off"
+              allowNotifications ? "bell" : "bell-off"
             }
-            iconType="ionicons"
+            iconType="feather"
             title="Allow Notifications"
             subtitle="Toggle receiving notifications"
             rightContent={
@@ -331,7 +332,7 @@ export default function UserSettingsPage({
           />
           <ThemedListItem
             iconName="users"
-            iconType="entypo"
+            iconType="feather"
             title="Allow Groups"
             subtitle="Toggle allowing group meetups"
             rightContent={
@@ -345,7 +346,7 @@ export default function UserSettingsPage({
         <Box style={styles.itemframe}>
           <ThemedListItem
             iconName="briefcase"
-            iconType="entypo"
+            iconType="feather"
             title="Search for Meetups"
             subtitle="Toggle actively searching for meetups"
             rightContent={
@@ -359,8 +360,8 @@ export default function UserSettingsPage({
             <ThemedListItem
               title="Meetup Type"
               slim
-              iconName="hand"
-              iconType="entypo"
+              iconName="coffee"
+              iconType="feather"
               rightContent={
                 <Picker
                   selectedValue={meetupType}
@@ -380,8 +381,8 @@ export default function UserSettingsPage({
             <ThemedListItem
               title="Meetup Length"
               slim
-              iconName="schedule"
-              iconType="material"
+              iconName="clock"
+              iconType="feather"
               rightContent={
                 <Picker
                   selectedValue={meetupLength}
@@ -402,7 +403,7 @@ export default function UserSettingsPage({
               title="COVID Precautions"
               slim
               iconName="shield"
-              iconType="entypo"
+              iconType="feather"
               rightContent={
                 <Picker
                   selectedValue={covidPrecaution}
@@ -421,8 +422,8 @@ export default function UserSettingsPage({
             />
           </Collapsible>
           <ThemedListItem
-            iconName="cake"
-            iconType="entypo"
+            iconName="gift"
+            iconType="feather"
             title="Age Preference"
             subtitle="Toggle and update your age preference"
             rightContent={
@@ -458,7 +459,7 @@ export default function UserSettingsPage({
 
           <ThemedListItem
             iconName="calendar"
-            iconType="entypo"
+            iconType="feather"
             title="Time Preference"
             subtitle="View and update your time preference"
             chevron
@@ -469,16 +470,16 @@ export default function UserSettingsPage({
           <ThemedListItem
             title="Submit Bug Report"
             subtitle="Submit a bug report about biit"
-            iconName="bug-report"
-            iconType="material"
+            iconName="alert-triangle"
+            iconType="feather"
             chevron
             onPress={() => navigation.push("UserBugReport")}
           />
           <ThemedListItem
             title="Submit Feedback"
             subtitle="Submit feedback for the developers of biit"
-            iconName="feedback"
-            iconType="material"
+            iconName="message-square"
+            iconType="feather"
             chevron
             onPress={() => navigation.push("UserFeedback")}
           />
