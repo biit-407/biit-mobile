@@ -1,11 +1,12 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React from "react";
+import { StyleSheet } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 
-import { AccountRoutes, StackNavigationProps } from '../../routes';
-import { ProfileCard, Text, ThemedButton } from '../themed';
-import Box from '../themed/Box';
-import MeetupCard from './MeetupCard';
+import { AccountRoutes, StackNavigationProps } from "../../routes";
+import { ProfileCard, Text, ThemedButton } from "../themed";
+import Box from "../themed/Box";
+
+import MeetupCard from "./MeetupCard";
 
 export const PreviousProfilePageOptions = {
   title: "Previous Profile",

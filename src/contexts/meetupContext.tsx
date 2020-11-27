@@ -520,7 +520,7 @@ async function acceptMeetup(
     meetupDispatch({
       type: "finish update item",
       meetup: [response[0]],
-      error: "Successfully loaded meetups from server",
+      error: "Successfully Accepted Meetup",
     });
     return response[0];
   } catch (error) {

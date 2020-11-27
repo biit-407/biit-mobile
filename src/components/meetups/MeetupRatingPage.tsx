@@ -12,6 +12,8 @@ import { Theme } from "../../theme";
 import { useToken } from "../../contexts/tokenContext";
 import { setMeetupRating, useMeetup } from "../../contexts/meetupContext";
 import { useAccountState } from "../../contexts/accountContext";
+import { BLANK_MEETUP } from "../../models/meetups";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 
 import MeetupCard from "./MeetupCard";
 import MeetupReportDialog from "./MeetupReportDialog";
@@ -43,9 +45,10 @@ export default function MeetupRatingPage({
 
   const [rating, setRating] = useState(3);
   const [meetupState, meetupDispatch] = useMeetup();
+  const snackbarDispatch = useSnackbarDispatch();
 
   const submitRating = async () => {
-    await setMeetupRating(
+    const response = await setMeetupRating(
       meetupDispatch,
       tokenDispatch,
       meetupState,
@@ -54,7 +57,30 @@ export default function MeetupRatingPage({
       meetupID,
       rating
     );
-    navigation.goBack();
+    if (response === BLANK_MEETUP) {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: "Failed to rate meetup",
+          snackbarType: "error",
+          snackbarVisible: true,
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: "Successfully rated meetup",
+          snackbarType: "success",
+          snackbarVisible: true,
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.goBack();
+    }
   };
 
   const theme = useTheme<Theme>();

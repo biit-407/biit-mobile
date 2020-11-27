@@ -1,6 +1,6 @@
 import { useTheme } from "@shopify/restyle";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import ReadMore from "react-native-read-more-text";
 import { FlatList } from "react-native-gesture-handler";
 
@@ -20,6 +20,7 @@ import Box from "../themed/Box";
 import { Theme } from "../../theme";
 import { BLANK_MEETUP } from "../../models/meetups";
 import MeetupCard from "../meetups/MeetupCard";
+import { useSnackbar } from "../../contexts/snackbarContext";
 
 export const CommunityHomePageOptions = {
   title: "",
@@ -83,6 +84,7 @@ export default function CommunityHomePage({
   const [tokenState, tokenDispatch] = useToken();
   const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
+  const [, snackbarDispatch] = useSnackbar();
 
   const searchForMeetup = async () => {
     const result = await startMatching(
@@ -91,8 +93,29 @@ export default function CommunityHomePage({
       accountState.account.email,
       communityID
     );
-    // TODO: Make this dialog more descriptive, and reload the list of meetups
-    Alert.alert(`${result}`);
+    if (result) {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarVisible: true,
+          snackbarMessage: "Successfully Created Matchups",
+          queue: [],
+          snackbarType: "success",
+        },
+        dispatch: snackbarDispatch,
+      });
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarVisible: true,
+          snackbarMessage: "Failed to Create Matchups",
+          queue: [],
+          snackbarType: "error",
+        },
+        dispatch: snackbarDispatch,
+      });
+    }
   };
 
   // Utilize community data

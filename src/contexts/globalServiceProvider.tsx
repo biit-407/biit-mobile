@@ -4,6 +4,7 @@ import { AccountProvider } from "./accountContext";
 import { AzureProvider } from "./azureContext";
 import { CommunityProvider } from "./communityContext";
 import { MeetupProvider } from "./meetupContext";
+import { SnackbarProvider } from "./snackbarContext";
 import { TokenProvider } from "./tokenContext";
 
 type GlobalServiceProviderProps = {
@@ -18,7 +19,9 @@ export default function GlobalServiceProvider({
       <TokenProvider>
         <AccountProvider>
           <CommunityProvider>
-            <MeetupProvider>{children}</MeetupProvider>
+            <MeetupProvider>
+              <SnackbarProvider>{children}</SnackbarProvider>
+            </MeetupProvider>
           </CommunityProvider>
         </AccountProvider>
       </TokenProvider>
