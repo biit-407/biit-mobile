@@ -3,8 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import ReadMore from 'react-native-read-more-text';
 
-import { useTheme } from '@shopify/restyle';
-
 import { useAccountState } from '../../contexts/accountContext';
 import {
     getCommunity, loadCommunity, startMatching, useCommunity

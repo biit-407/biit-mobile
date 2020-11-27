@@ -8,7 +8,6 @@ import { useToken } from '../../contexts/tokenContext';
 import { CommunityRoutes, StackNavigationProps } from '../../routes';
 import Box from '../themed/Box';
 import Text from '../themed/Text';
-import ThemedIcon from '../themed/ThemedIcon';
 import ThemedIconButton from '../themed/ThemedIconButton';
 
 export const LeaveCommunityPageOptions = {

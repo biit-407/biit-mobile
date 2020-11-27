@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { AirbnbRating } from "react-native-elements";
-import { useTheme } from "@shopify/restyle";
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { AirbnbRating } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import { HomeRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedCard from "../themed/ThemedCard";
-import ThemedButton from "../themed/ThemedButton";
-import { Theme } from "../../theme";
-import { useToken } from "../../contexts/tokenContext";
-import { setMeetupRating, useMeetup } from "../../contexts/meetupContext";
-import { useAccountState } from "../../contexts/accountContext";
-import { BLANK_MEETUP } from "../../models/meetups";
-import { useSnackbarDispatch } from "../../contexts/snackbarContext";
+import { useTheme } from '@shopify/restyle';
 
-import MeetupCard from "./MeetupCard";
-import MeetupReportDialog from "./MeetupReportDialog";
+import { useAccountState } from '../../contexts/accountContext';
+import { setMeetupRating, useMeetup } from '../../contexts/meetupContext';
+import { useSnackbarDispatch } from '../../contexts/snackbarContext';
+import { useToken } from '../../contexts/tokenContext';
+import { BLANK_MEETUP } from '../../models/meetups';
+import { HomeRoutes, StackNavigationProps } from '../../routes';
+import { Theme } from '../../theme';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedButton from '../themed/ThemedButton';
+import ThemedCard from '../themed/ThemedCard';
+import MeetupCard from './MeetupCard';
+import MeetupReportDialog from './MeetupReportDialog';
 
 export const MeetupRatingPageOptions = {
   title: "Meetup Rating",
@@ -26,7 +27,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    alignItems: "center",
   },
 });
 
@@ -87,45 +87,47 @@ export default function MeetupRatingPage({
   const [showDialog, setShowDialog] = useState(false);
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <Box style={{ width: "100%" }}>
-        <MeetupCard
-          id={meetupID}
-          timestamp={timestamp}
-          duration={duration}
-          location={location}
-          userList={userList}
-        />
-        <ThemedCard>
-          <Box style={{ width: "100%", alignItems: "center" }}>
-            <Text variant="body">How would you rate your experience?</Text>
-            <AirbnbRating /* @ts-ignore:disable-next-line */
-              reviewColor={theme.colors.iconPrimary}
-              defaultRating={rating}
-              selectedColor={theme.colors.iconPrimary}
-              onFinishRating={setRating}
-            />
-            <Box mt="md">
-              <ThemedButton title="Submit Rating" onPress={submitRating} />
+      <ScrollView>
+        <Box style={{ width: "100%" }}>
+          <MeetupCard
+            id={meetupID}
+            timestamp={timestamp}
+            duration={duration}
+            location={location}
+            userList={userList}
+          />
+          <ThemedCard>
+            <Box style={{ width: "100%", alignItems: "center" }}>
+              <Text variant="body">How would you rate your experience?</Text>
+              <AirbnbRating /* @ts-ignore:disable-next-line */
+                reviewColor={theme.colors.iconPrimary}
+                defaultRating={rating}
+                selectedColor={theme.colors.iconPrimary}
+                onFinishRating={setRating}
+              />
+              <Box mt="md">
+                <ThemedButton title="Submit Rating" onPress={submitRating} />
+              </Box>
             </Box>
-          </Box>
-        </ThemedCard>
-        <ThemedCard>
-          <Box alignItems="center" width="100%">
-            <Text variant="subheader" mb="md">
-              Meetup didn't go as planned?
-            </Text>
-            <ThemedButton
-              title="Report Meetup"
-              onPress={() => setShowDialog(true)}
-            />
-          </Box>
-        </ThemedCard>
-      </Box>
-      <MeetupReportDialog
-        open={showDialog}
-        meetupID={meetupID}
-        closeDialog={() => setShowDialog(false)}
-      />
+          </ThemedCard>
+          <ThemedCard>
+            <Box alignItems="center" width="100%">
+              <Text variant="subheader" mb="md">
+                Meetup didn't go as planned?
+              </Text>
+              <ThemedButton
+                title="Report Meetup"
+                onPress={() => setShowDialog(true)}
+              />
+            </Box>
+          </ThemedCard>
+        </Box>
+        <MeetupReportDialog
+          open={showDialog}
+          meetupID={meetupID}
+          closeDialog={() => setShowDialog(false)}
+        />
+      </ScrollView>
     </Box>
   );
 }

@@ -12,11 +12,9 @@ import { useSnackbarDispatch } from '../../contexts/snackbarContext';
 import { useToken } from '../../contexts/tokenContext';
 import { BLANK_MEETUP } from '../../models/meetups';
 import { HomeRoutes, StackNavigationProps } from '../../routes';
-import theme from '../../theme';
 import Box from '../themed/Box';
 import Text from '../themed/Text';
 import ThemedCard from '../themed/ThemedCard';
-import ThemedIcon from '../themed/ThemedIcon';
 import ThemedIconButton from '../themed/ThemedIconButton';
 import MeetupCard from './MeetupCard';
 

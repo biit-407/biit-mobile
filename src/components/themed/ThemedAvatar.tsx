@@ -6,7 +6,6 @@ import { useTheme } from '@shopify/restyle';
 
 import { Theme } from '../../theme';
 import Box from './Box';
-import ThemedIcon from './ThemedIcon';
 import ThemedIconButton from './ThemedIconButton';
 
 type ThemedAvatarProps = {
