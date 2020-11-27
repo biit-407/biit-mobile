@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { SectionList, SectionListData, StyleSheet } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { SectionList, SectionListData, StyleSheet } from 'react-native';
 
-import { HomeRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedListItem from "../themed/ThemedListItem";
-import ThemedIcon from "../themed/ThemedIcon";
-import { useToken } from "../../contexts/tokenContext";
+import { useAccountState } from '../../contexts/accountContext';
 import {
-  getPendingMeetupsList,
-  getUpcomingMeetupsList,
-  getUnratedMeetupsList,
-  useMeetup,
-  getMeetupList,
-} from "../../contexts/meetupContext";
-import { useAccountState } from "../../contexts/accountContext";
-import { ThemedRefreshControl } from "../themed";
-import { Meetup } from "../../models/meetups";
+    getMeetupList, getPendingMeetupsList, getUnratedMeetupsList, getUpcomingMeetupsList, useMeetup
+} from '../../contexts/meetupContext';
+import { useToken } from '../../contexts/tokenContext';
+import { Meetup } from '../../models/meetups';
+import { HomeRoutes, StackNavigationProps } from '../../routes';
+import { ThemedRefreshControl } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedIcon from '../themed/ThemedIcon';
+import ThemedListItem from '../themed/ThemedListItem';
 
 export const MeetupListPageOptions = {
   title: "Meetup List",
@@ -100,7 +96,7 @@ export default function MeetupListPage({
 
   // Function to render each section's header
   const sectionIcons: Record<string, string> = {
-    "Pending Meetups": "add-to-list",
+    "Pending Meetups": "list",
     "Upcoming Meetups": "calendar",
     "Unrated Meetups": "star",
   };
@@ -112,7 +108,7 @@ export default function MeetupListPage({
       flexDirection="row"
       alignItems="center"
     >
-      <ThemedIcon type="entypo" name={sectionIcons[title]} />
+      <ThemedIcon type="feather" name={sectionIcons[title]} />
       <Text paddingLeft="sm" variant="sectionListHeader">
         {title}
       </Text>

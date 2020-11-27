@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React, { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Alert, ScrollView, StyleSheet, Switch } from 'react-native';
 
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
-import ThemedInput from "../themed/ThemedInput";
-import Text from "../themed/Text";
-import {
-  createCommunity,
-  useCommunityDispatch,
-} from "../../contexts/communityContext";
-import { useToken } from "../../contexts/tokenContext";
-import { BLANK_COMMUNITY } from "../../models/community";
-import { useAccountState } from "../../contexts/accountContext";
-import { ThemedIcon } from "../themed";
+import { useAccountState } from '../../contexts/accountContext';
+import { createCommunity, useCommunityDispatch } from '../../contexts/communityContext';
+import { useToken } from '../../contexts/tokenContext';
+import { BLANK_COMMUNITY } from '../../models/community';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import { ThemedIcon } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedButton from '../themed/ThemedButton';
+import ThemedInput from '../themed/ThemedInput';
 
 export const CreateCommunityPageOptions = {
   tabBarIcon: ({
@@ -27,8 +24,8 @@ export const CreateCommunityPageOptions = {
     size: number;
   }) => (
     <ThemedIcon
-      name="create"
-      type="material"
+      name="edit-2"
+      type="feather"
       size={focused ? 30 : size}
       color={color}
     />

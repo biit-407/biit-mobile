@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, SectionList, Alert, SectionListData } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { Alert, SectionList, SectionListData, StyleSheet } from 'react-native';
 
+import { useAccountState } from '../../contexts/accountContext';
 import {
-  banUserFromCommunity,
-  getCommunity,
-  loadCommunity,
-  useCommunity,
-} from "../../contexts/communityContext";
-import { useToken } from "../../contexts/tokenContext";
-import { BLANK_COMMUNITY, Community } from "../../models/community";
-import { useAccountState } from "../../contexts/accountContext";
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedIcon from "../themed/ThemedIcon";
-import ThemedListItem from "../themed/ThemedListItem";
-import { ThemedRefreshControl } from "../themed";
-import { useConstructor } from "../../hooks";
+    banUserFromCommunity, getCommunity, loadCommunity, useCommunity
+} from '../../contexts/communityContext';
+import { useToken } from '../../contexts/tokenContext';
+import { useConstructor } from '../../hooks';
+import { BLANK_COMMUNITY, Community } from '../../models/community';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import { ThemedRefreshControl } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedIcon from '../themed/ThemedIcon';
+import ThemedListItem from '../themed/ThemedListItem';
 
 export const MemberListPageOptions = {
   title: "Member List",
@@ -141,15 +138,15 @@ export default function MemberListPage({
       <>
         <ThemedIcon
           size={24}
-          name="person-add"
-          type="material"
+          name="user-check"
+          type="feather"
           onPress={() => promptPromoteUser(memberEmail, name)}
         />
         <Box marginHorizontal="sm" />
         <ThemedIcon
           size={24}
-          name="cross"
-          type="entypo"
+          name="user-x"
+          type="feather"
           onPress={() => promptBanUser(memberEmail, name)}
         />
       </>
@@ -174,7 +171,7 @@ export default function MemberListPage({
       flexDirection="row"
       alignItems="center"
     >
-      <ThemedIcon type="font-awesome" name={section.icon} />
+      <ThemedIcon type="feather" name={section.icon} />
       <Text paddingLeft="sm" variant="sectionListHeader">
         {section.title}
       </Text>
