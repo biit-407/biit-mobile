@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { useAccountState } from '../../contexts/accountContext';
 import { createCommunity, useCommunityDispatch } from '../../contexts/communityContext';
@@ -57,7 +57,7 @@ const formErrors = {
 export default function CreateCommunityPage({
   navigation,
 }: StackNavigationProps<CommunityRoutes, "CreateCommunity">) {
-  const { register, handleSubmit, setValue, errors, reset } = useForm<
+  const { register, handleSubmit, setValue, errors } = useForm<
     FormValues
   >();
 

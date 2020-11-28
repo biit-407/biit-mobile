@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { Picker } from '@react-native-community/picker';
 
 import { reportBug, useAccountState } from '../../contexts/accountContext';
+import { useSnackbarDispatch } from '../../contexts/snackbarContext';
 import { useToken } from '../../contexts/tokenContext';
 import { SettingsRoutes, StackNavigationProps } from '../../routes';
 import theme from '../../theme';
@@ -24,53 +25,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
-  inputLabelBox: {
-    borderTopWidth: 2,
-    borderBottomWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    backgroundColor: "#FAD092",
-    padding: 5,
-    width: "95%",
-    marginBottom: 10,
-  },
-  inputLabel: {
-    color: "#3D2400",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-  textInputBound: {
-    width: "95%",
-    height: "45%",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-    paddingBottom: 10,
-  },
-  buttonsBox: {
-    borderColor: "#3D2400",
-    borderTopWidth: 2,
-    backgroundColor: "#D8AD6D",
-    width: "100%",
-    height: "15%",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
-  textInput: {
-    width: "95%",
-    height: "100%",
-    borderColor: "#3D2400",
-    borderWidth: 1,
-    padding: 10,
-  },
-  subtitle: {
-    fontWeight: "bold",
-    color: "#3D2400",
-    padding: 10,
-    alignSelf: "center",
-  },
 });
 
 type BugFormValues = {
@@ -85,6 +39,7 @@ export default function UserBugReportPage({
   const [bugText, setBugText] = useState("");
 
   const [tokenState, tokenDispatch] = useToken();
+  const snackbarDispatch = useSnackbarDispatch();
   const {
     account: { email },
   } = useAccountState();
@@ -99,6 +54,17 @@ export default function UserBugReportPage({
       formData.location,
       formData.description
     );
+    snackbarDispatch({
+      type: "push",
+      state: {
+        snackbarVisible: true,
+        snackbarMessage: "Successfully Submitted  Bug Report",
+        queue: [],
+        snackbarType: "success",
+      },
+      dispatch: snackbarDispatch,
+    });
+    navigation.goBack();
   };
 
   return (
