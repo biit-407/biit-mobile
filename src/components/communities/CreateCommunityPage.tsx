@@ -42,19 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
-  header: {
-    paddingLeft: 10,
-    color: "#3d3400",
-  },
-  detailbox: {
-    padding: 5,
-  },
-  option: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 10,
-  },
 });
 
 type FormValues = {
@@ -67,11 +54,12 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CreateCommunityPage({}: StackNavigationProps<
-  CommunityRoutes,
-  "CreateCommunity"
->) {
-  const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
+export default function CreateCommunityPage({
+  navigation,
+}: StackNavigationProps<CommunityRoutes, "CreateCommunity">) {
+  const { register, handleSubmit, setValue, errors, reset } = useForm<
+    FormValues
+  >();
 
   useEffect(() => {
     register("name", { required: true, minLength: 1 });
@@ -82,30 +70,26 @@ export default function CreateCommunityPage({}: StackNavigationProps<
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
 
-  const submitCommunity: SubmitHandler<FormValues> = (data) => {
-    console.log({
-      ...BLANK_COMMUNITY,
-      name: data.name,
-      codeofconduct: data.codeOfConduct,
-      Admins: [accountState.account.email],
-      Members: [accountState.account.email],
-      token: tokenState.refreshToken,
-    });
-    createCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, {
-      ...BLANK_COMMUNITY,
-      name: data.name,
-      codeofconduct: data.codeOfConduct,
-      Admins: [accountState.account.email],
-      Members: [accountState.account.email],
-      // token: tokenState.accessToken,
-    })
-      .then(() => Alert.alert("Created Community!"))
-      .catch((err) => Alert.alert("Error Creating Community!", err));
+  const submitCommunity: SubmitHandler<FormValues> = async (data) => {
+    await createCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      {
+        ...BLANK_COMMUNITY,
+        name: data.name,
+        codeofconduct: data.codeOfConduct,
+        Admins: [accountState.account.email],
+        Members: [accountState.account.email],
+      }
+    );
+
+    navigation.navigate("CommunityList");
   };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
-      <ScrollView>
+      <ScrollView style={{ flexGrow: 1 }}>
         <Box
           padding="md"
           backgroundColor="headerBackground"
@@ -117,16 +101,15 @@ export default function CreateCommunityPage({}: StackNavigationProps<
             Community Name
           </Text>
         </Box>
-        <Box style={styles.detailbox}>
+        <Box m="sm">
           <ThemedInput
             placeholder="Community Name"
-            label="What should your community be called?"
+            label="What should your community be called?                    (*Community name is final)"
             onChangeText={(text) => {
               setValue("name", text);
             }}
             errorMessage={errors.name ? formErrors.name : ""}
           />
-          <Text variant="body">* Community name is final</Text>
         </Box>
 
         <Box
@@ -140,19 +123,23 @@ export default function CreateCommunityPage({}: StackNavigationProps<
             Code of Conduct
           </Text>
         </Box>
-        <Box style={styles.detailbox}>
+        <Box m="sm">
           <ThemedInput
-            placeholder="Booga oog, o boo gaboo agoo."
+            placeholder="Description of rules and conduct"
             label="What rules should members follow?"
             onChangeText={(text) => {
               setValue("codeOfConduct", text);
             }}
             errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
-            multiline={true}
+            multiline
           />
         </Box>
-        <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
       </ScrollView>
+
+      <ThemedButton
+        title="Create Community"
+        onPress={handleSubmit(submitCommunity)}
+      />
     </Box>
   );
 }
