@@ -38,7 +38,7 @@ export default function DeleteAccountButton() {
 
   return (
     <ThemedListItem
-      iconName="trash -2"
+      iconName="trash-2"
       iconType="feather"
       title="Delete Account"
       subtitle="Delete your account and associated data"

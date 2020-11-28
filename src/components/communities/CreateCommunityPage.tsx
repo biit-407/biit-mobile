@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, ScrollView, StyleSheet, Switch } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { useAccountState } from '../../contexts/accountContext';
 import { createCommunity, useCommunityDispatch } from '../../contexts/communityContext';
@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#FFE8C6",
   },
   header: {
     paddingLeft: 10,
@@ -104,83 +103,56 @@ export default function CreateCommunityPage({}: StackNavigationProps<
       .catch((err) => Alert.alert("Error Creating Community!", err));
   };
 
-  const [sw1, setSw1] = useState(false);
-  const toggleSw1 = () => setSw1((previousState) => !previousState);
-  const [sw2, setSw2] = useState(false);
-  const toggleSw2 = () => setSw2((previousState) => !previousState);
-  const [sw3, setSw3] = useState(false);
-  const toggleSw3 = () => setSw3((previousState) => !previousState);
-
   return (
-    <ScrollView style={styles.root}>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Title
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder="Community Name"
-          label="What should your community be called?"
-          onChangeText={(text) => {
-            setValue("name", text);
-          }}
-          errorMessage={errors.name ? formErrors.name : ""}
-        />
-        <Text variant="body">* Community name is final</Text>
-      </Box>
+    <Box backgroundColor="mainBackground" style={styles.root}>
+      <ScrollView>
+        <Box
+          padding="md"
+          backgroundColor="headerBackground"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <ThemedIcon type="feather" name="bookmark" />
+          <Text paddingLeft="sm" variant="sectionListHeader">
+            Community Name
+          </Text>
+        </Box>
+        <Box style={styles.detailbox}>
+          <ThemedInput
+            placeholder="Community Name"
+            label="What should your community be called?"
+            onChangeText={(text) => {
+              setValue("name", text);
+            }}
+            errorMessage={errors.name ? formErrors.name : ""}
+          />
+          <Text variant="body">* Community name is final</Text>
+        </Box>
 
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Code of Conduct
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder="Booga oog, o boo gaboo agoo."
-          label="What rules should members follow?"
-          onChangeText={(text) => {
-            setValue("codeOfConduct", text);
-          }}
-          errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
-          multiline={true}
-        />
-      </Box>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Options
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <Box style={styles.option}>
-          <Text variant="body">Option 1</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw1 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw1}
-            value={sw1}
+        <Box
+          padding="md"
+          backgroundColor="headerBackground"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <ThemedIcon type="feather" name="book-open" />
+          <Text paddingLeft="sm" variant="sectionListHeader">
+            Code of Conduct
+          </Text>
+        </Box>
+        <Box style={styles.detailbox}>
+          <ThemedInput
+            placeholder="Booga oog, o boo gaboo agoo."
+            label="What rules should members follow?"
+            onChangeText={(text) => {
+              setValue("codeOfConduct", text);
+            }}
+            errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
+            multiline={true}
           />
         </Box>
-        <Box style={styles.option}>
-          <Text variant="body">Option 2</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw2 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw2}
-            value={sw2}
-          />
-        </Box>
-        <Box style={styles.option}>
-          <Text variant="body">Option 3</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw3 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw3}
-            value={sw3}
-          />
-        </Box>
-      </Box>
-      <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
-    </ScrollView>
+        <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
+      </ScrollView>
+    </Box>
   );
 }

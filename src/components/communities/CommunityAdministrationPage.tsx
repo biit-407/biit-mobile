@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, ScrollView, StyleSheet, Switch } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { useAccountState } from '../../contexts/accountContext';
 import {
@@ -26,22 +26,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
   },
-  detailbox: {
-    padding: 5,
-  },
-  option: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 10,
-  },
-  btncontainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    backgroundColor: "#D8AD6D",
-    padding: "3.5%",
-  },
 });
 
 type FormValues = {
@@ -52,28 +36,9 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-function promptDiscardChanges(onConfirm: () => void) {
-  Alert.alert(
-    "Discard Changes?",
-    "Are you sure you want to discard these changes?",
-    [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      {
-        text: "Yes",
-        onPress: onConfirm,
-      },
-    ]
-  );
-}
-
 export default function CommunityAdministrationPage({
-  navigation,
   route,
 }: StackNavigationProps<CommunityRoutes, "CommunityAdministration">) {
-  // TODO: Refactor using Stephen's hook (Stephen has a hook in the yet to be merged PR)
   const [communityState, communityDispatch] = useCommunity();
   const [community, setCommunity] = useState(BLANK_COMMUNITY);
 
@@ -125,15 +90,9 @@ export default function CommunityAdministrationPage({
       .catch((err) => Alert.alert("Error Updating Community!", err));
   };
 
-  const [sw1, setSw1] = useState(false);
-  const toggleSw1 = () => setSw1((previousState) => !previousState);
-  const [sw2, setSw2] = useState(false);
-  const toggleSw2 = () => setSw2((previousState) => !previousState);
-  const [sw3, setSw3] = useState(false);
-  const toggleSw3 = () => setSw3((previousState) => !previousState);
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
-      <ScrollView>
+      <ScrollView style={{ flexGrow: 1 }}>
         <Box
           padding="md"
           backgroundColor="headerBackground"
@@ -145,68 +104,23 @@ export default function CommunityAdministrationPage({
             Code of Conduct
           </Text>
         </Box>
-        <Box style={styles.detailbox}>
-          <ThemedInput
-            placeholder={community.codeofconduct}
-            label="Edit Code of Conduct"
-            onChangeText={(text) => {
-              setValue("codeOfConduct", text);
-            }}
-            errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
-            multiline={true}
-          />
-        </Box>
-        <Box
-          padding="md"
-          backgroundColor="headerBackground"
-          flexDirection="row"
-          alignItems="center"
-        >
-          <ThemedIcon type="feather" name="settings" />
-          <Text paddingLeft="sm" variant="sectionListHeader">
-            Options
-          </Text>
-        </Box>
-        <Box style={styles.detailbox}>
-          <Box style={styles.option}>
-            <Text variant="body">Option 1</Text>
-            <Switch
-              trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-              thumbColor={sw1 ? "#B88953" : "#D8AD6D"}
-              onValueChange={toggleSw1}
-              value={sw1}
-            />
-          </Box>
-          <Box style={styles.option}>
-            <Text variant="body">Option 2</Text>
-            <Switch
-              trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-              thumbColor={sw2 ? "#B88953" : "#D8AD6D"}
-              onValueChange={toggleSw2}
-              value={sw2}
-            />
-          </Box>
-          <Box style={styles.option}>
-            <Text variant="body">Option 3</Text>
-            <Switch
-              trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-              thumbColor={sw3 ? "#B88953" : "#D8AD6D"}
-              onValueChange={toggleSw3}
-              value={sw3}
-            />
-          </Box>
-        </Box>
-        <Box style={styles.btncontainer} />
-      </ScrollView>
-      <Box flexDirection="row" justifyContent="space-evenly" m="md">
-        <ThemedButton
-          title="Cancel"
-          color="buttonDanger"
-          onPress={() => promptDiscardChanges(navigation.goBack)}
+        <ThemedInput
+          placeholder={community.codeofconduct}
+          label="Edit Code of Conduct"
+          onChangeText={(text) => {
+            setValue("codeOfConduct", text);
+          }}
+          errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
+          multiline
+          containerStyle={{ padding: 16 }}
+          style={{ margin: 5 }}
         />
+      </ScrollView>
 
-        <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
-      </Box>
+      <ThemedButton
+        title="Confirm Changes"
+        onPress={handleSubmit(submitCommunity)}
+      />
     </Box>
   );
 }

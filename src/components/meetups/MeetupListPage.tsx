@@ -156,6 +156,7 @@ export default function MeetupListPage({
             timestamp: item.timestamp,
           })
         ),
+      emptyText: "No pending meetups",
     },
     {
       title: "Upcoming Meetups",
@@ -170,6 +171,7 @@ export default function MeetupListPage({
             timestamp: item.timestamp,
           })
         ),
+      emptyText: "No upcoming meetups",
     },
     {
       title: "Unrated Meetups",
@@ -184,6 +186,8 @@ export default function MeetupListPage({
             timestamp: item.timestamp,
           })
         ),
+
+      emptyText: "No unrated meetups",
     },
   ];
 
@@ -199,6 +203,16 @@ export default function MeetupListPage({
         renderSectionHeader={({ section: { title } }) =>
           renderSectionHeader(title)
         }
+        renderSectionFooter={({ section }) => {
+          if (section.data.length === 0) {
+            return (
+              <Box backgroundColor="cardBackground" p="md">
+                <Text textAlign="center" variant="subheader">{section.emptyText}</Text>
+              </Box>
+            );
+          }
+          return null;
+        }}
         refreshControl={
           <ThemedRefreshControl
             onRefresh={loadMeetupData}
