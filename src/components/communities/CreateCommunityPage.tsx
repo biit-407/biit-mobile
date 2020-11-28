@@ -104,7 +104,14 @@ export default function CreateCommunityPage({
         <Box m="sm">
           <ThemedInput
             placeholder="Community Name"
-            label="What should your community be called?                    (*Community name is final)"
+            label={
+              <Box>
+                <Text variant="body">
+                  What should your community be called?
+                </Text>
+                <Text variant="body">(*Community name is final)</Text>
+              </Box>
+            }
             onChangeText={(text) => {
               setValue("name", text);
             }}
@@ -126,7 +133,7 @@ export default function CreateCommunityPage({
         <Box m="sm">
           <ThemedInput
             placeholder="Description of rules and conduct"
-            label="What rules should members follow?"
+            label={<Text>What rules should members follow?</Text>}
             onChangeText={(text) => {
               setValue("codeOfConduct", text);
             }}
