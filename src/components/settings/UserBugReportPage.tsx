@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
-import { StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { SubmitHandler } from "react-hook-form";
+import { StyleSheet } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Picker } from "@react-native-community/picker";
 
-import { Picker } from '@react-native-community/picker';
-
-import { reportBug, useAccountState } from '../../contexts/accountContext';
-import { useSnackbarDispatch } from '../../contexts/snackbarContext';
-import { useToken } from '../../contexts/tokenContext';
-import { SettingsRoutes, StackNavigationProps } from '../../routes';
-import theme from '../../theme';
-import { ThemedInput } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedButton from '../themed/ThemedButton';
+import { reportBug, useAccountState } from "../../contexts/accountContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
+import { useToken } from "../../contexts/tokenContext";
+import { SettingsRoutes, StackNavigationProps } from "../../routes";
+import theme from "../../theme";
+import { ThemedInput } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedButton from "../themed/ThemedButton";
 
 export const UserBugReportPageOptions = {
   title: "Bug Report",
