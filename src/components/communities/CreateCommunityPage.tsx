@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { useAccountState } from '../../contexts/accountContext';
 import { createCommunity, useCommunityDispatch } from '../../contexts/communityContext';
+import { useSnackbarDispatch } from '../../contexts/snackbarContext';
 import { useToken } from '../../contexts/tokenContext';
 import { BLANK_COMMUNITY } from '../../models/community';
 import { CommunityRoutes, StackNavigationProps } from '../../routes';
@@ -57,9 +58,7 @@ const formErrors = {
 export default function CreateCommunityPage({
   navigation,
 }: StackNavigationProps<CommunityRoutes, "CreateCommunity">) {
-  const { register, handleSubmit, setValue, errors } = useForm<
-    FormValues
-  >();
+  const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
 
   useEffect(() => {
     register("name", { required: true, minLength: 1 });
@@ -69,6 +68,7 @@ export default function CreateCommunityPage({
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
+  const snackbarDispatch = useSnackbarDispatch();
 
   const submitCommunity: SubmitHandler<FormValues> = async (data) => {
     await createCommunity(
@@ -83,7 +83,16 @@ export default function CreateCommunityPage({
         Members: [accountState.account.email],
       }
     );
-
+    snackbarDispatch({
+      type: "push",
+      state: {
+        snackbarVisible: true,
+        snackbarMessage: "Successfully Created Community",
+        queue: [],
+        snackbarType: "success",
+      },
+      dispatch: snackbarDispatch,
+    });
     navigation.navigate("CommunityList");
   };
 
