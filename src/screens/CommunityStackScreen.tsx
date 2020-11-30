@@ -21,19 +21,21 @@ import JoinCommunityPage, {
 import LeaveCommunityPage, {
   LeaveCommunityPageOptions,
 } from "../components/communities/LeaveCommunityPage";
-import { ThemedIcon } from "../components/themed";
 import CommunityHomePage, {
   CommunityHomePageOptions,
 } from "../components/communities/CommunityHomePage";
 import { Theme } from "../theme";
+import CommunityStatsPage, {
+  CommunityStatsPageOptions,
+} from "../components/communities/CommunityStatsPage";
+import CreateCommunityPage from "../components/communities/CreateCommunityPage"; // CreateCommunityPageOptions,
 
 import CommunityTabScreen from "./CommunityTabScreen";
+import { DrawerIcon } from "./DrawerIcon";
 
 const CommunityStack = createStackNavigator();
 
-const CommunityStackScreen = (
-  { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
-) => {
+const CommunityStackScreen = ({}) => {
   const theme = useTheme<Theme>();
   return (
     <CommunityStack.Navigator
@@ -48,21 +50,7 @@ const CommunityStackScreen = (
         name="Communities"
         component={CommunityTabScreen}
         options={{
-          headerLeft: () => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="menu"
-                type="entypo"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-                color={theme.colors.headerBackground}
-                iconStyle={{ color: theme.colors.primaryText }}
-              />
-            );
-          },
+          headerLeft: () => <DrawerIcon />,
         }}
       />
       <CommunityStack.Screen
@@ -87,6 +75,12 @@ const CommunityStackScreen = (
         initialParams={{ name: "Johnsons" }}
       />
       <CommunityStack.Screen
+        name="CreateCommunity"
+        component={CreateCommunityPage}
+        // TODO this isnt working dunno why, just want to get the merge done
+        // options={CreateCommunityPageOptions}
+      />
+      <CommunityStack.Screen
         name="JoinCommunity"
         component={JoinCommunityPage}
         options={JoinCommunityPageOptions}
@@ -95,6 +89,11 @@ const CommunityStackScreen = (
         name="LeaveCommunity"
         component={LeaveCommunityPage}
         options={LeaveCommunityPageOptions}
+      />
+      <CommunityStack.Screen
+        name="CommunityStats"
+        component={CommunityStatsPage}
+        options={CommunityStatsPageOptions}
       />
     </CommunityStack.Navigator>
   );

@@ -1,7 +1,12 @@
 import React from "react";
 
 import { OauthToken } from "../models/azure";
-import { Ban, BLANK_COMMUNITY, Community } from "../models/community";
+import {
+  Ban,
+  BLANK_COMMUNITY,
+  Community,
+  CommunityStats,
+} from "../models/community";
 import { SERVER_ADDRESS } from "../models/constants";
 import {
   AuthenticatedRequestHandler,
@@ -309,6 +314,7 @@ async function _communityHelper<T, R>(
   try {
     const response: R = await requestFunc(token, data);
     handleResponse(response);
+    return true;
   } catch (error) {
     communityDispatch({
       type: "fail update",
@@ -316,6 +322,7 @@ async function _communityHelper<T, R>(
       error: "Failed to update community",
     });
   }
+  return false;
 }
 
 async function createCommunity(
@@ -324,7 +331,7 @@ async function createCommunity(
   token: string,
   community: Community
 ) {
-  await _communityHelper(
+  return await _communityHelper(
     communityDispatch,
     token,
     community,
@@ -511,6 +518,39 @@ async function startMatching(
   }
 }
 
+async function getCommunityStats(
+  tokenDispatch: TokenDispatch,
+  token: string,
+  communityID: string
+) {
+  try {
+    const response: [CommunityStats, OauthToken] = await fetch(
+      `${SERVER_ADDRESS}/community/${communityID}/stats?&token=${token}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((r) => r.json())
+      .then((responseJson) => {
+        return [
+          responseJson.data,
+          {
+            accessToken: responseJson.accessToken,
+            refreshToken: responseJson.refreshToken,
+          },
+        ];
+      });
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0] as CommunityStats;
+  } catch (error) {
+    return null;
+  }
+}
+
 function getCommunity(communityState: CommunityState, name: string) {
   for (let i = 0; i < communityState.communities.length; i++) {
     const element = communityState.communities[i];
@@ -547,6 +587,7 @@ export {
   joinCommunity,
   leaveCommunity,
   startMatching,
+  getCommunityStats,
   getCommunity,
   isCommunityLoaded,
 };

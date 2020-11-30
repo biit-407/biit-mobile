@@ -1,10 +1,10 @@
-import React from "react";
-import { Alert } from "react-native";
+import React from 'react';
+import { Alert } from 'react-native';
 
-import { deleteAccount, useAccount } from "../../contexts/accountContext";
-import { useToken } from "../../contexts/tokenContext";
-import { useAzure } from "../../contexts/azureContext";
-import { ThemedListItem } from "../themed";
+import { deleteAccount, useAccount } from '../../contexts/accountContext';
+import { useAzure } from '../../contexts/azureContext';
+import { useToken } from '../../contexts/tokenContext';
+import { ThemedListItem } from '../themed';
 
 export default function DeleteAccountButton() {
   const [accountState, accountDispatch] = useAccount();
@@ -38,8 +38,8 @@ export default function DeleteAccountButton() {
 
   return (
     <ThemedListItem
-      iconName="trash"
-      iconType="entypo"
+      iconName="trash-2"
+      iconType="feather"
       title="Delete Account"
       subtitle="Delete your account and associated data"
       onPress={showDeletionDialog}

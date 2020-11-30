@@ -1,25 +1,14 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import {
-  LeaveCommunityPageRouteProp,
-  LeaveCommunityPageNavigationProp,
-} from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import {
-  leaveCommunity,
-  useCommunityDispatch,
-} from "../../contexts/communityContext";
-import { useAccountState } from "../../contexts/accountContext";
-import { useToken } from "../../contexts/tokenContext";
-import ThemedIcon from "../themed/ThemedIcon";
-
-type LeaveCommunityPageProps = {
-  route: LeaveCommunityPageRouteProp;
-  navigation: LeaveCommunityPageNavigationProp;
-};
+import { useAccountState } from '../../contexts/accountContext';
+import { leaveCommunity, useCommunityDispatch } from '../../contexts/communityContext';
+import { useToken } from '../../contexts/tokenContext';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedIconButton from '../themed/ThemedIconButton';
 
 export const LeaveCommunityPageOptions = {
   title: "Leave Community",
@@ -48,7 +37,7 @@ const Divider = () => (
 export default function LeaveCommunityPage({
   route,
   navigation,
-}: LeaveCommunityPageProps) {
+}: StackNavigationProps<CommunityRoutes, "LeaveCommunity">) {
   // Get context variables
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
@@ -104,22 +93,22 @@ export default function LeaveCommunityPage({
         width="100%"
       >
         <Box alignItems="center">
-          <ThemedIcon
-            name="cross"
-            type="entypo"
-            size={32}
-            reverse
+          <ThemedIconButton
+            name="x"
+            type="feather"
+            size={64}
             onPress={() => navigation.pop()}
+            buttonColor="buttonDanger"
           />
           <Text variant="body">Decline</Text>
         </Box>
         <Box alignItems="center">
-          <ThemedIcon
+          <ThemedIconButton
             name="check"
-            type="entypo"
-            size={32}
-            reverse
+            type="feather"
+            size={64}
             onPress={() => leave()}
+            buttonColor="buttonConfirm"
           />
           <Text variant="body">Accept</Text>
         </Box>

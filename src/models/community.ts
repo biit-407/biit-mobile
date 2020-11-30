@@ -23,3 +23,15 @@ export const BLANK_COMMUNITY: Community = {
   mpm: "",
   meettype: "",
 };
+
+export interface CommunityStats {
+  totalSessions: number;
+  totalMeetups: number;
+  totalAccepted: number;
+}
+
+export const BLANK_COMMUNITY_STATS: CommunityStats = {
+  totalSessions: 0,
+  totalMeetups: 0,
+  totalAccepted: 0,
+};

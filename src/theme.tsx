@@ -1,4 +1,4 @@
-import { createTheme } from "@shopify/restyle";
+import { createTheme } from '@shopify/restyle';
 
 const palette = {
   tanLight: "#FFE8C6", // Page Background and Light Text Color
@@ -46,6 +46,10 @@ const theme = createTheme({
     iconPrimary: palette.brownPrimary,
     iconSelectedGreen: palette.darkGreen,
     iconSelectedRed: palette.darkRed,
+
+    iconButtonBackground: palette.brownPrimary,
+    iconButtonForeground: palette.tanDark,
+    iconButtonUnderlay: palette.semiWhite,
 
     sliderMarkerDisabled: palette.tanDark,
     sliderMarkerEnabled: palette.brownLight,

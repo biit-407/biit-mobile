@@ -1,12 +1,12 @@
-import React from "react";
-import { useTheme } from "@shopify/restyle";
-import { Avatar, AvatarProps } from "react-native-elements";
-import { View } from "react-native";
+import React from 'react';
+import { View } from 'react-native';
+import { Avatar, AvatarProps } from 'react-native-elements';
 
-import { Theme } from "../../theme";
+import { useTheme } from '@shopify/restyle';
 
-import Box from "./Box";
-import ThemedIcon from "./ThemedIcon";
+import { Theme } from '../../theme';
+import Box from './Box';
+import ThemedIconButton from './ThemedIconButton';
 
 type ThemedAvatarProps = {
   uri: string;
@@ -38,16 +38,15 @@ export default function ThemedAvatar({
         <View
           style={{
             position: "absolute",
-            bottom: 0,
-            right: 0,
+            bottom: 8,
+            right: 8,
           }}
         >
-          <ThemedIcon
-            reverse
+          <ThemedIconButton
+            type="feather"
             name="edit"
-            size={16}
+            size={36}
             onPress={() => onEdit && onEdit()}
-            raised
           />
         </View>
       )}

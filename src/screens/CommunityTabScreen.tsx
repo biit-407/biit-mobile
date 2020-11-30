@@ -1,20 +1,18 @@
-import * as React from "react";
-import {
-  BottomTabBarOptions,
-  createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
-import { useTheme } from "@shopify/restyle";
+import * as React from 'react';
+
+import { BottomTabBarOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTheme } from '@shopify/restyle';
 
 import CommunityListPage, {
-  CommunityListPageOptions,
-} from "../components/communities/CommunityListPage";
-import { Theme } from "../theme";
-import CreateCommunityPage, {
-  CreateCommunityPageOptions,
-} from "../components/communities/CreateCommunityPage";
+    CommunityListPageOptions
+} from '../components/communities/CommunityListPage';
 import CommunitySearchPage, {
-  CommunitySearchPageOptions,
-} from "../components/communities/CommunitySearchPage";
+    CommunitySearchPageOptions
+} from '../components/communities/CommunitySearchPage';
+import CreateCommunityPage, {
+    CreateCommunityPageOptions
+} from '../components/communities/CreateCommunityPage';
+import { Theme } from '../theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,18 +27,18 @@ export default function CommunityTabScreen() {
   return (
     <Tab.Navigator tabBarOptions={tabBarOptions}>
       <Tab.Screen
-        name="My Communities"
+        name="CommunityList"
         component={CommunityListPage}
         options={CommunityListPageOptions}
       />
       <Tab.Screen
-        name="Search Communities"
+        name="CommunitySearch"
         component={CommunitySearchPage}
         options={CommunitySearchPageOptions}
       />
       {/* #TODO:  Include create community and search for new community pages */}
       <Tab.Screen
-        name="Create Community"
+        name="CreateCommunity"
         component={CreateCommunityPage}
         options={CreateCommunityPageOptions}
       />

@@ -1,20 +1,12 @@
 import React from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import {
-  PreviousMeetupsPageRouteProp,
-  PreviousMeetupsPageNavigationProp,
-} from "../../routes";
+import { StackNavigationProps, AccountRoutes } from "../../routes";
 import Box from "../themed/Box";
 import { Meetup } from "../../models/meetups";
 import useConstructor from "../../hooks/useConstructor";
 
 import MeetupCard from "./MeetupCard";
-
-type PreviousMeetupsPageProps = {
-  route: PreviousMeetupsPageRouteProp;
-  navigation: PreviousMeetupsPageNavigationProp;
-};
 
 export const PreviousMeetupsPageOptions = {
   title: "Previous Meetups",
@@ -30,7 +22,7 @@ const styles = StyleSheet.create({
 
 export default function PreviousMeetupsPage({
   route,
-}: PreviousMeetupsPageProps) {
+}: StackNavigationProps<AccountRoutes, "PreviousMeetups">) {
   const { pastMeetups } = route.params;
 
   const [meetups, setMeetups] = React.useState<Meetup[]>([]);

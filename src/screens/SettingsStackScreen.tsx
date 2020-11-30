@@ -5,20 +5,25 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import UserSettingsPage, {
-  UserSettingsPageOptions,
-} from "../components/userUtils/userSettingsPage";
 import UserTimePreferencePage, {
   UserTimePreferencePageOptions,
-} from "../components/userUtils/UserTimePreferencePage";
+} from "../components/settings/UserTimePreferencePage";
 import theme from "../theme";
-import { ThemedIcon } from "../components/themed";
+import UserSettingsPage, {
+  UserSettingsPageOptions,
+} from "../components/settings/UserSettingsPage";
+import UserBugReportPage, {
+  UserBugReportPageOptions,
+} from "../components/settings/UserBugReportPage";
+import UserFeedbackPage, {
+  UserFeedbackPageOptions,
+} from "../components/settings/UserFeedbackPage";
+
+import { DrawerIcon } from "./DrawerIcon";
 
 const SettingsStack = createStackNavigator();
 
-const SettingsStackScreen = (
-  { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
-) => {
+const SettingsStackScreen = ({}) => {
   return (
     <SettingsStack.Navigator
       initialRouteName="ViewProfile"
@@ -34,27 +39,23 @@ const SettingsStackScreen = (
         component={UserSettingsPage}
         options={{
           ...UserSettingsPageOptions,
-          headerLeft: () => {
-            return (
-              <ThemedIcon
-                size={24}
-                reverse
-                name="menu"
-                type="entypo"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-                color={theme.colors.headerBackground}
-                iconStyle={{ color: theme.colors.primaryText }}
-              />
-            );
-          },
+          headerLeft: () => <DrawerIcon />,
         }}
       />
       <SettingsStack.Screen
         name="UserTimePreference"
         component={UserTimePreferencePage}
         options={UserTimePreferencePageOptions}
+      />
+      <SettingsStack.Screen
+        name="UserBugReport"
+        component={UserBugReportPage}
+        options={UserBugReportPageOptions}
+      />
+      <SettingsStack.Screen
+        name="UserFeedback"
+        component={UserFeedbackPage}
+        options={UserFeedbackPageOptions}
       />
     </SettingsStack.Navigator>
   );

@@ -1,31 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import React, { useEffect, useState } from 'react';
+import { Alert, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
 import {
-  BannedUsersPageNavigationProp,
-  BannedUsersPageRouteProp,
-} from "../../routes";
-import Box from "../themed/Box";
-import ThemedIcon from "../themed/ThemedIcon";
-import ThemedListItem from "../themed/ThemedListItem";
-import ThemedRefreshControl from "../themed/ThemedRefreshControl";
-import {
-  getCommunity,
-  // getCommunity,
-  loadCommunity,
-  unbanUserFromCommunity,
-  useCommunity,
-} from "../../contexts/communityContext";
-import { useToken } from "../../contexts/tokenContext";
-import { Ban } from "../../models/community";
+    getCommunity, loadCommunity, unbanUserFromCommunity, useCommunity
+} from '../../contexts/communityContext';
+import { useToken } from '../../contexts/tokenContext';
+import { Ban } from '../../models/community';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import Box from '../themed/Box';
+import ThemedIcon from '../themed/ThemedIcon';
+import ThemedListItem from '../themed/ThemedListItem';
+import ThemedRefreshControl from '../themed/ThemedRefreshControl';
 
-// React Navigation Types and Page Options
-
-type BannedUsersPageProps = {
-  navigation: BannedUsersPageNavigationProp;
-  route: BannedUsersPageRouteProp;
-};
+// Page Options
 
 export const BannedUsersPageOptions = {
   title: "Banned Users",
@@ -66,7 +54,9 @@ const showUnbanDialog = (
 
 // Page Definition
 
-export default function BannedUsersPage({ route }: BannedUsersPageProps) {
+export default function BannedUsersPage({
+  route,
+}: StackNavigationProps<CommunityRoutes, "BannedUsers">) {
   // Create state for refreshing data and list of banned users
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [bannedUsers, setBannedUsers] = useState<Ban[]>([]);
@@ -124,8 +114,8 @@ export default function BannedUsersPage({ route }: BannedUsersPageProps) {
                 <Box mr="xs">
                   <ThemedIcon
                     size={24}
-                    name="cross"
-                    type="entypo"
+                    name="x"
+                    type="feather"
                     onPress={() => showUnbanDialog(item, unbanUser)}
                   />
                 </Box>

@@ -1,21 +1,13 @@
 import React, { useState } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
 
-import {
-  PreviousUsersPageRouteProp,
-  PreviousUsersPageNavigationProp,
-} from "../../routes";
-import Box from "../themed/Box";
 import useConstructor from "../../hooks/useConstructor";
-import { Text, ThemedListItem } from "../themed";
 import { PreviousUser } from "../../models/accounts";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { BLANK_MEETUP } from "../../models/meetups";
-
-type PreviousUsersPageProps = {
-  route: PreviousUsersPageRouteProp;
-  navigation: PreviousUsersPageNavigationProp;
-};
+import { AccountRoutes, StackNavigationProps } from "../../routes";
+import { Text, ThemedListItem } from "../themed";
+import Box from "../themed/Box";
 
 export const PreviousUsersPageOptions = {
   title: "Previous Users",
@@ -34,7 +26,7 @@ const styles = StyleSheet.create({
 
 export default function PreviousUsersPage({
   navigation,
-}: PreviousUsersPageProps) {
+}: StackNavigationProps<AccountRoutes, "PreviousUsers">) {
   // Create state for the list of previous users
   const [previousUsers, setPreviousUsers] = useState<PreviousUser[]>();
 

@@ -4,21 +4,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useHeaderHeight } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
-import {
-  CreateProfilePageRouteProp,
-  CreateProfilePageNavigationProp,
-} from "../../routes";
+import { StackNavigationProps, AccountRoutes } from "../../routes";
 import Text from "../themed/Text";
 import Box from "../themed/Box";
 
 import UpdateProfileForm from "./UpdateProfileForm";
 
-// React Navigation Types and Page Options
-
-type CreateProfilePageProps = {
-  route: CreateProfilePageRouteProp;
-  navigation: CreateProfilePageNavigationProp;
-};
+// Page Options
 
 // Note: Needed to create this as a its own component to access navigation in the header
 const SkipButton = () => {
@@ -57,7 +49,7 @@ const styles = StyleSheet.create({
 
 export default function CreateProfilePage({
   navigation,
-}: CreateProfilePageProps) {
+}: StackNavigationProps<AccountRoutes, "CreateProfile">) {
   return (
     <Box
       backgroundColor="mainBackground"
