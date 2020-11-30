@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, SectionList, SectionListData, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Alert, SectionList, SectionListData, StyleSheet } from "react-native";
 
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
-    banUserFromCommunity, getCommunity, loadCommunity, useCommunity
-} from '../../contexts/communityContext';
-import { useToken } from '../../contexts/tokenContext';
-import { useConstructor } from '../../hooks';
-import { BLANK_COMMUNITY, Community } from '../../models/community';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import { ThemedRefreshControl } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedIcon from '../themed/ThemedIcon';
-import ThemedListItem from '../themed/ThemedListItem';
+  banUserFromCommunity,
+  getCommunity,
+  loadCommunity,
+  useCommunity,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY, Community } from "../../models/community";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import { ThemedRefreshControl } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedIcon from "../themed/ThemedIcon";
+import ThemedListItem from "../themed/ThemedListItem";
 
 export const MemberListPageOptions = {
   title: "Member List",

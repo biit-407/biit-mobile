@@ -1,4 +1,4 @@
-import { createTheme } from '@shopify/restyle';
+import { createTheme } from "@shopify/restyle";
 
 const palette = {
   tanLight: "#FFE8C6", // Page Background and Light Text Color

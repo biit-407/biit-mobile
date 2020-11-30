@@ -1,14 +1,17 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import { useAccountState } from '../../contexts/accountContext';
-import { joinCommunity, useCommunityDispatch } from '../../contexts/communityContext';
-import { useToken } from '../../contexts/tokenContext';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedIconButton from '../themed/ThemedIconButton';
+import { useAccountState } from "../../contexts/accountContext";
+import {
+  joinCommunity,
+  useCommunityDispatch,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedIconButton from "../themed/ThemedIconButton";
 
 export const JoinCommunityPageOptions = {
   title: "Join Community",

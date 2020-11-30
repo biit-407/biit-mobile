@@ -1,11 +1,18 @@
-import React from 'react';
-import { Icon } from 'react-native-elements';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import React from "react";
+import { Icon } from "react-native-elements";
+import { TouchableHighlight } from "react-native-gesture-handler";
+import {
+  layout,
+  LayoutProps,
+  spacing,
+  SpacingProps,
+  useRestyle,
+  useTheme,
+} from "@shopify/restyle";
 
-import { layout, LayoutProps, spacing, SpacingProps, useRestyle, useTheme } from '@shopify/restyle';
+import { Theme } from "../../theme";
 
-import { Theme } from '../../theme';
-import Box from './Box';
+import Box from "./Box";
 
 const restyleFunctions = [spacing, layout];
 type ThemedIconButtonProps = SpacingProps<Theme> &

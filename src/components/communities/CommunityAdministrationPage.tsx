@@ -1,20 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Alert, ScrollView, StyleSheet } from "react-native";
 
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
-    getCommunity, loadCommunity, updateCommunity, useCommunity
-} from '../../contexts/communityContext';
-import { useToken } from '../../contexts/tokenContext';
-import { useConstructor } from '../../hooks';
-import { BLANK_COMMUNITY } from '../../models/community';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import { ThemedIcon } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedButton from '../themed/ThemedButton';
-import ThemedInput from '../themed/ThemedInput';
+  getCommunity,
+  loadCommunity,
+  updateCommunity,
+  useCommunity,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY } from "../../models/community";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import { ThemedIcon } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedButton from "../themed/ThemedButton";
+import ThemedInput from "../themed/ThemedInput";
 
 export const CommunityAdministrationPageOptions = {
   title: "Community Administration",

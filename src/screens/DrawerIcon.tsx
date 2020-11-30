@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { useTheme } from "@shopify/restyle";
 
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { useTheme } from '@shopify/restyle';
-
-import { ThemedIcon } from '../components/themed';
-import { Theme } from '../theme';
+import { ThemedIcon } from "../components/themed";
+import { Theme } from "../theme";
 
 export const DrawerIcon = () => {
   const navigation = useNavigation();

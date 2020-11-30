@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import ReadMore from 'react-native-read-more-text';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
+import ReadMore from "react-native-read-more-text";
 
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
-    getCommunity, loadCommunity, startMatching, useCommunity
-} from '../../contexts/communityContext';
-import { useSnackbar } from '../../contexts/snackbarContext';
-import { useToken } from '../../contexts/tokenContext';
-import { useConstructor } from '../../hooks';
-import { BLANK_COMMUNITY } from '../../models/community';
-import { BLANK_MEETUP } from '../../models/meetups';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import { Theme } from '../../theme';
-import MeetupCard from '../meetups/MeetupCard';
-import { Text, ThemedButton } from '../themed';
-import Box from '../themed/Box';
-import ThemedIconButton from '../themed/ThemedIconButton';
+  getCommunity,
+  loadCommunity,
+  startMatching,
+  useCommunity,
+} from "../../contexts/communityContext";
+import { useSnackbar } from "../../contexts/snackbarContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY } from "../../models/community";
+import { BLANK_MEETUP } from "../../models/meetups";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import { Theme } from "../../theme";
+import MeetupCard from "../meetups/MeetupCard";
+import { Text, ThemedButton } from "../themed";
+import Box from "../themed/Box";
+import ThemedIconButton from "../themed/ThemedIconButton";
 
 export const CommunityHomePageOptions = {
   title: "",

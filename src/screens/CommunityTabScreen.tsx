@@ -1,18 +1,20 @@
-import * as React from 'react';
-
-import { BottomTabBarOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useTheme } from '@shopify/restyle';
+import * as React from "react";
+import {
+  BottomTabBarOptions,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
+import { useTheme } from "@shopify/restyle";
 
 import CommunityListPage, {
-    CommunityListPageOptions
-} from '../components/communities/CommunityListPage';
+  CommunityListPageOptions,
+} from "../components/communities/CommunityListPage";
 import CommunitySearchPage, {
-    CommunitySearchPageOptions
-} from '../components/communities/CommunitySearchPage';
+  CommunitySearchPageOptions,
+} from "../components/communities/CommunitySearchPage";
 import CreateCommunityPage, {
-    CreateCommunityPageOptions
-} from '../components/communities/CreateCommunityPage';
-import { Theme } from '../theme';
+  CreateCommunityPageOptions,
+} from "../components/communities/CreateCommunityPage";
+import { Theme } from "../theme";
 
 const Tab = createBottomTabNavigator();
 

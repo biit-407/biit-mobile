@@ -1,22 +1,25 @@
-import * as ImagePicker from 'expo-image-picker';
-import React, { ReactNode, useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Alert, StyleSheet } from 'react-native';
-import { BottomSheet, Icon, Input, ListItem } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+import * as ImagePicker from "expo-image-picker";
+import React, { ReactNode, useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Alert, StyleSheet } from "react-native";
+import { BottomSheet, Icon, Input, ListItem } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-import DateTimePicker from '@react-native-community/datetimepicker';
-
-import { setProfilePicture, updateAccount, useAccount } from '../../contexts/accountContext';
-import { useToken } from '../../contexts/tokenContext';
-import { useConstructor } from '../../hooks';
-import { EMPTY_PROFILE_PIC } from '../../models/constants';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedAvatar from '../themed/ThemedAvatar';
-import ThemedButton from '../themed/ThemedButton';
-import ThemedIconButton from '../themed/ThemedIconButton';
-import ThemedInput from '../themed/ThemedInput';
+import {
+  setProfilePicture,
+  updateAccount,
+  useAccount,
+} from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { EMPTY_PROFILE_PIC } from "../../models/constants";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedAvatar from "../themed/ThemedAvatar";
+import ThemedButton from "../themed/ThemedButton";
+import ThemedIconButton from "../themed/ThemedIconButton";
+import ThemedInput from "../themed/ThemedInput";
 
 const styles = StyleSheet.create({
   root: { flex: 1 },

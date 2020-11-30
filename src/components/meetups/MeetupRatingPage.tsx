@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { AirbnbRating } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { AirbnbRating } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
+import { useTheme } from "@shopify/restyle";
 
-import { useTheme } from '@shopify/restyle';
+import { useAccountState } from "../../contexts/accountContext";
+import { setMeetupRating, useMeetup } from "../../contexts/meetupContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
+import { useToken } from "../../contexts/tokenContext";
+import { BLANK_MEETUP } from "../../models/meetups";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
+import { Theme } from "../../theme";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedButton from "../themed/ThemedButton";
+import ThemedCard from "../themed/ThemedCard";
 
-import { useAccountState } from '../../contexts/accountContext';
-import { setMeetupRating, useMeetup } from '../../contexts/meetupContext';
-import { useSnackbarDispatch } from '../../contexts/snackbarContext';
-import { useToken } from '../../contexts/tokenContext';
-import { BLANK_MEETUP } from '../../models/meetups';
-import { HomeRoutes, StackNavigationProps } from '../../routes';
-import { Theme } from '../../theme';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedButton from '../themed/ThemedButton';
-import ThemedCard from '../themed/ThemedCard';
-import MeetupCard from './MeetupCard';
-import MeetupReportDialog from './MeetupReportDialog';
+import MeetupCard from "./MeetupCard";
+import MeetupReportDialog from "./MeetupReportDialog";
 
 export const MeetupRatingPageOptions = {
   title: "Meetup Rating",

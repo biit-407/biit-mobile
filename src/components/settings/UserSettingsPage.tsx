@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import Collapsible from 'react-native-collapsible';
+import React, { useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import Collapsible from "react-native-collapsible";
+import { Picker } from "@react-native-community/picker";
 
-import { Picker } from '@react-native-community/picker';
-
-import { updateAccount, useAccount } from '../../contexts/accountContext';
-import { useToken } from '../../contexts/tokenContext';
-import { SettingsRoutes, StackNavigationProps } from '../../routes';
-import DeleteAccountButton from '../authentication/DeleteAccountButton';
-import LogoutButton from '../authentication/LogoutButton';
-import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
+import { updateAccount, useAccount } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { SettingsRoutes, StackNavigationProps } from "../../routes";
+import DeleteAccountButton from "../authentication/DeleteAccountButton";
+import LogoutButton from "../authentication/LogoutButton";
+import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
 
 export const UserSettingsPageOptions = {
   title: "Settings",
@@ -317,9 +316,7 @@ export default function UserSettingsPage({
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
         <Box style={styles.itemframe}>
           <ThemedListItem
-            iconName={
-              allowNotifications ? "bell" : "bell-off"
-            }
+            iconName={allowNotifications ? "bell" : "bell-off"}
             iconType="feather"
             title="Allow Notifications"
             subtitle="Toggle receiving notifications"
