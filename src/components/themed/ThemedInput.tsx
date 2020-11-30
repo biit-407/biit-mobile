@@ -1,8 +1,9 @@
-import React from "react";
-import { useTheme } from "@shopify/restyle";
-import { Input, InputProps } from "react-native-elements";
+import React from 'react';
+import { Input, InputProps } from 'react-native-elements';
 
-import { Theme } from "../../theme";
+import { useTheme } from '@shopify/restyle';
+
+import { Theme } from '../../theme';
 
 type ThemedInputProps = InputProps;
 // type ThemedInputProps = {
@@ -25,7 +26,6 @@ const ThemedInput = React.forwardRef<Input, ThemedInputProps>(
         inputContainerStyle={{
           borderBottomColor: theme.colors.textInputDefault,
         }}
-        containerStyle={{ width: "80%" }}
         selectionColor={theme.colors.textInputDefault}
         {...props}
       />

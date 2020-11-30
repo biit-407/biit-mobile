@@ -1,26 +1,23 @@
-import { useTheme } from "@shopify/restyle";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import ReadMore from "react-native-read-more-text";
-import { FlatList } from "react-native-gesture-handler";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import ReadMore from 'react-native-read-more-text';
 
-import { useAccountState } from "../../contexts/accountContext";
+import { useAccountState } from '../../contexts/accountContext';
 import {
-  getCommunity,
-  loadCommunity,
-  startMatching,
-  useCommunity,
-} from "../../contexts/communityContext";
-import { useToken } from "../../contexts/tokenContext";
-import { useConstructor } from "../../hooks";
-import { BLANK_COMMUNITY } from "../../models/community";
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import { Text, ThemedButton, ThemedIcon } from "../themed";
-import Box from "../themed/Box";
-import { Theme } from "../../theme";
-import { BLANK_MEETUP } from "../../models/meetups";
-import MeetupCard from "../meetups/MeetupCard";
-import { useSnackbar } from "../../contexts/snackbarContext";
+    getCommunity, loadCommunity, startMatching, useCommunity
+} from '../../contexts/communityContext';
+import { useSnackbar } from '../../contexts/snackbarContext';
+import { useToken } from '../../contexts/tokenContext';
+import { useConstructor } from '../../hooks';
+import { BLANK_COMMUNITY } from '../../models/community';
+import { BLANK_MEETUP } from '../../models/meetups';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import { Theme } from '../../theme';
+import MeetupCard from '../meetups/MeetupCard';
+import { Text, ThemedButton } from '../themed';
+import Box from '../themed/Box';
+import ThemedIconButton from '../themed/ThemedIconButton';
 
 export const CommunityHomePageOptions = {
   title: "",
@@ -51,7 +48,7 @@ interface CommunityActionProps {
   iconType: string;
   action: () => void;
   label: string;
-  color?: string;
+  color?: keyof Theme["colors"];
 }
 
 const CommunityAction = ({
@@ -63,13 +60,11 @@ const CommunityAction = ({
 }: CommunityActionProps) => {
   return (
     <Box justifyContent="center" alignItems="center">
-      <ThemedIcon
-        reverse
-        size={20}
+      <ThemedIconButton
         name={iconName}
         type={iconType}
         onPress={action}
-        color={color}
+        buttonColor={color}
       />
       <Text>{label}</Text>
     </Box>
@@ -144,7 +139,6 @@ export default function CommunityHomePage({
   }, [communityState, route.params.communityID, accountState]);
 
   const { name, codeofconduct, Members } = community;
-  const theme = useTheme<Theme>();
   const [readMoreReady, setReadMoreReady] = useState(false);
 
   const meetups = [
@@ -206,21 +200,22 @@ export default function CommunityHomePage({
               Community Actions
             </Text>
             <Box
+              mt="md"
               flexDirection="row"
               justifyContent="space-evenly"
               alignItems="center"
             >
               <CommunityAction
-                iconName="group"
-                iconType="fontawesome"
+                iconName="users"
+                iconType="feather"
                 label="Members"
                 action={() =>
                   navigation.push("MemberList", { name: communityID })
                 }
               />
               <CommunityAction
-                iconName="line-graph"
-                iconType="entypo"
+                iconName="pie-chart"
+                iconType="feather"
                 label="Statistics"
                 action={() =>
                   navigation.push("CommunityStats", {
@@ -229,10 +224,10 @@ export default function CommunityHomePage({
                 }
               />
               <CommunityAction
-                iconName="account-remove"
-                iconType="material-community"
+                iconName="user-minus"
+                iconType="feather"
                 label="Leave"
-                color={theme.colors.iconSelectedRed}
+                color="buttonDanger"
                 action={() =>
                   navigation.push("LeaveCommunity", {
                     name: communityID,
@@ -242,6 +237,7 @@ export default function CommunityHomePage({
               />
             </Box>
             <Box
+              mt="md"
               flexDirection="row"
               justifyContent="space-evenly"
               alignItems="center"
@@ -249,7 +245,7 @@ export default function CommunityHomePage({
               {isAdmin && (
                 <>
                   <CommunityAction
-                    iconName="edit"
+                    iconName="edit-3"
                     iconType="feather"
                     label="Administrate"
                     action={() =>
@@ -259,8 +255,8 @@ export default function CommunityHomePage({
                     }
                   />
                   <CommunityAction
-                    iconName="ban"
-                    iconType="fontisto"
+                    iconName="user-x"
+                    iconType="feather"
                     label="Banned"
                     action={() =>
                       navigation.push("BannedUsers", { name: communityID })

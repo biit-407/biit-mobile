@@ -1,10 +1,10 @@
-import React from "react";
-import { Alert } from "react-native";
+import React from 'react';
+import { Alert } from 'react-native';
 
-import { logoutAccount, useAccount } from "../../contexts/accountContext";
-import { useToken } from "../../contexts/tokenContext";
-import { useAzure } from "../../contexts/azureContext";
-import { ThemedListItem } from "../themed";
+import { logoutAccount, useAccount } from '../../contexts/accountContext';
+import { useAzure } from '../../contexts/azureContext';
+import { useToken } from '../../contexts/tokenContext';
+import { ThemedListItem } from '../themed';
 
 export default function LogoutButton() {
   const [, accountDispatch] = useAccount();
@@ -29,7 +29,7 @@ export default function LogoutButton() {
   return (
     <ThemedListItem
       iconName="log-out"
-      iconType="entypo"
+      iconType="feather"
       title="Logout"
       subtitle="Log out and remove local account data"
       onPress={showLogoutDialog}

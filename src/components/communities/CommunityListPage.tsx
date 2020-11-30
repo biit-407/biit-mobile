@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import React, { useState } from 'react';
+import { StyleSheet } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 
-import { BLANK_COMMUNITY, Community } from "../../models/community";
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import { Text, ThemedIcon, ThemedListItem } from "../themed";
-import Box from "../themed/Box";
-import ThemedSearchBar from "../themed/ThemedSearchBar";
+import { BLANK_COMMUNITY, Community } from '../../models/community';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import { Text, ThemedIcon, ThemedListItem } from '../themed';
+import Box from '../themed/Box';
+import ThemedSearchBar from '../themed/ThemedSearchBar';
 
 export const CommunityListPageOptions = {
   tabBarIcon: ({
@@ -19,8 +19,8 @@ export const CommunityListPageOptions = {
     size: number;
   }) => (
     <ThemedIcon
-      name="group"
-      type="fontawesome"
+      name="users"
+      type="feather"
       size={focused ? 30 : size}
       color={color}
     />

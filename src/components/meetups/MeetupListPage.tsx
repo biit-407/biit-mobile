@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { SectionList, SectionListData, StyleSheet } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { SectionList, SectionListData, StyleSheet } from 'react-native';
 
-import { HomeRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedListItem from "../themed/ThemedListItem";
-import ThemedIcon from "../themed/ThemedIcon";
-import { useToken } from "../../contexts/tokenContext";
+import { useAccountState } from '../../contexts/accountContext';
 import {
-  getPendingMeetupsList,
-  getUpcomingMeetupsList,
-  getUnratedMeetupsList,
-  useMeetup,
-  getMeetupList,
-} from "../../contexts/meetupContext";
-import { useAccountState } from "../../contexts/accountContext";
-import { ThemedRefreshControl } from "../themed";
-import { Meetup } from "../../models/meetups";
+    getMeetupList, getPendingMeetupsList, getUnratedMeetupsList, getUpcomingMeetupsList, useMeetup
+} from '../../contexts/meetupContext';
+import { useToken } from '../../contexts/tokenContext';
+import { Meetup } from '../../models/meetups';
+import { HomeRoutes, StackNavigationProps } from '../../routes';
+import { ThemedRefreshControl } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedIcon from '../themed/ThemedIcon';
+import ThemedListItem from '../themed/ThemedListItem';
 
 export const MeetupListPageOptions = {
   title: "Meetup List",
@@ -100,7 +96,7 @@ export default function MeetupListPage({
 
   // Function to render each section's header
   const sectionIcons: Record<string, string> = {
-    "Pending Meetups": "add-to-list",
+    "Pending Meetups": "coffee",
     "Upcoming Meetups": "calendar",
     "Unrated Meetups": "star",
   };
@@ -112,20 +108,39 @@ export default function MeetupListPage({
       flexDirection="row"
       alignItems="center"
     >
-      <ThemedIcon type="entypo" name={sectionIcons[title]} />
+      <ThemedIcon type="feather" name={sectionIcons[title]} />
       <Text paddingLeft="sm" variant="sectionListHeader">
         {title}
       </Text>
     </Box>
   );
 
-  const renderListItem = (item: Meetup, onPress: () => void) => (
-    <ThemedListItem
-      title={item.id}
-      onPress={onPress}
-      rightContent={<ThemedIcon name="chevron-right" type="entypo" />}
-    />
-  );
+  const formatDateStr = (date: Date) => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    let minuteStr = minutes < 10 ? "0" + minutes : minutes;
+    return `${hours}:${minuteStr} ${ampm} on ${month}/${day}/${year}`;
+  };
+
+  const renderListItem = (item: Meetup, onPress: () => void) => {
+    const date = new Date(parseInt(item.timestamp, 10) * 1000);
+    const title = `${item.community}: ${item.duration} minutes`;
+    const subtitle = formatDateStr(date);
+    return (
+      <ThemedListItem
+        title={title}
+        subtitle={subtitle}
+        onPress={onPress}
+        chevron
+      />
+    );
+  };
 
   const meetupData: SectionListData<Meetup>[] = [
     {
@@ -141,6 +156,7 @@ export default function MeetupListPage({
             timestamp: item.timestamp,
           })
         ),
+      emptyText: "No pending meetups",
     },
     {
       title: "Upcoming Meetups",
@@ -155,6 +171,7 @@ export default function MeetupListPage({
             timestamp: item.timestamp,
           })
         ),
+      emptyText: "No upcoming meetups",
     },
     {
       title: "Unrated Meetups",
@@ -169,6 +186,8 @@ export default function MeetupListPage({
             timestamp: item.timestamp,
           })
         ),
+
+      emptyText: "No unrated meetups",
     },
   ];
 
@@ -184,6 +203,16 @@ export default function MeetupListPage({
         renderSectionHeader={({ section: { title } }) =>
           renderSectionHeader(title)
         }
+        renderSectionFooter={({ section }) => {
+          if (section.data.length === 0) {
+            return (
+              <Box backgroundColor="cardBackground" p="md">
+                <Text textAlign="center" variant="subheader">{section.emptyText}</Text>
+              </Box>
+            );
+          }
+          return null;
+        }}
         refreshControl={
           <ThemedRefreshControl
             onRefresh={loadMeetupData}

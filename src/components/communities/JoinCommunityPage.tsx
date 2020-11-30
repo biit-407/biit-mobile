@@ -1,17 +1,14 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import {
-  joinCommunity,
-  useCommunityDispatch,
-} from "../../contexts/communityContext";
-import { useToken } from "../../contexts/tokenContext";
-import { useAccountState } from "../../contexts/accountContext";
-import ThemedIcon from "../themed/ThemedIcon";
+import { useAccountState } from '../../contexts/accountContext';
+import { joinCommunity, useCommunityDispatch } from '../../contexts/communityContext';
+import { useToken } from '../../contexts/tokenContext';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedIconButton from '../themed/ThemedIconButton';
 
 export const JoinCommunityPageOptions = {
   title: "Join Community",
@@ -114,22 +111,22 @@ export default function JoinCommunityPage({
         width="100%"
       >
         <Box alignItems="center">
-          <ThemedIcon
-            name="cross"
-            type="entypo"
-            size={32}
-            reverse
+          <ThemedIconButton
+            name="x"
+            type="feather"
+            size={64}
             onPress={() => navigation.pop()}
+            buttonColor="buttonDanger"
           />
           <Text variant="body">Decline</Text>
         </Box>
         <Box alignItems="center">
-          <ThemedIcon
+          <ThemedIconButton
             name="check"
-            type="entypo"
-            size={32}
-            reverse
+            type="feather"
+            size={64}
             onPress={() => join()}
+            buttonColor="buttonConfirm"
           />
           <Text variant="body">Accept</Text>
         </Box>

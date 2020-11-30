@@ -1,31 +1,25 @@
-import React, { ReactNode, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Alert, StyleSheet } from "react-native";
-import { BottomSheet, Input, ListItem, Button } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
-import * as ImagePicker from "expo-image-picker";
-import Icon from "react-native-vector-icons/FontAwesome";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import * as ImagePicker from 'expo-image-picker';
+import React, { ReactNode, useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Alert, StyleSheet } from 'react-native';
+import { BottomSheet, Icon, Input, ListItem } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import {
-  setProfilePicture,
-  updateAccount,
-  useAccount,
-} from "../../contexts/accountContext";
-import { useConstructor } from "../../hooks";
-import { EMPTY_PROFILE_PIC } from "../../models/constants";
-import Box from "../themed/Box";
-import ThemedAvatar from "../themed/ThemedAvatar";
-import ThemedButton from "../themed/ThemedButton";
-import ThemedInput from "../themed/ThemedInput";
-import Text from "../themed/Text";
-import { useToken } from "../../contexts/tokenContext";
-import theme from "../../theme";
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import { setProfilePicture, updateAccount, useAccount } from '../../contexts/accountContext';
+import { useToken } from '../../contexts/tokenContext';
+import { useConstructor } from '../../hooks';
+import { EMPTY_PROFILE_PIC } from '../../models/constants';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedAvatar from '../themed/ThemedAvatar';
+import ThemedButton from '../themed/ThemedButton';
+import ThemedIconButton from '../themed/ThemedIconButton';
+import ThemedInput from '../themed/ThemedInput';
 
 const styles = StyleSheet.create({
-  root: { flexGrow: 1, flex: 1, alignItems: "center" },
-  form: { width: "100%" },
-  formContent: { display: "flex", alignItems: "center" },
+  root: { flex: 1 },
 });
 
 type FormValues = {
@@ -51,22 +45,22 @@ type BottomSheetOption = {
 const bottomSheetOptions: BottomSheetOption[] = [
   {
     title: "Camera",
-    icon: <Icon name="camera" size={16} color="gray" />,
+    icon: <Icon type="feather" name="camera" size={16} color="gray" />,
     onPress: undefined,
   },
   {
     title: "Gallery",
-    icon: <Icon name="image" size={16} color="gray" />,
+    icon: <Icon type="feather" name="image" size={16} color="gray" />,
     onPress: undefined,
   },
   {
     title: "Clear",
-    icon: <Icon name="trash" size={16} color="gray" />,
+    icon: <Icon type="feather" name="trash" size={16} color="gray" />,
     onPress: undefined,
   },
   {
     title: "Cancel",
-    icon: <Icon name="remove" size={16} color="white" />,
+    icon: <Icon type="feather" name="x" size={16} color="white" />,
     onPress: undefined,
     containerStyle: { backgroundColor: "red" },
     titleStyle: { color: "white" },
@@ -203,76 +197,68 @@ export default function UpdateProfileForm({
 
   return (
     <Box style={styles.root}>
-      <ScrollView
-        style={styles.form}
-        contentContainerStyle={styles.formContent}
-      >
-        <ThemedInput
-          placeholder={accountState.account.fname}
-          label="First Name"
-          returnKeyType="next"
-          onSubmitEditing={() =>
-            lastNameTextInput.current && lastNameTextInput.current.focus()
-          }
-          onChangeText={(text) => {
-            setValue("fname", text);
-          }}
-          errorMessage={errors.fname ? formErrors.fname : ""}
-        />
-        <ThemedInput
-          placeholder={accountState.account.lname}
-          label="Last Name"
-          ref={lastNameTextInput}
-          onChangeText={(text) => {
-            setValue("lname", text);
-          }}
-          errorMessage={errors.lname ? formErrors.lname : ""}
-        />
+      <ScrollView>
+        <Box m="md">
+          <ThemedInput
+            placeholder={accountState.account.fname}
+            label="First Name"
+            returnKeyType="next"
+            onSubmitEditing={() =>
+              lastNameTextInput.current && lastNameTextInput.current.focus()
+            }
+            onChangeText={(text) => {
+              setValue("fname", text);
+            }}
+            errorMessage={errors.fname ? formErrors.fname : ""}
+          />
+          <ThemedInput
+            placeholder={accountState.account.lname}
+            label="Last Name"
+            ref={lastNameTextInput}
+            onChangeText={(text) => {
+              setValue("lname", text);
+            }}
+            errorMessage={errors.lname ? formErrors.lname : ""}
+          />
+          <Box flexDirection="row" alignItems="center" justifyContent="center">
+            {date && (
+              <Text variant="body" mr="md">
+                Birthday: {date ? date.toLocaleDateString() : "Not set"}
+              </Text>
+            )}
+            <ThemedIconButton
+              type="feather"
+              name="gift"
+              onPress={showDatepicker}
+            />
+          </Box>
 
-        <Box flexDirection="row">
-          {date && (
-            <Text
-              variant="body"
-              mb="lg"
-              textAlign="center"
-              marginRight="md"
-              marginTop="sm"
+          {profileImageURL !== "" && (
+            <Box
+              marginVertical="md"
+              alignItems="center"
+              justifyContent="center"
             >
-              Brithday: {date ? date.toLocaleDateString() : "not set"}
-            </Text>
+              <ThemedAvatar size="xlarge" uri={profileImageURL} />
+            </Box>
           )}
-          <Button
-            onPress={showDatepicker}
-            title={date ? "Change" : "Set Birthday"}
-            buttonStyle={{
-              backgroundColor: theme.colors.buttonPrimaryBackground,
+          <ThemedButton
+            title="Select Profile Picture"
+            onPress={async () => {
+              setBottomSheetVisible(true);
             }}
           />
+          {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date ? date : new Date()}
+              mode={"date"}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+            />
+          )}
         </Box>
-
-        {show && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date ? date : new Date()}
-            mode={"date"}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-          />
-        )}
-
-        {profileImageURL !== "" && (
-          <Box marginVertical="md">
-            <ThemedAvatar size="xlarge" uri={profileImageURL} />
-          </Box>
-        )}
-        <ThemedButton
-          title="Select Profile Picture"
-          onPress={async () => {
-            setBottomSheetVisible(true);
-          }}
-        />
-        <Box marginVertical="xs" />
       </ScrollView>
       <Box marginVertical="md">
         <ThemedButton

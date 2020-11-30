@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { ScrollView, Switch, StyleSheet, Alert } from "react-native";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { ScrollView, StyleSheet } from "react-native";
 
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import ThemedButton from "../themed/ThemedButton";
-import ThemedInput from "../themed/ThemedInput";
-import Text from "../themed/Text";
+import { useAccountState } from "../../contexts/accountContext";
 import {
   createCommunity,
   useCommunityDispatch,
 } from "../../contexts/communityContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { BLANK_COMMUNITY } from "../../models/community";
-import { useAccountState } from "../../contexts/accountContext";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import { ThemedIcon } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedButton from "../themed/ThemedButton";
+import ThemedInput from "../themed/ThemedInput";
 
 export const CreateCommunityPageOptions = {
   tabBarIcon: ({
@@ -27,8 +28,8 @@ export const CreateCommunityPageOptions = {
     size: number;
   }) => (
     <ThemedIcon
-      name="create"
-      type="material"
+      name="edit-2"
+      type="feather"
       size={focused ? 30 : size}
       color={color}
     />
@@ -44,20 +45,6 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#FFE8C6",
-  },
-  header: {
-    paddingLeft: 10,
-    color: "#3d3400",
-  },
-  detailbox: {
-    padding: 5,
-  },
-  option: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 10,
   },
 });
 
@@ -71,10 +58,9 @@ const formErrors = {
   codeOfConduct: "Code of Conduct cannot be empty",
 };
 
-export default function CreateCommunityPage({}: StackNavigationProps<
-  CommunityRoutes,
-  "CreateCommunity"
->) {
+export default function CreateCommunityPage({
+  navigation,
+}: StackNavigationProps<CommunityRoutes, "CreateCommunity">) {
   const { register, handleSubmit, setValue, errors } = useForm<FormValues>();
 
   useEffect(() => {
@@ -85,105 +71,107 @@ export default function CreateCommunityPage({}: StackNavigationProps<
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
+  const snackbarDispatch = useSnackbarDispatch();
 
-  const submitCommunity: SubmitHandler<FormValues> = (data) => {
-    console.log({
-      ...BLANK_COMMUNITY,
-      name: data.name,
-      codeofconduct: data.codeOfConduct,
-      Admins: [accountState.account.email],
-      Members: [accountState.account.email],
-      token: tokenState.refreshToken,
-    });
-    createCommunity(communityDispatch, tokenDispatch, tokenState.refreshToken, {
-      ...BLANK_COMMUNITY,
-      name: data.name,
-      codeofconduct: data.codeOfConduct,
-      Admins: [accountState.account.email],
-      Members: [accountState.account.email],
-      // token: tokenState.accessToken,
-    })
-      .then(() => Alert.alert("Created Community!"))
-      .catch((err) => Alert.alert("Error Creating Community!", err));
+  const submitCommunity: SubmitHandler<FormValues> = async (data) => {
+    const response = await createCommunity(
+      communityDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      {
+        ...BLANK_COMMUNITY,
+        name: data.name,
+        codeofconduct: data.codeOfConduct,
+        Admins: [accountState.account.email],
+        Members: [accountState.account.email],
+      }
+    );
+    if (response) {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarVisible: true,
+          snackbarMessage: "Successfully Created Community",
+          queue: [],
+          snackbarType: "success",
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.navigate("CommunityList");
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarVisible: true,
+          snackbarMessage: "Failed to Create Community",
+          queue: [],
+          snackbarType: "error",
+        },
+        dispatch: snackbarDispatch,
+      });
+    }
   };
 
-  const [sw1, setSw1] = useState(false);
-  const toggleSw1 = () => setSw1((previousState) => !previousState);
-  const [sw2, setSw2] = useState(false);
-  const toggleSw2 = () => setSw2((previousState) => !previousState);
-  const [sw3, setSw3] = useState(false);
-  const toggleSw3 = () => setSw3((previousState) => !previousState);
-
   return (
-    <ScrollView style={styles.root}>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Title
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder="Community Name"
-          label="What should your community be called?"
-          onChangeText={(text) => {
-            setValue("name", text);
-          }}
-          errorMessage={errors.name ? formErrors.name : ""}
-        />
-        <Text variant="body">* Community name is final</Text>
-      </Box>
+    <Box backgroundColor="mainBackground" style={styles.root}>
+      <ScrollView style={{ flexGrow: 1 }}>
+        <Box
+          padding="md"
+          backgroundColor="headerBackground"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <ThemedIcon type="feather" name="bookmark" />
+          <Text paddingLeft="sm" variant="sectionListHeader">
+            Community Name
+          </Text>
+        </Box>
+        <Box m="sm">
+          <ThemedInput
+            placeholder="Community Name"
+            label={
+              <Box>
+                <Text variant="body">
+                  What should your community be called?
+                </Text>
+                <Text variant="body">(*Community name is final)</Text>
+              </Box>
+            }
+            onChangeText={(text) => {
+              setValue("name", text);
+            }}
+            errorMessage={errors.name ? formErrors.name : ""}
+          />
+        </Box>
 
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Code of Conduct
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <ThemedInput
-          placeholder="Booga oog, o boo gaboo agoo."
-          label="What rules should members follow?"
-          onChangeText={(text) => {
-            setValue("codeOfConduct", text);
-          }}
-          errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
-          multiline={true}
-        />
-      </Box>
-      <Box backgroundColor="headerBackground">
-        <Text variant="header" style={styles.header}>
-          Options
-        </Text>
-      </Box>
-      <Box style={styles.detailbox}>
-        <Box style={styles.option}>
-          <Text variant="body">Option 1</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw1 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw1}
-            value={sw1}
+        <Box
+          padding="md"
+          backgroundColor="headerBackground"
+          flexDirection="row"
+          alignItems="center"
+        >
+          <ThemedIcon type="feather" name="book-open" />
+          <Text paddingLeft="sm" variant="sectionListHeader">
+            Code of Conduct
+          </Text>
+        </Box>
+        <Box m="sm">
+          <ThemedInput
+            placeholder="Description of rules and conduct"
+            label={<Text>What rules should members follow?</Text>}
+            onChangeText={(text) => {
+              setValue("codeOfConduct", text);
+            }}
+            errorMessage={errors.codeOfConduct ? formErrors.codeOfConduct : ""}
+            multiline
           />
         </Box>
-        <Box style={styles.option}>
-          <Text variant="body">Option 2</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw2 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw2}
-            value={sw2}
-          />
-        </Box>
-        <Box style={styles.option}>
-          <Text variant="body">Option 3</Text>
-          <Switch
-            trackColor={{ false: "#FAD092", true: "#D8AD6D" }}
-            thumbColor={sw3 ? "#B88953" : "#D8AD6D"}
-            onValueChange={toggleSw3}
-            value={sw3}
-          />
-        </Box>
-      </Box>
-      <ThemedButton title="Submit" onPress={handleSubmit(submitCommunity)} />
-    </ScrollView>
+      </ScrollView>
+
+      <ThemedButton
+        title="Create Community"
+        onPress={handleSubmit(submitCommunity)}
+      />
+    </Box>
   );
 }

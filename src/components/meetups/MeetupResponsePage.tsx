@@ -1,26 +1,22 @@
-import { StackNavigationOptions } from "@react-navigation/stack";
-import React, { useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import React, { useState } from 'react';
+import { FlatList, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useAccountState } from "../../contexts/accountContext";
+import { StackNavigationOptions } from '@react-navigation/stack';
+
+import { useAccountState } from '../../contexts/accountContext';
 import {
-  acceptMeetup,
-  declineMeetup,
-  setMeetupLocations,
-  useMeetup,
-} from "../../contexts/meetupContext";
-import { useSnackbarDispatch } from "../../contexts/snackbarContext";
-import { useToken } from "../../contexts/tokenContext";
-import { BLANK_MEETUP } from "../../models/meetups";
-import { HomeRoutes, StackNavigationProps } from "../../routes";
-import theme from "../../theme";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedCard from "../themed/ThemedCard";
-import ThemedIcon from "../themed/ThemedIcon";
-
-import MeetupCard from "./MeetupCard";
+    acceptMeetup, declineMeetup, setMeetupLocations, useMeetup
+} from '../../contexts/meetupContext';
+import { useSnackbarDispatch } from '../../contexts/snackbarContext';
+import { useToken } from '../../contexts/tokenContext';
+import { BLANK_MEETUP } from '../../models/meetups';
+import { HomeRoutes, StackNavigationProps } from '../../routes';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedCard from '../themed/ThemedCard';
+import ThemedIconButton from '../themed/ThemedIconButton';
+import MeetupCard from './MeetupCard';
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
   title: "RSVP",
@@ -190,27 +186,23 @@ export default function MeetupReponsePage({
         width="95%"
       >
         <Box alignItems="center">
-          <ThemedIcon
-            size={32}
-            raised
-            reverse
-            name="cross"
-            type="entypo"
+          <ThemedIconButton
+            size={64}
+            name="x"
+            type="feather"
             onPress={onDecline}
-            color={theme.colors.iconSelectedRed}
+            buttonColor="buttonDanger"
           />
           <Text variant="body">Decline</Text>
         </Box>
 
         <Box alignItems="center">
-          <ThemedIcon
-            size={32}
-            raised
-            reverse
+          <ThemedIconButton
+            size={64}
             name="check"
-            type="entypo"
+            type="feather"
             onPress={onAccept}
-            color={theme.colors.iconSelectedGreen}
+            buttonColor="buttonConfirm"
           />
           <Text variant="body">Accept</Text>
         </Box>
