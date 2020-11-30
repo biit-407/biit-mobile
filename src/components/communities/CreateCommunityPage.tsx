@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ScrollView, StyleSheet } from "react-native";
 
-import { useAccountState } from '../../contexts/accountContext';
-import { createCommunity, useCommunityDispatch } from '../../contexts/communityContext';
-import { useSnackbarDispatch } from '../../contexts/snackbarContext';
-import { useToken } from '../../contexts/tokenContext';
-import { BLANK_COMMUNITY } from '../../models/community';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import { ThemedIcon } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedButton from '../themed/ThemedButton';
-import ThemedInput from '../themed/ThemedInput';
+import { useAccountState } from "../../contexts/accountContext";
+import {
+  createCommunity,
+  useCommunityDispatch,
+} from "../../contexts/communityContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
+import { useToken } from "../../contexts/tokenContext";
+import { BLANK_COMMUNITY } from "../../models/community";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import { ThemedIcon } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedButton from "../themed/ThemedButton";
+import ThemedInput from "../themed/ThemedInput";
 
 export const CreateCommunityPageOptions = {
   tabBarIcon: ({
@@ -71,7 +74,7 @@ export default function CreateCommunityPage({
   const snackbarDispatch = useSnackbarDispatch();
 
   const submitCommunity: SubmitHandler<FormValues> = async (data) => {
-    await createCommunity(
+    const response = await createCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
@@ -83,17 +86,30 @@ export default function CreateCommunityPage({
         Members: [accountState.account.email],
       }
     );
-    snackbarDispatch({
-      type: "push",
-      state: {
-        snackbarVisible: true,
-        snackbarMessage: "Successfully Created Community",
-        queue: [],
-        snackbarType: "success",
-      },
-      dispatch: snackbarDispatch,
-    });
-    navigation.navigate("CommunityList");
+    if (response) {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarVisible: true,
+          snackbarMessage: "Successfully Created Community",
+          queue: [],
+          snackbarType: "success",
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.navigate("CommunityList");
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarVisible: true,
+          snackbarMessage: "Failed to Create Community",
+          queue: [],
+          snackbarType: "error",
+        },
+        dispatch: snackbarDispatch,
+      });
+    }
   };
 
   return (

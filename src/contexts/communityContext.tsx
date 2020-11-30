@@ -314,6 +314,7 @@ async function _communityHelper<T, R>(
   try {
     const response: R = await requestFunc(token, data);
     handleResponse(response);
+    return true;
   } catch (error) {
     communityDispatch({
       type: "fail update",
@@ -321,6 +322,7 @@ async function _communityHelper<T, R>(
       error: "Failed to update community",
     });
   }
+  return false;
 }
 
 async function createCommunity(
@@ -329,7 +331,7 @@ async function createCommunity(
   token: string,
   community: Community
 ) {
-  await _communityHelper(
+  return await _communityHelper(
     communityDispatch,
     token,
     community,
