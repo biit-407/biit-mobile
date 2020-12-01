@@ -11,6 +11,9 @@ import LoginPage, {
 import CreateAccountPage, {
   CreateAccountPageOptions,
 } from "../components/authentication/CreateAccountPage";
+import CreateProfilePage, {
+  CreateProfilePageOptions,
+} from "../components/authentication/CreateProfilePage";
 
 const UnauthenticatedStack = createStackNavigator();
 
@@ -26,6 +29,11 @@ const UnauthenticatedStackScreen = () => {
         name="CreateAccount"
         component={CreateAccountPage}
         options={CreateAccountPageOptions}
+      />
+      <UnauthenticatedStack.Screen
+        name="CreateProfile"
+        component={CreateProfilePage}
+        options={CreateProfilePageOptions}
       />
     </UnauthenticatedStack.Navigator>
   );
