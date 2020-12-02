@@ -610,6 +610,33 @@ async function setMeetupLocations(
   return BLANK_MEETUP;
 }
 
+async function reconnect(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch,
+  users: string[],
+  community: string
+) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/reconnect`;
+
+  try {
+    const response = await AuthenticatedRequestHandler.put(
+      endpoint,
+      mapMeetupResponseJson,
+      {
+        email: email,
+        community: community,
+        token: token,
+        users: users,
+      }
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0];
+  } catch (error) {
+    return BLANK_MEETUP;
+  }
+}
+
 function getLoadedMeetupById(
   meetupState: MeetupState,
   meetupID: string
@@ -638,4 +665,5 @@ export {
   setMeetupRating,
   setMeetupLocations,
   getLoadedMeetupById,
+  reconnect,
 };
