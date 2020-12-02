@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
 
+import {
+  getPreviousUsers,
+  useAccountState,
+} from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 import useConstructor from "../../hooks/useConstructor";
 import { PreviousUser } from "../../models/accounts";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
@@ -27,12 +32,18 @@ const styles = StyleSheet.create({
 export default function PreviousUsersPage({
   navigation,
 }: StackNavigationProps<AccountRoutes, "PreviousUsers">) {
+  const {
+    account: { email },
+  } = useAccountState();
+  const [{ refreshToken }, tokenDispatch] = useToken();
+
   // Create state for the list of previous users
   const [previousUsers, setPreviousUsers] = useState<PreviousUser[]>();
 
   // Load in previous users
-  useConstructor(() => {
+  useConstructor(async () => {
     // TODO: Load in previous users
+    console.log(await getPreviousUsers(email, refreshToken, tokenDispatch));
     const loadedUsers = [
       {
         fname: "Daniel",

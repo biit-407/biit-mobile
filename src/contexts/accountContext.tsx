@@ -764,29 +764,34 @@ async function getPreviousUsers(
   token: string,
   tokenDispatch: TokenDispatch
 ) {
-  const response: [PreviousUser[], OauthToken] = await fetch(
-    `${SERVER_ADDRESS}/meetings/past/users?email=${email}&token=${token}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    }
-  )
-    .then((r) => r.json())
-    .then((responseJson) => {
-      return [
-        responseJson.data,
-        {
-          accessToken: responseJson.access_token,
-          refreshToken: responseJson.refresh_token,
+  try {
+    const response: [PreviousUser[], OauthToken] = await fetch(
+      `${SERVER_ADDRESS}/meetings/past/users?email=${email}&token=${token}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-      ];
-    });
+      }
+    )
+      .then((r) => r.json())
+      .then((responseJson) => {
+        return [
+          responseJson.data,
+          {
+            accessToken: responseJson.access_token,
+            refreshToken: responseJson.refresh_token,
+          },
+        ];
+      });
 
-  tokenDispatch({ type: "set", ...response[1] });
-  return response[0];
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
 
 export {
