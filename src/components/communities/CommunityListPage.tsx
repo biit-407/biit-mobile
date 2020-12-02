@@ -89,7 +89,10 @@ export default function CommunityListPage({
       tokenState.refreshToken,
       tokenDispatch
     );
-    setCommunities(myCommunities ?? []);
+    setCommunities(
+      myCommunities?.filter((community) => community.Members.includes(email)) ??
+        []
+    );
     setRefreshing(false);
   };
 
