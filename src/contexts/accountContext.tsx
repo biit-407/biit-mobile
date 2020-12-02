@@ -1,7 +1,7 @@
 import React from "react";
 import * as FileSystem from "expo-file-system";
 
-import { Account, BLANK_ACCOUNT } from "../models/accounts";
+import { Account, BLANK_ACCOUNT, PreviousUser } from "../models/accounts";
 import {
   BLANK_AZURE_USER_INFO,
   BLANK_TOKEN,
@@ -759,6 +759,36 @@ async function dismissNotifications(
   return response[0];
 }
 
+async function getPreviousUsers(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch
+) {
+  const response: [PreviousUser[], OauthToken] = await fetch(
+    `${SERVER_ADDRESS}/meetings/past/users?email=${email}&token=${token}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((r) => r.json())
+    .then((responseJson) => {
+      return [
+        responseJson.data,
+        {
+          accessToken: responseJson.access_token,
+          refreshToken: responseJson.refresh_token,
+        },
+      ];
+    });
+
+  tokenDispatch({ type: "set", ...response[1] });
+  return response[0];
+}
+
 export {
   useAccount,
   AccountProvider,
@@ -776,4 +806,5 @@ export {
   reportSuggestion,
   getNotifications,
   dismissNotifications,
+  getPreviousUsers,
 };
