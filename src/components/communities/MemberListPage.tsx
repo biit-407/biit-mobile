@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, SectionList, SectionListData, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { Alert, SectionList, SectionListData, StyleSheet } from "react-native";
 
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
-    banUserFromCommunity, getCommunity, loadCommunity, useCommunity
-} from '../../contexts/communityContext';
-import { useToken } from '../../contexts/tokenContext';
-import { useConstructor } from '../../hooks';
-import { BLANK_COMMUNITY, Community } from '../../models/community';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import { ThemedRefreshControl } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedIcon from '../themed/ThemedIcon';
-import ThemedListItem from '../themed/ThemedListItem';
+  banUserFromCommunity,
+  getCommunity,
+  loadCommunity,
+  updateCommunity,
+  useCommunity,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { useConstructor } from "../../hooks";
+import { BLANK_COMMUNITY, Community } from "../../models/community";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import { ThemedRefreshControl } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedIcon from "../themed/ThemedIcon";
+import ThemedListItem from "../themed/ThemedListItem";
 
 export const MemberListPageOptions = {
   title: "Member List",
@@ -117,7 +121,18 @@ export default function MemberListPage({
           text: "OK",
           onPress: async () => {
             // TODO: Add in promotion method
-            loadCommunity(
+            await updateCommunity(
+              communityDispatch,
+              tokenDispatch,
+              tokenState.refreshToken,
+              accountState.account.email,
+              community.name,
+              {
+                ...community,
+                Admins: [...community.Admins, email],
+              }
+            );
+            await loadCommunity(
               communityDispatch,
               tokenDispatch,
               tokenState.refreshToken,
