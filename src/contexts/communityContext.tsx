@@ -551,6 +551,39 @@ async function getCommunityStats(
   }
 }
 
+async function getAllCommunities(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch
+) {
+  try {
+    const response: [Community[], OauthToken] = await fetch(
+      `${SERVER_ADDRESS}/community/all?email=${email}&token=${token}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((r) => r.json())
+      .then((responseJson) => {
+        return [
+          responseJson.data,
+          {
+            accessToken: responseJson.accessToken,
+            refreshToken: responseJson.refreshToken,
+          },
+        ];
+      });
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0];
+  } catch (error) {
+    return null;
+  }
+}
+
 function getCommunity(communityState: CommunityState, name: string) {
   for (let i = 0; i < communityState.communities.length; i++) {
     const element = communityState.communities[i];
@@ -590,4 +623,5 @@ export {
   getCommunityStats,
   getCommunity,
   isCommunityLoaded,
+  getAllCommunities,
 };
