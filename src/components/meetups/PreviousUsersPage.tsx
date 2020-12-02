@@ -43,15 +43,8 @@ export default function PreviousUsersPage({
   // Load in previous users
   useConstructor(async () => {
     // TODO: Load in previous users
-    console.log(await getPreviousUsers(email, refreshToken, tokenDispatch));
-    const loadedUsers = [
-      {
-        fname: "Daniel",
-        lname: "Kambich",
-        email: "test@gmail.com",
-        commonMeetups: [{ ...BLANK_MEETUP }],
-      },
-    ];
+    const loadedUsers =
+      (await getPreviousUsers(email, refreshToken, tokenDispatch)) ?? [];
     // Set the previous users
     setPreviousUsers(loadedUsers);
   });

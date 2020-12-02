@@ -766,7 +766,7 @@ async function getPreviousUsers(
 ) {
   try {
     const response: [PreviousUser[], OauthToken] = await fetch(
-      `${SERVER_ADDRESS}/meetings/past/users?email=${email}&token=${token}`,
+      `${SERVER_ADDRESS}/meeting/past/users?email=${email}&token=${token}`,
       {
         method: "GET",
         headers: {
@@ -789,7 +789,6 @@ async function getPreviousUsers(
     tokenDispatch({ type: "set", ...response[1] });
     return response[0];
   } catch (error) {
-    console.error(error);
     return null;
   }
 }
