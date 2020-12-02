@@ -1,14 +1,17 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-import { useAccountState } from '../../contexts/accountContext';
-import { joinCommunity, useCommunityDispatch } from '../../contexts/communityContext';
-import { useToken } from '../../contexts/tokenContext';
-import { CommunityRoutes, StackNavigationProps } from '../../routes';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedIconButton from '../themed/ThemedIconButton';
+import { useAccountState } from "../../contexts/accountContext";
+import {
+  joinCommunity,
+  useCommunityDispatch,
+} from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedIconButton from "../themed/ThemedIconButton";
 
 export const JoinCommunityPageOptions = {
   title: "Join Community",
@@ -84,23 +87,6 @@ export default function JoinCommunityPage({
             conduct
           </Text>
           <Text variant="body">{codeOfConduct}</Text>
-          {/* TODO: Remove dummy text once actual info is passed into for code of conduct */}
-          <Text variant="body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-            auctor risus sit amet ante imperdiet semper. Fusce metus augue,
-            egestas ut quam at, faucibus finibus tellus. Donec mauris dolor,
-            luctus eu velit quis, venenatis congue est. Nunc fringilla imperdiet
-            erat, quis consectetur mi tempor quis. Quisque sodales porta ante,
-            sit amet euismod massa eleifend ac. Cras consequat lectus a lacus
-            rhoncus, non luctus elit eleifend. Sed eget scelerisque elit. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per
-            inceptos himenaeos. Suspendisse at dapibus libero. Aenean in blandit
-            urna. Nunc neque turpis, pellentesque quis purus vitae, molestie
-            congue nisi. Class aptent taciti sociosqu ad litora torquent per
-            conubia nostra, per inceptos himenaeos. Fusce scelerisque, neque
-            eget dignissim aliquet, enim orci convallis erat, eget pretium elit
-            tortor eget lectus.
-          </Text>
         </ScrollView>
       </Box>
       <Box
