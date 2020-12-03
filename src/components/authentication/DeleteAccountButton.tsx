@@ -1,10 +1,10 @@
-import React from 'react';
-import { Alert } from 'react-native';
+import React from "react";
+import { Alert } from "react-native";
 
-import { deleteAccount, useAccount } from '../../contexts/accountContext';
-import { useAzure } from '../../contexts/azureContext';
-import { useToken } from '../../contexts/tokenContext';
-import { ThemedListItem } from '../themed';
+import { deleteAccount, useAccount } from "../../contexts/accountContext";
+import { useAzure } from "../../contexts/azureContext";
+import { useToken } from "../../contexts/tokenContext";
+import { ThemedListItem } from "../themed";
 
 export default function DeleteAccountButton() {
   const [accountState, accountDispatch] = useAccount();

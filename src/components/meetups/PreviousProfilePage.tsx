@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
+import { Meetup } from "../../models/meetups";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
-import { ProfileCard, Text, ThemedButton } from "../themed";
+import { ProfileCard, Text } from "../themed";
 import Box from "../themed/Box";
 
 import MeetupCard from "./MeetupCard";
@@ -27,7 +28,22 @@ export default function PreviousProfilePage({
   } = route.params;
 
   // TODO: Integrated reconnect logic
-  const reconnect = () => true;
+  const reconnect = (meetup: Meetup) => {
+    Alert.alert(
+      `Reconnect with ${fname} ${lname}?`,
+      `Do you want to reconnect with ${fname} ${lname} in ${meetup.community}?`,
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Confirm",
+          onPress: () => true,
+        },
+      ]
+    );
+  };
 
   const emptyList = () => (
     <Text textAlign="center" variant="body">
@@ -40,14 +56,16 @@ export default function PreviousProfilePage({
       <FlatList
         data={commonMeetups}
         keyExtractor={(meetup) => meetup.id}
-        renderItem={({ item }) => <MeetupCard {...item} isClickable={false} />}
+        renderItem={({ item }) => (
+          <MeetupCard {...item} onPress={() => reconnect(item)} />
+        )}
         ListHeaderComponent={
           <>
             <ProfileCard name={`${fname} ${lname}`} />
-            <ThemedButton
+            {/* <ThemedButton
               title={`Reconnect with ${fname}`}
               onPress={reconnect}
-            />
+            /> */}
             <Text textAlign="center" variant="subheader">
               Your previous meetups with {fname}
             </Text>
