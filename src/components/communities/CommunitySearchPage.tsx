@@ -62,7 +62,14 @@ export default function CommunitySearchPage({
   const [foundCommunities, setFoundCommunities] = useState<Community[]>([]);
 
   const [searchText, setSearchText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const onChangeText = (text: string) => {
+    setIsTyping(true);
+    setSearchText(text);
+  };
   const onSearch = async () => {
+    setIsTyping(false);
+
     // Don't perform a search on empty search string???
     if (searchText.length === 0) {
       setFoundCommunities([]);
@@ -118,7 +125,7 @@ export default function CommunitySearchPage({
 
   const listEmpty = () => {
     const message =
-      searchText.length === 0
+      searchText.length === 0 || isTyping
         ? "Start searching for new communities!"
         : "No communities matched your search";
     return (
@@ -133,7 +140,7 @@ export default function CommunitySearchPage({
       <ThemedSearchBar
         placeholder="Search for new communities..."
         value={searchText}
-        onChangeText={setSearchText}
+        onChangeText={onChangeText}
         onEndEditing={onSearch}
         onClear={onClear}
       />
