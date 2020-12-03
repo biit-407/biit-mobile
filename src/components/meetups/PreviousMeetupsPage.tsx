@@ -5,6 +5,7 @@ import { StackNavigationProps, AccountRoutes } from "../../routes";
 import Box from "../themed/Box";
 import { Meetup } from "../../models/meetups";
 import useConstructor from "../../hooks/useConstructor";
+import { Text } from "../themed";
 
 import MeetupCard from "./MeetupCard";
 
@@ -57,6 +58,11 @@ export default function PreviousMeetupsPage({
         renderItem={renderMeetup}
         style={{ width: "100%" }}
         ListFooterComponent={<Box style={{ opacity: 1, height: 32 }} />}
+        ListEmptyComponent={
+          <Text variant="subheader" textAlign="center" m="md">
+            You have no previous meetups
+          </Text>
+        }
       />
     </Box>
   );
