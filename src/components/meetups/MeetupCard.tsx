@@ -216,7 +216,12 @@ const AcceptedMeetupCard = ({
       <Text variant="subheader">Lasts {duration} minutes</Text>
       <Text variant="subheader">{location}</Text>
       {location === "Online" && zoomLink && (
-        <Text onPress={() => Linking.openURL(zoomLink)}>{zoomLink}</Text>
+        <Text
+          textDecorationLine="underline"
+          onPress={() => Linking.openURL(zoomLink)}
+        >
+          {zoomLink}
+        </Text>
       )}
       <Text variant="header">Participants</Text>
       <FlatList

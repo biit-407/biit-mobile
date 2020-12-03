@@ -28,6 +28,7 @@ export type HomeRoutes = {
     duration: string;
     location: string;
     userList: Record<string, number>;
+    zoomLink?: string;
   };
   MeetupResponse: {
     meetupID: string;
