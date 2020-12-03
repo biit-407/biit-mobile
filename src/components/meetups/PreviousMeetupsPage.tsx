@@ -7,6 +7,7 @@ import { Meetup } from "../../models/meetups";
 import useConstructor from "../../hooks/useConstructor";
 
 import MeetupCard from "./MeetupCard";
+import { Text } from "../themed";
 
 export const PreviousMeetupsPageOptions = {
   title: "Previous Meetups",
@@ -57,6 +58,11 @@ export default function PreviousMeetupsPage({
         renderItem={renderMeetup}
         style={{ width: "100%" }}
         ListFooterComponent={<Box style={{ opacity: 1, height: 32 }} />}
+        ListEmptyComponent={
+          <Text variant="subheader" textAlign="center" m="md">
+            You have no previous meetups
+          </Text>
+        }
       />
     </Box>
   );
