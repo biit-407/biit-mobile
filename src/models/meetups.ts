@@ -3,13 +3,17 @@ export interface Meetup {
   timestamp: string;
   duration: string;
   location: string;
-
   meeting_type: string; // eslint-disable-line camelcase
-
   user_list: Record<string, number>; // eslint-disable-line camelcase
   rating_dict?: Record<string, number>; // eslint-disable-line camelcase
-  community?: string;
+  community: string;
+  zoomID?: string;
+  zoomLink?: string;
 }
+
+// zoom_id: string
+// zoom_link: string
+// community: string
 
 export const BLANK_MEETUP: Meetup = {
   id: "a meetup id",

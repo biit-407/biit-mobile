@@ -54,7 +54,6 @@ export default function UserSettingsPage({
   // Get the user account and tokens
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
-
   /*
    ========================
    Notification Preference

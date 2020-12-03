@@ -6,6 +6,7 @@ import {
   banUserFromCommunity,
   getCommunity,
   loadCommunity,
+  updateCommunity,
   useCommunity,
 } from "../../contexts/communityContext";
 import { useToken } from "../../contexts/tokenContext";
@@ -120,7 +121,18 @@ export default function MemberListPage({
           text: "OK",
           onPress: async () => {
             // TODO: Add in promotion method
-            loadCommunity(
+            await updateCommunity(
+              communityDispatch,
+              tokenDispatch,
+              tokenState.refreshToken,
+              accountState.account.email,
+              community.name,
+              {
+                ...community,
+                Admins: [...community.Admins, email],
+              }
+            );
+            await loadCommunity(
               communityDispatch,
               tokenDispatch,
               tokenState.refreshToken,

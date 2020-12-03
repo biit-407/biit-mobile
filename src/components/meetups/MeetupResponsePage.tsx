@@ -37,7 +37,7 @@ export default function MeetupReponsePage({
   route,
   navigation,
 }: StackNavigationProps<HomeRoutes, "MeetupResponse">) {
-  const { meetupID, timestamp, location, duration, userList } = route.params;
+  const { meetupID, timestamp, duration, userList } = route.params;
   const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
@@ -146,14 +146,12 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
         <MeetupCard
           id={meetupID}
           timestamp={timestamp}
-          location={location}
           duration={duration}
           userList={userList}
           meetupType={"tentative"}

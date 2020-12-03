@@ -7,6 +7,8 @@ import {
   joinCommunity,
   useCommunityDispatch,
 } from "../../contexts/communityContext";
+
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
@@ -45,20 +47,45 @@ export default function JoinCommunityPage({
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
+  const snackbarDispatch = useSnackbarDispatch();
 
   // Extract info about the community to join
   const { name, codeOfConduct, numMembers } = route.params;
 
   // Create a function to join the specified community
   const join = async () => {
-    await joinCommunity(
+    const result = await joinCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       accountState.account.email,
       route.params.name
     );
-    navigation.pop();
+
+    if (result) {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: `Successfully joined ${route.params.name}`,
+          snackbarVisible: true,
+          snackbarType: "success",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.pop();
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: `Failed to join ${route.params.name}`,
+          snackbarVisible: true,
+          snackbarType: "error",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+    }
   };
 
   return (
@@ -87,23 +114,6 @@ export default function JoinCommunityPage({
             conduct
           </Text>
           <Text variant="body">{codeOfConduct}</Text>
-          {/* TODO: Remove dummy text once actual info is passed into for code of conduct */}
-          <Text variant="body">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-            auctor risus sit amet ante imperdiet semper. Fusce metus augue,
-            egestas ut quam at, faucibus finibus tellus. Donec mauris dolor,
-            luctus eu velit quis, venenatis congue est. Nunc fringilla imperdiet
-            erat, quis consectetur mi tempor quis. Quisque sodales porta ante,
-            sit amet euismod massa eleifend ac. Cras consequat lectus a lacus
-            rhoncus, non luctus elit eleifend. Sed eget scelerisque elit. Class
-            aptent taciti sociosqu ad litora torquent per conubia nostra, per
-            inceptos himenaeos. Suspendisse at dapibus libero. Aenean in blandit
-            urna. Nunc neque turpis, pellentesque quis purus vitae, molestie
-            congue nisi. Class aptent taciti sociosqu ad litora torquent per
-            conubia nostra, per inceptos himenaeos. Fusce scelerisque, neque
-            eget dignissim aliquet, enim orci convallis erat, eget pretium elit
-            tortor eget lectus.
-          </Text>
         </ScrollView>
       </Box>
       <Box

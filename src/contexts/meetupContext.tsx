@@ -43,6 +43,9 @@ interface MeetupAuthenticatedResponseJson
     location: string;
     meettype: string;
     user_list: Record<string, number>; // eslint-disable-line camelcase
+    community: string;
+    zoom_id?: string; // eslint-disable-line camelcase
+    zoom_link?: string; // eslint-disable-line camelcase
   };
 }
 
@@ -55,6 +58,9 @@ interface MeetupListAuthenticatedResponseJson
     location: string;
     meettype: string;
     user_list: Record<string, number>; // eslint-disable-line camelcase
+    community: string;
+    zoom_id?: string; // eslint-disable-line camelcase
+    zoom_link?: string; // eslint-disable-line camelcase
   }[];
 }
 
@@ -82,6 +88,9 @@ function mapMeetupResponseJson(responseJson: MeetupAuthenticatedResponseJson) {
     location: responseJson.data.location,
     meeting_type: responseJson.data.meettype, // eslint-disable-line camelcase
     user_list: responseJson.data.user_list, // eslint-disable-line camelcase
+    community: responseJson.data.community,
+    zoomID: responseJson.data.zoom_id,
+    zoomLink: responseJson.data.zoom_link,
   } as Meetup;
 }
 
@@ -96,6 +105,9 @@ function mapMeetupListResponseJson(
       location: item.location,
       meeting_type: item.meettype, // eslint-disable-line camelcase
       user_list: item.user_list, // eslint-disable-line camelcase
+      community: item.community,
+      zoomID: item.zoom_id,
+      zoomLink: item.zoom_link,
     } as Meetup;
   });
 }
@@ -610,6 +622,7 @@ async function setMeetupLocations(
   return BLANK_MEETUP;
 }
 
+
 async function reschedule(
   meetupDispatch: Dispatch,
   tokenDispatch: TokenDispatch,
@@ -624,7 +637,7 @@ async function reschedule(
     meetup: [BLANK_MEETUP],
     error: "Making meetup request to server",
   });
-  try {
+     try {
     const response = await AuthenticatedRequestHandler.put(
       endpoint,
       mapMeetupResponseJson,
@@ -650,6 +663,33 @@ async function reschedule(
     });
   }
   return BLANK_MEETUP;
+}
+
+async function reconnect(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch,
+  users: string[],
+  community: string
+) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/reconnect`;
+
+  try {
+    const response = await AuthenticatedRequestHandler.put(
+      endpoint,
+      mapMeetupResponseJson,
+      {
+        email: email,
+        community: community,
+        token: token,
+        users: users,
+      }
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0];
+  } catch (error) {
+    return BLANK_MEETUP;
+  }
 }
 
 function getLoadedMeetupById(
@@ -681,4 +721,5 @@ export {
   setMeetupLocations,
   getLoadedMeetupById,
   reschedule,
+  reconnect,
 };

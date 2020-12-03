@@ -5,7 +5,6 @@ import { Alert, StyleSheet } from "react-native";
 import { BottomSheet, Icon, Input, ListItem } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import {
   setProfilePicture,
   updateAccount,
@@ -224,11 +223,9 @@ export default function UpdateProfileForm({
             errorMessage={errors.lname ? formErrors.lname : ""}
           />
           <Box flexDirection="row" alignItems="center" justifyContent="center">
-            {date && (
-              <Text variant="body" mr="md">
-                Birthday: {date ? date.toLocaleDateString() : "Not set"}
-              </Text>
-            )}
+            <Text variant="body" mr="md">
+              Birthday: {date ? date.toLocaleDateString() : "Not set"}
+            </Text>
             <ThemedIconButton
               type="feather"
               name="gift"

@@ -1,7 +1,7 @@
 import React from "react";
 import * as FileSystem from "expo-file-system";
 
-import { Account, BLANK_ACCOUNT } from "../models/accounts";
+import { Account, BLANK_ACCOUNT, PreviousUser } from "../models/accounts";
 import {
   BLANK_AZURE_USER_INFO,
   BLANK_TOKEN,
@@ -693,6 +693,106 @@ async function reportSuggestion(
   return response[0];
 }
 
+async function getNotifications(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch
+) {
+  const response: [Notification[], OauthToken] = await fetch(
+    `${SERVER_ADDRESS}/feedback?email=${email}&token=${token}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  )
+    .then((r) => r.json())
+    .then((responseJson) => {
+      return [
+        responseJson.data,
+        {
+          accessToken: responseJson.access_token,
+          refreshToken: responseJson.refresh_token,
+        },
+      ];
+    });
+
+  tokenDispatch({ type: "set", ...response[1] });
+  return response[0];
+}
+
+async function dismissNotifications(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch,
+  notificationId: string
+) {
+  const response: [boolean, OauthToken] = await fetch(
+    `${SERVER_ADDRESS}/feedback`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        token: token,
+        notificationId: notificationId,
+      }),
+    }
+  )
+    .then((r) => r.json())
+    .then((responseJson) => {
+      return [
+        responseJson.status_code === 200,
+        {
+          accessToken: responseJson.access_token,
+          refreshToken: responseJson.refresh_token,
+        },
+      ];
+    });
+
+  tokenDispatch({ type: "set", ...response[1] });
+  return response[0];
+}
+
+async function getPreviousUsers(
+  email: string,
+  token: string,
+  tokenDispatch: TokenDispatch
+) {
+  try {
+    const response: [PreviousUser[], OauthToken] = await fetch(
+      `${SERVER_ADDRESS}/meeting/past/users?email=${email}&token=${token}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((r) => r.json())
+      .then((responseJson) => {
+        return [
+          responseJson.data,
+          {
+            accessToken: responseJson.access_token,
+            refreshToken: responseJson.refresh_token,
+          },
+        ];
+      });
+
+    tokenDispatch({ type: "set", ...response[1] });
+    return response[0];
+  } catch (error) {
+    return null;
+  }
+}
+
 export {
   useAccount,
   AccountProvider,
@@ -708,4 +808,7 @@ export {
   reportUser,
   reportBug,
   reportSuggestion,
+  getNotifications,
+  dismissNotifications,
+  getPreviousUsers,
 };

@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 export default function MeetupDetailsPage({
   route,
 }: StackNavigationProps<HomeRoutes, "MeetupDetails">) {
-  const { meetupID, timestamp, location, duration, userList } = route.params;
+
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date());
 
@@ -86,6 +86,15 @@ export default function MeetupDetailsPage({
       }
     }
   };
+  
+  const {
+    meetupID,
+    timestamp,
+    location,
+    duration,
+    userList,
+    zoomLink,
+  } = route.params;
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -96,6 +105,7 @@ export default function MeetupDetailsPage({
           timestamp={timestamp}
           userList={userList}
           location={location}
+          zoomLink={zoomLink}
           meetupType={"accepted"}
           isClickable={false}
         />

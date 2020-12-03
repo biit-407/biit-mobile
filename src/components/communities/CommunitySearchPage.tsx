@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
-import { BLANK_COMMUNITY, Community } from "../../models/community";
+import { useAccountState } from "../../contexts/accountContext";
+import { getAllCommunities } from "../../contexts/communityContext";
+import { useToken } from "../../contexts/tokenContext";
+import { Community } from "../../models/community";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import {
   Text,
@@ -47,32 +50,53 @@ const styles = StyleSheet.create({
 export default function CommunitySearchPage({
   navigation,
 }: StackNavigationProps<CommunityRoutes, "CommunitySearch">) {
-  // TODO: Actually use community state once the endpoint is created
-  // const [communityState, communityDispatch] = useCommunity();
-  const [isLoading, setIsLoading] = useState(false);
+  // Retrive context variables
+  const {
+    account: { email },
+  } = useAccountState();
+  const [tokenState, tokenDispatch] = useToken();
 
-  const communities: Community[] = [
-    { ...BLANK_COMMUNITY, name: "oasd" },
-    { ...BLANK_COMMUNITY, name: "oooga" },
-    { ...BLANK_COMMUNITY, name: "oasa" },
-  ];
+  // Create state for loading in communities
+  const [refreshing, setRefreshing] = useState(false);
 
-  const [foundCommunities, setFoundCommunities] = useState(communities);
+  const [foundCommunities, setFoundCommunities] = useState<Community[]>([]);
 
   const [searchText, setSearchText] = useState("");
-  const onSearch = () => {
+  const [isTyping, setIsTyping] = useState(false);
+  const onChangeText = (text: string) => {
+    setIsTyping(true);
+    setSearchText(text);
+  };
+  const onSearch = async () => {
+    setIsTyping(false);
+
     // Don't perform a search on empty search string???
     if (searchText.length === 0) {
       setFoundCommunities([]);
       return;
     }
+
     // Indicate loading
-    setIsLoading(true);
-    // TODO: Integrate to search for communities matching the given search text
-    setTimeout(() => {
-      setFoundCommunities(communities);
-      setIsLoading(false);
-    }, 1000);
+    setRefreshing(true);
+
+    // Fetch all communites
+    const allCommunities =
+      (await getAllCommunities(
+        email,
+        tokenState.refreshToken,
+        tokenDispatch
+      )) ?? [];
+
+    // Filter communities by user membership and then by search text
+    const filteredCommunites = allCommunities
+      .filter((community) => !community.Members.includes(email))
+      .filter(({ name }) => {
+        name = name.toLowerCase().replace(/\s/g, "");
+        return name.includes(searchText.toLowerCase().replace(/\s/g, ""));
+      });
+
+    setFoundCommunities(filteredCommunites);
+    setRefreshing(false);
   };
 
   const onClear = () => {
@@ -99,12 +123,24 @@ export default function CommunitySearchPage({
     );
   };
 
+  const listEmpty = () => {
+    const message =
+      searchText.length === 0 || isTyping
+        ? "Start searching for new communities!"
+        : "No communities matched your search";
+    return (
+      <Text textAlign="center" m="md" variant="subheader">
+        {message}
+      </Text>
+    );
+  };
+
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
       <ThemedSearchBar
         placeholder="Search for new communities..."
         value={searchText}
-        onChangeText={setSearchText}
+        onChangeText={onChangeText}
         onEndEditing={onSearch}
         onClear={onClear}
       />
@@ -113,8 +149,9 @@ export default function CommunitySearchPage({
         renderItem={renderListItem}
         keyExtractor={(community) => community.name}
         refreshControl={
-          <ThemedRefreshControl refreshing={isLoading} onRefresh={onSearch} />
+          <ThemedRefreshControl refreshing={refreshing} onRefresh={onSearch} />
         }
+        ListEmptyComponent={listEmpty}
       />
     </Box>
   );

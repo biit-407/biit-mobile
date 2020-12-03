@@ -85,6 +85,7 @@ export default function CommunityHomePage({
   const [, snackbarDispatch] = useSnackbar();
 
   const searchForMeetup = async () => {
+    console.log("Searching");
     const result = await startMatching(
       tokenDispatch,
       tokenState.refreshToken,
@@ -96,7 +97,7 @@ export default function CommunityHomePage({
         type: "push",
         state: {
           snackbarVisible: true,
-          snackbarMessage: "Successfully Created Matchups",
+          snackbarMessage: "Successfully Created Meetups",
           queue: [],
           snackbarType: "success",
         },
@@ -107,7 +108,7 @@ export default function CommunityHomePage({
         type: "push",
         state: {
           snackbarVisible: true,
-          snackbarMessage: "Failed to Create Matchups",
+          snackbarMessage: "Failed to Create Meetups",
           queue: [],
           snackbarType: "error",
         },
