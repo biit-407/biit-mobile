@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
 
+import {
+  getPreviousUsers,
+  useAccountState,
+} from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
 import useConstructor from "../../hooks/useConstructor";
 import { PreviousUser } from "../../models/accounts";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
-import { BLANK_MEETUP } from "../../models/meetups";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { Text, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
@@ -27,20 +31,19 @@ const styles = StyleSheet.create({
 export default function PreviousUsersPage({
   navigation,
 }: StackNavigationProps<AccountRoutes, "PreviousUsers">) {
+  const {
+    account: { email },
+  } = useAccountState();
+  const [{ refreshToken }, tokenDispatch] = useToken();
+
   // Create state for the list of previous users
   const [previousUsers, setPreviousUsers] = useState<PreviousUser[]>();
 
   // Load in previous users
-  useConstructor(() => {
+  useConstructor(async () => {
     // TODO: Load in previous users
-    const loadedUsers = [
-      {
-        fname: "Daniel",
-        lname: "Kambich",
-        email: "test@gmail.com",
-        commonMeetups: [{ ...BLANK_MEETUP }],
-      },
-    ];
+    const loadedUsers =
+      (await getPreviousUsers(email, refreshToken, tokenDispatch)) ?? [];
     // Set the previous users
     setPreviousUsers(loadedUsers);
   });
