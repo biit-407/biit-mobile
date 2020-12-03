@@ -13,6 +13,8 @@ import { Meetup } from "../../models/meetups";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { ProfileCard, ThemedButton } from "../themed";
 import { useConstructor } from "../../hooks";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 //  Page Options
 
@@ -57,6 +59,8 @@ export default function ViewProfilePage({
   // Load past meetups upon navigating
   useConstructor(() => loadPastMeetups());
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ProfileCard
@@ -73,6 +77,9 @@ export default function ViewProfilePage({
       <ThemedButton
         title="View Previous Users"
         onPress={() => navigation.push("PreviousUsers")}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

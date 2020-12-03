@@ -1,8 +1,10 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 
 import { HomeRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 import MeetupCard from "./MeetupCard";
 
@@ -23,6 +25,7 @@ export default function MeetupDetailsPage({
 }: StackNavigationProps<HomeRoutes, "MeetupDetails">) {
   // TODO: Load in real data of the passed in meeting
   const { meetupID, timestamp, location, duration, userList } = route.params;
+  const [notificationCenterState, ] = useNotificationCenter();
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -37,6 +40,9 @@ export default function MeetupDetailsPage({
           isClickable={false}
         />
       </Box>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

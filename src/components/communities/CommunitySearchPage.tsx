@@ -4,6 +4,7 @@ import { FlatList } from "react-native-gesture-handler";
 
 import { useAccountState } from "../../contexts/accountContext";
 import { getAllCommunities } from "../../contexts/communityContext";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 import { useToken } from "../../contexts/tokenContext";
 import { Community } from "../../models/community";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
@@ -15,6 +16,7 @@ import {
 } from "../themed";
 import Box from "../themed/Box";
 import ThemedSearchBar from "../themed/ThemedSearchBar";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const CommunitySearchPageOptions = {
   tabBarIcon: ({
@@ -134,6 +136,8 @@ export default function CommunitySearchPage({
       </Text>
     );
   };
+  
+  const [notificationCenterState, ] = useNotificationCenter();
 
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
@@ -152,6 +156,9 @@ export default function CommunitySearchPage({
           <ThemedRefreshControl refreshing={refreshing} onRefresh={onSearch} />
         }
         ListEmptyComponent={listEmpty}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

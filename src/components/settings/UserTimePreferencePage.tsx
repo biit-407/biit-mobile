@@ -17,6 +17,8 @@ import { updateAccount, useAccount } from "../../contexts/accountContext";
 import { useToken } from "../../contexts/tokenContext";
 
 import UserTimePreferenceCard from "./UserTimePreferenceCard";
+import NotificationCenter from "../userUtils/NotificationCenter";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 
 export const UserTimePreferencePageOptions = {
   title: "Time Preference",
@@ -189,6 +191,8 @@ export default function UserTimePreferencePage({}: StackNavigationProps<
     setPreferences(schedule);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
       <FlatList
@@ -255,6 +259,9 @@ export default function UserTimePreferencePage({}: StackNavigationProps<
           <Button title={"Submit"} onPress={submitPreferences} />
         </Box>
       </Modal>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

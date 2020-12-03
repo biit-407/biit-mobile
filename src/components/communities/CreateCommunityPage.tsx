@@ -7,6 +7,7 @@ import {
   createCommunity,
   useCommunityDispatch,
 } from "../../contexts/communityContext";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { BLANK_COMMUNITY } from "../../models/community";
@@ -16,6 +17,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const CreateCommunityPageOptions = {
   tabBarIcon: ({
@@ -112,6 +114,8 @@ export default function CreateCommunityPage({
     }
   };
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={{ flexGrow: 1 }}>
@@ -171,6 +175,9 @@ export default function CreateCommunityPage({
       <ThemedButton
         title="Create Community"
         onPress={handleSubmit(submitCommunity)}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

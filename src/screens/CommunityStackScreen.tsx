@@ -32,6 +32,7 @@ import CreateCommunityPage from "../components/communities/CreateCommunityPage";
 
 import CommunityTabScreen from "./CommunityTabScreen";
 import { DrawerIcon } from "./DrawerIcon";
+import { NotificationCenterIcon } from "./NotificationCenterIcon";
 
 const CommunityStack = createStackNavigator();
 
@@ -51,27 +52,40 @@ const CommunityStackScreen = ({}) => {
         component={CommunityTabScreen}
         options={{
           headerLeft: () => <DrawerIcon />,
+          headerRight: () => <NotificationCenterIcon />,
         }}
       />
       <CommunityStack.Screen
         name="CommunityHome"
         component={CommunityHomePage}
-        options={CommunityHomePageOptions}
+        options={{
+          ...CommunityHomePageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <CommunityStack.Screen
         name="BannedUsers"
         component={BannedUsersPage}
-        options={BannedUsersPageOptions}
+        options={{
+          ...BannedUsersPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <CommunityStack.Screen
         name="CommunityAdministration"
         component={CommunityAdministrationPage}
-        options={CommunityAdministrationPageOptions}
+        options={{
+          ...CommunityAdministrationPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <CommunityStack.Screen
         name="MemberList"
         component={MemberListPage}
-        options={MemberListPageOptions}
+        options={{
+          ...MemberListPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
         initialParams={{ name: "Johnsons" }}
       />
       <CommunityStack.Screen
@@ -79,6 +93,9 @@ const CommunityStackScreen = ({}) => {
         component={CreateCommunityPage}
         // TODO this isnt working dunno why, just want to get the merge done
         // options={CreateCommunityPageOptions}
+
+        // @whoever made this comment, CreateCommunityPage is already under CommunityTabScreen's Tab Navigator
+        // That may have something to do with it
       />
       <CommunityStack.Screen
         name="JoinCommunity"
@@ -93,7 +110,10 @@ const CommunityStackScreen = ({}) => {
       <CommunityStack.Screen
         name="CommunityStats"
         component={CommunityStatsPage}
-        options={CommunityStatsPageOptions}
+        options={{
+          ...CommunityStatsPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
     </CommunityStack.Navigator>
   );

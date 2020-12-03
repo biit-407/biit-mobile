@@ -17,6 +17,8 @@ import Text from '../themed/Text';
 import ThemedCard from '../themed/ThemedCard';
 import ThemedIconButton from '../themed/ThemedIconButton';
 import MeetupCard from './MeetupCard';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
+import NotificationCenter from '../userUtils/NotificationCenter';
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
   title: "RSVP",
@@ -144,6 +146,8 @@ export default function MeetupReponsePage({
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
@@ -207,6 +211,9 @@ export default function MeetupReponsePage({
           <Text variant="body">Accept</Text>
         </Box>
       </Box>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

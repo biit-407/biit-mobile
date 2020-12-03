@@ -1,10 +1,12 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 
 import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { ProfileCard, Text, ThemedButton } from "../themed";
 import Box from "../themed/Box";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 import MeetupCard from "./MeetupCard";
 
@@ -35,6 +37,8 @@ export default function PreviousProfilePage({
     </Text>
   );
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <FlatList
@@ -55,6 +59,9 @@ export default function PreviousProfilePage({
         }
         ListFooterComponent={<Box marginVertical="lg" />}
         ListEmptyComponent={emptyList}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

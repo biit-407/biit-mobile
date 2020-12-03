@@ -9,6 +9,7 @@ import {
   updateCommunity,
   useCommunity,
 } from "../../contexts/communityContext";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_COMMUNITY } from "../../models/community";
@@ -18,6 +19,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
 import ThemedInput from "../themed/ThemedInput";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const CommunityAdministrationPageOptions = {
   title: "Community Administration",
@@ -93,6 +95,8 @@ export default function CommunityAdministrationPage({
       .catch((err) => Alert.alert("Error Updating Community!", err));
   };
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
       <ScrollView style={{ flexGrow: 1 }}>
@@ -123,6 +127,9 @@ export default function CommunityAdministrationPage({
       <ThemedButton
         title="Confirm Changes"
         onPress={handleSubmit(submitCommunity)}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

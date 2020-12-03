@@ -18,6 +18,8 @@ import ThemedButton from '../themed/ThemedButton';
 import ThemedCard from '../themed/ThemedCard';
 import MeetupCard from './MeetupCard';
 import MeetupReportDialog from './MeetupReportDialog';
+import NotificationCenter from '../userUtils/NotificationCenter';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
 
 export const MeetupRatingPageOptions = {
   title: "Meetup Rating",
@@ -85,6 +87,8 @@ export default function MeetupRatingPage({
 
   const theme = useTheme<Theme>();
   const [showDialog, setShowDialog] = useState(false);
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView>
@@ -128,6 +132,9 @@ export default function MeetupRatingPage({
           closeDialog={() => setShowDialog(false)}
         />
       </ScrollView>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

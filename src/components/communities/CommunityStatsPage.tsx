@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 
 import { getCommunityStats } from "../../contexts/communityContext";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_COMMUNITY_STATS, CommunityStats } from "../../models/community";
@@ -9,6 +10,7 @@ import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import theme from "../../theme";
 import { Text } from "../themed";
 import Box from "../themed/Box";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const CommunityStatsPageOptions = {
   title: "Statistics",
@@ -70,6 +72,8 @@ function Statline({
   statName: string;
   statValue: string;
 }) {
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <>
       <Box
@@ -89,6 +93,9 @@ function Statline({
         <Text variant="subheader" textAlign={"right"}>
           {statValue}
         </Text>
+        <NotificationCenter
+        isVisible={notificationCenterState.visible}
+        />
       </Box>
     </>
   );

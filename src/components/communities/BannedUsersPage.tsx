@@ -5,6 +5,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import {
     getCommunity, loadCommunity, unbanUserFromCommunity, useCommunity
 } from '../../contexts/communityContext';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
 import { useToken } from '../../contexts/tokenContext';
 import { Ban } from '../../models/community';
 import { CommunityRoutes, StackNavigationProps } from '../../routes';
@@ -12,6 +13,7 @@ import Box from '../themed/Box';
 import ThemedIcon from '../themed/ThemedIcon';
 import ThemedListItem from '../themed/ThemedListItem';
 import ThemedRefreshControl from '../themed/ThemedRefreshControl';
+import NotificationCenter from '../userUtils/NotificationCenter';
 
 // Page Options
 
@@ -101,6 +103,8 @@ export default function BannedUsersPage({
     loadBannedUserData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <FlatList
@@ -130,6 +134,9 @@ export default function BannedUsersPage({
             refreshing={isRefreshing}
           />
         }
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

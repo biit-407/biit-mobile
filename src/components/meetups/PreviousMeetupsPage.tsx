@@ -7,6 +7,8 @@ import { Meetup } from "../../models/meetups";
 import useConstructor from "../../hooks/useConstructor";
 
 import MeetupCard from "./MeetupCard";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const PreviousMeetupsPageOptions = {
   title: "Previous Meetups",
@@ -48,6 +50,8 @@ export default function PreviousMeetupsPage({
       />
     );
   };
+  
+  const [notificationCenterState, ] = useNotificationCenter();
 
   return (
     <Box backgroundColor="mainBackground" style={{ ...styles.root }}>
@@ -57,6 +61,9 @@ export default function PreviousMeetupsPage({
         renderItem={renderMeetup}
         style={{ width: "100%" }}
         ListFooterComponent={<Box style={{ opacity: 1, height: 32 }} />}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

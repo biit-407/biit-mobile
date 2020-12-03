@@ -12,6 +12,8 @@ import LogoutButton from '../authentication/LogoutButton';
 import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from '../themed';
 import Box from '../themed/Box';
 import Text from '../themed/Text';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
+import NotificationCenter from '../userUtils/NotificationCenter';
 
 export const UserSettingsPageOptions = {
   title: "Settings",
@@ -312,6 +314,8 @@ export default function UserSettingsPage({
     setAgePreference(selectedAgeRange);
   };
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
@@ -489,6 +493,9 @@ export default function UserSettingsPage({
           <DeleteAccountButton />
         </Box>
       </ScrollView>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

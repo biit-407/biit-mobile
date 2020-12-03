@@ -14,6 +14,8 @@ import {
 } from "../../contexts/accountContext";
 import { SettingsRoutes, StackNavigationProps } from "../../routes";
 import { ThemedInput } from "../themed";
+import NotificationCenter from "../userUtils/NotificationCenter";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 
 export const UserFeedbackPageOptions = {
   title: "User Feedback",
@@ -53,6 +55,7 @@ export default function UserFeedbackPage({
     );
     navigation.goBack();
   };
+  const [notificationCenterState, ] = useNotificationCenter();
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -80,6 +83,9 @@ export default function UserFeedbackPage({
           const feedback: FeedbackFormValues = { text: feedbackTxt };
           submitFeedback(feedback);
         }}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );
