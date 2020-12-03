@@ -9,7 +9,6 @@ import { useToken } from "../../contexts/tokenContext";
 import useConstructor from "../../hooks/useConstructor";
 import { PreviousUser } from "../../models/accounts";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
-import { BLANK_MEETUP } from "../../models/meetups";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { Text, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
