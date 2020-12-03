@@ -632,7 +632,7 @@ async function reconnect(
   const endpoint = `${SERVER_ADDRESS}/meeting/reconnect`;
 
   try {
-    const response = await AuthenticatedRequestHandler.put(
+    const response = await AuthenticatedRequestHandler.post(
       endpoint,
       mapMeetupResponseJson,
       {

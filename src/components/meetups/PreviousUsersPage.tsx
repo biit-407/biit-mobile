@@ -10,7 +10,7 @@ import useConstructor from "../../hooks/useConstructor";
 import { PreviousUser } from "../../models/accounts";
 import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
-import { Text, ThemedListItem } from "../themed";
+import { Text, ThemedListItem, ThemedRefreshControl } from "../themed";
 import Box from "../themed/Box";
 
 export const PreviousUsersPageOptions = {
@@ -38,15 +38,19 @@ export default function PreviousUsersPage({
 
   // Create state for the list of previous users
   const [previousUsers, setPreviousUsers] = useState<PreviousUser[]>();
+  const [isRefreshing, setRefreshing] = useState(false);
 
-  // Load in previous users
-  useConstructor(async () => {
-    // TODO: Load in previous users
+  const loadPreviousUsers = async () => {
+    setRefreshing(true);
     const loadedUsers =
       (await getPreviousUsers(email, refreshToken, tokenDispatch)) ?? [];
     // Set the previous users
     setPreviousUsers(loadedUsers);
-  });
+    setRefreshing(false);
+  };
+
+  // Load in previous users
+  useConstructor(loadPreviousUsers);
 
   // Component to be rendered for each person
   const renderPerson = ({ item }: ListRenderItemInfo<PreviousUser>) => (
@@ -73,6 +77,12 @@ export default function PreviousUsersPage({
         renderItem={renderPerson}
         ListEmptyComponent={emptyList}
         contentContainerStyle={styles.list}
+        refreshControl={
+          <ThemedRefreshControl
+            onRefresh={loadPreviousUsers}
+            refreshing={isRefreshing}
+          />
+        }
       />
     </Box>
   );
