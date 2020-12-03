@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { FlatList, Linking } from "react-native";
+import { FlatList, Linking, YellowBox } from "react-native";
 
 import { BLANK_MEETUP, MeetupType } from "../../models/meetups";
 import {
@@ -10,6 +10,10 @@ import {
 } from "../../utils/timeUtils";
 import { ThemedCard, Box } from "../themed";
 import Text from "../themed/Text";
+
+YellowBox.ignoreWarnings([
+  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation",
+]);
 
 interface MeetupCardProps {
   id: string;
@@ -175,7 +179,7 @@ const AcceptedMeetupCard = ({
               if (onPress) {
                 onPress();
               } else {
-                navigation.navigate("MeetupResponse", {
+                navigation.navigate("MeetupDetails", {
                   meetupID: id,
                   timestamp: timestamp,
                   duration: duration,

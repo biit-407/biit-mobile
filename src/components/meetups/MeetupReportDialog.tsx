@@ -85,9 +85,6 @@ export default function MeetupReportDialog({
             </Box>
           </Box>
           <Box width="85%">
-            <Text variant="subheader" textAlign="center" mb="sm">
-              {meetupID}
-            </Text>
             <Text variant="body" mb="sm">
               We're sorry your meetup didn't go as planned. Please provide as
               much detail as you can in your report.

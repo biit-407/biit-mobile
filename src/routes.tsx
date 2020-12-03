@@ -17,6 +17,7 @@ export type HomeRoutes = {
     duration: string;
     location: string;
     userList: Record<string, number>;
+    community: string;
   };
   LocationRanker: {
     locations: string[];

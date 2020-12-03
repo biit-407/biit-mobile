@@ -11,6 +11,7 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import { Ban } from "../../models/community";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
+import { Text } from "../themed";
 import Box from "../themed/Box";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
@@ -132,6 +133,11 @@ export default function BannedUsersPage({
             onRefresh={loadBannedUserData}
             refreshing={isRefreshing}
           />
+        }
+        ListEmptyComponent={
+          <Text variant="subheader" textAlign="center" m="md">
+            No users are banned
+          </Text>
         }
       />
     </Box>

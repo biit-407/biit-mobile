@@ -466,7 +466,8 @@ async function setMeetupRating(
   token: string,
   email: string,
   meetupID: string,
-  rating: number
+  rating: number,
+  community: string
 ) {
   const endpoint = `${SERVER_ADDRESS}/rating`;
   meetupDispatch({
@@ -478,7 +479,7 @@ async function setMeetupRating(
     const response = await AuthenticatedRequestHandler.post(
       endpoint,
       mapRatingResponseJson,
-      { token, user: email, meeting_id: meetupID, rating } // eslint-disable-line camelcase
+      { token, user: email, meeting_id: meetupID, rating, community } // eslint-disable-line camelcase
     );
 
     // get meetup that had rating set
@@ -675,7 +676,7 @@ async function reconnect(
   const endpoint = `${SERVER_ADDRESS}/meeting/reconnect`;
 
   try {
-    const response = await AuthenticatedRequestHandler.put(
+    const response = await AuthenticatedRequestHandler.post(
       endpoint,
       mapMeetupResponseJson,
       {
@@ -688,7 +689,7 @@ async function reconnect(
     tokenDispatch({ type: "set", ...response[1] });
     return response[0];
   } catch (error) {
-    return BLANK_MEETUP;
+    return null;
   }
 }
 
