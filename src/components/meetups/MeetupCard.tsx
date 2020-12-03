@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, Linking } from "react-native";
 
 import { BLANK_MEETUP, MeetupType } from "../../models/meetups";
 import {
@@ -15,10 +15,12 @@ interface MeetupCardProps {
   id: string;
   timestamp: string;
   duration: string;
-  location: string;
+  location?: string;
   userList: Record<string, number>;
   meetupType: MeetupType;
   isClickable?: boolean;
+  onPress?: () => void;
+  zoomLink?: string;
   key?: string;
 }
 
@@ -39,6 +41,8 @@ const MeetupCard = ({
   location,
   userList,
   meetupType,
+  zoomLink,
+  onPress,
   isClickable,
 }: // key,
 MeetupCardProps) => {
@@ -53,6 +57,7 @@ MeetupCardProps) => {
           userList={userList}
           meetupType={meetupType}
           isClickable={isClickable}
+          onPress={onPress}
           // key={key}
         />
       ) : (
@@ -64,6 +69,8 @@ MeetupCardProps) => {
           userList={userList}
           meetupType={meetupType}
           isClickable={isClickable}
+          zoomLink={zoomLink}
+          onPress={onPress}
           // key={key}
         />
       )}
@@ -79,6 +86,7 @@ const TentativeMeetupCard = ({
   userList,
   isClickable,
   key,
+  onPress,
 }: MeetupCardProps) => {
   const navigation = useNavigation();
   const acceptedUsers = [];
@@ -88,19 +96,22 @@ const TentativeMeetupCard = ({
     }
   }
   const date = epochToJsDate(parseInt(timestamp, 10));
-
   return (
     <ThemedCard
       onPressFunction={
         isClickable
           ? () => {
-              navigation.navigate("MeetupResponse", {
-                meetupID: id,
-                timestamp: timestamp,
-                duration: duration,
-                location: location,
-                userList: userList,
-              });
+              if (onPress) {
+                onPress();
+              } else {
+                navigation.navigate("MeetupResponse", {
+                  meetupID: id,
+                  timestamp: timestamp,
+                  duration: duration,
+                  location: location,
+                  userList: userList,
+                });
+              }
             }
           : undefined
       }
@@ -128,6 +139,9 @@ const TentativeMeetupCard = ({
         keyExtractor={(item, index) => item + index.toString()}
         renderItem={renderParticipant}
         listKey={key}
+        ListEmptyComponent={
+          <Text variant="body">No users have accepted yet</Text>
+        }
       />
     </ThemedCard>
   );
@@ -141,6 +155,8 @@ const AcceptedMeetupCard = ({
   userList,
   isClickable,
   key,
+  onPress,
+  zoomLink,
 }: MeetupCardProps) => {
   const navigation = useNavigation();
   const acceptedUsers = [];
@@ -156,13 +172,17 @@ const AcceptedMeetupCard = ({
       onPressFunction={
         isClickable
           ? () => {
-              navigation.navigate("MeetupDetails", {
-                meetupID: id,
-                timestamp: timestamp,
-                duration: duration,
-                location: location,
-                userList: userList,
-              });
+              if (onPress) {
+                onPress();
+              } else {
+                navigation.navigate("MeetupResponse", {
+                  meetupID: id,
+                  timestamp: timestamp,
+                  duration: duration,
+                  location: location,
+                  userList: userList,
+                });
+              }
             }
           : undefined
       }
@@ -195,6 +215,14 @@ const AcceptedMeetupCard = ({
       </Text>
       <Text variant="subheader">Lasts {duration} minutes</Text>
       <Text variant="subheader">{location}</Text>
+      {location === "Online" && zoomLink && (
+        <Text
+          textDecorationLine="underline"
+          onPress={() => Linking.openURL(zoomLink)}
+        >
+          {zoomLink}
+        </Text>
+      )}
       <Text variant="header">Participants</Text>
       <FlatList
         data={acceptedUsers}
@@ -210,7 +238,6 @@ MeetupCard.defaultProps = {
   id: BLANK_MEETUP.id,
   timestamp: BLANK_MEETUP.timestamp,
   duration: BLANK_MEETUP.duration,
-  location: BLANK_MEETUP.location,
   userList: BLANK_MEETUP.user_list,
   meetupType: "accepted",
   isClickable: true,

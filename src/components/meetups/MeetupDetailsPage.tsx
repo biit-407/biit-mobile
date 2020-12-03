@@ -22,7 +22,14 @@ export default function MeetupDetailsPage({
   route,
 }: StackNavigationProps<HomeRoutes, "MeetupDetails">) {
   // TODO: Load in real data of the passed in meeting
-  const { meetupID, timestamp, location, duration, userList } = route.params;
+  const {
+    meetupID,
+    timestamp,
+    location,
+    duration,
+    userList,
+    zoomLink,
+  } = route.params;
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -33,6 +40,7 @@ export default function MeetupDetailsPage({
           timestamp={timestamp}
           userList={userList}
           location={location}
+          zoomLink={zoomLink}
           meetupType={"accepted"}
           isClickable={false}
         />
