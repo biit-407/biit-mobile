@@ -1,22 +1,25 @@
-import React, { useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { StackNavigationOptions } from "@react-navigation/stack";
 
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
-    acceptMeetup, declineMeetup, setMeetupLocations, useMeetup
-} from '../../contexts/meetupContext';
-import { useSnackbarDispatch } from '../../contexts/snackbarContext';
-import { useToken } from '../../contexts/tokenContext';
-import { BLANK_MEETUP } from '../../models/meetups';
-import { HomeRoutes, StackNavigationProps } from '../../routes';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedCard from '../themed/ThemedCard';
-import ThemedIconButton from '../themed/ThemedIconButton';
-import MeetupCard from './MeetupCard';
+  acceptMeetup,
+  declineMeetup,
+  setMeetupLocations,
+  useMeetup,
+} from "../../contexts/meetupContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
+import { useToken } from "../../contexts/tokenContext";
+import { BLANK_MEETUP } from "../../models/meetups";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedCard from "../themed/ThemedCard";
+import ThemedIconButton from "../themed/ThemedIconButton";
+import MeetupCard from "./MeetupCard";
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
   title: "RSVP",
@@ -143,14 +146,12 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
-
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
         <MeetupCard
           id={meetupID}
           timestamp={timestamp}
-          location={location}
           duration={duration}
           userList={userList}
           meetupType={"tentative"}
