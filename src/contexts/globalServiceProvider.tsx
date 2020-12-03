@@ -4,6 +4,7 @@ import { AccountProvider } from "./accountContext";
 import { AzureProvider } from "./azureContext";
 import { CommunityProvider } from "./communityContext";
 import { MeetupProvider } from "./meetupContext";
+import { NotificationCenterProvider } from "./notificationCenterContext";
 import { SnackbarProvider } from "./snackbarContext";
 import { TokenProvider } from "./tokenContext";
 
@@ -20,7 +21,11 @@ export default function GlobalServiceProvider({
         <AccountProvider>
           <CommunityProvider>
             <MeetupProvider>
-              <SnackbarProvider>{children}</SnackbarProvider>
+              <SnackbarProvider>
+                <NotificationCenterProvider>
+                  {children}
+                </NotificationCenterProvider>
+              </SnackbarProvider>
             </MeetupProvider>
           </CommunityProvider>
         </AccountProvider>

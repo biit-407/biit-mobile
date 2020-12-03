@@ -23,9 +23,13 @@ import LocationRankerPage, {
 } from "../components/meetups/LocationRankerPage";
 
 import { DrawerIcon } from "./DrawerIcon";
+import { NotificationCenterIcon } from "./NotificationCenterIcon";
 
 const HomeStack = createStackNavigator();
 
+// const HomeStackScreen = (
+//   { navigation }: any // eslint-disable-line @typescript-eslint/no-explicit-any
+// ) => {
 const HomeStackScreen = ({}) => {
   return (
     <HomeStack.Navigator
@@ -42,31 +46,48 @@ const HomeStackScreen = ({}) => {
         options={{
           ...MeetupListPageOptions,
           headerLeft: () => <DrawerIcon />,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
+        initialParams={{
+          futureMeetupIDs: ["test"],
+          tentativeMeetupIDs: ["temp"],
         }}
       />
 
       <HomeStack.Screen
         name="MeetupResponse"
         component={MeetupResponsePage}
-        options={MeetupResponsePageOptions}
+        options={{
+          ...MeetupResponsePageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
 
       <HomeStack.Screen
         name="MeetupDetails"
         component={MeetupDetailsPage}
-        options={MeetupDetailsPageOptions}
+        options={{
+          ...MeetupDetailsPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
 
       <HomeStack.Screen
         name="MeetupRating"
         component={MeetupRatingPage}
-        options={MeetupRatingPageOptions}
+        options={{
+          ...MeetupRatingPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
 
       <HomeStack.Screen
         name="LocationRanker"
         component={LocationRankerPage}
-        options={LocationRankerPageOptions}
+        options={{
+          ...LocationRankerPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
     </HomeStack.Navigator>
   );

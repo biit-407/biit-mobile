@@ -20,6 +20,7 @@ import UserFeedbackPage, {
 } from "../components/settings/UserFeedbackPage";
 
 import { DrawerIcon } from "./DrawerIcon";
+import { NotificationCenterIcon } from "./NotificationCenterIcon";
 
 const SettingsStack = createStackNavigator();
 
@@ -40,22 +41,32 @@ const SettingsStackScreen = ({}) => {
         options={{
           ...UserSettingsPageOptions,
           headerLeft: () => <DrawerIcon />,
+          headerRight: () => <NotificationCenterIcon />,
         }}
       />
       <SettingsStack.Screen
         name="UserTimePreference"
         component={UserTimePreferencePage}
-        options={UserTimePreferencePageOptions}
+        options={{
+          ...UserTimePreferencePageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <SettingsStack.Screen
         name="UserBugReport"
         component={UserBugReportPage}
-        options={UserBugReportPageOptions}
+        options={{
+          ...UserBugReportPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <SettingsStack.Screen
         name="UserFeedback"
         component={UserFeedbackPage}
-        options={UserFeedbackPageOptions}
+        options={{
+          ...UserFeedbackPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
     </SettingsStack.Navigator>
   );

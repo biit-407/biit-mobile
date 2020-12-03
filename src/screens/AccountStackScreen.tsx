@@ -26,6 +26,7 @@ import PreviousProfilePage, {
 } from "../components/meetups/PreviousProfilePage";
 
 import { DrawerIcon } from "./DrawerIcon";
+import { NotificationCenterIcon } from "./NotificationCenterIcon";
 
 const AccountStack = createStackNavigator();
 
@@ -54,6 +55,7 @@ const AccountStackScreen = ({}) => {
         options={{
           ...ViewProfilePageOptions,
           headerLeft: () => <DrawerIcon />,
+          headerRight: () => <NotificationCenterIcon />,
         }}
       />
       <AccountStack.Screen
@@ -66,17 +68,26 @@ const AccountStackScreen = ({}) => {
       <AccountStack.Screen
         name="PreviousMeetups"
         component={PreviousMeetupsPage}
-        options={PreviousMeetupsPageOptions}
+        options={{
+          ...PreviousMeetupsPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <AccountStack.Screen
         name="PreviousUsers"
         component={PreviousUsersPage}
-        options={PreviousUsersPageOptions}
+        options={{
+          ...PreviousUsersPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <AccountStack.Screen
         name="PreviousProfile"
         component={PreviousProfilePage}
-        options={PreviousProfilePageOptions}
+        options={{
+          ...PreviousProfilePageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
     </AccountStack.Navigator>
   );

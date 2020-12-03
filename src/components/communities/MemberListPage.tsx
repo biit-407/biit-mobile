@@ -9,6 +9,7 @@ import {
   updateCommunity,
   useCommunity,
 } from "../../contexts/communityContext";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_COMMUNITY, Community } from "../../models/community";
@@ -18,6 +19,7 @@ import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedIcon from "../themed/ThemedIcon";
 import ThemedListItem from "../themed/ThemedListItem";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const MemberListPageOptions = {
   title: "Member List",
@@ -193,6 +195,8 @@ export default function MemberListPage({
     </Box>
   );
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box style={styles.root} backgroundColor="mainBackground">
       <SectionList
@@ -209,6 +213,9 @@ export default function MemberListPage({
           <SectionListHeader section={section} />
         )}
         ListEmptyComponent={() => <Text>No members exist</Text>}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

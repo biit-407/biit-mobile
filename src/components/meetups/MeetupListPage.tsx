@@ -3,20 +3,24 @@ import { SectionList, SectionListData, StyleSheet } from "react-native";
 
 import { useAccountState } from "../../contexts/accountContext";
 import {
-  getMeetupList,
-  getPendingMeetupsList,
-  getUnratedMeetupsList,
-  getUpcomingMeetupsList,
-  useMeetup,
-} from "../../contexts/meetupContext";
-import { useToken } from "../../contexts/tokenContext";
-import { Meetup } from "../../models/meetups";
-import { HomeRoutes, StackNavigationProps } from "../../routes";
-import { ThemedRefreshControl } from "../themed";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedIcon from "../themed/ThemedIcon";
-import ThemedListItem from "../themed/ThemedListItem";
+    getMeetupList,
+    getPendingMeetupsList,
+    getUnratedMeetupsList,
+    getUpcomingMeetupsList,
+    useMeetup,
+} from '../../contexts/meetupContext';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
+import { useToken } from '../../contexts/tokenContext';
+import { Meetup } from '../../models/meetups';
+import { HomeRoutes, StackNavigationProps } from '../../routes';
+import { ThemedRefreshControl } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedIcon from '../themed/ThemedIcon';
+import ThemedListItem from '../themed/ThemedListItem';
+
+import NotificationCenter from '../userUtils/NotificationCenter'
+
 
 export const MeetupListPageOptions = {
   title: "Meetup List",
@@ -196,6 +200,8 @@ export default function MeetupListPage({
     },
   ];
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <SectionList
@@ -226,6 +232,9 @@ export default function MeetupListPage({
             refreshing={isLoading}
           />
         }
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

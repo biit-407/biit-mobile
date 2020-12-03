@@ -23,6 +23,7 @@ import MeetupResponsePage, {
 import PreviousMeetupsPage, {
   PreviousMeetupsPageOptions,
 } from "../components/meetups/PreviousMeetupsPage";
+import { NotificationCenterIcon } from "./NotificationCenterIcon";
 
 const MeetupStack = createStackNavigator();
 
@@ -32,33 +33,51 @@ const MeetupStackScreen = () => {
       <MeetupStack.Screen
         name="MeetupRating"
         component={MeetupRatingPage}
-        options={MeetupRatingPageOptions}
+        options={{
+          ...MeetupRatingPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
 
       <MeetupStack.Screen
         name="MeetupResponse"
         component={MeetupResponsePage}
-        options={MeetupResponsePageOptions}
+        options={{
+          ...MeetupResponsePageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <MeetupStack.Screen
         name="MeetupDetails"
         component={MeetupDetailsPage}
-        options={MeetupDetailsPageOptions}
+        options={{
+          ...MeetupDetailsPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <MeetupStack.Screen
         name="LocationRanker"
         component={LocationRankerPage}
-        options={LocationRankerPageOptions}
+        options={{
+          ...LocationRankerPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <MeetupStack.Screen
         name="MeetupList"
         component={MeetupListPage}
-        options={MeetupListPageOptions}
+        options={{
+          ...MeetupListPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
       <MeetupStack.Screen
         name="PreviousMeetups"
         component={PreviousMeetupsPage}
-        options={PreviousMeetupsPageOptions}
+        options={{
+          ...PreviousMeetupsPageOptions,
+          headerRight: () => <NotificationCenterIcon />,
+        }}
       />
     </MeetupStack.Navigator>
   );

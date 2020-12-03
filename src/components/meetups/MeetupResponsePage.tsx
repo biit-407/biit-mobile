@@ -5,21 +5,19 @@ import { StackNavigationOptions } from "@react-navigation/stack";
 
 import { useAccountState } from "../../contexts/accountContext";
 import {
-  acceptMeetup,
-  declineMeetup,
-  setMeetupLocations,
-  useMeetup,
-} from "../../contexts/meetupContext";
-import { useSnackbarDispatch } from "../../contexts/snackbarContext";
-import { useToken } from "../../contexts/tokenContext";
-import { BLANK_MEETUP } from "../../models/meetups";
-import { HomeRoutes, StackNavigationProps } from "../../routes";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
-import ThemedCard from "../themed/ThemedCard";
-import ThemedIconButton from "../themed/ThemedIconButton";
-
-import MeetupCard from "./MeetupCard";
+    acceptMeetup, declineMeetup, setMeetupLocations, useMeetup
+} from '../../contexts/meetupContext';
+import { useSnackbarDispatch } from '../../contexts/snackbarContext';
+import { useToken } from '../../contexts/tokenContext';
+import { BLANK_MEETUP } from '../../models/meetups';
+import { HomeRoutes, StackNavigationProps } from '../../routes';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import ThemedCard from '../themed/ThemedCard';
+import ThemedIconButton from '../themed/ThemedIconButton';
+import MeetupCard from './MeetupCard';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
+import NotificationCenter from '../userUtils/NotificationCenter';
 
 export const MeetupResponsePageOptions: StackNavigationOptions = {
   title: "RSVP",
@@ -146,6 +144,9 @@ export default function MeetupReponsePage({
     item: string;
     index: number;
   }) => <Text variant="body">{`${index + 1}. ${item}`}</Text>;
+
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box flex={3} width="95%">
@@ -208,6 +209,9 @@ export default function MeetupReponsePage({
           <Text variant="body">Accept</Text>
         </Box>
       </Box>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

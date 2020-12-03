@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 
 import {
   getPreviousUsers,
@@ -12,6 +13,7 @@ import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { Text, ThemedListItem } from "../themed";
 import Box from "../themed/Box";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const PreviousUsersPageOptions = {
   title: "Previous Users",
@@ -65,6 +67,8 @@ export default function PreviousUsersPage({
     </Box>
   );
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <FlatList
@@ -73,6 +77,9 @@ export default function PreviousUsersPage({
         renderItem={renderPerson}
         ListEmptyComponent={emptyList}
         contentContainerStyle={styles.list}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

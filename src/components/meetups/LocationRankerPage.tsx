@@ -8,6 +8,8 @@ import { HomeRoutes, StackNavigationProps } from "../../routes";
 import ThemedListItem from "../themed/ThemedListItem";
 import Box from "../themed/Box";
 import ThemedButton from "../themed/ThemedButton";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
+import NotificationCenter from "../userUtils/NotificationCenter";
 
 export const LocationRankerPageOptions: StackNavigationOptions = {
   title: "Rank Locations",
@@ -32,6 +34,8 @@ export default function LocationRankerPage({
 }: StackNavigationProps<HomeRoutes, "LocationRanker">) {
   const [locationData, setLocationData] = useState(route.params.locations);
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <DraggableFlatList
@@ -55,6 +59,9 @@ export default function LocationRankerPage({
           }}
         />
       </Box>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

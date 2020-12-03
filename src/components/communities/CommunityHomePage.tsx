@@ -5,22 +5,21 @@ import ReadMore from "react-native-read-more-text";
 
 import { useAccountState } from "../../contexts/accountContext";
 import {
-  getCommunity,
-  loadCommunity,
-  startMatching,
-  useCommunity,
-} from "../../contexts/communityContext";
-import { useSnackbar } from "../../contexts/snackbarContext";
-import { useToken } from "../../contexts/tokenContext";
-import { useConstructor } from "../../hooks";
-import { BLANK_COMMUNITY } from "../../models/community";
-import { BLANK_MEETUP } from "../../models/meetups";
-import { CommunityRoutes, StackNavigationProps } from "../../routes";
-import { Theme } from "../../theme";
-import MeetupCard from "../meetups/MeetupCard";
-import { Text, ThemedButton } from "../themed";
-import Box from "../themed/Box";
-import ThemedIconButton from "../themed/ThemedIconButton";
+    getCommunity, loadCommunity, startMatching, useCommunity
+} from '../../contexts/communityContext';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
+import { useSnackbar } from '../../contexts/snackbarContext';
+import { useToken } from '../../contexts/tokenContext';
+import { useConstructor } from '../../hooks';
+import { BLANK_COMMUNITY } from '../../models/community';
+import { BLANK_MEETUP } from '../../models/meetups';
+import { CommunityRoutes, StackNavigationProps } from '../../routes';
+import { Theme } from '../../theme';
+import MeetupCard from '../meetups/MeetupCard';
+import { Text, ThemedButton } from '../themed';
+import Box from '../themed/Box';
+import ThemedIconButton from '../themed/ThemedIconButton';
+import NotificationCenter from '../userUtils/NotificationCenter';
 
 export const CommunityHomePageOptions = {
   title: "",
@@ -150,6 +149,8 @@ export default function CommunityHomePage({
     { ...BLANK_MEETUP },
     { ...BLANK_MEETUP },
   ];
+
+  const [notificationCenterState, ] = useNotificationCenter();
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -290,6 +291,9 @@ export default function CommunityHomePage({
         data={meetups}
         keyExtractor={(item) => item.id + Math.random() * 1000}
         renderItem={({ item }) => <MeetupCard {...item} isClickable={false} />}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );

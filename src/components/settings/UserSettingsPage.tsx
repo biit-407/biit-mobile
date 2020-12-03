@@ -1,16 +1,19 @@
-import React, { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import Collapsible from "react-native-collapsible";
-import { Picker } from "@react-native-community/picker";
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+import Collapsible from 'react-native-collapsible';
 
-import { updateAccount, useAccount } from "../../contexts/accountContext";
-import { useToken } from "../../contexts/tokenContext";
-import { SettingsRoutes, StackNavigationProps } from "../../routes";
-import DeleteAccountButton from "../authentication/DeleteAccountButton";
-import LogoutButton from "../authentication/LogoutButton";
-import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from "../themed";
-import Box from "../themed/Box";
-import Text from "../themed/Text";
+import { Picker } from '@react-native-community/picker';
+
+import { updateAccount, useAccount } from '../../contexts/accountContext';
+import { useToken } from '../../contexts/tokenContext';
+import { SettingsRoutes, StackNavigationProps } from '../../routes';
+import DeleteAccountButton from '../authentication/DeleteAccountButton';
+import LogoutButton from '../authentication/LogoutButton';
+import { ThemedListItem, ThemedMultiSlider, ThemedSwitch } from '../themed';
+import Box from '../themed/Box';
+import Text from '../themed/Text';
+import { useNotificationCenter } from '../../contexts/notificationCenterContext';
+import NotificationCenter from '../userUtils/NotificationCenter';
 
 export const UserSettingsPageOptions = {
   title: "Settings",
@@ -310,6 +313,8 @@ export default function UserSettingsPage({
     setAgePreference(selectedAgeRange);
   };
 
+  const [notificationCenterState, ] = useNotificationCenter();
+
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
@@ -485,6 +490,9 @@ export default function UserSettingsPage({
           <DeleteAccountButton />
         </Box>
       </ScrollView>
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
+      />
     </Box>
   );
 }

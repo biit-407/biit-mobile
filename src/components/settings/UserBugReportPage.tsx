@@ -13,6 +13,8 @@ import { ThemedInput } from "../themed";
 import Box from "../themed/Box";
 import Text from "../themed/Text";
 import ThemedButton from "../themed/ThemedButton";
+import NotificationCenter from "../userUtils/NotificationCenter";
+import { useNotificationCenter } from "../../contexts/notificationCenterContext";
 
 export const UserBugReportPageOptions = {
   title: "Bug Report",
@@ -65,6 +67,7 @@ export default function UserBugReportPage({
     });
     navigation.goBack();
   };
+  const [notificationCenterState, ] = useNotificationCenter();
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -141,6 +144,9 @@ export default function UserBugReportPage({
           };
           submitBugReport(bugReport);
         }}
+      />
+      <NotificationCenter
+        isVisible={notificationCenterState.visible}
       />
     </Box>
   );
