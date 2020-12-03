@@ -175,7 +175,7 @@ const AcceptedMeetupCard = ({
               if (onPress) {
                 onPress();
               } else {
-                navigation.navigate("MeetupResponse", {
+                navigation.navigate("MeetupDetails", {
                   meetupID: id,
                   timestamp: timestamp,
                   duration: duration,
