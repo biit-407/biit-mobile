@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { SectionList, SectionListData, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { SectionList, SectionListData, StyleSheet } from "react-native";
 
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
-    getMeetupList, getPendingMeetupsList, getUnratedMeetupsList, getUpcomingMeetupsList, useMeetup
-} from '../../contexts/meetupContext';
-import { useToken } from '../../contexts/tokenContext';
-import { Meetup } from '../../models/meetups';
-import { HomeRoutes, StackNavigationProps } from '../../routes';
-import { ThemedRefreshControl } from '../themed';
-import Box from '../themed/Box';
-import Text from '../themed/Text';
-import ThemedIcon from '../themed/ThemedIcon';
-import ThemedListItem from '../themed/ThemedListItem';
+  getMeetupList,
+  getPendingMeetupsList,
+  getUnratedMeetupsList,
+  getUpcomingMeetupsList,
+  useMeetup,
+} from "../../contexts/meetupContext";
+import { useToken } from "../../contexts/tokenContext";
+import { Meetup } from "../../models/meetups";
+import { HomeRoutes, StackNavigationProps } from "../../routes";
+import { ThemedRefreshControl } from "../themed";
+import Box from "../themed/Box";
+import Text from "../themed/Text";
+import ThemedIcon from "../themed/ThemedIcon";
+import ThemedListItem from "../themed/ThemedListItem";
 
 export const MeetupListPageOptions = {
   title: "Meetup List",
@@ -117,14 +121,14 @@ export default function MeetupListPage({
 
   const formatDateStr = (date: Date) => {
     let hours = date.getHours();
-    let minutes = date.getMinutes();
+    const minutes = date.getMinutes();
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
     const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    let minuteStr = minutes < 10 ? "0" + minutes : minutes;
+    const minuteStr = minutes < 10 ? "0" + minutes : minutes;
     return `${hours}:${minuteStr} ${ampm} on ${month}/${day}/${year}`;
   };
 
@@ -207,7 +211,9 @@ export default function MeetupListPage({
           if (section.data.length === 0) {
             return (
               <Box backgroundColor="cardBackground" p="md">
-                <Text textAlign="center" variant="subheader">{section.emptyText}</Text>
+                <Text textAlign="center" variant="subheader">
+                  {section.emptyText}
+                </Text>
               </Box>
             );
           }
