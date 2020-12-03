@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { StackNavigationOptions } from "@react-navigation/stack";
 
-import { StackNavigationOptions } from '@react-navigation/stack';
-
-import { useAccountState } from '../../contexts/accountContext';
+import { useAccountState } from "../../contexts/accountContext";
 import {
     acceptMeetup, declineMeetup, setMeetupLocations, useMeetup
 } from '../../contexts/meetupContext';
@@ -36,7 +35,7 @@ export default function MeetupReponsePage({
   route,
   navigation,
 }: StackNavigationProps<HomeRoutes, "MeetupResponse">) {
-  const { meetupID, timestamp, location, duration, userList } = route.params;
+  const { meetupID, timestamp, duration, userList } = route.params;
   const [tokenState, tokenDispatch] = useToken();
   const {
     account: { email },
@@ -154,7 +153,6 @@ export default function MeetupReponsePage({
         <MeetupCard
           id={meetupID}
           timestamp={timestamp}
-          location={location}
           duration={duration}
           userList={userList}
           meetupType={"tentative"}

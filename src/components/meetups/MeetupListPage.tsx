@@ -177,6 +177,7 @@ export default function MeetupListPage({
             location: item.location,
             userList: item.user_list,
             timestamp: item.timestamp,
+            zoomLink: item.zoomLink,
           })
         ),
       emptyText: "No upcoming meetups",

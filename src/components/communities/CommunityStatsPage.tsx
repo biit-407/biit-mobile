@@ -44,21 +44,20 @@ StackNavigationProps<CommunityRoutes, "CommunityStats">) {
       setStats(data);
     }
   });
-
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
       <Box style={{ height: 16 }} />
       <Statline
         statName="Total Sessions"
-        statValue={stats.totalSessions.toString()}
+        statValue={stats.totalSessions?.toString() ?? 0}
       />
       <Statline
         statName="Total Meetups"
-        statValue={stats.totalMeetups.toString()}
+        statValue={stats.totalMeetups?.toString() ?? 0}
       />
       <Statline
         statName="Total Accepted"
-        statValue={stats.totalAccepted.toString()}
+        statValue={stats.totalAccepted?.toString() ?? 0}
       />
       <Statline statName="Average Rating" statValue="NOT IMPLEMENTED" />
     </Box>

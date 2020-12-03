@@ -43,6 +43,9 @@ interface MeetupAuthenticatedResponseJson
     location: string;
     meettype: string;
     user_list: Record<string, number>; // eslint-disable-line camelcase
+    community: string;
+    zoom_id?: string; // eslint-disable-line camelcase
+    zoom_link?: string; // eslint-disable-line camelcase
   };
 }
 
@@ -55,6 +58,9 @@ interface MeetupListAuthenticatedResponseJson
     location: string;
     meettype: string;
     user_list: Record<string, number>; // eslint-disable-line camelcase
+    community: string;
+    zoom_id?: string; // eslint-disable-line camelcase
+    zoom_link?: string; // eslint-disable-line camelcase
   }[];
 }
 
@@ -82,6 +88,9 @@ function mapMeetupResponseJson(responseJson: MeetupAuthenticatedResponseJson) {
     location: responseJson.data.location,
     meeting_type: responseJson.data.meettype, // eslint-disable-line camelcase
     user_list: responseJson.data.user_list, // eslint-disable-line camelcase
+    community: responseJson.data.community,
+    zoomID: responseJson.data.zoom_id,
+    zoomLink: responseJson.data.zoom_link,
   } as Meetup;
 }
 
@@ -96,6 +105,9 @@ function mapMeetupListResponseJson(
       location: item.location,
       meeting_type: item.meettype, // eslint-disable-line camelcase
       user_list: item.user_list, // eslint-disable-line camelcase
+      community: item.community,
+      zoomID: item.zoom_id,
+      zoomLink: item.zoom_link,
     } as Meetup;
   });
 }

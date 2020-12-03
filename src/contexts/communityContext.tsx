@@ -455,7 +455,7 @@ async function joinCommunity(
   email: string,
   community: string
 ) {
-  await _communityHelper(
+  return await _communityHelper(
     communityDispatch,
     token,
     { email: email, community: community },
@@ -506,8 +506,8 @@ async function startMatching(
         return [
           responseJson.status_code === 200,
           {
-            accessToken: responseJson.accessToken,
-            refreshToken: responseJson.refreshToken,
+            accessToken: responseJson.access_token,
+            refreshToken: responseJson.refresh_token,
           },
         ];
       });
@@ -539,8 +539,8 @@ async function getCommunityStats(
         return [
           responseJson.data,
           {
-            accessToken: responseJson.accessToken,
-            refreshToken: responseJson.refreshToken,
+            accessToken: responseJson.access_token,
+            refreshToken: responseJson.refresh_token,
           },
         ];
       });
@@ -572,8 +572,8 @@ async function getAllCommunities(
         return [
           responseJson.data,
           {
-            accessToken: responseJson.accessToken,
-            refreshToken: responseJson.refreshToken,
+            accessToken: responseJson.access_token,
+            refreshToken: responseJson.refresh_token,
           },
         ];
       });

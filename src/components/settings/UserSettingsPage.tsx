@@ -57,7 +57,6 @@ export default function UserSettingsPage({
   // Get the user account and tokens
   const [accountState, accountDispatch] = useAccount();
   const [{ refreshToken }, tokenDispatch] = useToken();
-
   /*
    ========================
    Notification Preference
@@ -321,9 +320,7 @@ export default function UserSettingsPage({
       <ScrollView style={styles.scrollview} scrollEnabled={scrollable}>
         <Box style={styles.itemframe}>
           <ThemedListItem
-            iconName={
-              allowNotifications ? "bell" : "bell-off"
-            }
+            iconName={allowNotifications ? "bell" : "bell-off"}
             iconType="feather"
             title="Allow Notifications"
             subtitle="Toggle receiving notifications"

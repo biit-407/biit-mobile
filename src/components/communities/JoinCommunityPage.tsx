@@ -7,6 +7,7 @@ import {
   joinCommunity,
   useCommunityDispatch,
 } from "../../contexts/communityContext";
+import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import Box from "../themed/Box";
@@ -45,20 +46,45 @@ export default function JoinCommunityPage({
   const communityDispatch = useCommunityDispatch();
   const [tokenState, tokenDispatch] = useToken();
   const accountState = useAccountState();
+  const snackbarDispatch = useSnackbarDispatch();
 
   // Extract info about the community to join
   const { name, codeOfConduct, numMembers } = route.params;
 
   // Create a function to join the specified community
   const join = async () => {
-    await joinCommunity(
+    const result = await joinCommunity(
       communityDispatch,
       tokenDispatch,
       tokenState.refreshToken,
       accountState.account.email,
       route.params.name
     );
-    navigation.pop();
+
+    if (result) {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: `Successfully joined ${route.params.name}`,
+          snackbarVisible: true,
+          snackbarType: "success",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+      navigation.pop();
+    } else {
+      snackbarDispatch({
+        type: "push",
+        state: {
+          snackbarMessage: `Failed to join ${route.params.name}`,
+          snackbarVisible: true,
+          snackbarType: "error",
+          queue: [],
+        },
+        dispatch: snackbarDispatch,
+      });
+    }
   };
 
   return (
