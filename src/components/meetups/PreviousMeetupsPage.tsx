@@ -5,9 +5,9 @@ import { StackNavigationProps, AccountRoutes } from "../../routes";
 import Box from "../themed/Box";
 import { Meetup } from "../../models/meetups";
 import useConstructor from "../../hooks/useConstructor";
+import { Text } from "../themed";
 
 import MeetupCard from "./MeetupCard";
-import { Text } from "../themed";
 
 export const PreviousMeetupsPageOptions = {
   title: "Previous Meetups",

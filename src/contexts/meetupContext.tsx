@@ -645,7 +645,7 @@ async function reconnect(
     tokenDispatch({ type: "set", ...response[1] });
     return response[0];
   } catch (error) {
-    return BLANK_MEETUP;
+    return null;
   }
 }
 

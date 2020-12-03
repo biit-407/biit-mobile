@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { Modal, StyleSheet } from 'react-native';
+import React, { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Modal, StyleSheet } from "react-native";
 
-import { reportUser, useAccountState } from '../../contexts/accountContext';
-import { useToken } from '../../contexts/tokenContext';
-import { Box, Text, ThemedButton, ThemedIcon, ThemedInput } from '../themed';
+import { reportUser, useAccountState } from "../../contexts/accountContext";
+import { useToken } from "../../contexts/tokenContext";
+import { Box, Text, ThemedButton, ThemedIcon, ThemedInput } from "../themed";
 
 type MeetupReportDialogProps = {
   open: boolean;

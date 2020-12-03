@@ -97,7 +97,7 @@ export default function CommunityHomePage({
         type: "push",
         state: {
           snackbarVisible: true,
-          snackbarMessage: "Successfully Created Meetups",
+          snackbarMessage: "Successfully Created Meetup",
           queue: [],
           snackbarType: "success",
         },
@@ -108,7 +108,7 @@ export default function CommunityHomePage({
         type: "push",
         state: {
           snackbarVisible: true,
-          snackbarMessage: "Failed to Create Meetups",
+          snackbarMessage: "Failed to Create Meetup",
           queue: [],
           snackbarType: "error",
         },
