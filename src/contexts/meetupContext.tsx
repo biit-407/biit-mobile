@@ -466,7 +466,8 @@ async function setMeetupRating(
   token: string,
   email: string,
   meetupID: string,
-  rating: number
+  rating: number,
+  community: string
 ) {
   const endpoint = `${SERVER_ADDRESS}/rating`;
   meetupDispatch({
@@ -478,7 +479,7 @@ async function setMeetupRating(
     const response = await AuthenticatedRequestHandler.post(
       endpoint,
       mapRatingResponseJson,
-      { token, user: email, meeting_id: meetupID, rating } // eslint-disable-line camelcase
+      { token, user: email, meeting_id: meetupID, rating, community } // eslint-disable-line camelcase
     );
 
     // get meetup that had rating set
