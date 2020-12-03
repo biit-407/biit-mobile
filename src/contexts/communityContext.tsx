@@ -455,7 +455,7 @@ async function joinCommunity(
   email: string,
   community: string
 ) {
-  await _communityHelper(
+  return await _communityHelper(
     communityDispatch,
     token,
     { email: email, community: community },
