@@ -631,14 +631,14 @@ async function reschedule(
   meetupID: string,
   timestamp: number
 ) {
-  const endpoint = `${SERVER_ADDRESS}/meeting/reschedule?`;
+  const endpoint = `${SERVER_ADDRESS}/meeting/reschedule`;
   meetupDispatch({
     type: "start update",
     meetup: [BLANK_MEETUP],
     error: "Making meetup request to server",
   });
      try {
-    const response = await AuthenticatedRequestHandler.put(
+    const response = await AuthenticatedRequestHandler.post(
       endpoint,
       mapMeetupResponseJson,
       {

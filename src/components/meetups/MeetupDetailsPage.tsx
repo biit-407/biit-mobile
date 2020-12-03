@@ -27,8 +27,16 @@ const styles = StyleSheet.create({
 export default function MeetupDetailsPage({
   route,
 }: StackNavigationProps<HomeRoutes, "MeetupDetails">) {
-
+  const {
+    meetupID,
+    timestamp,
+    location,
+    duration,
+    userList,
+    zoomLink,
+  } = route.params;
   const [show, setShow] = useState(false);
+  const [showDate, setShowDate] = useState(false)
   const [date, setDate] = useState(new Date());
 
   const meetupDispatch = useMeetupDispatch();
@@ -38,8 +46,13 @@ export default function MeetupDetailsPage({
 
   const startReschedule = () => {
     setShow(true);
-    setDate(new Date(timestamp));
+    setDate(new Date(parseInt(timestamp) * 1000));
   };
+
+  const startRescheduleDate = () => {
+    setShowDate(true);
+    setDate(new Date(parseInt(timestamp) * 1000));
+  }
 
   const onChange = async (
     _event: any /*eslint-disable-line @typescript-eslint/no-explicit-any */,
@@ -87,14 +100,51 @@ export default function MeetupDetailsPage({
     }
   };
   
-  const {
-    meetupID,
-    timestamp,
-    location,
-    duration,
-    userList,
-    zoomLink,
-  } = route.params;
+  const onChangeDate = async (
+    _event: any /*eslint-disable-line @typescript-eslint/no-explicit-any */,
+    selectedDate: Date | undefined
+  ) => {
+    if (_event.type !== "set") {
+      return;
+    }
+    setShowDate(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+      const newTimestamp = selectedDate.getTime() / 1000;
+      const result = await reschedule(
+        meetupDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        accountState.account.email,
+        meetupID,
+        newTimestamp
+      );
+
+      if (result) {
+        snackbarDispatch({
+          type: "push",
+          state: {
+            snackbarMessage: "Successfully updated meetup date",
+            snackbarVisible: true,
+            queue: [],
+            snackbarType: "success",
+          },
+          dispatch: snackbarDispatch,
+        });
+      } else {
+        snackbarDispatch({
+          type: "push",
+          state: {
+            snackbarMessage: "Failed to update meetup date",
+            snackbarVisible: true,
+            queue: [],
+            snackbarType: "error",
+          },
+          dispatch: snackbarDispatch,
+        });
+      }
+    }
+  };
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -109,7 +159,8 @@ export default function MeetupDetailsPage({
           meetupType={"accepted"}
           isClickable={false}
         />
-        <ThemedButton title={"reschedule"} onPress={startReschedule} />
+        <ThemedButton title={"reschedule time"} onPress={startReschedule} />
+        <ThemedButton title={"reschedule date"} onPress={startRescheduleDate} />
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -118,6 +169,16 @@ export default function MeetupDetailsPage({
             is24Hour={true}
             display="default"
             onChange={onChange}
+          />
+        )}
+        {showDate && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={"date"}
+            is24Hour={true}
+            display="default"
+            onChange={onChangeDate}
           />
         )}
       </Box>
