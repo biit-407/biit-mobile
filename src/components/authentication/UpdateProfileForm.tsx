@@ -4,9 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, StyleSheet } from "react-native";
 import { BottomSheet, Icon, Input, ListItem } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
-
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import {
   setProfilePicture,
   updateAccount,

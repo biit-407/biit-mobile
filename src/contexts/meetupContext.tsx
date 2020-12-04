@@ -623,6 +623,49 @@ async function setMeetupLocations(
   return BLANK_MEETUP;
 }
 
+
+async function reschedule(
+  meetupDispatch: Dispatch,
+  tokenDispatch: TokenDispatch,
+  token: string,
+  email: string,
+  meetupID: string,
+  timestamp: number
+) {
+  const endpoint = `${SERVER_ADDRESS}/meeting/reschedule`;
+  meetupDispatch({
+    type: "start update",
+    meetup: [BLANK_MEETUP],
+    error: "Making meetup request to server",
+  });
+     try {
+    const response = await AuthenticatedRequestHandler.post(
+      endpoint,
+      mapMeetupResponseJson,
+      {
+        email: email,
+        token: token,
+        meeting_id: meetupID, // eslint-disable-line camelcase
+        meeting_time: timestamp, // eslint-disable-line camelcase
+      }
+    );
+    tokenDispatch({ type: "set", ...response[1] });
+    meetupDispatch({
+      type: "finish update item",
+      meetup: [response[0]],
+      error: "Successfully loaded meetups from server",
+    });
+    return response[0];
+  } catch (error) {
+    meetupDispatch({
+      type: "fail update",
+      meetup: [BLANK_MEETUP],
+      error: "Unable to decline meetup from server",
+    });
+  }
+  return BLANK_MEETUP;
+}
+
 async function reconnect(
   email: string,
   token: string,
@@ -678,5 +721,6 @@ export {
   setMeetupRating,
   setMeetupLocations,
   getLoadedMeetupById,
+  reschedule,
   reconnect,
 };

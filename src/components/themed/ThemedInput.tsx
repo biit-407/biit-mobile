@@ -1,9 +1,8 @@
-import React from 'react';
-import { Input, InputProps } from 'react-native-elements';
+import React from "react";
+import { Input, InputProps } from "react-native-elements";
+import { useTheme } from "@shopify/restyle";
 
-import { useTheme } from '@shopify/restyle';
-
-import { Theme } from '../../theme';
+import { Theme } from "../../theme";
 
 type ThemedInputProps = InputProps;
 // type ThemedInputProps = {

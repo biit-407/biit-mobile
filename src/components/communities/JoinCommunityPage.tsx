@@ -7,6 +7,7 @@ import {
   joinCommunity,
   useCommunityDispatch,
 } from "../../contexts/communityContext";
+
 import { useSnackbarDispatch } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";

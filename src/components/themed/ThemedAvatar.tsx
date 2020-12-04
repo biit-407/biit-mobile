@@ -1,12 +1,12 @@
-import React from 'react';
-import { View } from 'react-native';
-import { Avatar, AvatarProps } from 'react-native-elements';
+import React from "react";
+import { View } from "react-native";
+import { Avatar, AvatarProps } from "react-native-elements";
+import { useTheme } from "@shopify/restyle";
 
-import { useTheme } from '@shopify/restyle';
+import { Theme } from "../../theme";
 
-import { Theme } from '../../theme';
-import Box from './Box';
-import ThemedIconButton from './ThemedIconButton';
+import Box from "./Box";
+import ThemedIconButton from "./ThemedIconButton";
 
 type ThemedAvatarProps = {
   uri: string;
