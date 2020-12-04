@@ -189,7 +189,7 @@ export default function MeetupListPage({
             location: item.location,
             userList: item.user_list,
             timestamp: item.timestamp,
-            community: item.community
+            community: item.community,
           })
         ),
 
