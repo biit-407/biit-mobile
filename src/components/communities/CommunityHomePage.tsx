@@ -19,7 +19,7 @@ import { useSnackbar } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_COMMUNITY } from "../../models/community";
-import { BLANK_MEETUP, Meetup } from "../../models/meetups";
+import { Meetup } from "../../models/meetups";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import { Theme } from "../../theme";
 import MeetupCard from "../meetups/MeetupCard";
@@ -142,7 +142,7 @@ export default function CommunityHomePage({
       tokenDispatch,
       tokenState.refreshToken,
       email
-    ).then(async (meetups) => {
+    ).then(async () => {
       // Load the required sections
       const upcomingMeetupList = await getUpcomingMeetupsList(
         meetupDispatch,
