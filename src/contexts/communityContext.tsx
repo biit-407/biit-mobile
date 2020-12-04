@@ -537,7 +537,11 @@ async function getCommunityStats(
       .then((r) => r.json())
       .then((responseJson) => {
         return [
-          responseJson.data,
+          {
+            totalMeetups: responseJson.data['total_meetups'],
+            totalSessions: responseJson.data['total_sessions'],
+            totalAccepted: responseJson.data['accepted_meetups']
+          } as CommunityStats,
           {
             accessToken: responseJson.access_token,
             refreshToken: responseJson.refresh_token,
@@ -545,7 +549,7 @@ async function getCommunityStats(
         ];
       });
     tokenDispatch({ type: "set", ...response[1] });
-    return response[0] as CommunityStats;
+    return response[0]
   } catch (error) {
     return null;
   }
