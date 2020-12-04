@@ -8,7 +8,6 @@ import {
 import { useToken } from "../../contexts/tokenContext";
 import useConstructor from "../../hooks/useConstructor";
 import { PreviousUser } from "../../models/accounts";
-import { EMPTY_PROFILE_PIC } from "../../models/constants";
 import { AccountRoutes, StackNavigationProps } from "../../routes";
 import { Text, ThemedListItem, ThemedRefreshControl } from "../themed";
 import Box from "../themed/Box";
@@ -55,7 +54,6 @@ export default function PreviousUsersPage({
   // Component to be rendered for each person
   const renderPerson = ({ item }: ListRenderItemInfo<PreviousUser>) => (
     <ThemedListItem
-      avatarUri={item.profileImage ?? EMPTY_PROFILE_PIC}
       title={`${item.fname} ${item.lname}`}
       onPress={() => navigation.push("PreviousProfile", { previousUser: item })}
       chevron

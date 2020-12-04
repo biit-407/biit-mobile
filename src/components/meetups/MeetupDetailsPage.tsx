@@ -36,7 +36,7 @@ export default function MeetupDetailsPage({
     zoomLink,
   } = route.params;
   const [show, setShow] = useState(false);
-  const [showDate, setShowDate] = useState(false)
+  const [showDate, setShowDate] = useState(false);
   const [date, setDate] = useState(new Date());
 
   const meetupDispatch = useMeetupDispatch();
@@ -52,7 +52,7 @@ export default function MeetupDetailsPage({
   const startRescheduleDate = () => {
     setShowDate(true);
     setDate(new Date(parseInt(timestamp) * 1000));
-  }
+  };
 
   const onChange = async (
     _event: any /*eslint-disable-line @typescript-eslint/no-explicit-any */,
@@ -99,7 +99,7 @@ export default function MeetupDetailsPage({
       }
     }
   };
-  
+
   const onChangeDate = async (
     _event: any /*eslint-disable-line @typescript-eslint/no-explicit-any */,
     selectedDate: Date | undefined
@@ -159,8 +159,8 @@ export default function MeetupDetailsPage({
           meetupType={"accepted"}
           isClickable={false}
         />
-        <ThemedButton title={"reschedule time"} onPress={startReschedule} />
-        <ThemedButton title={"reschedule date"} onPress={startRescheduleDate} />
+        <ThemedButton title={"Reschedule Time"} onPress={startReschedule} />
+        <ThemedButton title={"Reschedule Date"} onPress={startRescheduleDate} />
         {show && (
           <DateTimePicker
             testID="dateTimePicker"
