@@ -10,15 +10,20 @@ import {
   startMatching,
   useCommunity,
 } from "../../contexts/communityContext";
+import {
+  getMeetupList,
+  getUpcomingMeetupsList,
+  useMeetup,
+} from "../../contexts/meetupContext";
 import { useSnackbar } from "../../contexts/snackbarContext";
 import { useToken } from "../../contexts/tokenContext";
 import { useConstructor } from "../../hooks";
 import { BLANK_COMMUNITY } from "../../models/community";
-import { BLANK_MEETUP } from "../../models/meetups";
+import { BLANK_MEETUP, Meetup } from "../../models/meetups";
 import { CommunityRoutes, StackNavigationProps } from "../../routes";
 import { Theme } from "../../theme";
 import MeetupCard from "../meetups/MeetupCard";
-import { Text, ThemedButton } from "../themed";
+import { Text, ThemedButton, ThemedRefreshControl } from "../themed";
 import Box from "../themed/Box";
 import ThemedIconButton from "../themed/ThemedIconButton";
 
@@ -83,6 +88,15 @@ export default function CommunityHomePage({
   const [communityState, communityDispatch] = useCommunity();
   const accountState = useAccountState();
   const [, snackbarDispatch] = useSnackbar();
+  const [isLoading, setLoading] = useState(false);
+
+  // Retrieve account information
+  const {
+    account: { email },
+  } = useAccountState();
+
+  // get meetup context information
+  const [, meetupDispatch] = useMeetup();
 
   const searchForMeetup = async () => {
     console.log("Searching");
@@ -117,6 +131,31 @@ export default function CommunityHomePage({
     }
   };
 
+  const [meetups, setMeetups] = useState<Meetup[]>([]);
+
+  // Create function to load and set all data
+  const loadMeetupData = async () => {
+    setLoading(true);
+    // load all meetings because yay
+    await getMeetupList(
+      meetupDispatch,
+      tokenDispatch,
+      tokenState.refreshToken,
+      email
+    ).then(async (meetups) => {
+      // Load the required sections
+      const upcomingMeetupList = await getUpcomingMeetupsList(
+        meetupDispatch,
+        tokenDispatch,
+        tokenState.refreshToken,
+        email
+      );
+      // Set the sections once loaded
+      setMeetups(upcomingMeetupList);
+      setLoading(false);
+    });
+  };
+
   // Utilize community data
   const [community, setCommunity] = useState(BLANK_COMMUNITY);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -129,6 +168,7 @@ export default function CommunityHomePage({
       tokenState.refreshToken,
       route.params.communityID
     );
+    loadMeetupData();
   });
 
   useEffect(() => {
@@ -144,12 +184,6 @@ export default function CommunityHomePage({
 
   const { name, codeofconduct, Members } = community;
   const [readMoreReady, setReadMoreReady] = useState(false);
-
-  const meetups = [
-    { ...BLANK_MEETUP },
-    { ...BLANK_MEETUP },
-    { ...BLANK_MEETUP },
-  ];
 
   return (
     <Box backgroundColor="mainBackground" style={styles.root}>
@@ -282,7 +316,7 @@ export default function CommunityHomePage({
               marginTop="lg"
               fontWeight="bold"
             >
-              Your meetups in {name}
+              Your upcoming meetups in {name}
             </Text>
           </Box>
         }
@@ -290,6 +324,12 @@ export default function CommunityHomePage({
         data={meetups}
         keyExtractor={(item) => item.id + Math.random() * 1000}
         renderItem={({ item }) => <MeetupCard {...item} isClickable={false} />}
+        refreshControl={
+          <ThemedRefreshControl
+            refreshing={isLoading}
+            onRefresh={loadMeetupData}
+          />
+        }
       />
     </Box>
   );
