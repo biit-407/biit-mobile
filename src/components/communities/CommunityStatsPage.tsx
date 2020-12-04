@@ -38,6 +38,7 @@ StackNavigationProps<CommunityRoutes, "CommunityStats">) {
       tokenState.refreshToken,
       route.params.communityID
     );
+    console.log(data)
     if (data !== null) {
       setStats(data);
     }
@@ -57,7 +58,6 @@ StackNavigationProps<CommunityRoutes, "CommunityStats">) {
         statName="Total Accepted"
         statValue={stats.totalAccepted?.toString() ?? 0}
       />
-      <Statline statName="Average Rating" statValue="NOT IMPLEMENTED" />
     </Box>
   );
 }
