@@ -150,8 +150,14 @@ export default function CommunityHomePage({
         tokenState.refreshToken,
         email
       );
+      console.log(upcomingMeetupList);
       // Set the sections once loaded
-      setMeetups(upcomingMeetupList);
+      setMeetups(
+        upcomingMeetupList.filter((meetup) => meetup.community === name)
+      );
+      setMeetups(
+        upcomingMeetupList.filter((meetup) => meetup.community === name)
+      );
       setLoading(false);
     });
   };
@@ -168,7 +174,6 @@ export default function CommunityHomePage({
       tokenState.refreshToken,
       route.params.communityID
     );
-    loadMeetupData();
   });
 
   useEffect(() => {
@@ -180,7 +185,8 @@ export default function CommunityHomePage({
     if (loadedCommunity.Admins.includes(accountState.account.email)) {
       setIsAdmin(true);
     }
-  }, [communityState, route.params.communityID, accountState]);
+    loadMeetupData();
+  }, [communityState, route.params.communityID, accountState]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { name, codeofconduct, Members } = community;
   const [readMoreReady, setReadMoreReady] = useState(false);
@@ -329,6 +335,11 @@ export default function CommunityHomePage({
             refreshing={isLoading}
             onRefresh={loadMeetupData}
           />
+        }
+        ListEmptyComponent={
+          <Text textAlign="center" m="md" variant="subheader">
+            You have no upcoming meetups for {name}
+          </Text>
         }
       />
     </Box>

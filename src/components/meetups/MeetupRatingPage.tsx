@@ -35,7 +35,14 @@ export default function MeetupRatingPage({
   route,
 }: StackNavigationProps<HomeRoutes, "MeetupRating">) {
   // Create state for the meetup to be loaded
-  const { meetupID, timestamp, duration, location, userList, community } = route.params;
+  const {
+    meetupID,
+    timestamp,
+    duration,
+    location,
+    userList,
+    community,
+  } = route.params;
 
   // Retrieve account information
   const [tokenState, tokenDispatch] = useToken();
