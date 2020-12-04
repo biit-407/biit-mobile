@@ -57,7 +57,6 @@ StackNavigationProps<CommunityRoutes, "CommunityStats">) {
         statName="Total Accepted"
         statValue={stats.totalAccepted?.toString() ?? 0}
       />
-      <Statline statName="Average Rating" statValue="NOT IMPLEMENTED" />
     </Box>
   );
 }
