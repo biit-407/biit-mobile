@@ -55,7 +55,6 @@ export default function PreviousUsersPage({
   // Component to be rendered for each person
   const renderPerson = ({ item }: ListRenderItemInfo<PreviousUser>) => (
     <ThemedListItem
-      avatarUri={item.profileImage ?? EMPTY_PROFILE_PIC}
       title={`${item.fname} ${item.lname}`}
       onPress={() => navigation.push("PreviousProfile", { previousUser: item })}
       chevron
